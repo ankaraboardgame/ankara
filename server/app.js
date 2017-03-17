@@ -26,11 +26,13 @@ const rootPath = path.join(__dirname, '..');
 const browserPath = path.join(rootPath, 'browser');
 const publicPath = path.join(rootPath, 'public');
 const imagesPath = path.join(rootPath, 'public/images');
+const gamePath = path.join(rootPath, 'game');
 
 app.use(express.static(rootPath));
 app.use(express.static(browserPath));
 app.use(express.static(publicPath));
 app.use(express.static(imagesPath));
+app.use(express.static(gamePath));
 
 /** Default Error-handling Middleware */
 app.use(function (err, req, res, next) {
