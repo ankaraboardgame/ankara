@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/app.js",
+    "start-dev": "nodemon server/app.js",
     "build": "webpack -w & nodemon --watch server -e js,html server/app.js"
   },
   "repository": {
