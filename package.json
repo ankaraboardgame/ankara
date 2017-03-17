@@ -28,6 +28,8 @@
     "react": "^15.4.2",
     "react-dice-complete": "^1.0.2",
     "react-dom": "^15.4.2",
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.3",
     "webpack": "^2.2.1"
   },
   "devDependencies": {
