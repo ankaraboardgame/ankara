@@ -7,6 +7,12 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const server = http.createServer(app);
+const io = require('socket.io')(server);
+
+const LobbyService = require('../game/LobbyService');
+const Game = null;
+var lobby = new LobbyService(io, Game);
+lobby.start();
 
 /** Logging Middleware */
 app.use(morgan('dev'));
