@@ -45,8 +45,9 @@ function Location(name, x, y){
     // make combos of up, down, left right
     const steps = [[0, 1], [0, -1], [-1, 0], [1, 0]]
 
+    // add one-step moves
     const possibleMoves = steps.map(step => [this.x + step[0], this.y + step[1]].join(','))
-
+    // add two-step moves
     for (let i = 0; i < steps.length; i++){
         for (var j = 0; j < steps.length; j++){
             const deltaX = this.x + steps[i][0] + steps[j][0];
@@ -59,16 +60,15 @@ function Location(name, x, y){
                         .filter((coords, i) => possibleMoves.indexOf(coords) === i && coords !== this.coords)
     this.cell.innerHTML = `(${this.coords}) ${this.name}`;
 
-    const self = this;
     this.cell.addEventListener('mouseover', function(e){
-        console.log(self.possibleMoves)
+        console.log(this.possibleMoves)
         grid.forEach(cell => {
             cell.setAttribute('style', 'background-color: none');
-            if (self.possibleMoves.indexOf(cell.id) > -1){
+            if (this.possibleMoves.indexOf(cell.id) > -1){
                 cell.setAttribute('style', 'background-color: cadetblue');
             }
         })
-    })
+    }.bind(this))
 }
 
 const istanbul = new Game('basic');
