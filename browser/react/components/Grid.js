@@ -16,7 +16,7 @@ class Grid extends React.Component {
               <tr key={row} id={`row-${row}`}>
                 {
                   columns.map(column =>
-                    <Cell key={column} id={`${column},${row}`} />
+                    <Cell key={column} coords={`${column},${row}`} />
                   )
                 }
               </tr>
