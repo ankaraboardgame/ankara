@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/app.js",
+    "start-dev": "nodemon server/app.js",
     "build": "webpack -w & nodemon --watch server -e js,html server/app.js"
   },
   "repository": {
@@ -25,6 +26,7 @@
     "morgan": "^1.8.1",
     "nodemon": "^1.11.0",
     "react": "^15.4.2",
+    "react-dice-complete": "^1.0.2",
     "react-dom": "^15.4.2",
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3",
