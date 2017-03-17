@@ -1,8 +1,8 @@
 import React from 'react';
+import Grid from './Grid.js';
 import socket from '../socket'; //Remove soon!!! for testing purpose
 
-export default class App extends React.Component {
-
+class App extends React.Component {
   constructor() {
     super();
   }
@@ -10,8 +10,11 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <h3>Kappa</h3>
+        <h3>Constantinople</h3>
+        <Grid />
       </div>
     );
   }
 }
+
+export default App;
