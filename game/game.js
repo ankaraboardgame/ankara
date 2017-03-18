@@ -1,19 +1,19 @@
 const levels = {
   basic: [
-    'GreatMosque', 'FabricWarehouse', 'SmallMosque',
-    'FruitWarehouse', 'SpiceWarehouse', 'BlackMarket',
-    'Caravansary', 'SmallMarket', 'TeaHouse',
-    'LargeMarket', 'Wainwright', 'GemstoneDealer'
+    ['great_mosque', 'fabric_warehouse', 'small_mosque'],
+    ['fruit_warehouse', 'spice_warehouse', 'black_market'],
+    ['caravansary', 'small_market', 'tea_house'],
+    ['large_market', 'wainwright', 'gemstone_dealer']
     ],
   full: [
-    'GreatMosque', 'PostOffice', 'FabricWarehouse', 'SmallMosque',
-    'FruitWarehouse', 'PoliceStation', 'Fountain', 'SpiceWarehouse',
-    'BlackMarket', 'Caravansary', 'SmallMarket', 'TeaHouse',
-    'SultansPalace', 'LargeMarket', 'Wainwright', 'GemstoneDealer'
+    ['great_mosque', 'PostOffice', 'fabric_warehouse', 'small_mosque'],
+    ['fruit_warehouse', 'PoliceStation', 'Fountain', 'spice_warehouse'],
+    ['black_market', 'caravansary', 'small_market', 'tea_house'],
+    ['SultansPalace', 'large_market', 'wainwright', 'gemstone_dealer']
     ]
 }
 
-let grid = document.querySelectorAll('td');
+let cells = document.querySelectorAll('.cell');
 
 /**
  * Game constructor takes a level to determine location card order.
@@ -23,10 +23,10 @@ function Game (levelName){
   this.level = levels[levelName];
   this.grid = [];
 
-  for (let y = 0; y < 4; y++){
+  for (let y = 0; y < 3; y++){
     const row = [];
-    for (let x = 0; x < 3; x++){
-      row.push(new Location(this.level[x + y], x, y)); // to be replaced with objects accessed by hash table
+    for (let x = 0; x < 4; x++){
+      row.push(new Location(this.level[x][y], x, y)); // to be replaced with objects accessed by hash table
     }
     this.grid.push(row);
   }
@@ -58,14 +58,21 @@ function Location(name, x, y){
 
   this.possibleMoves = possibleMoves
             .filter((coords, i) => possibleMoves.indexOf(coords) === i && coords !== this.coords)
-  this.cell.innerHTML = `(${this.coords}) ${this.name}`;
+
+  const cellHeading = document.createElement('p');
+  cellHeading.innerHTML = `(${this.coords}) ${this.name}`;
+  this.cell.insertBefore(cellHeading, this.cell.firstChild);
+
+  const cellImage = document.createElement('img');
+  cellImage.src = `images/locations/${this.name}.png`;
+  cellImage.className = 'img-location';
+  this.cell.insertBefore(cellImage, this.cell.firstChild);
 
   this.cell.addEventListener('mouseover', function(e){
-    console.log(this.possibleMoves)
-    grid.forEach(cell => {
+    cells.forEach(cell => {
       cell.setAttribute('style', 'background-color: none');
-      if (this.possibleMoves.indexOf(cell.id) > -1){
-        cell.setAttribute('style', 'background-color: cadetblue');
+      if (this.possibleMoves.indexOf(cell.id) === -1){
+        cell.setAttribute('style', 'opacity: 0.2;');
       }
     })
   }.bind(this))
