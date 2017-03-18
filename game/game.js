@@ -60,6 +60,7 @@ function Location(name, x, y){
             .filter((coords, i) => possibleMoves.indexOf(coords) === i && coords !== this.coords)
 
   const cellHeading = document.createElement('p');
+  cellHeading.className = "grid-text";
   cellHeading.innerHTML = `(${this.coords}) ${this.name}`;
   this.cell.insertBefore(cellHeading, this.cell.firstChild);
 

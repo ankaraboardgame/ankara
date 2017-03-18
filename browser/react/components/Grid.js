@@ -19,10 +19,10 @@ class Grid extends React.Component {
     let columns = [0, 1, 2, 3];
 
     return (
-      <div>
+      <div id="board">
           {
             rows.map(row =>
-              <div className="row" key={row} id={`row-${row}`}>
+              <div className="boardrow" key={row} id={`row-${row}`}>
                 {
                   columns.map(column =>
                     <Cell
