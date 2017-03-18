@@ -20,6 +20,7 @@ class Grid extends React.Component {
 
     return (
       <div>
+        <h3>Game Board</h3>
           {
             rows.map(row =>
               <div className="row" key={row} id={`row-${row}`}>
