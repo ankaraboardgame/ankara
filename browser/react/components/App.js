@@ -9,9 +9,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="app-container">
         <h3>Constantinople</h3>
-        <Grid />
+        <div id="grid-container">
+          <Grid />
+        </div>
       </div>
     );
   }
