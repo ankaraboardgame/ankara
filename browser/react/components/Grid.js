@@ -4,26 +4,36 @@ import Cell from './Cell.js';
 
 class Grid extends React.Component {
 
+  constructor(props){
+    super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(){
+    // highlight the cell one color, and highlight all possible moves another color
+  }
+
   render() {
-    let rows = [0, 1, 2, 3];
-    let columns = [0, 1, 2];
+    let rows = [0, 1, 2];
+    let columns = [0, 1, 2, 3];
 
     return (
-      <table>
-        <tbody>
+      <div>
           {
             rows.map(row =>
-              <tr key={row} id={`row-${row}`}>
+              <div className="row" key={row} id={`row-${row}`}>
                 {
                   columns.map(column =>
-                    <Cell key={column} id={`${column},${row}`} />
+                    <Cell
+                      key={column}
+                      coords={`${column},${row}`} />
                   )
                 }
-              </tr>
+              </div>
             )
           }
-        </tbody>
-      </table>
+      </div>
     )
   }
 }
