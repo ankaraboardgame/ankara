@@ -13,15 +13,15 @@ const levels = {
     ]
 }
 
-let cells = document.querySelectorAll('.cell');
+const cells = document.querySelectorAll('.cell');
 
 /**
- * Game constructor takes a level to determine location card order.
+ * Board constructor takes a level to determine location card order.
  * @param {string} level (e.g. 'basic' or 'full')
  */
-function Game (levelName){
+function Board (levelName){
   this.level = levels[levelName];
-  this.grid = [];
+  this.grid = []; // array of arrays, holds location objects. access location by coordinate: [x][y]
 
   for (let y = 0; y < 3; y++){
     const row = [];
@@ -32,8 +32,12 @@ function Game (levelName){
   }
 }
 
-Game.prototype.start = function(){}
-
+/**
+ * Location constructor for location cards
+ * @param {*} name 
+ * @param {*} x 
+ * @param {*} y 
+ */
 function Location(name, x, y){
   this.name = name;
   this.x = x;
@@ -41,10 +45,8 @@ function Location(name, x, y){
   this.coords = `${x},${y}`;
   this.cell = document.getElementById(this.coords);
 
-  // to figure out possible moves,
-  // make combos of up, down, left right
+  // compute and store all possible moves from this card.
   const steps = [[0, 1], [0, -1], [-1, 0], [1, 0]]
-
   // add one-step moves
   const possibleMoves = steps.map(step => [this.x + step[0], this.y + step[1]].join(','))
   // add two-step moves
@@ -55,22 +57,24 @@ function Location(name, x, y){
       possibleMoves.push([deltaX, deltaY].join(','))
     }
   }
-
   this.possibleMoves = possibleMoves
             .filter((coords, i) => possibleMoves.indexOf(coords) === i && coords !== this.coords)
 
+  // insert cell text
   const cellHeading = document.createElement('p');
   cellHeading.innerHTML = `(${this.coords}) ${this.name}`;
   this.cell.insertBefore(cellHeading, this.cell.firstChild);
 
+  // insert cell image
   const cellImage = document.createElement('img');
   cellImage.src = `images/locations/${this.name}.png`;
   cellImage.className = 'img-location';
   this.cell.insertBefore(cellImage, this.cell.firstChild);
 
+  // add cell event handling
   this.cell.addEventListener('mouseover', function(e){
     cells.forEach(cell => {
-      cell.setAttribute('style', 'background-color: none');
+      cell.setAttribute('style', 'opacity: 1');
       if (this.possibleMoves.indexOf(cell.id) === -1){
         cell.setAttribute('style', 'opacity: 0.2;');
       }
@@ -78,4 +82,5 @@ function Location(name, x, y){
   }.bind(this))
 }
 
-const istanbul = new Game('basic');
+// initialize board
+export const board = new Board('basic');
