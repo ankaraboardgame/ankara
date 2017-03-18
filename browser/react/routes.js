@@ -6,14 +6,22 @@ import { connect } from 'react-redux';
 import App from './components/App';
 import Lobby from './components/Lobby';
 
+/** Importing action-creators */
+import { loadBoard } from '../redux/action-creators/board';
+
+
 /** Routes */
-export function Root (props) {
+export function Root ({ loadGameBoard }) {
   return (
       <Router history={hashHistory}>
         <Route path="/" component={Lobby}/>
-        <Route path="/game" component={App}/>
+        <Route path="/game" component={App} onEnter={loadGameBoard}/>
       </Router>
   );
 }
 
-export default connect(null)(Root);
+const mapDispatchToProps = dispatch => ({
+  loadGameBoard: () => dispatch(loadBoard())
+});
+
+export default connect(null, mapDispatchToProps)(Root);

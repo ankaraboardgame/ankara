@@ -13,13 +13,13 @@ const levels = {
     ]
 }
 
-let cells = document.querySelectorAll('.cell');
+// let cells = document.querySelectorAll('.cell');
 
 /**
  * Game constructor takes a level to determine location card order.
  * @param {string} level (e.g. 'basic' or 'full')
  */
-function Game (levelName){
+export function Game (levelName){
   this.level = levels[levelName];
   this.grid = [];
 
@@ -39,7 +39,7 @@ function Location(name, x, y){
   this.x = x;
   this.y = y;
   this.coords = `${x},${y}`;
-  this.cell = document.getElementById(this.coords);
+  // this.cell = document.getElementById(this.coords);
 
   // to figure out possible moves,
   // make combos of up, down, left right
@@ -59,23 +59,23 @@ function Location(name, x, y){
   this.possibleMoves = possibleMoves
             .filter((coords, i) => possibleMoves.indexOf(coords) === i && coords !== this.coords)
 
-  const cellHeading = document.createElement('p');
-  cellHeading.innerHTML = `(${this.coords}) ${this.name}`;
-  this.cell.insertBefore(cellHeading, this.cell.firstChild);
+  // const cellHeading = document.createElement('p');
+  // cellHeading.innerHTML = `(${this.coords}) ${this.name}`;
+  // this.cell.insertBefore(cellHeading, this.cell.firstChild);
 
-  const cellImage = document.createElement('img');
-  cellImage.src = `images/locations/${this.name}.png`;
-  cellImage.className = 'img-location';
-  this.cell.insertBefore(cellImage, this.cell.firstChild);
+  // const cellImage = document.createElement('img');
+  // cellImage.src = `images/locations/${this.name}.png`;
+  // cellImage.className = 'img-location';
+  // this.cell.insertBefore(cellImage, this.cell.firstChild);
 
-  this.cell.addEventListener('mouseover', function(e){
-    cells.forEach(cell => {
-      cell.setAttribute('style', 'background-color: none');
-      if (this.possibleMoves.indexOf(cell.id) === -1){
-        cell.setAttribute('style', 'opacity: 0.2;');
-      }
-    })
-  }.bind(this))
+  // this.cell.addEventListener('mouseover', function(e){
+  //   cells.forEach(cell => {
+  //     cell.setAttribute('style', 'background-color: none');
+  //     if (this.possibleMoves.indexOf(cell.id) === -1){
+  //       cell.setAttribute('style', 'opacity: 0.2;');
+  //     }
+  //   })
+  // }.bind(this))
 }
 
-const istanbul = new Game('basic');
+// const istanbul = new Game('basic');

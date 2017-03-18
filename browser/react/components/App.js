@@ -1,5 +1,5 @@
 import React from 'react';
-import Grid from './Grid';
+import BoardContainer from '../containers/BoardContainer';
 import DashFooter from './DashFooter';
 
 class App extends React.Component {
@@ -11,9 +11,7 @@ class App extends React.Component {
     return (
       <div id="app-container">
         <h3>Constantinople</h3>
-        <div id="grid-container">
-          <Grid />
-        </div>
+        <BoardContainer />
         <DashFooter />
       </div>
     );
