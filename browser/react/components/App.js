@@ -12,7 +12,7 @@ class App extends React.Component {
       <div id="app-container">
         <h3>Constantinople</h3>
         <div id="grid-container">
-          <Grid />
+        {/*<Grid />*/}
         </div>
         <DashFooter />
       </div>

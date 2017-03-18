@@ -1,7 +1,6 @@
 const Lobby = function () {
 
   const users = [];
-  const invitations = [];
 
   function LobbyUser(id) {
     this.id = id;
@@ -9,7 +8,7 @@ const Lobby = function () {
   }
 
   function getLobbyState() {
-    return {users: users, invitations: invitations};
+    return {users: users};
   }
 
   // function findUser(id) {
