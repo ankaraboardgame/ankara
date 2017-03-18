@@ -1,5 +1,5 @@
 import React from 'react';
-// import Grid from './Grid';
+import Grid from './Grid';
 import DashFooter from './DashFooter';
 
 class App extends React.Component {
