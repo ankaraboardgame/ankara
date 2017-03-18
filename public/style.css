@@ -1,8 +1,42 @@
-table {
-  width: 100%;
+body {
+  background-color: wheat;
 }
 
-td {
-  border: 1px solid black;
-  padding: 25px;
+.cell {
+  width: 25%;
+  position: relative;
+  float: left;
+  margin: 5px;
+  border: 2px solid black;
+  box-shadow: 5px 5px 2px #333;
+  border-radius: 6px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.img-location {
+  width: 100%;
+  z-index: -1;
+  position: relative;
+  float: left;
+}
+
+p {
+  position: absolute;
+  color: black;
+  background-color: white;
+}
+
+#grid-container {
+  width: 80%;
+}
+
+#app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
