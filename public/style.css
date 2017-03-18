@@ -12,7 +12,7 @@ body {
   border-radius: 6px;
 }
 
-.row {
+.boardrow {
   display: flex;
   flex-direction: row;
 }
@@ -24,7 +24,7 @@ body {
   float: left;
 }
 
-p {
+.grid-text {
   position: absolute;
   color: black;
   background-color: white;
