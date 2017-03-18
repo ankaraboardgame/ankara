@@ -1,6 +1,6 @@
 import React from 'react';
-import Grid from './Grid.js';
-import DashFooter from './DashFooter'
+// import Grid from './Grid';
+import DashFooter from './DashFooter';
 
 class App extends React.Component {
   constructor() {
@@ -12,7 +12,7 @@ class App extends React.Component {
       <div id="app-container">
         <h3>Constantinople</h3>
         <div id="grid-container">
-          <Grid />
+        {/*<Grid />*/}
         </div>
         <DashFooter />
       </div>
