@@ -3,9 +3,7 @@ import React from 'react';
 const Cell = props => {
 
   return (
-    <td>
-      {`${props.id}`}: Location
-    </td>
+    <div className="cell" id={ props.coords } />
   )
 }
 
