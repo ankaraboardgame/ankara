@@ -4,6 +4,7 @@ import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 import { Wheelbarrow, Fruits, Fabric, Spices, Gems, Money, Ruby } from './FooterComponents'
+import RulesDialog from './RulesDialog';
 
 const Footer = () => {
   return (
@@ -73,6 +74,9 @@ const Footer = () => {
               <NotificationsIcon />
             </Ruby>
           </Badge>
+          <div>
+            <RulesDialog />
+          </div>
         </div>
       </div>
     </footer>

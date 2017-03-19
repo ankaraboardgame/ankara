@@ -59,7 +59,7 @@ footer {
 }
 
 .img-circle {
-  border-radius: 30%;
+  border-radius: 20%;
   /*border: 2px solid #d3d3d3;*/
   height: 40px;
   float: left;
@@ -84,6 +84,15 @@ footer .row {
 footer .badge {
   margin-right: 5%;
   padding: 12px 12px 0px 0px !important
+}
+
+.rules-dialog-btn {
+  border-radius: 20%;
+}
+
+.rules-dialog {
+  padding: 0px;
+
 }
 
 /* -------- APP -------- */
