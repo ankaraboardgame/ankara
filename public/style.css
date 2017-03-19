@@ -51,6 +51,7 @@ body {
 /* -------- FOOTER -------- */
 
 footer {
+  padding-top: 10px;
   position:fixed;
   left:0px;
   bottom:0px;
@@ -59,8 +60,26 @@ footer {
 
 .img-circle {
   border-radius: 30%;
-  border: 2px solid white;
+  /*border: 2px solid #d3d3d3;*/
   height: 40px;
+  float: left;
+  margin-right: 9px;
+}
+
+.img-money {
+  height: 40px;
+  float: left;
+  margin-right: 9px;
+}
+
+footer .white-text {
+  font-size: 17px;
+  margin: 7px 0px 0px 0px;
+}
+
+footer .row {
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 /* -------- APP -------- */
