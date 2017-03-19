@@ -51,10 +51,48 @@ body {
 /* -------- FOOTER -------- */
 
 footer {
+  padding-top: 10px;
   position:fixed;
   left:0px;
   bottom:0px;
   width:100%;
+}
+
+.img-circle {
+  border-radius: 20%;
+  /*border: 2px solid #d3d3d3;*/
+  height: 40px;
+  float: left;
+}
+
+.img-money {
+  height: 40px;
+  float: left;
+  margin-right: 9px;
+}
+
+footer .white-text {
+  font-size: 17px;
+  margin: 7px 0px 0px 0px;
+}
+
+footer .row {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+footer .badge {
+  margin-right: 5%;
+  padding: 12px 12px 0px 0px !important
+}
+
+.rules-dialog-btn {
+  border-radius: 20%;
+}
+
+.rules-dialog {
+  padding: 0px;
+
 }
 
 /* -------- APP -------- */
