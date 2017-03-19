@@ -5,11 +5,11 @@ const Footer = () => {
     <footer className="page-footer black">
       <div className="container">
         <div className="row">
-          <div className="col s2"><p className="white-text">WB Size: 3</p></div>
-          <div className="col s1"><p className="white-text">Fruits: 3</p></div>
-          <div className="col s1"><p className="white-text">Fabric: 3</p></div>
-          <div className="col s1"><p className="white-text">Spices: 3</p></div>
-          <div className="col s1"><p className="white-text">Gems: 2</p></div>
+          <div className="col s2"><p className="white-text"><img className="img-circle" src="./images/cart/Wheelbarrow.png" /> 3</p></div>
+          <div className="col s1"><p className="white-text"><img className="img-circle" src="./images/cart/Fruits.png" /> 3</p></div>
+          <div className="col s1"><p className="white-text"><img className="img-circle" src="./images/cart/Fabric.png" /> 3</p></div>
+          <div className="col s1"><p className="white-text"><img className="img-circle" src="./images/cart/Spices.png" /> 3</p></div>
+          <div className="col s1"><p className="white-text"><img className="img-circle" src="./images/cart/Gems.png" /> 2</p></div>
           <div className="col s2 offset-s1"><p className="white-text">Money: $30</p></div>
           <div className="col s1"><p className="white-text">Rubies: 2</p></div>
           <div className="col s1 offset-s1"><p className="white-text">Exit</p></div>

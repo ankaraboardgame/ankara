@@ -52,6 +52,12 @@ footer {
   width:100%;
 }
 
+.img-circle {
+  border-radius: 30%;
+  border: 2px solid white;
+  height: 40px;
+}
+
 /* -------- APP -------- */
 
 #app-container {
