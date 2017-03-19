@@ -7,12 +7,29 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const server = http.createServer(app);
-const io = require('socket.io')(server);
+const firebseAdmin = require('firebase-admin');
+
+// Fetch the service account key JSON file contents
+var serviceAccount = require('../secret-istanbul-aa7c8-firebase-adminsdk-inz62-81ab05ed15.json');
+
+// Initialize the app with a service account, granting admin privileges
+firebseAdmin.initializeApp({
+  credential: firebseAdmin.credential.cert(serviceAccount),
+  databaseURL: 'https://istanbul-aa7c8.firebaseio.com/'
+});
+
+// As an admin, the app has access to read and write all data, regardless of Security Rules
+// var firebaseDB = firebseAdmin.database();
+// var ref = firebaseDB.ref("/");
+// ref.once("value", function(snapshot) {
+//   console.log('firebase log', snapshot.val());
+// });
+
 
 const LobbyService = require('../game/LobbyService');
 const Game = null;
-var lobby = new LobbyService(io, Game);
-lobby.start();
+// var lobby = new LobbyService(io, Game);
+// lobby.start();
 
 /** Logging Middleware */
 app.use(morgan('dev'));
