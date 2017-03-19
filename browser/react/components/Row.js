@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Cell from './Cell';
+import CellContainer from '../containers/CellContainer';
 
 const Row = props => {
   return (
@@ -8,13 +8,14 @@ const Row = props => {
       {
         props.row && props.row.map(cell => {
           return (
-            <Cell
+            <CellContainer
               key={cell.coords}
               name={cell.name}
               coords={cell.coords}
-              handleMouseOver={props.handleMouseOver}
-              possibleMoves={cell.possibleMoves}
-              moves={props.moves}
+              cellPossibleMoves={cell.possibleMoves}
+              players={props.players}
+              movePlayerPiece={props.movePlayerPiece}
+              positions={props.positions}
             />
           );
         })
