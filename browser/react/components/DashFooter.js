@@ -1,18 +1,78 @@
 import React from 'react';
+import Badge from 'material-ui/Badge';
+import IconButton from 'material-ui/IconButton';
+import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
+
+import { Wheelbarrow, Fruits, Fabric, Spices, Gems, Money, Ruby } from './FooterComponents'
 
 const Footer = () => {
   return (
     <footer className="black">
       <div className="container">
         <div className="row">
-          <div className="col s2"><img className="img-circle" src="./images/cart/wheelbarrow.png" /><p className="white-text"> 3</p></div>
-          <div className="col s1"><img className="img-circle" src="./images/cart/fruits.png" /><p className="white-text"> 3</p></div>
-          <div className="col s1"><img className="img-circle" src="./images/cart/fabric.png" /><p className="white-text"> 3</p></div>
-          <div className="col s1"><img className="img-circle" src="./images/cart/spices.png" /><p className="white-text"> 3</p></div>
-          <div className="col s1"><img className="img-circle" src="./images/cart/gems.png" /><p className="white-text"> 2</p></div>
-          <div className="col s2 offset-s1"><img className="img-money" src="./images/money/lira.png" /><p className="white-text"> $30</p></div>
-          <div className="col s1"><img className="img-circle" src="./images/money/ruby.png" /><p className="white-text"> 2</p></div>
-          <div className="col s1 offset-s1"><p className="white-text">Exit</p></div>
+          <Badge
+            className="badge"
+            badgeContent={3}
+            secondary={true}
+            badgeStyle={{top: 0, right: 0}}>
+            <Wheelbarrow tooltip="Wheelbarrow">
+              <NotificationsIcon />
+            </Wheelbarrow>
+          </Badge>
+          <Badge
+            className="badge"
+            badgeContent={3}
+            secondary={true}
+            badgeStyle={{top: 0, right: 0}}>
+            <Fruits tooltip="Fruits">
+              <NotificationsIcon />
+            </Fruits>
+          </Badge>
+          <Badge
+            className="badge"
+            badgeContent={3}
+            secondary={true}
+            badgeStyle={{top: 0, right: 0}}>
+            <Fabric tooltip="Fabric">
+              <NotificationsIcon />
+            </Fabric>
+          </Badge>
+          <Badge
+            className="badge"
+            badgeContent={3}
+            secondary={true}
+            badgeStyle={{top: 0, right: 0}}>
+            <Spices tooltip="Spices">
+              <NotificationsIcon />
+            </Spices>
+          </Badge>
+          <Badge
+            className="badge"
+            badgeContent={3}
+            secondary={true}
+            badgeStyle={{top: 0, right: 0}}>
+            <Gems tooltip="Gems">
+              <NotificationsIcon />
+            </Gems>
+          </Badge>
+          <Badge
+            className="badge"
+            badgeContent={3}
+            secondary={true}
+            badgeStyle={{top: 0, right: 0}}>
+            <Money tooltip="Money">
+              <NotificationsIcon />
+            </Money>
+          </Badge>
+          <Badge
+            className="badge"
+            badgeContent={3}
+            secondary={true}
+            badgeStyle={{top: 0, right: 0}}>
+            <Ruby tooltip="Rubies">
+              <NotificationsIcon />
+            </Ruby>
+          </Badge>
         </div>
       </div>
     </footer>

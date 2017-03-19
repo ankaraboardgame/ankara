@@ -63,7 +63,6 @@ footer {
   /*border: 2px solid #d3d3d3;*/
   height: 40px;
   float: left;
-  margin-right: 9px;
 }
 
 .img-money {
@@ -80,6 +79,11 @@ footer .white-text {
 footer .row {
   margin-top: 10px;
   margin-bottom: 20px;
+}
+
+footer .badge {
+  margin-right: 5%;
+  padding: 12px 12px 0px 0px !important
 }
 
 /* -------- APP -------- */
