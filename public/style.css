@@ -2,6 +2,11 @@ body {
   background-color: wheat;
 }
 
+/* -------- PLAYER ------- */
+#player-icon {
+  width: 75px;
+}
+
 /* -------- BOARD -------- */
 
 #board-container {
