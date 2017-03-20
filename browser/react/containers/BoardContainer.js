@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
@@ -45,8 +46,6 @@ class BoardContainer extends React.Component {
   }
 }
 
-BoardContainer = DragDropContext(HTML5Backend)(BoardContainer);
-
 const mapStateToProps = state => ({
   board: state.board.board,
   positions: state.player.positions,
@@ -57,4 +56,7 @@ const mapDispatchToProps = dispatch => ({
   settingPlayerPosition: (playerId, coords, possibleMoves) => dispatch(setPlayerPosition(playerId, coords, possibleMoves))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer);
+export default compose(
+  DragDropContext(HTML5Backend),
+  connect(mapStateToProps, mapDispatchToProps)
+)(BoardContainer);
