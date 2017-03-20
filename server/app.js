@@ -37,9 +37,6 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-/** Routing middleware */
-app.use('/api', require('./api'));
-
 /** Static File Middleware */
 const rootPath = path.join(__dirname, '..');
 const browserPath = path.join(rootPath, 'browser');
@@ -54,7 +51,7 @@ app.use(express.static(imagesPath));
 app.use(express.static(gamePath));
 
 /** API routes */
-app.use('/api/:playerId', require('./api'));
+app.use('/api', require('./api'));
 
 /** Default Error-handling Middleware */
 app.use(function (err, req, res, next) {
