@@ -13,10 +13,6 @@ class AppContainer extends React.Component {
     super();
   }
 
-  // handleOnTap(event){
-  //
-  // }
-
   render() {
     return (
       <MuiThemeProvider>

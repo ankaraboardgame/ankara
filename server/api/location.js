@@ -1,6 +1,6 @@
 const admin = require('firebase-admin');
 const db = admin.database();
-const GameRef = db.ref('games');
+const gamesRef = db.ref('games');
 const router = module.exports = require('express').Router();
 /**
  * Location routes
@@ -11,7 +11,7 @@ const router = module.exports = require('express').Router();
 
 router.put('/warehouse/:playerId/:goodType', (req, res, next) => {
   console.log('req.params', req.params);
-  const player = GameRef.child('merchants').child(`${req.params.playerId}`)
+  const player = gamesRef.child('gameOne').child('merchants').child(`${req.params.playerId}`)
   const good = player.child(`${req.params.goodType}`)
   const wbSize = player.child('wheelbarrowSize')
   wbSize.once('value').then(snap => {
