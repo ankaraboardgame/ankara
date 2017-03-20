@@ -47,7 +47,7 @@ export default class RulesDialog extends React.Component {
         <RaisedButton label="Player Rules" className="rules-dialog-btn" secondary={ true } onTouchTap={this.handleOpen} />
         <Dialog
           className="rules-dialog"
-          modal={true}
+          modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
           autoScrollBodyContent={true}>
