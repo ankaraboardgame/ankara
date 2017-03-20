@@ -5,6 +5,8 @@ body {
 /* -------- PLAYER ------- */
 #player-icon {
   width: 75px;
+  border-radius: 75px;
+  box-shadow: 0px 0px 10px white;
 }
 
 /* -------- BOARD -------- */
