@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CellContainer from '../containers/CellContainer';
+import CellContainer from './CellContainer';
 
 const Row = props => {
   return (
@@ -16,6 +16,7 @@ const Row = props => {
               players={props.players}
               movePlayerPiece={props.movePlayerPiece}
               positions={props.positions}
+              games={props.games}
             />
           );
         })
