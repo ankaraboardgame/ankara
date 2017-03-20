@@ -1,6 +1,6 @@
 import React from 'react';
-import BoardContainer from '../containers/BoardContainer';
-import DashFooter from './DashFooter';
+import BoardContainer from './Board/BoardContainer';
+import FooterContainer from './Footer/FooterContainer';
 
 // PLUGIN required for Material-UI. Provides an onTouchTap() event handler.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -8,7 +8,7 @@ injectTapEventPlugin();
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-class App extends React.Component {
+class AppContainer extends React.Component {
   constructor() {
     super();
   }
@@ -23,11 +23,11 @@ class App extends React.Component {
         <div id="app-container">
           <h3>Constantinople</h3>
           <BoardContainer />
-          <DashFooter />
+          <FooterContainer />
         </div>
       </MuiThemeProvider>
     );
   }
 }
 
-export default App;
+export default AppContainer;

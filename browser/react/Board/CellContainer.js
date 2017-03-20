@@ -2,11 +2,12 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { DropTarget } from 'react-dnd';
+import { firebaseConnect } from 'react-redux-firebase';
 
 import { cellActiveStatus, canMovePlayer } from '../../utils';
 
-import Cell from '../components/Cell';
-import Player from '../components/Player';
+import Cell from './Cell';
+import Player from '../Pieces/Player';
 
 class CellContainer extends React.Component {
   constructor(props) {
@@ -46,7 +47,8 @@ const mapStateToProps = (state, ownProps) => ({
   coords: ownProps.coords,
   handleMouseOver: ownProps.handleMouseOver,
   possibleMoves: ownProps.cellPossibleMoves,
-  positions: state.player.positions
+  positions: state.player.positions,
+  games: ownProps.games
 });
 
 const cellTarget = {
@@ -54,6 +56,7 @@ const cellTarget = {
     return canMovePlayer(props.coords, props.positions['playerOne'].possibleMoves);
   },
   drop(props) {
+    console.log(props.games);
     props.movePlayerPiece('playerOne', props.coords, props.cellPossibleMoves);
   }
 };
@@ -67,5 +70,6 @@ const collect = (connect, monitor) => {
 
 export default compose(
   DropTarget('player', cellTarget, collect),
+  firebaseConnect(['players']),
   connect(mapStateToProps)
 )(CellContainer);

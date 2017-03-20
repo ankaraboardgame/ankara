@@ -7,14 +7,14 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const server = http.createServer(app);
-const firebseAdmin = require('firebase-admin');
+const firebaseAdmin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
 var serviceAccount = require('../secret-istanbul-aa7c8-firebase-adminsdk-inz62-81ab05ed15.json');
 
 // Initialize the app with a service account, granting admin privileges
-firebseAdmin.initializeApp({
-  credential: firebseAdmin.credential.cert(serviceAccount),
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert(serviceAccount),
   databaseURL: 'https://istanbul-aa7c8.firebaseio.com/'
 });
 
@@ -24,7 +24,6 @@ firebseAdmin.initializeApp({
 // ref.once("value", function(snapshot) {
 //   console.log('firebase log', snapshot.val());
 // });
-
 
 const LobbyService = require('../game/LobbyService');
 const Game = null;
@@ -53,6 +52,9 @@ app.use(express.static(browserPath));
 app.use(express.static(publicPath));
 app.use(express.static(imagesPath));
 app.use(express.static(gamePath));
+
+/** API routes */
+app.use('/api/:playerId', require('./api'));
 
 /** Default Error-handling Middleware */
 app.use(function (err, req, res, next) {
