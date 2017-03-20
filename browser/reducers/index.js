@@ -9,7 +9,7 @@ import player from './player'
 var sampleState = 
 {
   players: {
-    id1: { 
+    id1: {
       turn: true,
       merchant: {
         position: 2,

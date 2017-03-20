@@ -38,6 +38,9 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/** Routing middleware */
+app.use('/api', require('./api'));
+
 /** Static File Middleware */
 const rootPath = path.join(__dirname, '..');
 const browserPath = path.join(rootPath, 'browser');
