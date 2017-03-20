@@ -1,6 +1,7 @@
 const admin = require('firebase-admin');
 const db = admin.database();
 const gamesRef = db.ref('games');
+const Promise = require('bluebird');
 
 const router = module.exports = require('express').Router();
 
@@ -13,17 +14,29 @@ const router = module.exports = require('express').Router();
  * req.player = the player hitting this router
  */
 
-// load specific game
-router.param(':otherMerchantId', (req, res, next, otherMerchantId) => {
-  console.log('here in param')
+router.post('/gemstonedealer', (req, res, next) => {
   gamesRef.child('gameOne')
     .child('merchants')
     .child(`${otherMerchantId}`)
-    .once('value', function(snapshot){
-      return snapshot;
+    .once('value', function(snap){
+      return snap.val();
     })
     .then(snapshot => {
-      console.log(snapshot.val())
+      req.otherMerchant = snapshot.val();
+      next();
+    })
+    .catch(console.error)
+});
+
+// load specific game
+router.param(':otherMerchantId', (req, res, next, otherMerchantId) => {
+  gamesRef.child('gameOne')
+    .child('merchants')
+    .child(`${otherMerchantId}`)
+    .once('value', function(snap){
+      return snap.val();
+    })
+    .then(snapshot => {
       req.otherMerchant = snapshot.val();
       next();
     })
@@ -31,15 +44,26 @@ router.param(':otherMerchantId', (req, res, next, otherMerchantId) => {
 });
 
 router.post('/:otherMerchantId', (req, res, next) => {
-  const payment = 2;
+  const PAYMENT = 2;
 
-  gamesRef.child('gameOne')
+  var payPromise = gamesRef.child('gameOne')
     .child('merchants')
-    .child(`${req.player.number}`)
+    .child(req.player.id)
     .child('money')
-    .set(req.player.money - payment)
-    .then(() => {
-      console.log('paid other merchant')
-    })
-    .catch(console.error)
+    .transaction(function(currentMoney){
+      return currentMoney - PAYMENT;
+    });
+
+  var getPaidPromise = gamesRef.child('gameOne')
+    .child('merchants')
+    .child(req.otherMerchant.id)
+    .child('money')
+    .transaction(function(currentMoney){
+      return currentMoney + PAYMENT;
+    });
+
+  Promise.all([payPromise, getPaidPromise]).then(() => {
+    console.log(`${req.player.id} paid ${req.otherMerchant.id}`)
+    res.sendStatus(204);
+  })
 });

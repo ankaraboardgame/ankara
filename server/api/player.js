@@ -2,8 +2,6 @@ const admin = require('firebase-admin');
 const db = admin.database();
 const gamesRef = db.ref('games');
 
-const Game = require('./logic');
-
 const router = module.exports = require('express').Router();
 
 /**
@@ -27,8 +25,17 @@ router.param(':playerId', (req, res, next, playerId) => {
 
 // get one player
 router.get('/:playerId', (req, res, next) => {
-  console.log('one player', req.player);
   res.send(req.player);
+});
+
+// end player turn
+router.post('/:playerId/end', (req, res, next) => {
+  gamesRef.child('gameOne')
+    .child('playerTurn')
+    .set((req.game.playerTurn + 1) % req.game.merchants.length)
+    .then(() => {
+      res.sendStatus(204);
+    })
 });
 
 // all player payments

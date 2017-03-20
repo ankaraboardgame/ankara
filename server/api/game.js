@@ -2,7 +2,7 @@ const admin = require('firebase-admin');
 const db = admin.database();
 const gamesRef = db.ref('games');
 
-const Game = require('./logic');
+const Game = require('../../game/logic.js');
 const router = module.exports = require('express').Router();
 
 /**
@@ -21,8 +21,8 @@ router.post('/', (req, res, next) => {
 
 // load specific game
 router.param(':gameId', (req, res, next) => {
-  gamesRef.child('gameOne').once('value', function(snapshot){
-    return snapshot;
+  gamesRef.child('gameOne').once('value', function(snap){
+    return snap;
   }).then(snapshot => {
     req.game = snapshot.val();
     next();
