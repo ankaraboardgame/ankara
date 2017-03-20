@@ -32,7 +32,7 @@ Game.prototype.sayHello = function(){
 
 function Merchant (num){
   this.number = num;
-  this.position = '0,0';
+  this.position = {coordinates:'0,0', possibleMoves: ["1,0", "2,0", "0,1", "1,1", "0,2"]};
   this.assistants = {};
   this.bonusCards = {};
   this.wheelbarrowSize = 3;

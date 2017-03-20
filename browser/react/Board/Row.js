@@ -13,10 +13,8 @@ const Row = props => {
               name={cell.name}
               coords={cell.coords}
               cellPossibleMoves={cell.possibleMoves}
-              players={props.players}
-              movePlayerPiece={props.movePlayerPiece}
-              positions={props.positions}
               games={props.games}
+              merchants={props.merchants}
             />
           );
         })
