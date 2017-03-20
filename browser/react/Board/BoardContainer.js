@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { firebaseConnect, isLoaded, isEmpty, dataToJS } from 'react-redux-firebase'
 
-import Row from '../components/Row';
+
+import Row from './Row';
 
 import { setPlayerPosition } from '../../redux/action-creators/player';
 
@@ -37,6 +39,7 @@ class BoardContainer extends React.Component {
                 players={this.props.players}
                 movePlayerPiece={this.movePlayerPiece}
                 positions={this.props.positions}
+                games={this.props.games}
               />
             );
           })
@@ -46,10 +49,11 @@ class BoardContainer extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  board: state.board.board,
-  positions: state.player.positions,
-  players: state.player.players
+const mapStateToProps = ({board, positions, player, firebase}) => ({
+  board: board.board,
+  positions: player.positions,
+  players: player.players,
+  games: dataToJS(firebase, 'games')
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -58,5 +62,6 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   DragDropContext(HTML5Backend),
+  firebaseConnect(['games']),
   connect(mapStateToProps, mapDispatchToProps)
 )(BoardContainer);
