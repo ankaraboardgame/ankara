@@ -22,13 +22,13 @@ const playerSource = {
   beginDrag(props) {
     return {};
   }
-};
+}
 
 const collect = (connect, monitor) => {
   return {
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
-  };
-};
+  }
+}
 
 export default DragSource('player', playerSource, collect)(Player);

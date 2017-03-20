@@ -22,6 +22,6 @@ const Row = props => {
       }
     </div>
   );
-}
+};
 
 export default Row;

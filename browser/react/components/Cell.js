@@ -8,7 +8,7 @@ const Cell = props => {
       flexDirection: 'column'
     }}>
       <img src={`images/locations/${props.name}.png`} className="img-location"/>
-      <text className="cell-text">{props.coords}</text>      
+      <text className="cell-text">{props.coords}</text>
     </div>
   );
 }
