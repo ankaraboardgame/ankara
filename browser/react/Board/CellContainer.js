@@ -5,6 +5,7 @@ import { DropTarget } from 'react-dnd';
 import { firebaseConnect } from 'react-redux-firebase';
 
 import { cellActiveStatus, canMovePlayer } from '../../utils';
+import { movePlayer } from '../../routes/move';
 
 import Cell from './Cell';
 import Player from '../Pieces/Player';
@@ -15,9 +16,9 @@ class CellContainer extends React.Component {
   }
 
   render() {
-    const playerPiece = (this.props.positions['playerOne'].position === this.props.coords) ? <Player /> : null;
+    const playerPiece = (this.props.merchants && this.props.merchants['0'].position.coordinates === this.props.coords) ? <Player /> : null;
     const { connectDropTarget, isOver } = this.props;
-    const activeStatus = cellActiveStatus(this.props.coords, this.props.positions['playerOne'].position, this.props.positions['playerOne'].possibleMoves) ? null : {opacity: '0.2'};
+    const activeStatus = this.props.merchants && cellActiveStatus(this.props.coords, this.props.merchants['0'].position.coordinates, this.props.merchants['0'].position.possibleMoves) ? null : {opacity: '0.2'};
     return connectDropTarget(
       <div id="cell-container" style={activeStatus}>
         <Cell
@@ -45,19 +46,17 @@ class CellContainer extends React.Component {
 const mapStateToProps = (state, ownProps) => ({
   name: ownProps.name,
   coords: ownProps.coords,
-  handleMouseOver: ownProps.handleMouseOver,
   possibleMoves: ownProps.cellPossibleMoves,
-  positions: state.player.positions,
-  games: ownProps.games
+  games: ownProps.games,
+  merchants: ownProps.merchants
 });
 
 const cellTarget = {
   canDrop(props) {
-    return canMovePlayer(props.coords, props.positions['playerOne'].possibleMoves);
+    return canMovePlayer(props.coords, props.merchants['0'].position.possibleMoves);
   },
   drop(props) {
-    console.log(props.games);
-    props.movePlayerPiece('playerOne', props.coords, props.cellPossibleMoves);
+    movePlayer('0', props.coords, props.cellPossibleMoves);
   }
 };
 
@@ -70,6 +69,5 @@ const collect = (connect, monitor) => {
 
 export default compose(
   DropTarget('player', cellTarget, collect),
-  firebaseConnect(['players']),
   connect(mapStateToProps)
 )(CellContainer);
