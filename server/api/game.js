@@ -12,28 +12,27 @@ const router = module.exports = require('express').Router();
 
 // initialize new game
 router.post('/', (req, res, next) => {
-
   gamesRef.child('gameOne').set(new Game())
   .then(() => {
     res.sendStatus(204); // created but no content to send back.
   })
   .catch(console.error)
-
 });
 
+// load specific game
 router.param(':gameId', (req, res, next) => {
-
-  gamesRef.once('value', function(snapshot){
+  gamesRef.child('gameOne').once('value', function(snapshot){
     return snapshot;
   }).then(snapshot => {
-    req.game = snapshot;
+    req.game = snapshot.val();
     next();
   })
-
 });
 
+// get one specific game
 router.get('/:gameId', (req, res, next) => {
-
   res.send(req.game);
-
 });
+
+// player-specific routes
+router.use('/:gameId/player', require('./player.js'));
