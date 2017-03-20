@@ -1,4 +1,5 @@
 import React from 'react';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { DropTarget } from 'react-dnd';
 
@@ -21,8 +22,7 @@ class CellContainer extends React.Component {
         <Cell
           coords={this.props.coords}
           name={this.props.name}
-        >
-        </Cell>
+        />
         {playerPiece}
         {isOver &&
           <div style={{
@@ -49,8 +49,6 @@ const mapStateToProps = (state, ownProps) => ({
   positions: state.player.positions
 });
 
-CellContainer = connect(mapStateToProps)(CellContainer);
-
 const cellTarget = {
   canDrop(props) {
     return canMovePlayer(props.coords, props.positions['playerOne'].possibleMoves);
@@ -60,11 +58,14 @@ const cellTarget = {
   }
 };
 
-function collect(connect, monitor) {
+const collect = (connect, monitor) => {
   return {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver()
   };
 };
 
-export default DropTarget('player', cellTarget, collect)(CellContainer);
+export default compose(
+  DropTarget('player', cellTarget, collect),
+  connect(mapStateToProps)
+)(CellContainer);
