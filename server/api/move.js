@@ -3,12 +3,14 @@ const firebaseAdmin = require('firebase-admin');
 module.exports = router;
 
 const firebaseDatabase = firebaseAdmin.database();
-router.put('/move/:locationId', (req, res, next) => {
-  const playerId = req.params.playerId;
-  const locationId = req.params.locationId;
-  firebaseDatabase.ref('games/game_one/players' + playerId).set({position: locationId })
+router.put('/', (req, res, next) => {
+  const playerId = req.playerId;
+  firebaseDatabase.ref(`games/gameOne/merchants/${playerId}/position`).set({
+    coordinates: req.body.newPosition,
+    possibleMoves: req.body.possibleMoves
+  })
     .then(() => {
-      res.send(playerId, 'has been set');
+      res.sendStatus(203);
     })
     .catch(next);
 });
