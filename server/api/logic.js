@@ -32,11 +32,13 @@ Game.prototype.sayHello = function(){
 
 function Merchant (num){
   this.number = num;
-  this.position = null;
+  this.position = '0,0';
   this.assistants = {};
   this.bonusCards = {};
-  this.goods = {};
   this.wheelbarrowSize = 3;
+  this.fabric = 0;
+  this.spice = 0;
+  this.fruit = 0;
   this.rubies = 0;
   this.money = 2 + num;
   this.abilities = {};
@@ -48,7 +50,7 @@ function Merchant (num){
 
 function Assistant (num){
   this.number = num;
-  this.position = null;
+  this.position = '0,0';
 }
 
 module.exports = Game;
