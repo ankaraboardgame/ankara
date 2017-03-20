@@ -44,14 +44,13 @@ export default class RulesDialog extends React.Component {
 
     return (
       <div>
-        <RaisedButton label="Player Rules" className="rules-dialog-btn" onTouchTap={this.handleOpen} />
+        <RaisedButton label="Player Rules" className="rules-dialog-btn" secondary={ true } onTouchTap={this.handleOpen} />
         <Dialog
           className="rules-dialog"
-          modal={false}
+          modal={true}
           open={this.state.open}
           onRequestClose={this.handleClose}
-          autoScrollBodyContent={true}
-        >
+          autoScrollBodyContent={true}>
         <img src="./images/player_help_card.png" />
         </Dialog>
       </div>

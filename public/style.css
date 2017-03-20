@@ -105,3 +105,12 @@ footer .badge {
   align-items: center;
   flex-direction: column;
 }
+
+#dash-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}

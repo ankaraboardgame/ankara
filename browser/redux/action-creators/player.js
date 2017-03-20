@@ -4,9 +4,9 @@ export const SET_PLAYERS = 'SET_PLAYERS';
 export const SET_PLAYER_POSITION = 'SET_PLAYER_POSITION';
 
 /******* ACTION CREATORS ********/
-export const switchActive = bool => ({
+export const switchActive = string => ({
   type: SWITCH_PLAYER_ACTIVE,
-  active: bool
+  active: string 
 });
 
 export const settingPlayers = players => ({
