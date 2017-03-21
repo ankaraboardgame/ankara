@@ -17,6 +17,7 @@ router.post('/:roomNum', (req, res, next) => {
 
   //expects room number?
   const roomNum = req.params.roomNum;
+  const ids = req.body.ids;
 
   const playersPromise = sessionRef.child('rooms').child(roomNum).once('value')
   .then(snapshot => {
@@ -29,37 +30,12 @@ router.post('/:roomNum', (req, res, next) => {
 
     // const incrementGameCountPromise = gameCountRef.set(gameCount + 1);
     //const setGameIdPromise = sessionRef.child('rooms').child(roomNum).child('gameId').set(gameId);
-    return gamesRef.child(gameId).set(new Game(Object.values(players)));
+    return gamesRef.child(gameId).set(new Game(ids));
   })
   .then(() => {
-    res.sendStatu(204);
+    res.sendStatus(204);
   })
   .catch(console.error);
-
-  // gameCountRef.once("value", snapshot => {
-
-  //   const gameCount = snapshot.val();
-  //   //get uid of all players
-  //   return sessionRef.child('connectedPlayers').once('value', snapshot => {
-  //     return snapshot;
-  //   }).then(data => {
-  //     console.log('data', data.val());
-  //     const playerIds = Object.keys(data.val());
-  //     console.log('players', playerIds);
-  //     return playerIds;
-  //   }).then(playerIds => {
-  //     console.log('got playerids', playerIds);
-  //     console.log('game count', gameCount);
-  //     const gameId = `game${gameCount}`;
-  //     res.json({gameId});
-  //     sessionRef.child('rooms').child(/*room number*/).child('gameId').set(gameId);
-  //     return gamesRef.child(gameId).set(new Game(playerIds));
-  //   }).then(() => {
-  //     return gameCountRef.set(gameCount + 1);
-
-  //   }).catch(console.error);
-
-  // }).catch(console.error);
 
 });
 

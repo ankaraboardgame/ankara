@@ -5,11 +5,15 @@ import { firebaseStateReducer } from 'react-redux-firebase';
 import boardReducer from './board-reducer';
 import userReducer from './user-reducer';
 import modalReducer from './modal-reducer';
+import roomReducer from './room-reducer';
+import gameReducer from './game-reducer';
 
 /****** Root Reducer ******/
 export default combineReducers({
   board: boardReducer,
   user: userReducer,
   firebase: firebaseStateReducer,
-  modal: modalReducer
+  modal: modalReducer,
+  room: roomReducer,
+  game: gameReducer
 });

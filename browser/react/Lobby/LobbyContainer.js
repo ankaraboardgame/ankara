@@ -11,19 +11,33 @@ import {
 import { fbDB, fbAuth, googleProvider } from '../../firebase';
 
 import { settingUser } from '../../redux/action-creators/user';
-import { connectToSession, startGame } from '../../routes/lobby';
+import { connectToSession } from '../../routes/lobby';
+import { joinRoom, leaveRoom } from '../../redux/action-creators/room';
+import { fetchNewGame } from '../../redux/action-creators/game';
 
+import { CreateRoomButton } from './CreateRoomButton.js';
+import { Room } from './Room.js'
 
-class Lobby extends React.Component {
+/************ LobbyContainer ****************/
+
+class LobbyContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {canStartGame: false};
-    this.joinSession = this.joinSession.bind(this);
-    this.startGame = this.startGame.bind(this);
+    // this.state = {canStartGame: false};
+    // this.joinSession = this.joinSession.bind(this);
+    // this.startGame = this.startGame.bind(this);
+    this.removeUser = this.removeUser.bind(this);
+    this.handleCreateRoom = this.handleCreateRoom.bind(this);
+    this.addCurrentUserToRoom = this.addCurrentUserToRoom.bind(this);
+    this.removeUser = this.removeUser.bind(this);
+  }
+
+  componentWillMount() {
+    this.roomsRef = fbDB.ref('session/rooms');
+    this.sessionRef = fbDB.ref('session');
   }
 
   componentDidMount() {
-
     fbAuth.onAuthStateChanged((user) => {
       if (user) {
         console.log('user', user);
@@ -38,25 +52,62 @@ class Lobby extends React.Component {
     });
   }
 
-  joinSession() {
-    connectToSession(this.props.user.uid);
+  // joinSession() {
+  //   connectToSession(this.props.user.uid);
+  // }
+  // startGame() {
+  //   console.log('starting game');
+  //   startGame(this.props.user.uid);
+  // }
+
+  handleCreateRoom(event){
+    event.preventDefault();
+    this.roomsRef.push({full: false})
+      .catch(console.error);
   }
-  startGame() {
-    console.log('starting game');
-    startGame(this.props.user.uid);
+
+  addCurrentUserToRoom(roomId, users) {
+    let full = false;
+    const userListLength = Object.keys(users).length;
+    if (userListLength === 4){
+      full = true;
+    }
+    const newUserList = Object.assign(users, {[userListLength]: this.props.user.uid})
+    this.roomsRef.child(roomId).set(newUserList)
+      .then(() => {
+        this.props.joinRoom();
+        if (full) this.props.startGame(roomId, newUserList);
+      });
+  }
+
+  removeUser(roomId, userId) {
+    this.roomsRef.child(roomId + '/' + userId).remove()
+    .then((result) => {
+        this.props.leaveRoom();
+    });
   }
 
   render() {
-
     return (
       <div>
-        <div id="join-container">
 
-        </div>
-        <p>My user id: {this.props.user && this.props.user.uid}</p>
-        {/*<Link to="/game">Play!</Link>*/}
-        <button onClick={this.joinSession}>Play</button>
-        {this.state.canStartGame ? (<button onClick={this.startGame}>Start Game</button>) : null}
+        <CreateRoomButton handleClick={this.handleCreateRoom} />
+        {
+          this.props.gameSession && this.props.gameSession.rooms &&
+          Object.keys(this.props.gameSession.rooms).map(roomId => {
+            return (
+              <Room
+                key={roomId}
+                id={roomId}
+                handleRemove={this.removeUser}
+                handleJoin={this.addCurrentUserToRoom}
+                users={this.props.gameSession.rooms[roomId]}
+                joined={this.props.joined}
+              />
+            )
+          })
+        }
+
       </div>
     )
   }
@@ -74,17 +125,20 @@ class Lobby extends React.Component {
 
 }
 
-
 const mapStateToProps = (state) => ({
   user: state.user.user,
   gameSession: dataToJS(state.firebase, 'session'),
   firebase: state.firebase,
-  auth: pathToJS(firebase, 'auth')
+  auth: pathToJS(firebase, 'auth'),
+  joined: state.room.joined
 })
 
-const mapDispatchToProps = (dispatch) =>({
+const mapDispatchToProps = (dispatch) => ({
   setUser: user => dispatch(settingUser(user)),
+  joinRoom: () => dispatch(joinRoom()),
+  leaveRoom: () => dispatch(leaveRoom()),
+  startGame: (roomId, usersObj) => dispatch(fetchNewGame(roomId, usersObj))
 })
 
-const gameSession = firebaseConnect(['session'])(Lobby)
+const gameSession = firebaseConnect(['session', 'rooms'])(LobbyContainer)
 export default connect(mapStateToProps, mapDispatchToProps)(gameSession)

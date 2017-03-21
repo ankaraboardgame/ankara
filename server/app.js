@@ -39,7 +39,7 @@ app.use(express.static(imagesPath));
 app.use(express.static(gamePath));
 
 /** API routes */
-app.use('/api/:playerId', (req, res, next) => {req.playerId = req.params.playerId; next();}, require('./api'));
+app.use('/api', require('./api'));
 
 /** firebase event listener */
 const fbListener = require('./firebaseListener');
