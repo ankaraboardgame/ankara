@@ -19,32 +19,6 @@ class Lobby extends React.Component {
     this.googleLogin = this.googleLogin.bind(this);
   }
 
-  googleLogin() {
-
-    // Call with info
-    // this.props.firebase.login({
-    //   provider: 'google',
-    //   type: 'redirect'
-    // })
-    fbAuth.signInWithRedirect(googleProvider).then(function(result) {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = result.credential.accessToken;
-      // The signed-in user info.
-      var user = result.user;
-      // ...
-    }).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
-    });
-
-  }
-
   componentDidMount() {
 
     fbAuth.onAuthStateChanged((user) => {
@@ -70,7 +44,6 @@ class Lobby extends React.Component {
 
         </div>
         <p>My user id: {this.props.user && this.props.user.uid}</p>
-        <button onClick={this.googleLogin}>login</button>
         <Link to="/game">Play!</Link>
       </div>
     )
