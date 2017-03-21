@@ -18,18 +18,6 @@ firebaseAdmin.initializeApp({
   databaseURL: 'https://istanbul-aa7c8.firebaseio.com/'
 });
 
-// As an admin, the app has access to read and write all data, regardless of Security Rules
-// var firebaseDB = firebseAdmin.database();
-// var ref = firebaseDB.ref("/");
-// ref.once("value", function(snapshot) {
-//   console.log('firebase log', snapshot.val());
-// });
-
-const LobbyService = require('../game/LobbyService');
-const Game = null;
-// var lobby = new LobbyService(io, Game);
-// lobby.start();
-
 /** Logging Middleware */
 app.use(morgan('dev'));
 
@@ -51,7 +39,11 @@ app.use(express.static(imagesPath));
 app.use(express.static(gamePath));
 
 /** API routes */
-app.use('/api', require('./api'));
+app.use('/api/:playerId', (req, res, next) => {req.playerId = req.params.playerId; next();}, require('./api'));
+
+/** firebase event listener */
+const fbListener = require('./firebaseListener');
+fbListener();
 
 /** Default Error-handling Middleware */
 app.use(function (err, req, res, next) {
