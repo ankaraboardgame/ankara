@@ -1,12 +1,106 @@
 body {
   background-color: wheat;
 }
+/* -------- LOCATION MODALS --- */
+#location-modal-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 6px;
+  box-shadow: 8px 8px 12px #333;
+  border: 1px solid white;
+}
+
+#img-location {
+  border-radius: 6px;
+}
+
+/* -------- TURN DIALOGS ----- */
+#turn-dialog-container {
+  background-color: #dbdac3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  height: 400px;
+  width: auto;
+  border-radius: 6px;
+  box-shadow: 8px 8px 12px #333;
+  border: 1px solid white;
+}
+
+#icon-turn-dialog {
+  display: flex;
+  margin: 20px;
+  width: 220px;
+  border-radius: 6px;
+  border: 1px solid black;
+}
+
+/* --------- MODAL DEFAULTS ------- */
+
+.modal-buttons {
+	border-radius: 4px;
+}
+
+.modal-overlay-div {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, .20);
+}
+
+.modal-content-div {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10000;
+    overflow: auto;
+    text-align: center;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.modal-content-div:after {
+    vertical-align: middle;
+    display: inline-block;
+    height: 100%;
+    margin-left: -.05em;
+    content: '';
+}
+
+.modal-dialog-div {
+    position: relative;
+    outline: 0;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+    box-sizing: border-box;
+    cursor: default;
+    border-radius: 4px;
+}
 
 /* -------- PLAYER ------- */
 #player-icon {
-  width: 75px;
-  border-radius: 75px;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
   box-shadow: 0px 0px 10px white;
+}
+
+#player-container {
+  position: absolute;
+  width: 100%;
+  top: 30px;
+  display: flex;
+  justify-content: center;
 }
 
 /* -------- BOARD -------- */

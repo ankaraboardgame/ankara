@@ -1,6 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-import Modal from './Modal';
+import Modal from '../Modal/Modal';
 
 class GreatMosque extends React.Component {
   constructor(props) {
@@ -10,10 +11,17 @@ class GreatMosque extends React.Component {
   render() {
     return (
       <Modal>
-        <img src={`images/locations/great_mosque.png`}/>
+        <div id="location-modal-container">
+          <img src={`images/locations/great_mosque.png`} id="img-location" />
+        </div>
       </Modal>
     );
   }
 }
 
-export default GreatMosque;
+const mapDispatchToProps = dispatch => ({
+  closeModal: () => dispatch(hideModal()),
+  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
+});
+
+export default connect(null, mapDispatchToProps)(GreatMosque);
