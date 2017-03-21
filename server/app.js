@@ -51,7 +51,7 @@ app.use(express.static(imagesPath));
 app.use(express.static(gamePath));
 
 /** API routes */
-app.use('/api/:playerId', (req, res, next) => {req.playerId = req.params.playerId; next();}, require('./api'));
+app.use('/api', require('./api'));
 
 /** Default Error-handling Middleware */
 app.use(function (err, req, res, next) {

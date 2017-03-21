@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
 });
 
 // load one player
-router.param(':playerId', (req, res, next, playerId) => {
+router.param('playerId', (req, res, next, playerId) => {
   req.player = req.game.merchants[playerId];
   next();
 });
@@ -39,5 +39,11 @@ router.post('/:playerId/end', (req, res, next) => {
     })
 });
 
-// all player payments
-router.use('/:playerId/pay', require('./pay.js'));
+// SUBROUTES: player moves
+router.use('/:playerId/move', require('./move.js'));
+
+// SUBROUTES: player encounters with other merchants
+router.use('/:playerId/encounter', require('./encounter.js'));
+
+// SUBROUTES: player stops on a location
+router.use('/:playerId/location', require('./location.js'));
