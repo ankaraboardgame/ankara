@@ -1,25 +1,22 @@
-import axios from 'axios';
+// import { merge } from 'lodash';
 
-import { SET_BOARD } from '../action-creators/board';
+import { CREATE_GAME } from '../action-creators/game';
 
 /******** INITIAL STATE ********/
 const initialState = {
-  board: null
+  id: null
 };
 
 /********** REDUCER  **********/
 export default function (state = initialState, action) {
-  const newState = Object.assign({}, state)
+  const newState = Object.assign({}, state);
 
   switch (action.type) {
-
-    case SET_BOARD:
-      newState.board = action.board;
+    case CREATE_GAME:
+      newState.id = action.id;
       break;
-
     default:
       return state;
-
   }
 
   return newState;

@@ -20,6 +20,12 @@ body {
   box-shadow: 2px 2px 2px black;
 }
 
+.x-button {
+  color: red;
+  margin: 10px;
+  cursor: pointer;
+}
+
 /* -------- PLAYER ------- */
 #player-icon {
   width: 75px;
