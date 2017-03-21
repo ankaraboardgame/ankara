@@ -16,9 +16,11 @@ class CellContainer extends React.Component {
   }
 
   render() {
-    const playerPiece = (this.props.merchants && this.props.merchants['0'].position.coordinates === this.props.coords) ? <Player /> : null;
+
+    const playerPiece = (this.props.merchants && this.props.merchants['player1'].position.coordinates === this.props.coords) ? <Player /> : null;
     const { connectDropTarget, isOver } = this.props;
-    const activeStatus = this.props.merchants && cellActiveStatus(this.props.coords, this.props.merchants['0'].position.coordinates, this.props.merchants['0'].position.possibleMoves) ? null : {opacity: '0.2'};
+    const activeStatus = this.props.merchants && cellActiveStatus(this.props.coords, this.props.merchants['player1'].position.coordinates, this.props.merchants['player1'].position.possibleMoves) ? null : {opacity: '0.2'};
+
     return connectDropTarget(
       <div id="cell-container" style={activeStatus}>
         <Cell
@@ -53,10 +55,12 @@ const mapStateToProps = (state, ownProps) => ({
 
 const cellTarget = {
   canDrop(props) {
-    return canMovePlayer(props.coords, props.merchants['0'].position.possibleMoves);
+
+    return canMovePlayer(props.coords, props.merchants['player1'].position.possibleMoves);
   },
   drop(props) {
-    movePlayer('0', props.coords, props.cellPossibleMoves);
+    movePlayer('player1', props.coords, props.cellPossibleMoves);
+
   }
 };
 
