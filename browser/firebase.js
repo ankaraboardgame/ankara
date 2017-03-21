@@ -3,7 +3,10 @@
 import firebase from 'firebase';
 import config from '../secret.config.js'
 
-firebase.initializeApp(config.firebase);
-const database = firebase.database();
+const firebaseApp = firebase.initializeApp(config.firebase);
+export const fbDB = firebase.database();
+export const fbAuth = firebaseApp.auth();
 
-export default database;
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.addScope('https://www.googleapis.com/auth/plus.login');
+export const facebookProvider = new firebase.auth.FacebookAuthProvider();

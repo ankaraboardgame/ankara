@@ -11,6 +11,7 @@ api
   .use('/card', require('./card.js'))
   .use('/encounter', require('./encounter.js'))
   .use('/move', require('./move.js'))
+  .use('/lobby', require('./lobby.js'))
 
 // No routes matched? 404.
 api.use((req, res) => res.status(404).end())
