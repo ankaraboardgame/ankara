@@ -29,7 +29,11 @@ router.post('/warehouse/:playerId/:goodType', (req, res, next) => {
 })
 
 // Small Market - Trade
-router.post('/smallMarket/:playerId/tradeOffer', (req, res, next) => {
-  const tradeOffer = req.body.tradeOffer
-  console.log(tradeOffer)
+router.post('/smallMarket/:playerId/:fabricNum/:fruitNum/:jewelryNum/:spiceNum', (req, res, next) => {
+  const playerId = req.params.playerId;
+  const fabricNum = req.params.fabricNum;
+  const fruitNum = req.params.fruitNum;
+  const jewelryNum = req.params.jewelryNum;
+  const spiceNum = req.params.spiceNum;
+  // need to be completed
 })

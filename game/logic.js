@@ -39,6 +39,7 @@ function Merchant (id, i){
   this.fabric = 0;
   this.spice = 0;
   this.fruit = 0;
+  this.jewelry = 0;
   this.rubies = 0;
   this.money = i + 2;
   this.abilities = {};
