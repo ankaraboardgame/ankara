@@ -30,9 +30,10 @@ router.get('/:playerId', (req, res, next) => {
 
 // end player turn
 router.post('/:playerId/end', (req, res, next) => {
+  const newIdx = (req.game.playerIds.indexOf(req.game.playerTurn) + 1) % req.game.playerIds.length;
   gamesRef.child('gameOne')
     .child('playerTurn')
-    .set((req.game.playerTurn + 1) % req.game.merchants.length)
+    .set(req.game.playerIds[newIdx])
     .then(() => {
       res.sendStatus(204);
     })

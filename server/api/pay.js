@@ -8,62 +8,76 @@ const router = module.exports = require('express').Router();
 /**
  * Payment routes
  * ...api/player/:gameId/:playerId/pay/...
- * 
+ *
  * preloaded on req:
  * req.game = specific game instance
  * req.player = the player hitting this router
  */
 
+// pay gemstone dealer
+router.post('/wainwright', (req, res, next) => {
+  const WAINWRIGHT_PRICE = 7;
+
+  const payWainwrightPromise = gamesRef.child('gameOne')
+    .child(`merchants/${req.player.id}/money`)
+    .transaction(function(currentMoney){
+      return currentMoney - WAINWRIGHT_PRICE;
+    })
+
+  const expandWheelbarrowPromise = gamesRef.child('gameOne')
+    .child(`merchants/${req.player.id}/wheelbarrowSize`)
+    .transaction(function(wheelbarrowSize){
+      return wheelbarrowSize + 1;
+    })
+
+  Promise.all([payWainwrightPromise, expandWheelbarrowPromise])
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch(console.error)
+});
+
+// pay gemstone dealer
 router.post('/gemstonedealer', (req, res, next) => {
+  let GEMSTONE_PRICE;
+
   gamesRef.child('gameOne')
-    .child('merchants')
-    .child(`${otherMerchantId}`)
+    .child('gemstoneDealer')
     .once('value', function(snap){
-      return snap.val();
+      GEMSTONE_PRICE = snap.val();
     })
-    .then(snapshot => {
-      req.otherMerchant = snapshot.val();
-      next();
+    .then(() => {
+      return gamesRef.child('gameOne')
+          .child(`merchants/${req.player.id}/money`)
+          .transaction(function(currentMoney){
+            return currentMoney - GEMSTONE_PRICE;
+          });
+    })
+    .then(() => {
+      res.sendStatus(204);
     })
     .catch(console.error)
 });
 
-// load specific game
-router.param(':otherMerchantId', (req, res, next, otherMerchantId) => {
-  gamesRef.child('gameOne')
-    .child('merchants')
-    .child(`${otherMerchantId}`)
-    .once('value', function(snap){
-      return snap.val();
-    })
-    .then(snapshot => {
-      req.otherMerchant = snapshot.val();
-      next();
-    })
-    .catch(console.error)
-});
-
+// pay other merchant
 router.post('/:otherMerchantId', (req, res, next) => {
   const PAYMENT = 2;
 
-  var payPromise = gamesRef.child('gameOne')
-    .child('merchants')
-    .child(req.player.id)
-    .child('money')
+  const payPromise = gamesRef.child('gameOne')
+    .child(`merchants/${req.player.id}/money`)
     .transaction(function(currentMoney){
       return currentMoney - PAYMENT;
     });
 
-  var getPaidPromise = gamesRef.child('gameOne')
-    .child('merchants')
-    .child(req.otherMerchant.id)
-    .child('money')
+  const getPaidPromise = gamesRef.child('gameOne')
+    .child(`merchants/${req.player.id}/money`)
     .transaction(function(currentMoney){
       return currentMoney + PAYMENT;
     });
 
-  Promise.all([payPromise, getPaidPromise]).then(() => {
-    console.log(`${req.player.id} paid ${req.otherMerchant.id}`)
+  Promise.all([payPromise, getPaidPromise])
+  .then(() => {
     res.sendStatus(204);
   })
+  .catch(console.error);
 });

@@ -1,7 +1,8 @@
 /** Game Logic */
 
-function Game (){
-  this.merchants = {};
+function Game (playerIds){
+  this.playerIds = playerIds;
+
   this.greatMosque = {
     leftCost: 1,
     rightCost: 1
@@ -20,19 +21,17 @@ function Game (){
     bonusCards: {}
   };
   this.gemstoneDealer = 12;
-  this.playerTurn = 0;
+  this.playerTurn = this.playerIds[0];
+  this.merchants = {};
 
-  for (let i = 0; i < 4; i++){
-    this.merchants[i] = new Merchant(i); // initialize merchants
-  }
+  playerIds.forEach((id, i) => {
+    this.merchants[id] = new Merchant(id, i);
+  });
 }
 
-Game.prototype.sayHello = function(){
-  return 'Hello from the Game';
-}
-
-function Merchant (id){
+function Merchant (id, i){
   this.id = id;
+  this.number = i;
   this.position = new Position();
   this.assistants = {};
   this.bonusCards = {};
@@ -41,7 +40,7 @@ function Merchant (id){
   this.spice = 0;
   this.fruit = 0;
   this.rubies = 0;
-  this.money = 2 + id;
+  this.money = i + 2;
   this.abilities = {};
 
   for (let i = 0; i < 4; i++){
