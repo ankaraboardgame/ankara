@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { firebaseConnect, isLoaded, isEmpty, dataToJS } from 'react-redux-firebase'
+import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
 
 import Row from './Row';
+
+import { loadModal, hideModal } from '../../redux/action-creators/modals';
 
 class BoardContainer extends React.Component {
   constructor(props) {
@@ -30,6 +32,8 @@ class BoardContainer extends React.Component {
                 row={row}
                 games={this.props.games}
                 merchants={this.props.merchants}
+                openModal={this.props.openModal}
+                closeModal={this.props.closeModal}
               />
             );
           })
@@ -42,11 +46,17 @@ class BoardContainer extends React.Component {
 const mapStateToProps = ({board, positions, player, firebase}) => ({
   board: board.board,
   games: dataToJS(firebase, 'games/gamesOne'),
-  merchants: dataToJS(firebase, 'games/gameOne/merchants')
+  merchants: dataToJS(firebase, 'games/gameOne/merchants'),
+  auth: pathToJS(firebase, 'auth')
 });
+
+const mapDispatchToProps = dispatch => ({
+  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload)),
+  closeModal: () => dispatch(hideModal())
+})
 
 export default compose(
   DragDropContext(HTML5Backend),
   firebaseConnect(['games/gameOne', 'games/gameOne/merchants']),
-  connect(mapStateToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(BoardContainer);
