@@ -16,9 +16,11 @@ class CellContainer extends React.Component {
   }
 
   render() {
+
     const playerPiece = (this.props.merchants && this.props.merchants['player1'].position.coordinates === this.props.coords) ? <Player /> : null;
     const { connectDropTarget, isOver } = this.props;
     const activeStatus = this.props.merchants && cellActiveStatus(this.props.coords, this.props.merchants['player1'].position.coordinates, this.props.merchants['player1'].position.possibleMoves) ? null : {opacity: '0.2'};
+
     return connectDropTarget(
       <div id="cell-container" style={activeStatus}>
         <Cell
@@ -53,10 +55,18 @@ const mapStateToProps = (state, ownProps) => ({
 
 const cellTarget = {
   canDrop(props) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 251ebac073f90c9b59a2ac2af50104e9f0e6e5b4
     return canMovePlayer(props.coords, props.merchants['player1'].position.possibleMoves);
   },
   drop(props) {
     movePlayer('player1', props.coords, props.cellPossibleMoves);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 251ebac073f90c9b59a2ac2af50104e9f0e6e5b4
   }
 };
 
