@@ -2,7 +2,7 @@ const admin = require('firebase-admin');
 const db = admin.database();
 const gamesRef = db.ref('games');
 
-const Game = require('./logic');
+const Game = require('../../game/logic.js');
 const router = module.exports = require('express').Router();
 
 /**
@@ -12,7 +12,7 @@ const router = module.exports = require('express').Router();
 
 // initialize new game
 router.post('/', (req, res, next) => {
-  gamesRef.child('gameOne').set(new Game())
+  gamesRef.child('gameOne').set(new Game(['player1', 'player2', 'player3', 'player4']))
   .then(() => {
     res.sendStatus(204); // created but no content to send back.
   })
@@ -21,8 +21,8 @@ router.post('/', (req, res, next) => {
 
 // load specific game
 router.param(':gameId', (req, res, next) => {
-  gamesRef.child('gameOne').once('value', function(snapshot){
-    return snapshot;
+  gamesRef.child('gameOne').once('value', function(snap){
+    return snap;
   }).then(snapshot => {
     req.game = snapshot.val();
     next();
