@@ -26,14 +26,16 @@ class AppContainer extends React.Component {
 
   componentDidMount() {
     //enterGame
+    console.log('user id', this.props.user.uid);
     connectToGame(this.props.user.uid);
-    console.log('connecting to game with user id of', this.props.user.uid);
+    //this.props.setGameId(this.props.user.uid);
 
   }
 
   render() {
 
     const gameSession = this.props.gameSession;
+    console.log('gameSession', gameSession, this.props.user.uid);
     const currentUserId = this.props.user.uid;
 
     return (
@@ -59,7 +61,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) =>({
-  connectToGame: (userId) => dispatch()
+  setGameId: (userId) => dispatch(),
+  connectingToGame: userId => connectToGame(userId)
 })
 
 const gameSession = firebaseConnect(['session'])(AppContainer)

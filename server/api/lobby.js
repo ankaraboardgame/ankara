@@ -9,9 +9,14 @@ const router = express.Router();
 module.exports = router;
 
 router.put('/:userId', function (req, res, next) {
-  const userId = req.params.userId
+  const userId = req.playerId;
 
   //add user to the game
+  db.ref('/session').child('connectedPlayers').once("value", function(data) {
+    console.log('data', data);
+  });
+
+  console.log('adding user', userId, 'to the game'  );
   const data = {};
   data[userId] = true;
   const ref = db.ref(`/session`).child('connectedPlayers');
