@@ -17,6 +17,10 @@ class CellContainer extends React.Component {
 
   render() {
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     const playerPiece = (this.props.merchants && this.props.merchants['player1'].position.coordinates === this.props.coords) ? <Player /> : null;
     const { connectDropTarget, isOver } = this.props;
     const activeStatus = this.props.merchants && cellActiveStatus(this.props.coords, this.props.merchants['player1'].position.coordinates, this.props.merchants['player1'].position.possibleMoves) ? null : {opacity: '0.2'};
