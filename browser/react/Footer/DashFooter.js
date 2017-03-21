@@ -4,13 +4,14 @@ import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 import { Wheelbarrow, Fruits, Fabric, Spices, Gems, Money, Ruby } from './FooterComponents'
-import RulesDialog from './RulesDialog';
+import RulesSideBar from './RulesSideBar';
 
 const Footer = (props) => {
   const wbstate = props.wbstate;
   return (
     <footer className="black">
       <div id="dash-footer">
+        <RulesSideBar />
         <Badge
           className="badge"
           badgeContent={wbstate.wb_length}
@@ -74,7 +75,6 @@ const Footer = (props) => {
             <NotificationsIcon />
           </Ruby>
         </Badge>
-        <RulesDialog />
       </div>
     </footer>
   )
