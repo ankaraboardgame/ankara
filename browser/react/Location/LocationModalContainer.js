@@ -35,7 +35,7 @@ const MODAL_COMPONENTS = {
 const LocationModalContainer = (props) => {
     if (props.merchants) {
 
-        const SpecificLocationModal = MODAL_COMPONENTS[props.merchants['0'].position.coordinates];
+        const SpecificLocationModal = MODAL_COMPONENTS[props.merchants['player1'].position.coordinates];
 
         return <SpecificLocationModal />;
     } else {
