@@ -14,13 +14,13 @@ const router = module.exports = require('express').Router();
 router.post('/', (req, res, next) => {
   gamesRef.child('gameOne').set(new Game(['player1', 'player2', 'player3', 'player4']))
   .then(() => {
-    res.sendStatus(204); // created but no content to send back.
+    res.sendStatus(204); // created but no content to send back
   })
-  .catch(console.error)
+  .catch(console.error);
 });
 
 // load specific game
-router.param(':gameId', (req, res, next) => {
+router.param('gameId', (req, res, next) => {
   gamesRef.child('gameOne').once('value', function(snap){
     return snap;
   }).then(snapshot => {

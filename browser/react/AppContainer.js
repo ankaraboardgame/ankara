@@ -24,17 +24,12 @@ class AppContainer extends React.Component {
     super(props);
   }
 
-  // handleOnTap(event){
-  //
-  // }
-
   componentDidMount() {
     //enterGame
     connectToGame(this.props.user.uid);
     console.log('connecting to game with user id of', this.props.user.uid);
 
   }
-
 
   render() {
 

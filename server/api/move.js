@@ -1,16 +1,18 @@
-const router = require('express').Router();
-const firebaseAdmin = require('firebase-admin');
-module.exports = router;
+const admin = require('firebase-admin');
+const db = admin.database();
+const gamesRef = db.ref('games');
 
-const firebaseDatabase = firebaseAdmin.database();
+const router = module.exports = require('express').Router();
+
 router.put('/', (req, res, next) => {
-  const playerId = req.playerId;
-  firebaseDatabase.ref(`games/gameOne/merchants/${playerId}/position`).set({
+  const playerId = req.player.id;
+  gamesRef.child(`gameOne/merchants/${playerId}/position`).set({
     coordinates: req.body.newPosition,
     possibleMoves: req.body.possibleMoves
   })
-    .then(() => {
-      res.sendStatus(203);
-    })
-    .catch(next);
+  .then(() => {
+    res.sendStatus(204);
+  })
+  .catch(next);
+
 });
