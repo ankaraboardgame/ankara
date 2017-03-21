@@ -15,6 +15,8 @@ const Row = props => {
               cellPossibleMoves={cell.possibleMoves}
               games={props.games}
               merchants={props.merchants}
+              openModal={props.openModal}
+              closeModal={props.closeModal}
             />
           );
         })
