@@ -2,7 +2,6 @@
 
 function Game (playerIds){
   this.playerIds = playerIds;
-
   this.greatMosque = {
     leftCost: 1,
     rightCost: 1
@@ -22,6 +21,7 @@ function Game (playerIds){
   };
   this.gemstoneDealer = 12;
   this.playerTurn = this.playerIds[0];
+  this.locations = {};
   this.merchants = {};
 
   playerIds.forEach((id, i) => {
