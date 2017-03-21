@@ -1,8 +1,9 @@
 /** Game Logic */
 
 function Game (playerIds){
+  this.id = gameIdGenerator(playerIds);
   this.playerIds = playerIds;
-  this.greatMosque = {
+  this.smallMosque = {
     leftCost: 1,
     rightCost: 1
   };
@@ -27,6 +28,14 @@ function Game (playerIds){
   playerIds.forEach((id, i) => {
     this.merchants[id] = new Merchant(id, i);
   });
+}
+
+function gameIdGenerator(arrayOfPlayerIds){
+  let gameId = '';
+  arrayOfPlayerIds.forEach(playerId => {
+    gameId += playerId.slice(0,5)
+  })
+  return gameId
 }
 
 function Merchant (id, i){
