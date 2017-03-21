@@ -10,8 +10,8 @@ import {
 } from 'react-redux-firebase'
 import { fbDB, fbAuth } from '../firebase';
 import { settingUser } from '../redux/action-creators/user';
-import { connectToGame } from '../routes/lobby';
 import ModalRootContainer from './Modal/ModalRootContainer';
+import { connectToSession } from '../routes/lobby';
 
 // PLUGIN required for Material-UI. Provides an onTouchTap() event handler.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -27,7 +27,7 @@ class AppContainer extends React.Component {
   componentDidMount() {
     //enterGame
     console.log('user id', this.props.user.uid);
-    connectToGame(this.props.user.uid);
+    connectToSession(this.props.user.uid);
     //this.props.setGameId(this.props.user.uid);
 
   }
@@ -61,8 +61,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) =>({
-  setGameId: (userId) => dispatch(),
-  connectingToGame: userId => connectToGame(userId)
+  setGameId: (userId) => dispatch()
 })
 
 const gameSession = firebaseConnect(['session'])(AppContainer)

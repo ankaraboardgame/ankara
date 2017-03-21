@@ -11,12 +11,15 @@ import {
 import { fbDB, fbAuth, googleProvider } from '../../firebase';
 
 import { settingUser } from '../../redux/action-creators/user';
+import { connectToSession, startGame } from '../../routes/lobby';
 
 
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
-    this.googleLogin = this.googleLogin.bind(this);
+    this.state = {canStartGame: false};
+    this.joinSession = this.joinSession.bind(this);
+    this.startGame = this.startGame.bind(this);
   }
 
   componentDidMount() {
@@ -35,8 +38,15 @@ class Lobby extends React.Component {
     });
   }
 
+  joinSession() {
+    connectToSession(this.props.user.uid);
+  }
+  startGame() {
+    console.log('starting game');
+    startGame(this.props.user.uid);
+  }
+
   render() {
-    console.log(this.props.firebase.auth())
 
     return (
       <div>
@@ -44,10 +54,24 @@ class Lobby extends React.Component {
 
         </div>
         <p>My user id: {this.props.user && this.props.user.uid}</p>
-        <Link to="/game">Play!</Link>
+        {/*<Link to="/game">Play!</Link>*/}
+        <button onClick={this.joinSession}>Play</button>
+        {this.state.canStartGame ? (<button onClick={this.startGame}>Start Game</button>) : null}
       </div>
     )
   }
+
+  componentDidUpdate() {
+    // If there are 4 players in the session, trigger game start
+    if(this.props.gameSession && Object.keys(this.props.gameSession.connectedPlayers).length === 4 && !this.state.canStartGame) {
+      console.log('userid', this.props.user.uid);
+      // Trigger game start
+      this.setState({canStartGame: true});
+
+
+    }
+  }
+
 }
 
 
@@ -59,7 +83,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) =>({
-  setUser: user => dispatch(settingUser(user))
+  setUser: user => dispatch(settingUser(user)),
 })
 
 const gameSession = firebaseConnect(['session'])(Lobby)
