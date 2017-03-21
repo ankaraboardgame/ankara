@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
 });
 
 // load one player
-router.param(':playerId', (req, res, next, playerId) => {
+router.param('playerId', (req, res, next, playerId) => {
   req.player = req.game.merchants[playerId];
   next();
 });
