@@ -35,12 +35,15 @@ function Merchant (id, i){
   this.position = new Position();
   this.assistants = {};
   this.bonusCards = {};
-  this.wheelbarrowSize = 3;
-  this.fabric = 0;
-  this.spice = 0;
-  this.fruit = 0;
-  this.rubies = 0;
-  this.money = i + 2;
+  this.wheelbarrow = {
+    fabric: 0,
+    fruit: 0,
+    jewelry: 0,
+    money: i+2,
+    ruby: 0,
+    size: 3,
+    spice: 0
+  };
   this.abilities = {};
 
   for (let i = 0; i < 4; i++){
@@ -58,4 +61,4 @@ function Position (coords = '0,0', possibleMoves = ['1,0', '2,0', '0,1', '1,1', 
   this.possibleMoves = possibleMoves;
 }
 
-module.exports = { Game, Assistant, Merchant };
+module.exports = Game;

@@ -2,7 +2,7 @@ const admin = require('firebase-admin');
 const db = admin.database();
 const gamesRef = db.ref('games');
 
-const Game = require('../../game/logic.js').Game;
+const Game = require('../../game/logic.js');
 const router = module.exports = require('express').Router();
 
 /**
