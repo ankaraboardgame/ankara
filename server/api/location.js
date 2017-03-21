@@ -6,7 +6,7 @@ const Promise = require('bluebird');
 const router = module.exports = require('express').Router();
 /**
  * Location routes
- * ...api/player/:gameId/:playerId/location/...
+ * ...api/game/:gameId/player/:playerId/location/...
  *
  * preloaded on req:
  * req.game = specific game instance

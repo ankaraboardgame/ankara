@@ -20,13 +20,14 @@ export default class Modal extends React.Component {
 
   handleOpen() {
     this.setState({open: true});
-  };
+  }
 
   handleClose() {
     this.setState({open: false});
-  };
+  }
 
   render() {
+    // How would you handle 'end turn' and 'drop/pick up assistant'? Need to know how to connect to firebase store.
     const actions = [
       <FlatButton
         label="Cancel"

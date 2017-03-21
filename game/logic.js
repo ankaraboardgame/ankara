@@ -58,4 +58,4 @@ function Position (coords = '0,0', possibleMoves = ['1,0', '2,0', '0,1', '1,1', 
   this.possibleMoves = possibleMoves;
 }
 
-module.exports = Game;
+module.exports = { Game, Assistant, Merchant };

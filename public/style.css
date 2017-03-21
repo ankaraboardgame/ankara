@@ -2,6 +2,24 @@ body {
   background-color: wheat;
 }
 
+/* -------- LOBBY ------- */
+#join-container {
+  width: 50vw;
+}
+
+.join-slot {
+  border: 1px solid black;
+}
+
+.join-button {
+  border: 1px solid white;
+  padding: 10px;
+  color: white;
+  background-color: green;
+  border-radius: 3px;
+  box-shadow: 2px 2px 2px black;
+}
+
 /* -------- PLAYER ------- */
 #player-icon {
   width: 75px;

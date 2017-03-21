@@ -2,7 +2,7 @@ const admin = require('firebase-admin');
 const db = admin.database();
 const gamesRef = db.ref('games');
 
-const Game = require('../../game/logic.js');
+const Game = require('../../game/logic.js').Game;
 const router = module.exports = require('express').Router();
 
 /**
@@ -12,6 +12,7 @@ const router = module.exports = require('express').Router();
 
 // initialize new game
 router.post('/', (req, res, next) => {
+// TODO:  const ids = db.ref('session/users')
   gamesRef.child('gameOne').set(new Game(['player1', 'player2', 'player3', 'player4']))
   .then(() => {
     res.sendStatus(204); // created but no content to send back
