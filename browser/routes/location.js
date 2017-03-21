@@ -8,6 +8,6 @@ export const maxGood = (playerId, goodType) => {
 }
 
 // Small Market Action: Trade based on "Currency"
-export const tradeGood = (playerId, tradeOffer) => {
-  axios.post(`api/location/smallMarket/${ playerId }/tradeOffer`)
+export const tradeGood = (playerId, fabricNum, fruitNum, gemNum, spiceNum) => {
+  axios.post(`api/location/smallMarket/${ playerId }/${ fabricNum }/${ fruitNum }/${ gemNum }/${ spiceNum }`)
 }
