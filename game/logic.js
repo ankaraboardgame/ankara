@@ -1,7 +1,8 @@
 /** Game Logic */
 
-function Game (){
-  this.merchants = {};
+function Game (playerIds){
+  this.playerIds = playerIds;
+
   this.greatMosque = {
     leftCost: 1,
     rightCost: 1
@@ -19,20 +20,19 @@ function Game (){
   this.caravansary = {
     bonusCards: {}
   };
-  this.gemstoneDealer = 13;
+  this.gemstoneDealer = 12;
+  this.playerTurn = this.playerIds[0];
+  this.merchants = {};
 
-  for (var i = 0; i < 4; i++){
-    this.merchants[i] = new Merchant(i); // initialize merchants
-  }
+  playerIds.forEach((id, i) => {
+    this.merchants[id] = new Merchant(id, i);
+  });
 }
 
-Game.prototype.sayHello = function(){
-  return 'Hello from the Game';
-}
-
-function Merchant (num){
-  this.number = num;
-  this.position = '0,0';
+function Merchant (id, i){
+  this.id = id;
+  this.number = i;
+  this.position = new Position();
   this.assistants = {};
   this.bonusCards = {};
   this.wheelbarrowSize = 3;
@@ -40,17 +40,22 @@ function Merchant (num){
   this.spice = 0;
   this.fruit = 0;
   this.rubies = 0;
-  this.money = 2 + num;
+  this.money = i + 2;
   this.abilities = {};
 
-  for (var i = 0; i < 4; i++){
+  for (let i = 0; i < 4; i++){
     this.assistants[i] = new Assistant(i); // initialize assistants
   }
 }
 
-function Assistant (num){
-  this.number = num;
+function Assistant (id){
+  this.id = id;
   this.position = '0,0';
+}
+
+function Position (coords = '0,0', possibleMoves = ['1,0', '2,0', '0,1', '1,1', '0,2']) {
+  this.coordinates = coords;
+  this.possibleMoves = possibleMoves;
 }
 
 module.exports = Game;

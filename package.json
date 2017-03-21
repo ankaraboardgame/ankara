@@ -21,6 +21,7 @@
   "homepage": "https://github.com/sokmeann/istanbul#readme",
   "dependencies": {
     "axios": "^0.15.3",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "firebase": "^3.7.2",

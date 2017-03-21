@@ -1,5 +1,5 @@
 import axios from 'axios';
 
-export const movePlayer = (playerId, newPosition) => {
-  axios.put(`/api/${playerId}/move/${newPosition}`)
+export const movePlayer = (playerId, newPosition, possibleMoves) => {
+  axios.put(`/api/${playerId}/move`, { newPosition, possibleMoves })
 };

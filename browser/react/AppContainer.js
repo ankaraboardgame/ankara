@@ -17,6 +17,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import LocationModalContainer from './Location/LocationModalContainer';
 
 class AppContainer extends React.Component {
   constructor(props) {
@@ -47,6 +48,7 @@ class AppContainer extends React.Component {
           <h3>Constantinople</h3>
           <BoardContainer />
           <FooterContainer />
+          <LocationModalContainer />
         </div>
       </MuiThemeProvider>
       :
