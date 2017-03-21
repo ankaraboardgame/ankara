@@ -15,7 +15,8 @@ class FruitWarehouse extends React.Component {
       <Modal>
         <div id="location-modal-container">
           <img src={`images/locations/fruit_warehouse.png`} id="img-location" />
-        </div>
+          <p>Look at all these fruits! <br /><br />Your wheelbarrow is now fully loaded with fruits. Come back later if you need some more! <br /></p>
+          <button id="end-button">Ok, end turn</button>
       </Modal>
     );
   }
