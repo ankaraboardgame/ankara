@@ -8,14 +8,28 @@ const router = module.exports = require('express').Router();
  */
 
  // Warehouse - Depending on the goodType, player will get max amount
+router.post('/warehouse/:playerId/:goodType', (req, res, next) => {
+  const playerId = req.params.playerId;
+  const goodType = req.params.goodType;
+  let WB_SIZE;
+  gamesRef.child('gameOne')
+    .child(`merchants/${playerId}/wheelbarrowSize`)
+    .once('value', snap => {
+      WB_SIZE = snap.val()
+    })
+    .then(() => {
+      return gamesRef.child('gameOne')
+        .child(`merchants/${playerId}/${goodType}`)
+        .set(WB_SIZE)
+    })
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch(console.error)
+})
 
-router.put('/warehouse/:playerId/:goodType', (req, res, next) => {
-  console.log('req.params', req.params);
-  const player = gamesRef.child('gameOne').child('merchants').child(`${req.params.playerId}`)
-  const good = player.child(`${req.params.goodType}`)
-  const wbSize = player.child('wheelbarrowSize')
-  wbSize.once('value').then(snap => {
-    good.set(snap.val());
-    next();
-  })
+// Small Market - Trade
+router.post('/smallMarket/:playerId/tradeOffer', (req, res, next) => {
+  const tradeOffer = req.body.tradeOffer
+  console.log(tradeOffer)
 })
