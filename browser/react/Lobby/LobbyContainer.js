@@ -11,7 +11,9 @@ import {
 import { fbDB, fbAuth, googleProvider } from '../../firebase';
 
 import { settingUser } from '../../redux/action-creators/user';
+import { connectToSession } from '../../routes/lobby';
 import { joinRoom, leaveRoom } from '../../redux/action-creators/room';
+import { fetchNewGame } from '../../redux/action-creators/game';
 
 import { CreateRoomButton } from './CreateRoomButton.js';
 import { Room } from './Room.js'
@@ -21,6 +23,9 @@ import { Room } from './Room.js'
 class LobbyContainer extends React.Component {
   constructor(props) {
     super(props);
+    // this.state = {canStartGame: false};
+    // this.joinSession = this.joinSession.bind(this);
+    // this.startGame = this.startGame.bind(this);
     this.removeUser = this.removeUser.bind(this);
     this.handleCreateRoom = this.handleCreateRoom.bind(this);
     this.addCurrentUserToRoom = this.addCurrentUserToRoom.bind(this);
@@ -47,9 +52,17 @@ class LobbyContainer extends React.Component {
     });
   }
 
+  // joinSession() {
+  //   connectToSession(this.props.user.uid);
+  // }
+  // startGame() {
+  //   console.log('starting game');
+  //   startGame(this.props.user.uid);
+  // }
+
   handleCreateRoom(event){
     event.preventDefault();
-    this.roomsRef.push({empty: true})
+    this.roomsRef.push({full: false})
       .catch(console.error);
   }
 
@@ -63,7 +76,7 @@ class LobbyContainer extends React.Component {
     this.roomsRef.child(roomId).set(newUserList)
       .then(() => {
         this.props.joinRoom();
-        if (full) this.props.startGame(newUserList);
+        if (full) this.props.startGame(roomId, newUserList);
       });
   }
 
@@ -77,6 +90,7 @@ class LobbyContainer extends React.Component {
   render() {
     return (
       <div>
+
         <CreateRoomButton handleClick={this.handleCreateRoom} />
         {
           this.props.gameSession && this.props.gameSession.rooms &&
@@ -93,9 +107,22 @@ class LobbyContainer extends React.Component {
             )
           })
         }
+
       </div>
     )
   }
+
+  componentDidUpdate() {
+    // If there are 4 players in the session, trigger game start
+    if(this.props.gameSession && Object.keys(this.props.gameSession.connectedPlayers).length === 4 && !this.state.canStartGame) {
+      console.log('userid', this.props.user.uid);
+      // Trigger game start
+      this.setState({canStartGame: true});
+
+
+    }
+  }
+
 }
 
 const mapStateToProps = (state) => ({
@@ -110,7 +137,7 @@ const mapDispatchToProps = (dispatch) => ({
   setUser: user => dispatch(settingUser(user)),
   joinRoom: () => dispatch(joinRoom()),
   leaveRoom: () => dispatch(leaveRoom()),
-  startGame: () => dispatch(fetchNewGame())
+  startGame: (roomId, usersObj) => dispatch(fetchNewGame(roomId, usersObj))
 })
 
 const gameSession = firebaseConnect(['session', 'rooms'])(LobbyContainer)

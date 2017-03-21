@@ -10,6 +10,7 @@ import {
 } from 'react-redux-firebase'
 import { fbDB, fbAuth } from '../firebase';
 import { settingUser } from '../redux/action-creators/user';
+import ModalRootContainer from './Modal/ModalRootContainer';
 import { connectToSession } from '../routes/lobby';
 
 // PLUGIN required for Material-UI. Provides an onTouchTap() event handler.
@@ -17,7 +18,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import LocationModalContainer from './Location/LocationModalContainer';
 
 class AppContainer extends React.Component {
   constructor(props) {
@@ -45,7 +45,7 @@ class AppContainer extends React.Component {
           <h3>Constantinople</h3>
           <BoardContainer />
           <FooterContainer />
-          <LocationModalContainer />
+          <ModalRootContainer />
         </div>
       </MuiThemeProvider>
       :

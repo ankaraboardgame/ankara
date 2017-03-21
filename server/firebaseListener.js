@@ -16,7 +16,7 @@ const addFirebaseListener = function() {
       //Update session status to full and inGame
       ref.update({full: true, inGame: true});
       //Create game
-      gamesRef.child('gameTwo').set(new Game([...Object.keys(value)]))
+      //gamesRef.child('gameTwo').set(new Game([...Object.keys(value)]))
       //
     } else {
       ref.update({full: false});

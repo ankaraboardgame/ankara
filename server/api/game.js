@@ -1,6 +1,8 @@
 const admin = require('firebase-admin');
 const db = admin.database();
 const gamesRef = db.ref('games');
+const gameCountRef = db.ref('gameCount');
+const sessionRef = db.ref('session');
 
 const Game = require('../../game/logic.js');
 const router = module.exports = require('express').Router();
@@ -11,13 +13,30 @@ const router = module.exports = require('express').Router();
  */
 
 // initialize new game
-router.post('/', (req, res, next) => {
-// TODO:  const ids = db.ref('session/users')
-  gamesRef.child('gameOne').set(new Game(['player1', 'player2', 'player3', 'player4']))
+router.post('/:roomNum', (req, res, next) => {
+
+  //expects room number?
+  const roomNum = req.params.roomNum;
+  const ids = req.body.ids;
+
+  const playersPromise = sessionRef.child('rooms').child(roomNum).once('value')
+  .then(snapshot => {
+    console.log('players', snapshot.val());
+    return snapshot.val();
+  })
+  .then(players => {
+    //console.log('gameCount', gameCount, players);
+    const gameId = roomNum; //room numbber becomes gameId
+
+    // const incrementGameCountPromise = gameCountRef.set(gameCount + 1);
+    //const setGameIdPromise = sessionRef.child('rooms').child(roomNum).child('gameId').set(gameId);
+    return gamesRef.child(gameId).set(new Game(ids));
+  })
   .then(() => {
-    res.sendStatus(204); // created but no content to send back
+    res.sendStatus(204);
   })
   .catch(console.error);
+
 });
 
 // load specific game

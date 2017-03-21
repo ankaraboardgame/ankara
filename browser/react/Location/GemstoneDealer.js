@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-import Modal from './Modal';
+import Modal from '../Modal/Modal';
+
+import { loadModal, hideModal } from '../../redux/action-creators/modals';
 
 class GemstoneDealer extends React.Component {
   constructor(props) {
@@ -10,10 +13,17 @@ class GemstoneDealer extends React.Component {
   render() {
     return (
       <Modal>
-        <img src={`images/locations/gemstone_dealer.png`}/>
+        <div id="location-modal-container">
+          <img src={`images/locations/gemstone_dealer.png`} id="img-location" />
+        </div>
       </Modal>
     );
   }
 }
 
-export default GemstoneDealer;
+const mapDispatchToProps = dispatch => ({
+  closeModal: () => dispatch(hideModal()),
+  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
+});
+
+export default connect(null, mapDispatchToProps)(GemstoneDealer);

@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-import Modal from './Modal';
+import Modal from '../Modal/Modal';
+
+import { loadModal, hideModal } from '../../redux/action-creators/modals';
 
 class SmallMarket extends React.Component {
   constructor(props) {
@@ -10,10 +13,17 @@ class SmallMarket extends React.Component {
   render() {
     return (
       <Modal>
-        <img src={`images/locations/small_market.png`}/>
+        <div id="location-modal-container">
+          <img src={`images/locations/small_market.png`} id="img-location" />
+        </div>
       </Modal>
     );
   }
 }
 
-export default SmallMarket;
+const mapDispatchToProps = dispatch => ({
+  closeModal: () => dispatch(hideModal()),
+  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
+});
+
+export default connect(null, mapDispatchToProps)(SmallMarket);

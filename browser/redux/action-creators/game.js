@@ -11,14 +11,15 @@ export const createGame = (id) => ({
 });
 
 /** -------- THUNK-DISPATCHERS --------- */
-const fetchNewGame = (users) => {
+const fetchNewGame = (roomId, userObj) => {
 
   const ids = [];
   for (let key in users){
-    ids.push(users[key])
+    if (key !== "full")
+      ids.push(users[key])
   }
 
-  axios.post('/api/game', {ids})
+  axios.post(`/api/game/${roomId}`, {ids})
     .then(res => res.data)
     .then(id => {
       createGame(id);

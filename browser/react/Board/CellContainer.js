@@ -1,5 +1,3 @@
-/* eslint { react/prop-types: 0 } */
-
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -8,6 +6,7 @@ import { firebaseConnect } from 'react-redux-firebase';
 
 import { cellActiveStatus, canMovePlayer } from '../../utils';
 import { movePlayer } from '../../routes/move';
+import { DROP_ASSISTANT, PICK_UP_ASSISTANT } from '../Modal/turn_dialog_types';
 
 import Cell from './Cell';
 import Player from '../Pieces/Player';
@@ -41,7 +40,9 @@ class CellContainer extends React.Component {
           coords={this.props.coords}
           name={this.props.name}
         />
-        {playerPiece}
+        <div id="player-container">
+          {playerPiece}
+        </div>
         {isOver &&
           <div style={{
             position: 'absolute',
@@ -72,6 +73,7 @@ const cellTarget = {
     return canMovePlayer(props.coords, props.merchants['player1'].position.possibleMoves);
   },
   drop(props) {
+    props.openModal(DROP_ASSISTANT, { currentPosition: props.coords});
     movePlayer('player1', props.coords, props.cellPossibleMoves);
   }
 };

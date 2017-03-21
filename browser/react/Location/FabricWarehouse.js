@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-import Modal from './Modal';
+import Modal from '../Modal/Modal';
+
+import { loadModal, hideModal } from '../../redux/action-creators/modals';
 
 class FabricWarehouse extends React.Component {
   constructor(props) {
@@ -10,10 +13,17 @@ class FabricWarehouse extends React.Component {
   render() {
     return (
       <Modal>
-        <img src={`images/locations/fabric_warehouse.png`}/>
+        <div id="location-modal-container">
+          <img src={`images/locations/fabric_warehouse.png`} id="img-location" />
+        </div>
       </Modal>
     );
   }
 }
 
-export default FabricWarehouse;
+const mapDispatchToProps = dispatch => ({
+  closeModal: () => dispatch(hideModal()),
+  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
+});
+
+export default connect(null, mapDispatchToProps)(FabricWarehouse);
