@@ -55,18 +55,10 @@ const mapStateToProps = (state, ownProps) => ({
 
 const cellTarget = {
   canDrop(props) {
-<<<<<<< HEAD
-=======
-
->>>>>>> 251ebac073f90c9b59a2ac2af50104e9f0e6e5b4
     return canMovePlayer(props.coords, props.merchants['player1'].position.possibleMoves);
   },
   drop(props) {
     movePlayer('player1', props.coords, props.cellPossibleMoves);
-<<<<<<< HEAD
-=======
-
->>>>>>> 251ebac073f90c9b59a2ac2af50104e9f0e6e5b4
   }
 };
 
