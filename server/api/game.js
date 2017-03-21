@@ -7,7 +7,7 @@ const router = module.exports = require('express').Router();
 
 /**
  * Game routes for initializing game
- * ...api/game/...
+ * ...api/game...
  */
 
 // initialize new game

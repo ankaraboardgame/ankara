@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 
 /********* CONSTANTS ********/
 export const CREATE_GAME = 'CREATE_GAME';
@@ -21,6 +22,7 @@ const fetchNewGame = (users) => {
     .then(res => res.data)
     .then(id => {
       createGame(id);
+      browserHistory.push('/game');
     })
     .catch(console.error);
 }
