@@ -112,16 +112,16 @@ class LobbyContainer extends React.Component {
     )
   }
 
-  componentDidUpdate() {
-    // If there are 4 players in the session, trigger game start
-    if(this.props.gameSession && Object.keys(this.props.gameSession.connectedPlayers).length === 4 && !this.state.canStartGame) {
-      console.log('userid', this.props.user.uid);
-      // Trigger game start
-      this.setState({canStartGame: true});
+  // componentDidUpdate() {
+  //   // If there are 4 players in the session, trigger game start
+  //   if(this.props.gameSession && Object.keys(this.props.gameSession.connectedPlayers).length === 4 && !this.state.canStartGame) {
+  //     console.log('userid', this.props.user.uid);
+  //     // Trigger game start
+  //     this.setState({canStartGame: true});
 
 
-    }
-  }
+  //   }
+  // }
 
 }
 
