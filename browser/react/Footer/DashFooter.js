@@ -5,6 +5,7 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 import { Wheelbarrow, Fruits, Fabric, Spices, Gems, Money, Ruby } from './FooterComponents'
 import RulesSideBar from './RulesSideBar';
+import BonusCardsMosqueTiles from './BonusCards&MosqueTiles'
 
 const Footer = (props) => {
   const wbstate = props.wbstate;
@@ -12,6 +13,7 @@ const Footer = (props) => {
     <footer className="black">
       <div id="dash-footer">
         <RulesSideBar />
+        <BonusCardsMosqueTiles/>
         <Badge
           className="badge"
           badgeContent={wbstate.wb_length}
