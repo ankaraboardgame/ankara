@@ -19,10 +19,12 @@ class CellContainer extends React.Component {
 
   render() {
 
+    const playerId = this.props.userId;
+
     const playerPiece = (
-      this.props.merchants && 
-      this.props.merchants['player1'].position.coordinates === this.props.coords
-      ) ? 
+      this.props.merchants &&
+      this.props.merchants[playerId].position.coordinates === this.props.coords
+      ) ?
       <Player /> : null;
 
     const { connectDropTarget, isOver } = this.props;
@@ -30,8 +32,8 @@ class CellContainer extends React.Component {
     const activeStatus = this.props.merchants &&
       cellActiveStatus(
         this.props.coords,
-        this.props.merchants['player1'].position.coordinates,
-        this.props.merchants['player1'].position.possibleMoves
+        this.props.merchants[playerId].position.coordinates,
+        this.props.merchants[playerId].position.possibleMoves
         ) ?
         null : {opacity: '0.2'};
 
@@ -71,11 +73,11 @@ const mapStateToProps = (state, ownProps) => ({
 
 const cellTarget = {
   canDrop(props) {
-    return canMovePlayer(props.coords, props.merchants['player1'].position.possibleMoves);
+    return canMovePlayer(props.coords, props.merchants[props.userId].position.possibleMoves);
   },
   drop(props) {
     props.openModal(DROP_ASSISTANT, { currentPosition: props.coords});
-    movePlayer('player1', props.coords, props.cellPossibleMoves);
+    movePlayer(props.gameId, props.userId, props.coords, props.cellPossibleMoves);
   }
 };
 

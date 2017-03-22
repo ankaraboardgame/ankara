@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import axios from 'axios';
 
 // 1. Wainwright -- Front end to check if the wheelbarrow is already max size
 export const actionBuyWbExt = (gameId, playerId) => {

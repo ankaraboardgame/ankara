@@ -5,10 +5,17 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Modal from '../Modal/Modal';
 
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
+import { actionMaxGood } from '../../routes/location';
 
 class FabricWarehouse extends React.Component {
   constructor(props) {
     super(props);
+    this.handleMaxGoodEndTurn = this.handleMaxGoodEndTurn.bind(this);
+  }
+
+  handleMaxGoodEndTurn(){
+    actionMaxGood(this.props.gameId, this.props.playerId, this.props.goodType)
+    this.props.closeModal();
   }
 
   render() {
@@ -17,9 +24,9 @@ class FabricWarehouse extends React.Component {
       <Modal>
         <div id="location-modal-container">
           <img src={`images/locations/fabric_warehouse.png`} id="img-location" />
-          <p>Look at all the fabric! <br /><br />Your wheelbarrow is now fully loaded with fabric. Come back later if you need more! <br /></p>
+          <p>Look at all the fabric! <br /><br />You can now fully load your wheelbarrow with fabric. Come back later if you need more! <br /></p>
           <div>
-            <RaisedButton label="Ok, end turn." style={style} primary={true} onTouchTap={this.props.closeModal}  />
+            <RaisedButton label="Max fabric and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
           </div>
         </div>
       </Modal>
@@ -32,4 +39,10 @@ const mapDispatchToProps = dispatch => ({
   openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
 });
 
-export default connect(null, mapDispatchToProps)(FabricWarehouse);
+const mapStateToProps = state => ({
+  gameId: state.game.id,
+  playerId: state.user.user.uid,
+  goodType: 'fabric'
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(FabricWarehouse);
