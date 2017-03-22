@@ -17,5 +17,5 @@ export const loadBoard = () => {
   const newGame = new Game('basic');
   return dispatch => {
     dispatch(settingBoard(newGame));
-  };
+  }; 
 };

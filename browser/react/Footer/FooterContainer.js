@@ -9,20 +9,13 @@ class Footer extends Component {
   constructor(props){
     super(props);
     console.log('footer', props)
-    this.state = {
-      wb_length: 3,
-      fruits: 0,
-      fabric: 0,
-      spices: 0,
-      gems: 0,
-      money: 0,
-      ruby: 0
-    }
   }
 
   render(){
+    const playerId = this.props.clientId;
+    const gameId = this.props.gameId
     return(
-      <DashFooter wbstate={ this.state } />
+      <DashFooter wheelbarrow={ this.props.gamesRef[gameId].merchants[playerId].wheelbarrow } />
     )
   }
 }

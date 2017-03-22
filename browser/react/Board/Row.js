@@ -11,6 +11,8 @@ const Row = props => {
             <CellContainer
               key={cell.coords}
               name={cell.name}
+              userId={props.userId}
+              gameId={props.games.id}
               coords={cell.coords}
               cellPossibleMoves={cell.possibleMoves}
               games={props.games}

@@ -1,7 +1,9 @@
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+
 import BoardContainer from './Board/BoardContainer';
 import FooterContainer from './Footer/FooterContainer';
-import { connect } from 'react-redux'
 import {
   firebaseConnect,
   isLoaded,
@@ -20,7 +22,6 @@ injectTapEventPlugin();
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class AppContainer extends React.Component {
-
   constructor(props) {
     super(props);
   }
@@ -37,7 +38,7 @@ class AppContainer extends React.Component {
         <div id="app-container">
           <h3>Constantinople</h3>
           <BoardContainer />
-          <FooterContainer clientId={this.props.user.id} gameId={this.props.gameId} gamesRef={this.props.gamesRef} />
+          <FooterContainer clientId={currentUserId} gameId={this.props.gameId} gamesRef={this.props.gamesRef} />
           <ModalRootContainer />
         </div>
       </MuiThemeProvider>

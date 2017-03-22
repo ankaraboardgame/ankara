@@ -24,8 +24,8 @@ router.post('/:roomId', (req, res, next) => {
 });
 
 // load specific game
-router.param('gameId', (req, res, next) => {
-  gamesRef.child('gameOne').once('value', function(snap){
+router.param('gameId', (req, res, next, gameId) => {
+  gamesRef.child(gameId).once('value', function(snap){
     return snap;
   }).then(snapshot => {
     req.game = snapshot.val();
