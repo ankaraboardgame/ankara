@@ -11,16 +11,11 @@ export const createGame = (id) => ({
 });
 
 /** -------- THUNK-DISPATCHERS --------- */
-export const fetchNewGame = (roomId, userObj) => {
+export const fetchNewGame = (roomId, usersMap) => {
 
   return dispatch => {
-    const ids = [];
-    for (let key in userObj){
-      if (key !== "full")
-        ids.push(userObj[key])
-    }
 
-    axios.post(`/api/game/${roomId}`, {ids})
+    axios.post(`/api/game/${roomId}`, {usersMap})
       .then(() => {
         dispatch(createGame(roomId));
         hashHistory.push('/game');
