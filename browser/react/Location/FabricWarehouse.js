@@ -19,7 +19,7 @@ class FabricWarehouse extends React.Component {
           <img src={`images/locations/fabric_warehouse.png`} id="img-location" />
           <p>Look at all the fabric! <br /><br />Your wheelbarrow is now fully loaded with fabric. Come back later if you need more! <br /></p>
           <div>
-            <RaisedButton label="Ok, end turn." style={style} primary={true}  />
+            <RaisedButton label="Ok, end turn." style={style} primary={true} onTouchTap={this.props.closeModal}  />
           </div>
         </div>
       </Modal>

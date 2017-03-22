@@ -41,10 +41,6 @@ app.use(express.static(gamePath));
 /** API routes */
 app.use('/api', require('./api'));
 
-/** firebase event listener */
-const fbListener = require('./firebaseListener');
-fbListener();
-
 /** Default Error-handling Middleware */
 app.use(function (err, req, res, next) {
     console.error(err.stack);

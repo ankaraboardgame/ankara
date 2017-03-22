@@ -19,7 +19,7 @@ class SpiceWarehouse extends React.Component {
           <img src={`images/locations/spice_warehouse.png`} id="img-location" />
           <p>Look at all the spices! <br /><br />Your wheelbarrow is now fully loaded with spices. Come back later if you need more! <br /></p>
           <div>
-            <RaisedButton label="Ok, end turn." style={style} primary={true}  />
+            <RaisedButton label="Ok, end turn." style={style} primary={true} onTouchTap={this.props.closeModal} />
           </div>
         </div>
       </Modal>

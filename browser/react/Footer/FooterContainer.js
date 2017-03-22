@@ -6,8 +6,9 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import DashFooter from './DashFooter';
 
 class Footer extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props);
+    console.log('footer', props)
     this.state = {
       wb_length: 3,
       fruits: 0,
