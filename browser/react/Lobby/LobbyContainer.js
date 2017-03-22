@@ -27,15 +27,10 @@ class LobbyContainer extends React.Component {
     this.removeUser = this.removeUser.bind(this);
   }
 
-  componentWillMount() {
-    this.roomsRef = fbDB.ref('session/rooms');
-    this.sessionRef = fbDB.ref('session');
-  }
-
   componentDidMount() {
     fbAuth.onAuthStateChanged((user) => {
       if (user) {
-        console.log('user', user);
+        console.log('setting user:', user);
         this.props.setUser(user);
       } else {
         fbAuth.signInAnonymously().catch(function(error) {
@@ -49,22 +44,19 @@ class LobbyContainer extends React.Component {
 
   handleCreateRoom(event){
     event.preventDefault();
-    this.roomsRef.push({full: false})
+    this.roomsRef.push({ full: false })
       .catch(console.error);
   }
 
-  addCurrentUserToRoom(roomId, users) {
-    let full = false;
-    const userListLength = Object.keys(users).length;
-    if (userListLength === 4){
-      full = true;
-    }
-    const newUserList = Object.assign(users, {[userListLength]: this.props.user.uid})
-    this.roomsRef.child(roomId).set(newUserList)
-      .then(() => {
-        this.props.joinRoom();
-        if (full) this.props.startGame(roomId, newUserList);
-      });
+  addCurrentUserToRoom(roomId, userId) {
+    this.roomsRef.child(roomId).on('value', function(snapshot){
+      if (snapshot.numChildren() === 4){
+        this.props.startGame(roomId, newUserList);
+      }
+    })
+    .then(() => {
+      this.roomsRef.child(roomId).push(userId)
+    })
   }
 
   removeUser(roomId, userId) {
@@ -77,7 +69,6 @@ class LobbyContainer extends React.Component {
   render() {
     return (
       <div>
-
         <CreateRoomButton handleClick={this.handleCreateRoom} />
         {
           this.props.gameSession && this.props.gameSession.rooms &&
@@ -85,16 +76,15 @@ class LobbyContainer extends React.Component {
             return (
               <Room
                 key={roomId}
-                id={roomId}
+                roomId={roomId}
                 handleRemove={this.removeUser}
                 handleJoin={this.addCurrentUserToRoom}
-                users={this.props.gameSession.rooms[roomId]}
+                user={this.props.user}
                 joined={this.props.joined}
               />
             )
           })
         }
-
       </div>
     )
   }

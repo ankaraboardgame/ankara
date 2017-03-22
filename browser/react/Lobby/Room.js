@@ -29,7 +29,7 @@ export const Room = props => {
       <button
         onClick={(e) => {
           e.preventDefault();
-          props.handleJoin(props.id, props.users)
+          props.handleJoin(props.roomId, props.user)
         }}
         disabled={props.joined}>
       Join this room
