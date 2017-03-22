@@ -66,6 +66,9 @@ const mapStateToProps = state => {
 };
 
 export default compose(
-  firebaseConnect(['games/gameOne', 'games/gameOne/merchants']),
+  firebaseConnect(({gameId}) => ([
+    `games/${gameId}`,
+    `games/${gameId}/merchants`
+  ])),
   connect(mapStateToProps)
 )(ModalRootContainer);

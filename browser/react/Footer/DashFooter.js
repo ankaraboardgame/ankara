@@ -5,10 +5,10 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 import { Wheelbarrow, Fruits, Fabric, Spices, Gems, Money, Ruby } from './FooterComponents'
 import RulesSideBar from './RulesSideBar';
-import BonusCardsMosqueTiles from './BonusCards&MosqueTiles'
+import BonusCardsMosqueTiles from './BonusCards&MosqueTiles';
 
 const Footer = (props) => {
-  const wbstate = props.wbstate;
+  const wb = props.wheelbarrow;
   return (
     <footer className="black">
       <div id="dash-footer">
@@ -16,7 +16,7 @@ const Footer = (props) => {
         <BonusCardsMosqueTiles/>
         <Badge
           className="badge"
-          badgeContent={wbstate.wb_length}
+          badgeContent={wb.size}
           secondary={true}
           badgeStyle={{top: 0, right: 0}}>
           <Wheelbarrow tooltip="Wheelbarrow">
@@ -25,7 +25,7 @@ const Footer = (props) => {
         </Badge>
         <Badge
           className="badge"
-          badgeContent={wbstate.fruits}
+          badgeContent={wb.fruit}
           secondary={true}
           badgeStyle={{top: 0, right: 0}}>
           <Fruits tooltip="Fruits">
@@ -34,7 +34,7 @@ const Footer = (props) => {
         </Badge>
         <Badge
           className="badge"
-          badgeContent={wbstate.fabric}
+          badgeContent={wb.fabric}
           secondary={true}
           badgeStyle={{top: 0, right: 0}}>
           <Fabric tooltip="Fabric">
@@ -43,7 +43,7 @@ const Footer = (props) => {
         </Badge>
         <Badge
           className="badge"
-          badgeContent={wbstate.spices}
+          badgeContent={wb.spice}
           secondary={true}
           badgeStyle={{top: 0, right: 0}}>
           <Spices tooltip="Spices">
@@ -52,7 +52,7 @@ const Footer = (props) => {
         </Badge>
         <Badge
           className="badge"
-          badgeContent={wbstate.gems}
+          badgeContent={wb.jewelry}
           secondary={true}
           badgeStyle={{top: 0, right: 0}}>
           <Gems tooltip="Gems">
@@ -61,7 +61,7 @@ const Footer = (props) => {
         </Badge>
         <Badge
           className="badge"
-          badgeContent={wbstate.money}
+          badgeContent={wb.money}
           secondary={true}
           badgeStyle={{top: 0, right: 0}}>
           <Money tooltip="Money">
@@ -70,7 +70,7 @@ const Footer = (props) => {
         </Badge>
         <Badge
           className="badge"
-          badgeContent={wbstate.ruby}
+          badgeContent={wb.ruby}
           secondary={true}
           badgeStyle={{top: 0, right: 0}}>
           <Ruby tooltip="Rubies">
