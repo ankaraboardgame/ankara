@@ -14,7 +14,7 @@ export default function (state = initialState, action) {
 
   switch (action.type) {
     case SET_JOINED_TRUE:
-      newState.joined = true;
+      newState.joined = action.id;
       break;
     case SET_JOINED_FALSE:
       newState.joined = false;

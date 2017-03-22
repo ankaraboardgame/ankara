@@ -2,14 +2,17 @@ import React from 'react';
 import { DragSource } from 'react-dnd';
 
 const Player = props => {
-  const { connectDragSource, isDragging } = props;
+  const { connectDragSource, isDragging, playerNum } = props;
   return connectDragSource(
     <div style={{
       opacity: isDragging ? 0.5 : 1,
       cursor: 'move',
       color: 'black'
     }}>
-      <img src="images/player/redplayer.png" id="player-icon" />
+      { playerNum === 0 ? <img src="images/player/redplayer.png" id="player-icon" /> :
+          playerNum === 1 ? <img src="images/player/blueplayer.png" id="player-icon" /> :
+          playerNum === 2 ? <img src="images/player/greenplayer.png" id="player-icon" /> :
+          playerNum === 3 ? <img src="images/player/yellowplayer.png" id="player-icon" /> : null }
     </div>
   );
 }
@@ -17,6 +20,9 @@ const Player = props => {
 const playerSource = {
   beginDrag(props) {
     return {};
+  },
+  canDrag(props) {
+    return props.currentUser.uid === props.playerId
   }
 }
 

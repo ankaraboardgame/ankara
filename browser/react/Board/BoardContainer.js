@@ -12,11 +12,10 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 class BoardContainer extends React.Component {
   constructor(props) {
     super(props);
-
     this.handleClick = this.handleClick.bind(this);
   }
 
-  
+
   handleClick(evt) {
         // highlight the cell one color, and highlight all possible moves another color OR should it show a closer/zoomed in viw of the location?
   }
@@ -24,13 +23,15 @@ class BoardContainer extends React.Component {
   render() {
     return (
       <div id="board-container">
-        { 
+        {
           this.props.board && this.props.board.grid.map((row, index) => {
             return (
               <Row
+                user={this.props.user}
                 key={index}
                 row={row}
-                games={this.props.games}
+                game={this.props.game}
+                gameId={this.props.gameId}
                 merchants={this.props.merchants}
                 openModal={this.props.openModal}
                 closeModal={this.props.closeModal}
@@ -43,10 +44,12 @@ class BoardContainer extends React.Component {
   }
 }
 
-const mapStateToProps = ({board, positions, player, firebase}) => ({
+const mapStateToProps = ({board, positions, user, firebase, game}) => ({
   board: board.board,
-  games: dataToJS(firebase, 'games/gamesOne'),
-  merchants: dataToJS(firebase, 'games/gameOne/merchants'),
+  gameId: game.id,
+  user: user.user,
+  game: dataToJS(firebase, `games/${game.id}`),
+  merchants: dataToJS(firebase, `games/${game.id}/merchants`),
   auth: pathToJS(firebase, 'auth')
 });
 
@@ -57,6 +60,9 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   DragDropContext(HTML5Backend),
-  firebaseConnect(['games/gameOne', 'games/gameOne/merchants']),
+  firebaseConnect(({gameId}) => ([
+    `games/${gameId}`,
+    `games/${gameId}/merchants`
+  ])),
   connect(mapStateToProps, mapDispatchToProps)
 )(BoardContainer);

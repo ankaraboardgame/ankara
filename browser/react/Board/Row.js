@@ -9,11 +9,15 @@ const Row = props => {
         props.row && props.row.map(cell => {
           return (
             <CellContainer
+              gameId={props.gameId}
+              user={props.user}
               key={cell.coords}
               name={cell.name}
+              userId={props.userId}
+              gameId={props.games.id}
               coords={cell.coords}
               cellPossibleMoves={cell.possibleMoves}
-              games={props.games}
+              game={props.game}
               merchants={props.merchants}
               openModal={props.openModal}
               closeModal={props.closeModal}
@@ -26,5 +30,3 @@ const Row = props => {
 };
 
 export default Row;
-
-            

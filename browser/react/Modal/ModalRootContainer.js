@@ -60,12 +60,16 @@ const ModalRootContainer = (props) => {
 
 const mapStateToProps = state => {
     return {
+        gameId: state.game.id,
         modalType: state.modal.modalType,
         payload: state.modal.payload
     };
 };
 
 export default compose(
-  firebaseConnect(['games/gameOne', 'games/gameOne/merchants']),
+  firebaseConnect(({gameId}) => ([
+    `games/${gameId}`,
+    `games/${gameId}/merchants`
+  ])),
   connect(mapStateToProps)
 )(ModalRootContainer);

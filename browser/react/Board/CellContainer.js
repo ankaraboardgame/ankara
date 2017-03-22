@@ -19,19 +19,26 @@ class CellContainer extends React.Component {
 
   render() {
 
-    const playerPiece = (
-      this.props.merchants && 
-      this.props.merchants['player1'].position.coordinates === this.props.coords
-      ) ? 
-      <Player /> : null;
+    const currentUserId = this.props.user.uid;
+    const merchants = this.props.merchants;
+
+    const playerPieces = merchants && Object.keys(merchants).map( (merchantId) => {
+      if( merchants[merchantId].position.coordinates === this.props.coords) {
+        return <Player key={merchantId} currentUser={this.props.user} playerId={merchantId} playerNum={merchants[merchantId].number} />
+      } else {
+        return null;
+      }
+    }).filter( val => val !== null);
 
     const { connectDropTarget, isOver } = this.props;
 
+    // There should only be one merchant that matches current user
+    const userMerchant = merchants[currentUserId];
     const activeStatus = this.props.merchants &&
       cellActiveStatus(
         this.props.coords,
-        this.props.merchants['player1'].position.coordinates,
-        this.props.merchants['player1'].position.possibleMoves
+        userMerchant.position.coordinates,
+        userMerchant.position.possibleMoves
         ) ?
         null : {opacity: '0.2'};
 
@@ -42,7 +49,7 @@ class CellContainer extends React.Component {
           name={this.props.name}
         />
         <div id="player-container">
-          {playerPiece}
+          {playerPieces}
         </div>
         {isOver &&
           <div style={{
@@ -62,20 +69,21 @@ class CellContainer extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  user: state.user.user,
   name: ownProps.name,
   coords: ownProps.coords,
   possibleMoves: ownProps.cellPossibleMoves,
-  games: ownProps.games,
+  game: ownProps.game,
   merchants: ownProps.merchants
 });
 
 const cellTarget = {
   canDrop(props) {
-    return canMovePlayer(props.coords, props.merchants['player1'].position.possibleMoves);
+    return canMovePlayer(props.coords, props.merchants[props.user.uid].position.possibleMoves);
   },
   drop(props) {
     props.openModal(DROP_ASSISTANT, { currentPosition: props.coords});
-    movePlayer('player1', props.coords, props.cellPossibleMoves);
+    movePlayer(props.gameId, props.user.uid, props.coords, props.cellPossibleMoves);
   }
 };
 
