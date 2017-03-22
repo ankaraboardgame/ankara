@@ -6,7 +6,7 @@ const Promise = require('bluebird');
 const router = module.exports = require('express').Router();
 /**
  * Location routes
- * ...api/player/:gameId/:playerId/location/...
+ * ...api/game/:gameId/player/:playerId/location/...
  *
  * preloaded on req:
  * req.game = specific game instance
@@ -125,11 +125,11 @@ router.post('/market/:marketSize/:fabricNum/:fruitNum/:jewelryNum/:spiceNum', (r
 })
 
 // 5. MOSQUES (2)
-router.post('/mosque/:mosqueSize/:tileChosen', (req, res, next) => {
+router.post('/mosque/:mosqueSize/:selectedTile', (req, res, next) => {
   // small mosque: left - fabric, right - fruit
   // large mosque: left - spice, right - jewelry
   const mosque = req.params.mosqueSize;
-  const tile = req.params.tileChosen;
+  const tile = req.params.selectedTile;
   let good, abilities, ability;
 
   if(mosque === 'smallMosque') {
@@ -187,11 +187,11 @@ router.post('/mosque/:mosqueSize/:tileChosen', (req, res, next) => {
 })
 
 // 6. BLACK MARKET (1)
-router.post('/blackMarket/:goodChosen/:dice1/:dice2/', (req, res, next) => {
+router.post('/blackMarket/:selectedGood/:dice1/:dice2/', (req, res, next) => {
   const diceSum = req.params.dice1 + req.params.dice2;
 
   const updateGoodChosen = gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/wheelbarrow/${req.params.goodChosen}`)
+    .child(`merchants/${req.player.id}/wheelbarrow/${req.params.selectedGood}`)
     .transaction(function(currentGood){
       return currentGood++;
     })

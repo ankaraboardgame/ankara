@@ -9,10 +9,45 @@ body {
   border-radius: 6px;
   box-shadow: 8px 8px 12px #333;
   border: 1px solid white;
+  background-color: black;
+  color: white;
+  position: relative;
+}
+
+#exchange-card {
+  position: absolute;
+  margin-left: 140px;
+}
+
+/* still need to fix location of the image! */
+#exchange-card img {
+  height: 260px;
 }
 
 #img-location {
   border-radius: 6px;
+}
+
+#market-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#market-row img {
+  border-radius: 20%;
+  height: 40px;
+  float: left;
+  margin: 7px;
+}
+
+#end-button {
+  width: 150px;
+  color: black;
+  background-color: blue;
 }
 
 /* -------- TURN DIALOGS ----- */
@@ -85,6 +120,30 @@ body {
     box-sizing: border-box;
     cursor: default;
     border-radius: 4px;
+}
+
+/* -------- LOBBY ------- */
+#join-container {
+  width: 50vw;
+}
+
+.join-slot {
+  border: 1px solid black;
+}
+
+.join-button {
+  border: 1px solid white;
+  padding: 10px;
+  color: white;
+  background-color: green;
+  border-radius: 3px;
+  box-shadow: 2px 2px 2px black;
+}
+
+.x-button {
+  color: red;
+  margin: 10px;
+  cursor: pointer;
 }
 
 /* -------- PLAYER ------- */

@@ -1,20 +1,22 @@
-import axios from 'axios';
+// import axios from 'axios';
+// import { merge } from 'lodash';
 
-import { SET_BOARD } from '../action-creators/board';
+
+import { SET_USER } from '../action-creators/user';
 
 /******** INITIAL STATE ********/
 const initialState = {
-  board: null
+  user: null,
 };
 
 /********** REDUCER  **********/
 export default function (state = initialState, action) {
-  const newState = Object.assign({}, state)
+  const newState = Object.assign({}, state);
 
   switch (action.type) {
 
-    case SET_BOARD:
-      newState.board = action.board;
+    case SET_USER:
+      newState.user = action.user;
       break;
 
     default:
@@ -23,4 +25,4 @@ export default function (state = initialState, action) {
   }
 
   return newState;
-}
+};
