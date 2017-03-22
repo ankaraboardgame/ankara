@@ -1,6 +1,8 @@
 const admin = require('firebase-admin');
 const db = admin.database();
 const gamesRef = db.ref('games');
+const gameCountRef = db.ref('gameCount');
+const sessionRef = db.ref('session');
 
 const Game = require('../../game/logic.js');
 const router = module.exports = require('express').Router();
@@ -12,7 +14,9 @@ const router = module.exports = require('express').Router();
 
 // initialize new game
 router.post('/:roomId', (req, res, next) => {
-  return gamesRef.child(roomId).set(new Game(roomId, ids))
+  const roomId = req.params.roomId;
+  const ids = req.body.ids;
+  gamesRef.child(roomId).set(new Game(roomId, ids))
   .then(() => {
     res.sendStatus(204);
   })
