@@ -2,7 +2,6 @@
 
 import React from 'react';
 
-
 // 1. Wainwright -- Front end to check if the wheelbarrow is already max size
 export const actionBuyWbExt = (gameId, playerId) => {
   axios.post(`api/game/${gameId}/player/${playerId}/location/wainwright`)
