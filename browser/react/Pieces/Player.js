@@ -7,7 +7,7 @@ const Player = props => {
     <div style={{
       opacity: isDragging ? 0.5 : 1,
       cursor: 'move',
-      color: 'white'
+      color: 'black'
     }}>
       <img src="images/player/redplayer.png" id="player-icon" />
     </div>
