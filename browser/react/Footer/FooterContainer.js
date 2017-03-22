@@ -12,9 +12,11 @@ class Footer extends Component {
 
   render(){
     const playerId = this.props.clientId;
-    const gameId = this.props.gameId
+    const gameId = this.props.gameId;
+    const gamesRef = this.props.gamesRef;
     return(
-      <DashFooter wheelbarrow={ this.props.gamesRef[gameId].merchants[playerId].wheelbarrow } />
+        gamesRef &&
+        <DashFooter wheelbarrow={ gamesRef.merchants[playerId].wheelbarrow } />
     )
   }
 }
