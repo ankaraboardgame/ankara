@@ -19,7 +19,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { gameSetup } from '../redux/action-creators/players';
 
 class AppContainer extends React.Component {
   constructor(props) {
