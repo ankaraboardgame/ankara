@@ -8,16 +8,8 @@ export const Room = props => {
 
   function createUser (key, i) {
       return (
-        <li key={ i }>
+        <li key={ key }>
           { props.users[key] }
-          <span 
-            className="x-button"
-            onClick={ (e) => {
-              e.preventDefault();
-              props.handleRemove(props.roomId, name)
-            } }>
-            X
-          </span>
         </li>
       );
     }
@@ -34,7 +26,8 @@ export const Room = props => {
           type="text"
           name="userdisplayname"
           disabled={props.joined}
-          placeholder="Enter nickname." />
+          placeholder="Enter nickname."
+        />
         <input type="submit" value="Join table" />
       </form>
     </div>

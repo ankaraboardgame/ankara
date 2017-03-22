@@ -1,8 +1,9 @@
 /** Game Logic */
 
-function Game (gameId, playerIds){
+function Game (gameId, usersObj){
   this.id = gameId;
-  this.playerIds = playerIds;
+  this.playerIds = Object.keys(usersObj);
+  this.playerMap = usersObj;
   this.smallMosque = {
     leftCost: 1,
     rightCost: 1
@@ -24,7 +25,7 @@ function Game (gameId, playerIds){
   this.playerTurn = this.playerIds[0];
   this.merchants = {};
 
-  playerIds.forEach((id, i) => {
+  this.playerIds.forEach((id, i) => {
     this.merchants[id] = new Merchant(id, i);
   });
 }
