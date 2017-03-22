@@ -60,6 +60,7 @@ const ModalRootContainer = (props) => {
 
 const mapStateToProps = state => {
     return {
+        gameId: state.game.id,
         modalType: state.modal.modalType,
         payload: state.modal.payload
     };

@@ -10,6 +10,6 @@ export const startGame = (userId) => {
   axios.post(`/api/${userId}/game`)
   .then(res => res.data)
   .then(data => {
-    console.log('resonse from startGame axios', data);
+    console.log('response from startGame axios', data);
   })
 }
