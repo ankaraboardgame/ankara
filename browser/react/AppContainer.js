@@ -5,7 +5,6 @@ import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 
 import BoardContainer from './Board/BoardContainer';
 import FooterContainer from './Footer/FooterContainer';
-import { connect } from 'react-redux'
 import {
   firebaseConnect,
   isLoaded,
