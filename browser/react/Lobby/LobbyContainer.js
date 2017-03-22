@@ -28,14 +28,12 @@ class LobbyContainer extends React.Component {
   }
 
   componentWillMount() {
-    this.roomsRef = fbDB.ref('session/rooms');
-    this.sessionRef = fbDB.ref('session');
+    this.roomsRef = fbDB.ref('rooms');
   }
 
   componentDidMount() {
     fbAuth.onAuthStateChanged((user) => {
       if (user) {
-        console.log('user', user);
         this.props.setUser(user);
       } else {
         fbAuth.signInAnonymously().catch(function(error) {
@@ -49,46 +47,64 @@ class LobbyContainer extends React.Component {
 
   handleCreateRoom(event){
     event.preventDefault();
-    this.roomsRef.push({full: false})
+    const name = event.target[0].value;
+
+    this.roomsRef.push({name})
       .catch(console.error);
   }
 
-  addCurrentUserToRoom(roomId, users) {
-    let full = false;
-    const userListLength = Object.keys(users).length;
-    if (userListLength === 4){
-      full = true;
-    }
-    const newUserList = Object.assign(users, {[userListLength]: this.props.user.uid})
-    this.roomsRef.child(roomId).set(newUserList)
-      .then(() => {
-        this.props.joinRoom();
-        if (full) this.props.startGame(roomId, newUserList);
-      });
+  addCurrentUserToRoom(event, roomId, userId) {
+    event.preventDefault();
+    const name = event.target[0].value;
+    const roomsRef = this.roomsRef;
+    const startGame = this.props.startGame;
+
+    roomsRef.child(roomId).child('users').on('value', function(snapshot){
+      if (snapshot.numChildren() >= 4){
+        const ids = Object.keys(snapshot.val());
+        startGame(roomId, ids);
+      }
+    })
+
+    roomsRef.child(roomId).child('users').child(userId).set(name)
+    .catch(console.error);
   }
 
   removeUser(roomId, userId) {
-    this.roomsRef.child(roomId + '/' + userId).remove()
+    this.roomsRef.child(roomId + '/users/' + userId).remove()
     .then((result) => {
         this.props.leaveRoom();
     });
   }
 
   render() {
+    const fbRooms = this.props.fbRooms;
+
     return (
       <div>
 
-        <CreateRoomButton handleClick={this.handleCreateRoom} />
+        <div id="create-room-button">
+          <form onSubmit={ this.handleCreateRoom }>
+            <input
+              type="text"
+              name="roomname"
+              placeholder="Enter new room name." />
+            <input type="submit" value="Create Room" />
+          </form>
+        </div>
+
         {
-          this.props.gameSession && this.props.gameSession.rooms &&
-          Object.keys(this.props.gameSession.rooms).map(roomId => {
+          fbRooms &&
+          Object.keys(fbRooms).map(roomId => {
             return (
               <Room
                 key={roomId}
-                id={roomId}
+                roomId={roomId}
+                roomName={fbRooms[roomId].name}
                 handleRemove={this.removeUser}
                 handleJoin={this.addCurrentUserToRoom}
-                users={this.props.gameSession.rooms[roomId]}
+                users={fbRooms[roomId].users}
+                userId={this.props.userId.uid}
                 joined={this.props.joined}
               />
             )
@@ -102,8 +118,8 @@ class LobbyContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user.user,
-  gameSession: dataToJS(state.firebase, 'session'),
+  userId: state.user.user,
+  fbRooms: dataToJS(state.firebase, 'rooms'),
   firebase: state.firebase,
   auth: pathToJS(firebase, 'auth'),
   joined: state.room.joined
@@ -116,5 +132,5 @@ const mapDispatchToProps = (dispatch) => ({
   startGame: (roomId, usersObj) => dispatch(fetchNewGame(roomId, usersObj))
 })
 
-const gameSession = firebaseConnect(['session', 'rooms'])(LobbyContainer)
-export default connect(mapStateToProps, mapDispatchToProps)(gameSession)
+const fbWrappedLobbyContainer = firebaseConnect(['rooms'])(LobbyContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(fbWrappedLobbyContainer)

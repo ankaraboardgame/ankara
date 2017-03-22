@@ -13,6 +13,7 @@ import {
 import { fbDB, fbAuth } from '../firebase';
 import { settingUser } from '../redux/action-creators/user';
 import ModalRootContainer from './Modal/ModalRootContainer';
+import { connectToSession } from '../routes/lobby';
 
 // PLUGIN required for Material-UI. Provides an onTouchTap() event handler.
 import injectTapEventPlugin from 'react-tap-event-plugin';
