@@ -25,7 +25,7 @@ function Game (gameId, usersObj){
   this.playerTurn = this.playerIds[0];
   this.merchants = {};
 
-  playerIds.forEach((id, i) => {
+  this.playerIds.forEach((id, i) => {
     this.merchants[id] = new Merchant(id, i);
   });
 }

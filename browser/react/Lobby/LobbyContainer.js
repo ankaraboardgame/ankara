@@ -8,6 +8,7 @@ import {
   pathToJS
 } from 'react-redux-firebase'
 import { fbDB, fbAuth, googleProvider } from '../../firebase';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import { settingUser } from '../../redux/action-creators/user';
 import { joinRoom, leaveRoom } from '../../redux/action-creators/room';
@@ -21,12 +22,12 @@ import { Room } from './Room.js'
 class LobbyContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.removeUser = this.removeUser.bind(this);
+    // this.removeUser = this.removeUser.bind(this);
     this.handleCreateRoom = this.handleCreateRoom.bind(this);
     this.addCurrentUserToRoom = this.addCurrentUserToRoom.bind(this);
-    this.removeUser = this.removeUser.bind(this);
   }
 
+  // get a reference to firebase database > rooms
   componentWillMount() {
     this.roomsRef = fbDB.ref('rooms');
   }
@@ -45,14 +46,14 @@ class LobbyContainer extends React.Component {
     });
   }
 
+  // create room after 'create room' button is clicked
   handleCreateRoom(event){
     event.preventDefault();
     const name = event.target[0].value;
-
-    this.roomsRef.push({name})
-      .catch(console.error);
+    this.roomsRef.push({name}).catch(console.error);
   }
 
+  // add user to specific room after 'join room' button is clicked
   addCurrentUserToRoom(event, roomId, userId) {
     event.preventDefault();
     const name = event.target[0].value;
@@ -63,54 +64,57 @@ class LobbyContainer extends React.Component {
       if (snapshot.numChildren() >= 4){
         startGame(roomId, snapshot.val());
       }
-    })
+    });
 
     roomsRef.child(roomId).child('users').child(userId).set(name)
     .catch(console.error);
   }
 
-  removeUser(roomId, userId) {
-    this.roomsRef.child(roomId + '/users/' + userId).remove()
-    .then((result) => {
-        this.props.leaveRoom();
-    });
-  }
+  // remove self from room
+  // removeUser(roomId, idToRemove) {
+  //   this.roomsRef.child(roomId).child('users').child(idToRemove).remove()
+  //   .then((result) => {
+  //       this.props.leaveRoom();
+  //   });
+  // }
 
   render() {
     const fbRooms = this.props.fbRooms;
 
     return (
-      <div>
+      <MuiThemeProvider>
+        <div id="lobby-container">
 
-        <div id="create-room-button">
-          <form onSubmit={ this.handleCreateRoom }>
-            <input
-              type="text"
-              name="roomname"
-              placeholder="Enter new room name." />
-            <input type="submit" value="Create Room" />
-          </form>
+          <div id="create-room-button">
+            <form onSubmit={ this.handleCreateRoom }>
+              <input
+                type="text"
+                name="roomname"
+                placeholder="Enter new room name." />
+              <input type="submit" value="Create Room" />
+            </form>
+          </div>
+
+          {
+            fbRooms &&
+            Object.keys(fbRooms).map(roomId => {
+              return (
+                <Room
+                  key={roomId}
+                  roomId={roomId}
+                  roomName={fbRooms[roomId].name}
+                  handleRemove={this.removeUser}
+                  handleJoin={this.addCurrentUserToRoom}
+                  users={fbRooms[roomId].users}
+                  userId={this.props.userId.uid}
+                  joined={this.props.joined}
+                />
+              )
+            })
+          }
+
         </div>
-
-        {
-          fbRooms &&
-          Object.keys(fbRooms).map(roomId => {
-            return (
-              <Room
-                key={roomId}
-                roomId={roomId}
-                roomName={fbRooms[roomId].name}
-                handleRemove={this.removeUser}
-                handleJoin={this.addCurrentUserToRoom}
-                users={fbRooms[roomId].users}
-                userId={this.props.userId.uid}
-                joined={this.props.joined}
-              />
-            )
-          })
-        }
-
-      </div>
+      </MuiThemeProvider>
     )
   }
 

@@ -15,7 +15,7 @@ export const fetchNewGame = (roomId, usersMap) => {
 
   return dispatch => {
 
-    axios.post(`/api/game/${roomId}`, {roomId, usersMap})
+    axios.post(`/api/game/${roomId}`, {usersMap})
       .then(() => {
         dispatch(createGame(roomId));
         hashHistory.push('/game');
