@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 
 import BoardContainer from './Board/BoardContainer';
 import FooterContainer from './Footer/FooterContainer';
