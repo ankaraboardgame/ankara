@@ -1,8 +1,9 @@
 /** Game Logic */
 
-function Game (gameId, playerIds){
+function Game (gameId, usersObj){
   this.id = gameId;
-  this.playerIds = playerIds;
+  this.playerIds = Object.keys(usersObj);
+  this.playerMap = usersObj;
   this.smallMosque = {
     leftCost: 1,
     rightCost: 1

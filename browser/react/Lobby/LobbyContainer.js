@@ -61,8 +61,7 @@ class LobbyContainer extends React.Component {
 
     roomsRef.child(roomId).child('users').on('value', function(snapshot){
       if (snapshot.numChildren() >= 4){
-        const ids = Object.keys(snapshot.val());
-        startGame(roomId, ids);
+        startGame(roomId, snapshot.val());
       }
     })
 
