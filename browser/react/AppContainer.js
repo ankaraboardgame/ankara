@@ -1,4 +1,8 @@
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { firebaseConnect, dataToJS } from 'react-redux-firebase';
+
 import BoardContainer from './Board/BoardContainer';
 import FooterContainer from './Footer/FooterContainer';
 import { connect } from 'react-redux'
@@ -17,9 +21,9 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { gameSetup } from '../redux/action-creators/players';
 
 class AppContainer extends React.Component {
-
   constructor(props) {
     super(props);
   }

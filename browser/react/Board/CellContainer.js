@@ -16,6 +16,7 @@ class CellContainer extends React.Component {
     super(props);
   }
 
+
   render() {
 
     const playerPiece = (
