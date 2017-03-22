@@ -8,7 +8,6 @@ import DashFooter from './DashFooter';
 class Footer extends Component {
   constructor(props){
     super(props);
-    console.log('footer', props)
   }
 
   render(){

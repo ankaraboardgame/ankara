@@ -35,7 +35,6 @@ class LobbyContainer extends React.Component {
   componentDidMount() {
     fbAuth.onAuthStateChanged((user) => {
       if (user) {
-        console.log('user', user);
         this.props.setUser(user);
       } else {
         fbAuth.signInAnonymously().catch(function(error) {

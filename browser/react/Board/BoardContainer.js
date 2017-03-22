@@ -27,10 +27,11 @@ class BoardContainer extends React.Component {
           this.props.board && this.props.board.grid.map((row, index) => {
             return (
               <Row
+                user={this.props.user}
                 key={index}
                 row={row}
-                userId={this.props.user.uid}
-                games={this.props.games}
+                game={this.props.game}
+                gameId={this.props.gameId}
                 merchants={this.props.merchants}
                 openModal={this.props.openModal}
                 closeModal={this.props.closeModal}
@@ -43,10 +44,11 @@ class BoardContainer extends React.Component {
   }
 }
 
-const mapStateToProps = ({board, positions, game, user, firebase}) => ({
+const mapStateToProps = ({board, positions, user, firebase, game}) => ({
   board: board.board,
+  gameId: game.id,
   user: user.user,
-  games: dataToJS(firebase, `games/${game.id}`),
+  game: dataToJS(firebase, `games/${game.id}`),
   merchants: dataToJS(firebase, `games/${game.id}/merchants`),
   auth: pathToJS(firebase, 'auth')
 });

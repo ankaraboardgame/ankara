@@ -29,7 +29,6 @@ class AppContainer extends React.Component {
   render() {
 
     const gamesRef = this.props.gamesRef;
-    console.log('gamesRef is', gamesRef);
     const currentUserId = this.props.user.uid;
 
     return (
@@ -56,7 +55,7 @@ const mapStateToProps = (state) => ({
   user: state.user.user,
   gameId: state.game.id,
   firebase: state.firebase,
-  gamesRef: dataToJS(state.firebase, 'games')
+  gamesRef: dataToJS(state.firebase, `games/${state.game.id}`)
 })
 
 export default connect(mapStateToProps)(fbGameWrappedContainer)
