@@ -1,22 +1,26 @@
 const admin = require('firebase-admin');
 const db = admin.database();
 const gamesRef = db.ref('games');
+const gameCountRef = db.ref('gameCount');
+const sessionRef = db.ref('session');
 
 const Game = require('../../game/logic.js');
 const router = module.exports = require('express').Router();
 
 /**
  * Game routes for initializing game
- * ...api/game/...
+ * ...api/game...
  */
 
 // initialize new game
-router.post('/', (req, res, next) => {
-  gamesRef.child('gameOne').set(new Game(['player1', 'player2', 'player3', 'player4']))
+router.post('/:roomId', (req, res, next) => {
+  const roomId = req.params.roomId;
+  const ids = req.body.ids;
+  gamesRef.child(roomId).set(new Game(roomId, ids))
   .then(() => {
-    res.sendStatus(204); // created but no content to send back
+    res.sendStatus(204);
   })
-  .catch(console.error);
+  .catch(next);
 });
 
 // load specific game

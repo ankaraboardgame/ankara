@@ -1,20 +1,27 @@
 import React from 'react';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import { connect } from 'react-redux';
+import { fbAuth, googleProvider, facebookProvider } from '../firebase';
 
 /** Importing components and containers */
 import AppContainer from './AppContainer';
-import Lobby from './Lobby/Lobby';
+import LobbyContainer from './Lobby/LobbyContainer';
 
 /** Importing action-creators */
 import { loadBoard } from '../redux/action-creators/board';
 
+/** onEnter handlers */
+const onLobbyEnter = () => {
+
+
+
+}
 
 /** Routes */
 export function Root ({ loadGameBoard }) {
   return (
       <Router history={hashHistory}>
-        <Route path="/" component={Lobby}/>
+        <Route path="/" component={LobbyContainer} onEnter={onLobbyEnter}/>
         <Route path="/game" component={AppContainer} onEnter={loadGameBoard}/>
       </Router>
   );
