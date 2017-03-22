@@ -1,5 +1,4 @@
-import { Link } from 'react-router';
-import React, { Component, PropTypes } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import {
   firebaseConnect,
@@ -11,7 +10,6 @@ import {
 import { fbDB, fbAuth, googleProvider } from '../../firebase';
 
 import { settingUser } from '../../redux/action-creators/user';
-import { connectToSession } from '../../routes/lobby';
 import { joinRoom, leaveRoom } from '../../redux/action-creators/room';
 import { fetchNewGame } from '../../redux/action-creators/game';
 
@@ -23,9 +21,6 @@ import { Room } from './Room.js'
 class LobbyContainer extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {canStartGame: false};
-    // this.joinSession = this.joinSession.bind(this);
-    // this.startGame = this.startGame.bind(this);
     this.removeUser = this.removeUser.bind(this);
     this.handleCreateRoom = this.handleCreateRoom.bind(this);
     this.addCurrentUserToRoom = this.addCurrentUserToRoom.bind(this);
@@ -51,14 +46,6 @@ class LobbyContainer extends React.Component {
       }
     });
   }
-
-  // joinSession() {
-  //   connectToSession(this.props.user.uid);
-  // }
-  // startGame() {
-  //   console.log('starting game');
-  //   startGame(this.props.user.uid);
-  // }
 
   handleCreateRoom(event){
     event.preventDefault();
@@ -110,17 +97,6 @@ class LobbyContainer extends React.Component {
 
       </div>
     )
-  }
-
-  componentDidUpdate() {
-    // If there are 4 players in the session, trigger game start
-    if(this.props.gameSession && Object.keys(this.props.gameSession.connectedPlayers).length === 4 && !this.state.canStartGame) {
-      console.log('userid', this.props.user.uid);
-      // Trigger game start
-      this.setState({canStartGame: true});
-
-
-    }
   }
 
 }

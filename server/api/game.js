@@ -9,34 +9,18 @@ const router = module.exports = require('express').Router();
 
 /**
  * Game routes for initializing game
- * ...api/game/...
+ * ...api/game...
  */
 
 // initialize new game
-router.post('/:roomNum', (req, res, next) => {
-
-  //expects room number?
-  const roomNum = req.params.roomNum;
+router.post('/:roomId', (req, res, next) => {
+  const roomId = req.params.roomId;
   const ids = req.body.ids;
-
-  const playersPromise = sessionRef.child('rooms').child(roomNum).once('value')
-  .then(snapshot => {
-    console.log('players', snapshot.val());
-    return snapshot.val();
-  })
-  .then(players => {
-    //console.log('gameCount', gameCount, players);
-    const gameId = roomNum; //room numbber becomes gameId
-
-    // const incrementGameCountPromise = gameCountRef.set(gameCount + 1);
-    //const setGameIdPromise = sessionRef.child('rooms').child(roomNum).child('gameId').set(gameId);
-    return gamesRef.child(gameId).set(new Game(ids));
-  })
+  gamesRef.child(roomId).set(new Game(roomId, ids))
   .then(() => {
     res.sendStatus(204);
   })
-  .catch(console.error);
-
+  .catch(next);
 });
 
 // load specific game
