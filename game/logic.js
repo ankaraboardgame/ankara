@@ -1,7 +1,7 @@
 /** Game Logic */
 
-function Game (playerIds){
-  // this.id = gameIdGenerator(playerIds);
+function Game (gameId, playerIds){
+  this.id = gameId;
   this.playerIds = playerIds;
   this.smallMosque = {
     leftCost: 1,
@@ -28,14 +28,6 @@ function Game (playerIds){
     this.merchants[id] = new Merchant(id, i);
   });
 }
-
-// function gameIdGenerator(arrayOfPlayerIds){
-//   let gameId = '';
-//   arrayOfPlayerIds.forEach(playerId => {
-//     gameId += playerId.substr(0,5)
-//   })
-//   return gameId
-// }
 
 function Merchant (id, i){
   this.id = id;

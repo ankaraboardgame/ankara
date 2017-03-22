@@ -11,7 +11,6 @@ import {
 import { fbDB, fbAuth } from '../firebase';
 import { settingUser } from '../redux/action-creators/user';
 import ModalRootContainer from './Modal/ModalRootContainer';
-import { connectToSession } from '../routes/lobby';
 
 // PLUGIN required for Material-UI. Provides an onTouchTap() event handler.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -25,15 +24,10 @@ class AppContainer extends React.Component {
     super(props);
   }
 
-  // componentDidMount() {
-  //   //enterGame
-  //   console.log('user id', this.props.user.uid);
-  //   connectToSession(this.props.user.uid);
-  // }
-
   render() {
 
     const gamesRef = this.props.gamesRef;
+    console.log('gamesRef is', gamesRef);
     const currentUserId = this.props.user.uid;
 
     return (
