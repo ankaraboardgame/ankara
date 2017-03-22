@@ -2,6 +2,7 @@ import React from 'react';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { fbAuth, googleProvider, facebookProvider } from '../firebase';
+import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 
 /** Importing components and containers */
 import AppContainer from './AppContainer';
@@ -17,8 +18,9 @@ const onLobbyEnter = () => {
 
 }
 
+
 /** Routes */
-export function Root ({ loadGameBoard }) {
+const Root = ({ loadGameBoard }) => {
   return (
       <Router history={hashHistory}>
         <Route path="/" component={LobbyContainer} onEnter={onLobbyEnter}/>
@@ -27,7 +29,7 @@ export function Root ({ loadGameBoard }) {
   );
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   loadGameBoard: () => dispatch(loadBoard())
 });
 
