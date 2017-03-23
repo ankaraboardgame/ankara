@@ -138,6 +138,10 @@ body {
   width: 50vw;
 }
 
+#create-room-button {
+  text-align: center
+}
+
 .join-slot {
   border: 1px solid black;
 }
