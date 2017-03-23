@@ -1,3 +1,6 @@
+import React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
+
 export function cellActiveStatus(cell, currentPlayerPosition, possibleMoves) {
   const fullView = possibleMoves.concat(currentPlayerPosition);
   return fullView.indexOf(cell) > -1;
@@ -55,4 +58,48 @@ export function merchantCount(currentUserId, currentCoords, merchantsObj) {
     }
   });
   return merchantCount;
+}
+
+export function whichDialog(modalPayload) {
+  switch (modalPayload.dialog) {
+    case 'drop_assistant':
+      return (
+        <div>
+          <RaisedButton label="Drop an assistant" style={{ margin: 12 }} primary={true} onTouchTap={this.handleAssistant}  />
+          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+        </div>
+      );
+
+    case 'pick_up_assistant':
+      return (
+        <div>
+          <RaisedButton label="Pick up your assistant" style={{ margin: 12 }} primary={true} onTouchTap={this.handleAssistant}  />
+          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+        </div>
+      );
+
+    case 'merchant_encounter':
+      return (
+        <div>
+          <RaisedButton label={`Pay merchants ${this.props.merchantCount * 2} Lira to continue!`} style={{ margin: 12 }} primary={true} onTouchTap={this.handleMerchant}  />
+          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+        </div>
+      );
+
+    case 'action':
+      return this.renderAction();
+
+    case 'smuggler':
+      return (
+        <div>
+          <p>Here be the smuggler! <br /><br />You can get a resource of your choice <br /> But! You must give him 2 lira or a random good of your choice in return...</p>
+          <div>
+            <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+          </div>
+        </div>
+      );
+    
+    default:
+      return null;
+  }
 }

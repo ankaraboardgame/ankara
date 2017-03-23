@@ -66,7 +66,6 @@ const fbGameWrappedContainer = firebaseConnect(({ gameId }) => {
 const mapStateToProps = (state) => ({
   user: state.user.user,
   gameId: state.game.id,
-  firebase: state.firebase,
   gamesRef: dataToJS(state.firebase, `games/${state.game.id}`)
 })
 
