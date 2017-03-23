@@ -31,7 +31,7 @@ export default class GameHistoryComponent extends Component {
     return (
       <div>
         { history && Object.keys(history).map(key => {
-          return (<p>{`${history[key].text}`}</p>)
+          return (<p key={key}>{`${history[key].text}`}</p>)
         })}
         <div style={ {float:"left", clear: "both"} }
           ref={(el) => { this.messagesEnd = el; }}>

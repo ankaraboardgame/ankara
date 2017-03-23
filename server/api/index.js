@@ -9,6 +9,7 @@ api
   .use('/card', require('./card.js'))
   .use('/move', require('./move.js'))
   .use('/lobby', require('./lobby.js'))
+  .use('/log', require('./log.js'))
 
 // No routes matched? 404.
 api.use((req, res) => res.status(404).end())

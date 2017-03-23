@@ -4,14 +4,9 @@ const roomsRef = db.ref('rooms');
 const gamesRef = db.ref('games');
 const gameHistoryRef = db.ref('gameHistory');
 
-
-const getCurrUnixTime = () => {
-    return Math.floor((new Date().getTime()) / 1000);
-}
-
-const log = (gameId, log) => {
-  gameHistoryRef.child(gameId).push(log);
-}
+const util = require('./util');
+const log = util.log;
+const getCurrUnixTime = util.getCurrUnixTime;
 
 const GameLogger = function() {
 
