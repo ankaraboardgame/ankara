@@ -10,23 +10,40 @@ import { actionBuyWbExt } from '../../routes/location';
 class Wainwright extends React.Component {
   constructor(props) {
     super(props);
-    this.handleLocationAction = this.handleLocationAction.bind(this);
+    this.handleBuyExtension = this.handleBuyExtension.bind(this);
+    this.handleEndTurn = this.handleEndTurn.bind(this);
   }
 
-  handleLocationAction(){
-    actionBuyWbExt(this.props.gameId, this.props.playerId)
+  handleEndTurn(){
+    console.log('need to add end turn')
+    this.props.closeModal()
+  }
+
+  handleBuyExtension(){
+    actionBuyWbExt(this.props.gameId, playerId)
     this.props.closeModal()
   }
 
   render() {
-    const style = { margin: 12 }
+    const style = { margin: 12 };
+    const playerId = this.props.playerId;
+    const money = this.props.gamesRef.merchants[playerId].wheelbarrow.money;
     return (
       <Modal>
         <div id="location-modal-container">
           <img src={`images/locations/wainwright.png`} id="img-location" />
-        </div>
-        <div>
-          <RaisedButton label="Buy an Extension" style={style} primary={true} onTouchTap={this.handleLocationAction}  />
+          {
+            money < 7 ?
+            <div>
+            <p>Sorry, you do not have enough money at this time. You must end your turn.</p>
+              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+            </div>
+            :
+            <div>
+              <p>You can buy a wheelbarrow extension here.<br /><br />Each extension cost 7 Lira. <br />You can buy a maximum of 3 extensions, <br />at which point you will receive 1 ruby. <br /></p>
+              <RaisedButton label="Buy an Extension" style={style} primary={true} onTouchTap={this.handleBuyExtension}  />
+            </div>
+          }
         </div>
       </Modal>
     );
