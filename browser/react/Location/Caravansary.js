@@ -1,9 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import Modal from '../Modal/Modal';
+import Dice from '../Pieces/Dice';
 
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
+import { actionCaravansary } from '../../routes/location';
+import { endTurn } from '../../routes/move';
 
 class Caravansary extends React.Component {
   constructor(props) {

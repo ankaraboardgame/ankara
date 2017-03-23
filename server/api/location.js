@@ -223,7 +223,7 @@ router.post('/teaHouse/:gamble/:diceRoll', (req, res, next) => {
     .catch(next);
 })
 
-// 8. CARAVANSARY (1) - +5 lira OR +1 good, random --- need to put the randomnization of bonus cards in the front-end
+// 8. CARAVANSARY (1)
 router.post('/caravansary/:type', (req, res, next) => {
   const type = req.params.type;
   gamesRef.child(req.game.id)
