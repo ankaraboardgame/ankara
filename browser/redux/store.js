@@ -6,6 +6,8 @@ import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 
 import config from '../../secret.config.js';
 
+import { loadCurrentUser } from './action-creators/user';
+
 /***** REDUCERS *****/
 import rootReducer from './reducers';
 
@@ -35,3 +37,5 @@ const store = createStore(
 );
 
 export default store;
+
+store.dispatch(loadCurrentUser());
