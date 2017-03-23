@@ -16,14 +16,13 @@ const router = module.exports = require('express').Router();
 // initialize new game
 router.post('/:roomId', (req, res, next) => {
   const roomId = req.params.roomId;
-  const ids = req.body.ids;
-  gamesRef.child(roomId).set(new Game(roomId, ids))
+  const usersMap = req.body.usersMap;
+  gamesRef.child(roomId).set(new Game(roomId, usersMap))
     .then(() => {
-      ids.forEach((id) => {
+      Object.keys(usersMap).forEach((id) => {
         usersRef.child(id).set(roomId);
       });
   })
-
   .then(() => {
     res.sendStatus(204);
   })

@@ -241,6 +241,11 @@ footer .badge {
   padding: 12px 12px 0px 0px !important
 }
 
+#playerInfo {
+  margin-right: 30px;
+  color: white;
+}
+
 .rules-dialog-btn {
   border-radius: 20%;
 }

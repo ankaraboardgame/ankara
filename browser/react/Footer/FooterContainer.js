@@ -16,7 +16,7 @@ class Footer extends Component {
     const gamesRef = this.props.gamesRef;
     return(
         gamesRef &&
-        <DashFooter wheelbarrow={ gamesRef.merchants[playerId].wheelbarrow } />
+        <DashFooter wheelbarrow={ gamesRef.merchants[playerId].wheelbarrow } gamesRef={gamesRef} playerId={playerId} />
     )
   }
 }
