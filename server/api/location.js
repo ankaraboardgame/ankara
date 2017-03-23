@@ -61,8 +61,9 @@ router.post('/gemstonedealer', (req, res, next) => {
 
   gamesRef.child(req.game.id)
     .child('gemstoneDealer')
-    .once('value', function(snap){
-      GEMSTONE_PRICE = snap.val();
+    .transaction(currPrice => {
+      GEMSTONE_PRICE = currPrice;
+      return ++currPrice;
     })
     .then(() => {
       const payDealerPromise = gamesRef.child(req.game.id)
@@ -182,10 +183,8 @@ router.post('/mosque/:mosqueSize/:tileChosen', (req, res, next) => {
       .set(abilities)
 
       return Promise.all([updateMosqueRate, updatePlayerWheelbarrow, updatePlayerAbilities])
-      .then(() => {
-        res.sendStatus(204);
-      })
     })
+    .then(() => { res.sendStatus(204); })
     .catch(next)
 })
 
