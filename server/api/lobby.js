@@ -8,6 +8,7 @@ const express = require('express');
 const router = express.Router();
 module.exports = router;
 
+// TODO: send response (res.send)
 router.put('/:userId', function (req, res, next) {
   const userId = req.playerId;
 

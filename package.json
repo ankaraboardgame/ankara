@@ -55,6 +55,7 @@
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-react": "^6.23.0",
     "chai": "^3.5.0",
+    "firebase-server": "^0.9.1",
     "mockfirebase": "^0.12.0"
   }
 }
