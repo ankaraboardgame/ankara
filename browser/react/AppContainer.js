@@ -35,7 +35,7 @@ class AppContainer extends React.Component {
         gamesRef ?
         <MuiThemeProvider>
           <div id="app-container">
-            <h3>Constantinople</h3>
+            <h1>Constantinople</h1>
             <p>{ gamesRef.playerMap[gamesRef.playerTurn]} is playing...</p>
             <BoardContainer />
             <FooterContainer clientId={currentUserId} gameId={this.props.gameId} gamesRef={this.props.gamesRef} />
