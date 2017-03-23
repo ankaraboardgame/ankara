@@ -233,15 +233,19 @@ router.post('/teaHouse/:gamble/:diceRoll', (req, res, next) => {
     .catch(next);
 })
 
-// 8. CARAVANSARY (1) - +5 lira OR +1 good, random --- need to put the randomnization of bonus cards in the front-end
-router.post('/caravansary/:type', (req, res, next) => {
-  const type = req.params.type;
+// 8. CARAVANSARY (1)
+router.post('/caravansary/:bonusCardType', (req, res, next) => {
+  const type = req.params.bonusCardType;
   gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/${type}`)
-    .transaction(currentMoneyOrGood => {
-      if (type === 'money') return currentMoneyOrGood + 5;
-      else return currentMoneyOrGood + 1;
+    .child(`merchants/${req.player.id}/bonusCards`)
+    .push({ type })
+    .then(() => {
+      return gamesRef.child(`${req.game.id}/caravansary/index`)
+        .transaction(i => ++i)
+        .catch(next)
     })
-    .then(() => { res.sendStatus(204); })
+    .then(() => {
+      res.sendStatus(204);
+    })
     .catch(next);
 })
