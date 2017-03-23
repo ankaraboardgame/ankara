@@ -1,5 +1,7 @@
 'use strict';
 
-import React from 'react';
+import axios from 'axios';
 
-// Game Start, load wheelbarrow!
+export const endTurn = (gameId, playerId) => {
+  axios.post(`/api/game/${gameId}/player/${playerId}/end`)
+};
