@@ -38,7 +38,7 @@ class AppContainer extends React.Component {
             <h3>Constantinople</h3>
             <BoardContainer />
             <FooterContainer clientId={currentUserId} gameId={this.props.gameId} gamesRef={this.props.gamesRef} />
-            <ModalRootContainer />
+            <ModalRootContainer gamesRef={this.props.gamesRef} />
           </div>
         </MuiThemeProvider>
         :
