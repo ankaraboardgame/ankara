@@ -19,8 +19,13 @@ export const actionBuyRuby = (gameId, playerId) => {
 }
 
 // 4. Markets
-export const actionTradeGoods = (gameId, playerId, marketSize, fabricNum, fruitNum, gemNum, spiceNum) => {
-  return axios.post(`api/game/${gameId}/player/${playerId}/location/market/${marketSize}/${fabricNum}/${fruitNum}/${gemNum}/${spiceNum}`);
+// /market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloomNum/:spiceNum
+export const actionTradeGoods = (gameId, playerId, marketSize, currentMarketIdx, fabricNum, fruitNum, heirloomNum, spiceNum) => {
+  return axios.post(`api/game/${gameId}/player/${playerId}/location/market/${marketSize}/${currentMarketIdx}/${fabricNum}/${fruitNum}/${heirloomNum}/${spiceNum}`);
+}
+
+export const actionChangeTile = (gameId, playerId, marketSize, currentMarketIdx) => {
+  return axios.post(`api/game/${gameId}/player/${playerId}/location/market/${marketSize}/${currentMarketIdx}/updateTile`);
 }
 
 // 5. Mosques

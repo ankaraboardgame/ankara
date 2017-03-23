@@ -3,7 +3,7 @@ import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
-import { Wheelbarrow, Fruits, Fabric, Spices, Gems, Money, Ruby } from './FooterComponents'
+import { Wheelbarrow, Fruits, Fabric, Spices, Heirlooms, Money, Ruby } from './FooterComponents'
 import RulesSideBar from './RulesSideBar';
 import BonusCardsMosqueTiles from './BonusCards&MosqueTiles';
 import PlayerInfo from './PlayerColor&Name';
@@ -55,12 +55,12 @@ const Footer = (props) => {
         </Badge>
         <Badge
           className="badge"
-          badgeContent={wb.jewelry}
+          badgeContent={wb.heirloom}
           secondary={true}
           badgeStyle={{top: 0, right: 0}}>
-          <Gems tooltip="Gems">
+          <Heirlooms tooltip="Heirlooms">
             <NotificationsIcon />
-          </Gems>
+          </Heirlooms>
         </Badge>
         <Badge
           className="badge"
