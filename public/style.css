@@ -130,27 +130,24 @@ body {
 }
 
 /* -------- LOBBY ------- */
-#join-container {
-  width: 50vw;
+
+#lobby-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.join-slot {
-  border: 1px solid black;
+#create-room-button {
+  text-align: center
 }
 
-.join-button {
-  border: 1px solid white;
-  padding: 10px;
-  color: white;
-  background-color: green;
-  border-radius: 3px;
-  box-shadow: 2px 2px 2px black;
-}
-
-.x-button {
-  color: red;
-  margin: 10px;
-  cursor: pointer;
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 /* -------- PLAYER ------- */
