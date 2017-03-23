@@ -33,6 +33,11 @@ class DropAssistant extends React.Component {
       .then(() => this.props.closeModal());
   }
 
+  handleEndTurn() {
+    this.props.closeModal();
+    endTurn(this.props.gameId, this.props.userId);
+  }
+
   render() {
     return (
       <Modal>
