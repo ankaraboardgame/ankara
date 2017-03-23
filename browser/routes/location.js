@@ -15,7 +15,7 @@ export const actionMaxGood = (gameId, playerId, goodType) => {
 
 // 3. Gemstone Dealer
 export const actionBuyRuby = (gameId, playerId) => {
-  axios.post(`api/game/${gameId}/player/${playerId}/location/gemstonedealer`)
+  return axios.post(`api/game/${gameId}/player/${playerId}/location/gemstonedealer`);
 }
 
 // 4. Markets

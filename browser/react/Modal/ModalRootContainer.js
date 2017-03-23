@@ -55,7 +55,7 @@ const ModalRootContainer = (props) => {
 
     const SpecificTurnDialog = MODAL_COMPONENTS[props.modalType];
 
-    return <SpecificTurnDialog payload={props.payload} gamesRef={this.props.gamesRef} />;
+    return <SpecificTurnDialog payload={props.payload} gamesRef={props.gamesRef} />;
 };
 
 const mapStateToProps = state => {
