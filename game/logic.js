@@ -1,5 +1,15 @@
-/** Game Logic */
+const {
+  shuffle,
+  bonusCards,
+  largeMarketDemandTiles,
+  smallMarketDemandTiles
+} = require('./accessories.js');
 
+/**
+ * Game Logic
+ * @param {integer} gameId
+ * @param {object} usersObj
+ */
 function Game (gameId, usersObj){
   this.id = gameId;
   this.playerIds = Object.keys(usersObj);
@@ -14,26 +24,15 @@ function Game (gameId, usersObj){
   };
   this.smallMarket = {
     currentMarketIdx: 0,
-    demandTiles: [
-      {img: 'smallmarket_1.jpg', fruit: 2, fabric: 1, heirloom: 1, spice: 1},
-      {img: 'smallmarket_2.jpg', fruit: 1, fabric: 1, heirloom: 1, spice: 2},
-      {img: 'smallmarket_3.jpg', fruit: 1, fabric: 1, heirloom: 0, spice: 3},
-      {img: 'smallmarket_4.jpg', fruit: 2, fabric: 1, heirloom: 0, spice: 2},
-      {img: 'smallmarket_5.jpg', fruit: 2, fabric: 0, heirloom: 1, spice: 2}
-    ]
+    demandTiles: shuffle(smallMarketDemandTiles)
   };
   this.largeMarket = {
     currentMarketIdx: 0,
-    demandTiles: [
-      {img: 'largemarket_1.jpg', fruit: 0, fabric: 2, heirloom: 2, spice: 1},
-      {img: 'largemarket_2.jpg', fruit: 0, fabric: 1, heirloom: 3, spice: 1},
-      {img: 'largemarket_3.jpg', fruit: 1, fabric: 2, heirloom: 2, spice: 0},
-      {img: 'largemarket_4.jpg', fruit: 1, fabric: 1, heirloom: 3, spice: 0},
-      {img: 'largemarket_5.jpg', fruit: 1, fabric: 1, heirloom: 2, spice: 1}
-    ]
+    demandTiles: shuffle(largeMarketDemandTiles)
   };
   this.caravansary = {
-    bonusCards: {}
+    index: 0,
+    bonusCards: shuffle(bonusCards)
   };
   this.gemstoneDealer = 12;
   this.playerTurn = this.playerIds[0];
@@ -42,20 +41,6 @@ function Game (gameId, usersObj){
   this.playerIds.forEach((id, i) => {
     this.merchants[id] = new Merchant(id, i);
   });
-
-  this.smallMarket.demandTiles = shuffle(this.smallMarket.demandTiles);
-  this.largeMarket.demandTiles = shuffle(this.largeMarket.demandTiles);
-}
-
-function shuffle(array){
-  let i = 0, j = 0, temp = null;
-  for(let i = array.length-1; i > 0; i--){
-    j = Math.floor(Math.random()*(i+1));
-    temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-  return array;
 }
 
 function Merchant (id, i){
