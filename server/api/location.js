@@ -30,6 +30,8 @@ router.post('/wainwright', (req, res, next) => {
     })
 
   Promise.all([payWainwrightPromise, expandWheelbarrowPromise])
+  .then(() => { res.sendStatus(204); })
+  .catch(next);
 })
 
  // 2. WAREHOUSES (3) - Depending on the goodType, player will get max amount
@@ -50,7 +52,7 @@ router.post('/warehouse/:goodType', (req, res, next) => {
     .then(() => {
       res.sendStatus(204);
     })
-    .catch(console.error)
+    .catch(next)
 })
 
 // 3. GEMSTONE DEALER (1) - pay gemstone dealer and gain ruby
@@ -78,7 +80,7 @@ router.post('/gemstonedealer', (req, res, next) => {
     .then(() => {
       res.sendStatus(204);
     })
-    .catch(console.error)
+    .catch(next)
 });
 
 // 4. MARKETS (2) - Trade
@@ -121,7 +123,7 @@ router.post('/market/:marketSize/:fabricNum/:fruitNum/:jewelryNum/:spiceNum', (r
           res.sendStatus(204)
         })
     })
-    .catch(console.error)
+    .catch(next)
 })
 
 // 5. MOSQUES (2)
@@ -132,23 +134,21 @@ router.post('/mosque/:mosqueSize/:tileChosen', (req, res, next) => {
   const tile = req.params.tileChosen;
   let good, abilities, ability;
 
-  if(mosque === 'smallMosque') {
-    if(tile === 'left') {
+  if (mosque === 'smallMosque') {
+    if (tile === 'left') {
       good = 'fabric';
       ability = 'dieTurnOrRoll'; // only for tea house or black market
-    }
-    else {
+    } else {
       good = 'fruit';
       ability = '2LiraToReturn1Assistant';
     }
   }
 
-  if(mosque === 'greatMosque') {
-    if(tile === 'left') {
+  if (mosque === 'greatMosque') {
+    if (tile === 'left') {
       good = 'spice';
       ability = '2LiraFor1AdditionalGood'; // only for warehouse
-    }
-    else {
+    } else {
       good = 'jewelry';
       ability = 'add1Assistant'; // max 1 time, 5 assistants total
     }
@@ -161,7 +161,7 @@ router.post('/mosque/:mosqueSize/:tileChosen', (req, res, next) => {
     })
     .then(() => {
 
-      if(!abilities[ability]){
+      if (!abilities[ability]){
         abilities.ability = ability
       }
 
@@ -181,44 +181,50 @@ router.post('/mosque/:mosqueSize/:tileChosen', (req, res, next) => {
       .child(`merchants/${req.player.id}/abilities`)
       .set(abilities)
 
-      Promise.all([updateMosqueRate, updatePlayerWheelbarrow, updatePlayerAbilities])
+      return Promise.all([updateMosqueRate, updatePlayerWheelbarrow, updatePlayerAbilities])
+      .then(() => {
+        res.sendStatus(204);
+      })
     })
-    .catch(console.error)
+    .catch(next)
 })
 
 // 6. BLACK MARKET (1)
-router.post('/blackMarket/:goodChosen/:dice1/:dice2/', (req, res, next) => {
-  const diceSum = req.params.dice1 + req.params.dice2;
+router.post('/blackMarket/:goodChosen/:diceRoll/', (req, res, next) => {
+  const diceRoll = +req.params.diceRoll;
 
-  const updateGoodChosen = gamesRef.child(req.game.id)
+  const updateGoodPromise = gamesRef.child(req.game.id)
     .child(`merchants/${req.player.id}/wheelbarrow/${req.params.goodChosen}`)
     .transaction(function(currentGood){
-      return currentGood++;
+      return currentGood + 1;
     })
 
-  const promiseForJewelry = gamesRef.child(req.game.id)
+  const updateHeirloomPromise = gamesRef.child(req.game.id)
     .child(`merchants/${req.player.id}/wheelbarrow/jewelry`)
     .transaction(currentJewelry => {
-      if (diceSum === 7 || diceSum === 8) return currentJewelry + 1;
-      else if (diceSum === 9 || diceSum === 10) return currentJewelry + 2;
-      else if (diceSum === 11 || diceSum === 12) return currentJewelry + 3;
-      else return currentJewelry
+      if (diceRoll === 7 || diceRoll === 8) return currentJewelry + 1;
+      else if (diceRoll === 9 || diceRoll === 10) return currentJewelry + 2;
+      else if (diceRoll === 11 || diceRoll === 12) return currentJewelry + 3;
+      else return currentJewelry;
     })
 
-  Promise.all([updateGoodChosen, promiseForJewelry])
+  Promise.all([updateGoodPromise, updateHeirloomPromise])
+    .then(() => { res.sendStatus(204); })
+    .catch(next);
 })
 
 // 7. TEA HOUSE (1)
-router.post('/teaHouse/:number/:dice1/:dice2', (req, res, next) => {
-  let sum = req.params.dice1 + req.params.dice2;
-  const number = req.params.number
+router.post('/teaHouse/:gamble/:diceRoll', (req, res, next) => {
+  const diceRoll = +req.params.diceRoll;
+  const gamble = +req.params.gamble
   gamesRef.child(req.game.id)
     .child(`merchants/${req.player.id}/wheelbarrow/money`)
-    .transation(currentMoney => {
-      if(number >= sum) return currentMoney + number
-      else return currentMoney + 2
+    .transaction(currentMoney => {
+      if (diceRoll >= gamble) return currentMoney + gamble;
+      else return currentMoney + 2;
     })
-    .catch(console.error)
+    .then(() => { res.sendStatus(204); })
+    .catch(next);
 })
 
 // 8. CARAVANSARY (1) - +5 lira OR +1 good, random --- need to put the randomnization of bonus cards in the front-end
@@ -230,4 +236,6 @@ router.post('/caravansary/:type', (req, res, next) => {
       if (type === 'money') return currentMoneyOrGood + 5;
       else return currentMoneyOrGood + 1;
     })
+    .then(() => { res.sendStatus(204); })
+    .catch(next);
 })

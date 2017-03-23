@@ -35,7 +35,7 @@ export const Spices = () => {
 export const Gems = () => {
   return (
     <div>
-      <img className="img-circle" src="./images/cart/gems.png" />
+      <img className="img-circle" src="./images/cart/heirlooms.png" />
     </div>
   )
 }
