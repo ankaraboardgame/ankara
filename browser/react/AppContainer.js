@@ -34,12 +34,20 @@ class AppContainer extends React.Component {
       return (
         gamesRef ?
         <MuiThemeProvider>
-          <div id="app-container">
-            <h3>Constantinople</h3>
-            <p>{ gamesRef.playerMap[gamesRef.playerTurn]} is playing...</p>
-            <BoardContainer />
-            <FooterContainer clientId={currentUserId} gameId={this.props.gameId} gamesRef={this.props.gamesRef} />
-            <ModalRootContainer gamesRef={this.props.gamesRef} />
+          <div id="game-container">
+            <div id="player-box-container">
+              <img src={'images/player/redplayer.png'} id="player-icons" />
+              <img src={'images/player/blueplayer.png'} id="player-icons" />
+              <img src={'images/player/greenplayer.png'} id="player-icons" />
+              <img src={'images/player/yellowplayer.png'} id="player-icons" />
+            </div>
+            <div id="app-container">
+              <img src={`images/Constantinople-Title.png`} id="game-title" />
+              {/*<p>{ gamesRef.playerMap[gamesRef.playerTurn]} is playing...</p>*/}
+              <BoardContainer />
+              <FooterContainer clientId={currentUserId} gameId={this.props.gameId} gamesRef={this.props.gamesRef} />
+              <ModalRootContainer gamesRef={this.props.gamesRef} />
+            </div>
           </div>
         </MuiThemeProvider>
         :

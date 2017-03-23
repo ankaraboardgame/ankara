@@ -9,12 +9,14 @@ import {
 } from 'react-redux-firebase'
 import { fbDB, fbAuth, googleProvider } from '../../firebase';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import { settingUser } from '../../redux/action-creators/user';
 import { joinRoom, leaveRoom } from '../../redux/action-creators/room';
 import { fetchNewGame } from '../../redux/action-creators/game';
 
-import { CreateRoomButton } from './CreateRoomButton.js';
 import { Room } from './Room.js'
 
 /************ LobbyContainer ****************/
@@ -22,15 +24,24 @@ import { Room } from './Room.js'
 class LobbyContainer extends React.Component {
   constructor(props) {
     super(props);
-    // this.removeUser = this.removeUser.bind(this);
+
+    // local state
+    this.state = { joined: false };
+
+    this.removeUserFromRoom = this.removeUserFromRoom.bind(this);
     this.handleCreateRoom = this.handleCreateRoom.bind(this);
     this.addCurrentUserToRoom = this.addCurrentUserToRoom.bind(this);
     this.handleStartGame = this.handleStartGame.bind(this);
+    this.handleDeleteRoom = this.handleDeleteRoom.bind(this);
   }
 
   // get a reference to firebase database > rooms
   componentWillMount() {
     this.roomsRef = fbDB.ref('rooms');
+  }
+
+  componentWillUnMount() {
+    this.roomsRef.off();
   }
 
   componentDidMount() {
@@ -51,17 +62,24 @@ class LobbyContainer extends React.Component {
   handleCreateRoom(event){
     event.preventDefault();
     const name = event.target[0].value;
-    this.roomsRef.push({name}).catch(console.error);
+    this.roomsRef.push({name}).catch(console.error); // should dispatch action
+  }
+
+  handleDeleteRoom(event, roomId){
+    event.preventDefault();
+    console.log('deleting room');
+    this.roomsRef.child(roomId).remove();
   }
 
   // add user to specific room after 'join room' button is clicked
   addCurrentUserToRoom(event, roomId, userId) {
     event.preventDefault();
-    const roomsRef = this.roomsRef;
-    const name = event.target[0].value;
+    const name = event.target[0].value || 'Anonymous';
 
-    roomsRef.child(roomId).child('users').child(userId).set(name)
+    this.roomsRef.child(roomId).child('users').child(userId).set(name)
     .catch(console.error);
+
+    this.setState({ joined: roomId });
   }
 
   // create room after 'create room' button is clicked
@@ -75,49 +93,70 @@ class LobbyContainer extends React.Component {
     });
   }
 
-  // remove self from room
-  // removeUser(roomId, idToRemove) {
-  //   this.roomsRef.child(roomId).child('users').child(idToRemove).remove()
-  //   .then((result) => {
-  //       this.props.leaveRoom();
-  //   });
-  // }
+  removeUserFromRoom(evt, roomId, idToRemove) {
+    evt.preventDefault();
+    const leaveRoom = this.props.leaveRoom;
+    const ownId = this.props.userId;
+    console.log(ownId, idToRemove)
+    this.roomsRef.child(roomId).child('users').child(idToRemove).remove()
+    .then((result) => {
+        leaveRoom();
+        if (idToRemove === ownId) {
+          this.setState({joined: false})
+        }
+    });
+  }
 
   render() {
-    const fbRooms = this.props.fbRooms;
+    const fbRoomData = this.props.fbRoomData;
+    const paperStyle = {
+      height: 100,
+      width: 800,
+      padding: 20,
+      margin: 20,
+      backgroundColor: 'navajowhite',
+      textAlign: 'center',
+      display: 'inline-block'
+    };
 
     return (
       <MuiThemeProvider>
         <div id="lobby-container">
 
+          <h1>Constantinople</h1>
+
           <div id="create-room-button">
-            <form onSubmit={ this.handleCreateRoom }>
-              <input
-                type="text"
-                name="roomname"
-                placeholder="Enter new room name." />
-              <input type="submit" value="Create Room" />
-            </form>
+            <Paper style={paperStyle} zDepth={2}>
+              <form onSubmit={ this.handleCreateRoom }>
+                <TextField hintText="Create new room" style={{marginLeft: 20}} />
+                <RaisedButton type="submit">
+                  CREATE
+                </RaisedButton>
+              </form>
+            </Paper>
           </div>
 
+          <div className="row">
           {
-            fbRooms &&
-            Object.keys(fbRooms).map(roomId => {
+            fbRoomData &&
+            Object.keys(fbRoomData).map(roomId => {
               return (
                 <Room
                   key={roomId}
                   roomId={roomId}
-                  roomName={fbRooms[roomId].name}
-                  handleRemove={this.removeUser}
-                  handleJoin={this.addCurrentUserToRoom}
-                  users={fbRooms[roomId].users}
-                  userId={this.props.userId.uid}
-                  joined={this.props.joined}
+                  roomName={fbRoomData[roomId].name}
+                  handleLeaveRoom={this.removeUserFromRoom}
+                  handleJoinRoom={this.addCurrentUserToRoom}
+                  users={fbRoomData[roomId].users}
+                  userId={this.props.userId}
+                  joined={this.state.joined}
                   handleStart={this.handleStartGame}
+                  handleDeleteRoom={this.handleDeleteRoom}
                 />
               )
             })
           }
+          </div>
 
         </div>
       </MuiThemeProvider>
@@ -127,8 +166,8 @@ class LobbyContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  userId: state.user.user,
-  fbRooms: dataToJS(state.firebase, 'rooms'),
+  userId: state.user.user && state.user.user.uid,
+  fbRoomData: dataToJS(state.firebase, 'rooms'),
   firebase: state.firebase,
   auth: pathToJS(firebase, 'auth'),
   joined: state.room.joined

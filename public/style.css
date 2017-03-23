@@ -1,6 +1,33 @@
 body {
-  background-color: wheat;
+  background-image: url('images/board-background.jpg'); 
 }
+
+#game-title {
+  width: 50%;
+}
+
+/* ------- GAME CONTAINER ---- */
+#game-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+/* ------- PLAYER ICON BOX ---- */
+#player-box-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 500px;
+  padding: 25px 25px 0px 25px;
+  align-self: center;
+}
+
+#player-icons {
+  width: 50px;
+  height: 50px;
+}
+
 
 /* -------- LOCATION MODALS --- */
 #location-modal-container {
@@ -135,27 +162,24 @@ body {
 }
 
 /* -------- LOBBY ------- */
-#join-container {
-  width: 50vw;
+
+#lobby-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.join-slot {
-  border: 1px solid black;
+#create-room-button {
+  text-align: center
 }
 
-.join-button {
-  border: 1px solid white;
-  padding: 10px;
-  color: white;
-  background-color: green;
-  border-radius: 3px;
-  box-shadow: 2px 2px 2px black;
-}
-
-.x-button {
-  color: red;
-  margin: 10px;
-  cursor: pointer;
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 /* -------- PLAYER ------- */

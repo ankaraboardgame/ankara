@@ -22,13 +22,23 @@ class CellContainer extends React.Component {
     const currentUserId = this.props.user.uid;
     const merchants = this.props.merchants;
 
-    const playerPieces = merchants && Object.keys(merchants).map( (merchantId) => {
-      if( merchants[merchantId].position.coordinates === this.props.coords) {
-        return <Player key={merchantId} activePlayer={this.props.game.playerTurn} currentUser={this.props.user} playerId={merchantId} playerNum={merchants[merchantId].number} />
-      } else {
-        return null;
-      }
-    }).filter( val => val !== null);
+    const playerPieces = merchants && Object.keys(merchants)
+      .map( (merchantId) => {
+        if ( merchants[merchantId].position.coordinates === this.props.coords) {
+          return (
+            <Player
+              key={merchantId}
+              activePlayer={this.props.game.playerTurn}
+              currentUser={this.props.user}
+              playerId={merchantId}
+              playerNum={merchants[merchantId].number}
+            />
+          )
+        } else {
+          return null;
+        }
+      })
+      .filter(Boolean);
 
     const { connectDropTarget, isOver } = this.props;
 
@@ -49,7 +59,7 @@ class CellContainer extends React.Component {
           name={this.props.name}
         />
         <div id="player-container">
-          {playerPieces}
+          { playerPieces }
         </div>
         { isOver && <div id="player-hover-overlay" /> }
       </div>
