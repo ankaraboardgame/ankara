@@ -15,6 +15,12 @@ function shuffle(array) {
 
 const bonusCards = [
   {type: 'fiveLira', img: 'five-lira.png'},
+  {type: 'fiveLira', img: 'five-lira.png'},
+  {type: 'fiveLira', img: 'five-lira.png'},
+  {type: 'fiveLira', img: 'five-lira.png'},
+  {type: 'oneGood', img: 'one-good.png'},
+  {type: 'oneGood', img: 'one-good.png'},
+  {type: 'oneGood', img: 'one-good.png'},
   {type: 'oneGood', img: 'one-good.png'}
 ];
 

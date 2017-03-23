@@ -31,6 +31,7 @@ function Game (gameId, usersObj){
     demandTiles: shuffle(largeMarketDemandTiles)
   };
   this.caravansary = {
+    index: 0,
     bonusCards: shuffle(bonusCards)
   };
   this.gemstoneDealer = 12;
