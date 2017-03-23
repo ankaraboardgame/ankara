@@ -32,7 +32,7 @@ export const Spices = () => {
   )
 }
 
-export const Gems = () => {
+export const Heirlooms = () => {
   return (
     <div>
       <img className="img-circle" src="./images/cart/heirlooms.png" />

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Modal from '../Modal/Modal';
-import SmallMarketRate from './SmallMarketRate'
 
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 
@@ -12,12 +11,13 @@ class SmallMarket extends React.Component {
   }
 
   render() {
+    const currentMarketIdx = this.props.gamesRef.smallMarket.currentMarketIdx;
+    const currentDemandTile = this.props.gamesRef.smallMarket.demandTiles[currentMarketIdx].img;
     return (
       <Modal>
         <div id="location-modal-container">
-          <img src={`images/locations/small_market.png`} id="img-location" />
-          <SmallMarketRate />
-          <p>You are now at the small market. You can trade some goods for money!</p>
+          <img src={`images/market/small/${currentDemandTile}`} id="img-location" />
+          <p>Select the goods you would like to trade for money!</p>
           <div id="market-row">
             <img src="./images/cart/fabric.png" />
             <img src="./images/cart/fruits.png" />

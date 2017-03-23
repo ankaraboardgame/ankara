@@ -30,13 +30,9 @@ body {
   border: 1px solid white;
 }
 
-/* still need to fix location of the image! */
-#exchange-card img {
-  height: 260px;
-}
-
 #img-location {
   border-radius: 6px;
+  max-width: 700px;
 }
 
 #market-row {
