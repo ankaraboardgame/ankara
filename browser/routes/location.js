@@ -29,13 +29,14 @@ export const actionBuyMosqueTile = (gameId, playerId, mosqueSize, selectedTile) 
 }
 
 // 6. Black Market
-export const actionBlackMarket = (gameId, playerId, selectedGood, dice1, dice2) => {
-  return axios.post(`api/game/${gameId}/player/${playerId}/location/blackmarket/${selectedGood}/${dice1}/${dice2}`);
+export const actionBlackMarket = (gameId, playerId, selectedGood, diceRoll) => {
+  console.log(gameId, playerId, selectedGood, diceRoll)
+  return axios.post(`api/game/${gameId}/player/${playerId}/location/blackmarket/${selectedGood}/${diceRoll}`)
 }
 
 // 7. Tea house
-export const actionTeaHouse = (gameId, playerId, number, dice1, dice2) => {
-  return axios.post(`api/game/${gameId}/player/${playerId}/location/teaHouse/${number}/${dice1}/${dice2}`);
+export const actionTeaHouse = (gameId, playerId, number, diceRoll) => {
+  return axios.post(`api/game/${gameId}/player/${playerId}/location/teaHouse/${number}/${diceRoll}`)
 }
 
 // 8. Caravansary

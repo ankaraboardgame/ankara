@@ -34,7 +34,7 @@ router.post('/wainwright', (req, res, next) => {
     .then(() => {
       res.sendStatus(204);
     })
-    .catch(console.error)
+    .catch(next)
 });
 
 // pay gemstone dealer
@@ -56,7 +56,7 @@ router.post('/gemstonedealer', (req, res, next) => {
     .then(() => {
       res.sendStatus(204);
     })
-    .catch(console.error)
+    .catch(next)
 });
 
 // pay other merchant
@@ -79,5 +79,5 @@ router.post('/:otherMerchantId', (req, res, next) => {
   .then(() => {
     res.sendStatus(204);
   })
-  .catch(console.error);
+  .catch(next);
 });

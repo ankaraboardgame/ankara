@@ -22,7 +22,7 @@ class SmallMarket extends React.Component {
             <img src="./images/cart/fabric.png" />
             <img src="./images/cart/fruits.png" />
             <img src="./images/cart/spices.png" />
-            <img src="./images/cart/gems.png" />
+            <img src="./images/cart/heirlooms.png" />
           </div>
         </div>
       </Modal>
