@@ -27,23 +27,26 @@ class AppContainer extends React.Component {
   }
 
   render() {
+    if (this.props.user) {
+      const gamesRef = this.props.gamesRef;
+      const currentUserId = this.props.user.uid;
 
-    const gamesRef = this.props.gamesRef;
-    const currentUserId = this.props.user.uid;
-
-    return (
-      gamesRef ?
-      <MuiThemeProvider>
-        <div id="app-container">
-          <h3>Constantinople</h3>
-          <BoardContainer />
-          <FooterContainer clientId={currentUserId} gameId={this.props.gameId} gamesRef={this.props.gamesRef} />
-          <ModalRootContainer />
-        </div>
-      </MuiThemeProvider>
-      :
-      <h3>Loading...</h3>
-    );
+      return (
+        gamesRef ?
+        <MuiThemeProvider>
+          <div id="app-container">
+            <h3>Constantinople</h3>
+            <BoardContainer />
+            <FooterContainer clientId={currentUserId} gameId={this.props.gameId} gamesRef={this.props.gamesRef} />
+            <ModalRootContainer />
+          </div>
+        </MuiThemeProvider>
+        :
+        <h3>Loading...</h3>
+      );
+    } else {
+      return <h4>loading board</h4>
+    }
   }
 }
 
