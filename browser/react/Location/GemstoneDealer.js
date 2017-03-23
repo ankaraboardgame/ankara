@@ -34,6 +34,7 @@ class GemstoneDealer extends React.Component {
 
   render() {
     const price = this.state.gemPrice;
+    const money = this.props.gameData.merchants[this.props.playerId].wheelbarrow.money
 
     return (
       <Modal>
@@ -41,7 +42,13 @@ class GemstoneDealer extends React.Component {
           <img src={`images/locations/gemstone_dealer.png`} id="img-location" />
           <p>All the gems that money can buy. Current price: {price} lira.</p>
           <div>
-            <RaisedButton label={`BUY GEM FOR ${price} LIRA`} style={{ margin: 12 }} primary={true} onTouchTap={this.handleBuyGemEndTurn}  />
+            <RaisedButton
+              label={`BUY GEM FOR ${price} LIRA`}
+              style={{ margin: 12 }}
+              primary={true}
+              onTouchTap={this.handleBuyGemEndTurn}
+              disabled={money < price}
+            />
             <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
           </div>
         </div>

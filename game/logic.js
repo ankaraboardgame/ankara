@@ -1,5 +1,15 @@
-/** Game Logic */
+const {
+  shuffle,
+  bonusCards,
+  largeMarketDemandTiles,
+  smallMarketDemandTiles
+} = require('./accessories.js');
 
+/**
+ * Game Logic
+ * @param {integer} gameId
+ * @param {object} usersObj
+ */
 function Game (gameId, usersObj){
   this.id = gameId;
   this.playerIds = Object.keys(usersObj);
@@ -12,14 +22,17 @@ function Game (gameId, usersObj){
     leftCost: 1,
     rightCost: 1
   };
-  this.largeMarket = {
-    demandTile: { fruit: 2, spice: 1, fabric: 2 }
-  };
   this.smallMarket = {
-    demandTile: { jewelry: 2, spice: 2, fabric: 1 }
+    currentMarketIdx: 0,
+    demandTiles: shuffle(smallMarketDemandTiles)
+  };
+  this.largeMarket = {
+    currentMarketIdx: 0,
+    demandTiles: shuffle(largeMarketDemandTiles)
   };
   this.caravansary = {
-    bonusCards: {}
+    index: 0,
+    bonusCards: shuffle(bonusCards)
   };
   this.gemstoneDealer = 12;
   this.playerTurn = this.playerIds[0];
@@ -42,10 +55,10 @@ function Merchant (id, i){
     spice: 0,
     fruit: 0,
     ruby: 0,
-    jewelry: 0,
+    heirloom: 0,
     money: i + 2,
     size: 2
-  };
+  }
   this.abilities = {};
 
   for (let i = 0; i < 4; i++){
