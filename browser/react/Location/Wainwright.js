@@ -21,7 +21,8 @@ class Wainwright extends React.Component {
 
   handleBuyExtension(){
     actionBuyWbExt(this.props.gameId, playerId)
-    this.props.closeModal()
+    .then(() => this.props.closeModal())
+    .catch(console.error)
   }
 
   render() {

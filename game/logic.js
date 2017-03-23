@@ -70,10 +70,10 @@ function Merchant (id, i){
     spice: 0,
     fruit: 0,
     ruby: 0,
-    jewelry: 0,
+    heirloom: 0,
     money: i + 2,
     size: 2
-  };
+  }
   this.abilities = {};
 
   for (let i = 0; i < 4; i++){
