@@ -14,8 +14,6 @@ import { loadBoard } from '../redux/action-creators/board';
 /** onEnter handlers */
 const onLobbyEnter = () => {
 
-
-
 }
 
 

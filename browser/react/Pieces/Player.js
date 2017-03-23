@@ -22,7 +22,7 @@ const playerSource = {
     return {};
   },
   canDrag(props) {
-    return props.currentUser.uid === props.playerId
+    return props.currentUser.uid === props.playerId && props.currentUser.uid === props.activePlayer
   }
 }
 
