@@ -24,7 +24,7 @@ class CellContainer extends React.Component {
 
     const playerPieces = merchants && Object.keys(merchants).map( (merchantId) => {
       if( merchants[merchantId].position.coordinates === this.props.coords) {
-        return <Player key={merchantId} currentUser={this.props.user} playerId={merchantId} playerNum={merchants[merchantId].number} />
+        return <Player key={merchantId} activePlayer={this.props.game.playerTurn} currentUser={this.props.user} playerId={merchantId} playerNum={merchants[merchantId].number} />
       } else {
         return null;
       }

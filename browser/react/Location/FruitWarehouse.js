@@ -16,6 +16,7 @@ class FruitWarehouse extends React.Component {
   handleMaxGoodEndTurn(){
     actionMaxGood(this.props.gameId, this.props.playerId, this.props.goodType)
     this.props.closeModal();
+
   }
 
   render() {
