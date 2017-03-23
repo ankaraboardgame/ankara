@@ -74,7 +74,7 @@ class LobbyContainer extends React.Component {
   // add user to specific room after 'join room' button is clicked
   addCurrentUserToRoom(event, roomId, userId) {
     event.preventDefault();
-    const name = event.target[0].value;
+    const name = event.target[0].value || 'Anonymous';
 
     this.roomsRef.child(roomId).child('users').child(userId).set(name)
     .catch(console.error);
