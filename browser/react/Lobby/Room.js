@@ -20,7 +20,7 @@ export const Room = props => {
 
   const paperStyle = {
     height: 500,
-    width: 500,
+    width: 400,
     padding: 20,
     margin: 20,
     backgroundColor: 'navajowhite',
@@ -48,7 +48,11 @@ export const Room = props => {
             JOIN
           </RaisedButton>
         </form>
-        <RaisedButton secondary={true} style={{margin: 15}} onTouchTap={(evt) => props.handleStart(evt, props.roomId)}>
+        <RaisedButton
+          secondary={true}
+          style={{margin: 15}}
+          onTouchTap={(evt) => props.handleStart(evt, props.roomId)}
+          disabled={!(props.joined === props.roomId)}>
           START
         </RaisedButton>
       </Paper>

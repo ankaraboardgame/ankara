@@ -90,11 +90,12 @@ router.post('/market/:marketSize/:fabricNum/:fruitNum/:jewelryNum/:spiceNum', (r
   let tradeOffer = { fabric: req.params.fabricNum, fruit: req.params.fruitNum, jewelry: req.params.jewelryNum, spice: req.params.spiceNum };
   let largeMarketRate = { 1: 3, 2: 7, 3: 12, 4: 18, 5: 25 };
   let smallMarketRate = { 1: 2, 2: 5, 3: 9, 4: 14, 5: 20 };
-  let marketGoods, sum = 0, transaction;
+  let marketDemand, sum = 0, transaction;
+
   gamesRef.child(req.game.id)
     .child(`${marketSize}/demandTile`)
     .once('value', snap => {
-      marketGoods = snap.val()
+      marketDemand = snap.val()
     })
     .then(() => {
       gamesRef.child(req.game.id)
@@ -104,19 +105,15 @@ router.post('/market/:marketSize/:fabricNum/:fruitNum/:jewelryNum/:spiceNum', (r
         })
         .then(() => {
           for(let good in tradeOffer){
-            if(marketGoods[good] > 0){
-              if(tradeOffer[good] <= marketGoods[good]){
+            if(marketDemand[good] > 0){
+              if(tradeOffer[good] <= marketDemand[good]){
                 sum += tradeOffer[good]
                 transaction[good] -= tradeOffer[good]
               }
-              else {
-                sum += marketGoods[good]
-                transaction -= marketGoods[good]
-              }
             }
           }
-          marketSize === 'smallMarket' ? transaction.money = smallMarketRate[sum] : transaction.money = largeMarketRate[sum];
-          gamesRef.child(req.game.id)
+          transaction.money += (marketSize === 'smallMarket') ? smallMarketRate[sum] : largeMarketRate[sum];
+          return gamesRef.child(req.game.id)
             .child(`merchants/${req.player.id}/wheelbarrow`)
             .set(transaction)
         })
