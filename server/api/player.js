@@ -15,6 +15,7 @@ const router = module.exports = require('express').Router();
 // load one player
 router.param('playerId', (req, res, next, playerId) => {
   req.player = req.game.merchants[playerId];
+  req.playerRef = gamesRef.child(playerId);
   next();
 });
 
@@ -24,6 +25,18 @@ router.post('/:playerId/end', (req, res, next) => {
   gamesRef.child(req.game.id)
     .child('playerTurn')
     .set(req.game.playerIds[newIdx])
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch(next);
+});
+
+// register player win
+router.post('/:playerId/win', (req, res, next) => {
+  const playerId = req.params.playerId;
+  gamesRef.child(req.game.id)
+    .child('winner')
+    .set({[playerId]: req.game.playerMap[playerId]})
     .then(() => {
       res.sendStatus(204);
     })
