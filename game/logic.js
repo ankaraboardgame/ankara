@@ -44,7 +44,7 @@ function Merchant (id, i){
     ruby: 0,
     jewelry: 0,
     money: i + 2,
-    size: 3
+    size: 2
   };
   this.abilities = {};
 

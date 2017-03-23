@@ -13,6 +13,7 @@ class MerchantEncounter extends React.Component {
     super(props);
 
     this.handleMerchantEncounter = this.handleMerchantEncounter.bind(this);
+    this.handleEndTurn = this.handleEndTurn.bind(this);
   }
 
   handleMerchantEncounter() {
@@ -20,12 +21,18 @@ class MerchantEncounter extends React.Component {
     this.props.openModal(mapCoordToLocation(this.props.currentPosition));
   }
 
+  handleEndTurn() {
+    this.props.closeModal();
+    endTurn(this.props.gameId, this.props.userId);
+  }
+
+
   render() {
     return (
       <Modal>
         <div id="turn-dialog-container">
           <img onClick={this.handleMerchantEncounter} src="images/turn_dialogs/pay_merchants.png" id="icon-turn-dialog"/>
-          <img src="images/turn_dialogs/end_turn.png" id="icon-turn-dialog"/>
+          <img onClick={this.handleEndTurn} src="images/turn_dialogs/end_turn.png" id="icon-turn-dialog"/>
         </div>
       </Modal>
     );
@@ -33,7 +40,9 @@ class MerchantEncounter extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  currentPosition: state.modal.payload.currentPosition
+  currentPosition: state.modal.payload.currentPosition,
+  gameId: state.game.id,
+  userId: state.user.user.uid,
 });
 
 const mapDispatchToProps = dispatch => {
