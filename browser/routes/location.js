@@ -10,7 +10,7 @@ export const actionBuyWbExt = (gameId, playerId) => {
 
 // 2. Warehouse Action: Max Good
 export const actionMaxGood = (gameId, playerId, goodType) => {
-  return axios.post(`api/game/${gameId}/player/${playerId}/location/warehouse/${ goodType }`)
+  return axios.post(`api/game/${gameId}/player/${playerId}/location/warehouse/${ goodType }`);
 }
 
 // 3. Gemstone Dealer
@@ -20,7 +20,7 @@ export const actionBuyRuby = (gameId, playerId) => {
 
 // 4. Markets
 export const actionTradeGoods = (gameId, playerId, marketSize, fabricNum, fruitNum, gemNum, spiceNum) => {
-  return axios.post(`api/game/${gameId}/player/${playerId}/location/market/${marketSize}/${fabricNum}/${fruitNum}/${gemNum}/${spiceNum}`)
+  return axios.post(`api/game/${gameId}/player/${playerId}/location/market/${marketSize}/${fabricNum}/${fruitNum}/${gemNum}/${spiceNum}`);
 }
 
 // 5. Mosques
@@ -41,5 +41,5 @@ export const actionTeaHouse = (gameId, playerId, number, diceRoll) => {
 
 // 8. Caravansary
 export const actionGetBonusCard = (gameId, playerId, type) => {
-  return axios.post(`api/game/${gameId}/player/${playerId}/location/caravansary/${type}`)
+  return axios.post(`api/game/${gameId}/player/${playerId}/location/caravansary/${type}`);
 }
