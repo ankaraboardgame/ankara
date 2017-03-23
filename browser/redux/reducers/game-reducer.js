@@ -15,6 +15,7 @@ export default function (state = initialState, action) {
     case SETTING_GAME:
       newState.id = action.id;
       break;
+
     default:
       return state;
   }
