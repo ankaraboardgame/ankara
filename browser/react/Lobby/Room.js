@@ -30,6 +30,7 @@ export const Room = props => {
         />
         <input type="submit" value="Join table" />
       </form>
+      <button onClick={(evt) => props.handleStart(evt, props.roomId)}>START</button>
     </div>
   )
 }

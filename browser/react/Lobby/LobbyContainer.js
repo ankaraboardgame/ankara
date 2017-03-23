@@ -25,6 +25,7 @@ class LobbyContainer extends React.Component {
     // this.removeUser = this.removeUser.bind(this);
     this.handleCreateRoom = this.handleCreateRoom.bind(this);
     this.addCurrentUserToRoom = this.addCurrentUserToRoom.bind(this);
+    this.handleStartGame = this.handleStartGame.bind(this);
   }
 
   // get a reference to firebase database > rooms
@@ -56,18 +57,22 @@ class LobbyContainer extends React.Component {
   // add user to specific room after 'join room' button is clicked
   addCurrentUserToRoom(event, roomId, userId) {
     event.preventDefault();
-    const name = event.target[0].value;
     const roomsRef = this.roomsRef;
-    const startGame = this.props.startGame;
-
-    roomsRef.child(roomId).child('users').on('value', function(snapshot){
-      if (snapshot.numChildren() >= 4){
-        startGame(roomId, snapshot.val());
-      }
-    });
+    const name = event.target[0].value;
 
     roomsRef.child(roomId).child('users').child(userId).set(name)
     .catch(console.error);
+  }
+
+  // create room after 'create room' button is clicked
+  handleStartGame(event, roomId){
+    event.preventDefault();
+    const roomsRef = this.roomsRef;
+    const startGame = this.props.startGame;
+
+    roomsRef.child(roomId).child('users').once('value', function(snapshot){
+      startGame(roomId, snapshot.val());
+    });
   }
 
   // remove self from room
@@ -108,6 +113,7 @@ class LobbyContainer extends React.Component {
                   users={fbRooms[roomId].users}
                   userId={this.props.userId.uid}
                   joined={this.props.joined}
+                  handleStart={this.handleStartGame}
                 />
               )
             })

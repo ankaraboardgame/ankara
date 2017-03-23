@@ -13,10 +13,24 @@ function Game (gameId, usersObj){
     rightCost: 1
   };
   this.largeMarket = {
-    demandTile: { fruit: 2, spice: 1, fabric: 2 }
+    currentMarketIdx: 0,
+    demandTiles: [
+      {img: 'smallmarket_1.jpg', fruit: 2, fabric: 1, heirloom: 1, spice: 1},
+      {img: 'smallmarket_2.jpg', fruit: 1, fabric: 1, heirloom: 1, spice: 2},
+      {img: 'smallmarket_3.jpg', fruit: 1, fabric: 1, heirloom: 0, spice: 3},
+      {img: 'smallmarket_4.jpg', fruit: 2, fabric: 1, heirloom: 0, spice: 2},
+      {img: 'smallmarket_5.jpg', fruit: 2, fabric: 0, heirloom: 1, spice: 2}
+    ]
   };
   this.smallMarket = {
-    demandTile: { jewelry: 2, spice: 2, fabric: 1 }
+    currentMarketIdx: 0,
+    demandTiles: [
+      {img: 'smallmarket_1.jpg', fruit: 2, fabric: 1, heirloom: 1, spice: 1},
+      {img: 'smallmarket_2.jpg', fruit: 1, fabric: 1, heirloom: 1, spice: 2},
+      {img: 'smallmarket_3.jpg', fruit: 1, fabric: 1, heirloom: 0, spice: 3},
+      {img: 'smallmarket_4.jpg', fruit: 2, fabric: 1, heirloom: 0, spice: 2},
+      {img: 'smallmarket_5.jpg', fruit: 2, fabric: 0, heirloom: 1, spice: 2}
+    ]
   };
   this.caravansary = {
     bonusCards: {}
@@ -28,6 +42,19 @@ function Game (gameId, usersObj){
   this.playerIds.forEach((id, i) => {
     this.merchants[id] = new Merchant(id, i);
   });
+
+  this.smallMarket.demandTiles = shuffle(this.smallMarket.demandTiles);
+  this.largeMarket.demandTiles = shuffle(this.largeMarket.demandTiles);
+}
+
+function shuffle(array){
+  let i = 0, j = 0, temp = null;
+  for(let i = array.length-1; i > 0; i--){
+    j = Math.floor(Math.random()*(i+1));
+    temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
 }
 
 function Merchant (id, i){
