@@ -34,3 +34,25 @@ export function assistantOnLocation(currentCoords, assistantsObj) {
   }
   return false;
 }
+
+export function merchantOnLocation(currentUserId, currentCoords, merchantsObj) {
+  let merchantOn = false;
+  let merchantsArray = Object.keys(merchantsObj);
+  merchantsArray.forEach((merchant) => {
+    if (merchant !== currentUserId && merchantsObj[merchant].position.coordinates === currentCoords) {
+      merchantOn = true;
+    }
+  });
+  return merchantOn;
+}
+
+export function merchantCount(currentUserId, currentCoords, merchantsObj) {
+  let merchantsArray = Object.keys(merchantsObj);
+  let merchantCount = 0;
+  merchantsArray.forEach((merchant) => {
+    if (merchant !== currentUserId && merchantsObj[merchant].position.coordinates === currentCoords) {
+      merchantCount++;
+    }
+  });
+  return merchantCount;
+}
