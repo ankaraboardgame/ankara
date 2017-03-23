@@ -6,7 +6,6 @@ import Modal from '../Modal/Modal';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { MERCHANT_ENCOUNTER } from '../Modal/turn_dialog_types'
 
-
 class PickUpAssistant extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +15,7 @@ class PickUpAssistant extends React.Component {
 
   handlePickUpAssistant() {
     this.props.closeModal();
-    this.props.openModal(MERCHANT_ENCOUNTER);
+    this.props.openModal(MERCHANT_ENCOUNTER, {currentPosition: this.props.currentPosition});
   }
 
   render() {

@@ -27,3 +27,10 @@ export function mapCoordToLocation(coords) {
 
   return coordsMap[coords];
 }
+
+export function assistantOnLocation(currentCoords, assistantsObj) {
+  for (let i = 0; i < assistantsObj.length; i++) {
+    if (assistantsObj[i].position === currentCoords) return true;
+  }
+  return false;
+}

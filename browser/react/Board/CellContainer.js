@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { DropTarget } from 'react-dnd';
 import { firebaseConnect } from 'react-redux-firebase';
 
-import { cellActiveStatus, canMovePlayer } from '../../utils';
+import { cellActiveStatus, canMovePlayer, assistantOnLocation } from '../../utils';
 import { movePlayer } from '../../routes/move';
 import { DROP_ASSISTANT, PICK_UP_ASSISTANT } from '../Modal/turn_dialog_types';
 
@@ -82,7 +82,11 @@ const cellTarget = {
     return canMovePlayer(props.coords, props.merchants[props.user.uid].position.possibleMoves);
   },
   drop(props) {
-    props.openModal(DROP_ASSISTANT, { currentPosition: props.coords});
+    if (assistantOnLocation(props.coords, props.merchants[props.user.uid].assistants)) {
+      props.openModal(PICK_UP_ASSISTANT, { currentPosition: props.coords});
+    } else {
+      props.openModal(DROP_ASSISTANT, { currentPosition: props.coords});
+    }
     movePlayer(props.gameId, props.user.uid, props.coords, props.cellPossibleMoves);
   }
 };

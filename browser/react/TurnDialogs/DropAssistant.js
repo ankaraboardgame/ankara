@@ -19,7 +19,6 @@ class DropAssistant extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <Modal>
         <div id="turn-dialog-container">
