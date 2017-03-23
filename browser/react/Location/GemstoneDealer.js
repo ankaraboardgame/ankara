@@ -58,13 +58,13 @@ class GemstoneDealer extends React.Component {
 
   render() {
     const onClose = this.props.payload.zoom ? this.props.closeModal : null;
+    const price = this.state.gemPrice;
 
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
           <img src={`images/locations/gemstone_dealer.png`} id="img-location" />
           { this.whichDialog(this.props.payload) }
-          
         </div>
       </Modal>
     );
@@ -73,13 +73,21 @@ class GemstoneDealer extends React.Component {
   renderAction() {
     const style = { margin: 12 };
     const price = this.state.gemPrice;
+    const money = this.props.gameData.merchants[this.props.playerId].wheelbarrow.money
+
     return (
       <div>
         <p>All the gems that money can buy. Current price: {price} lira.</p>
-        <div>
-          <RaisedButton label={`BUY GEM FOR ${price} LIRA`} style={style} primary={true} onTouchTap={this.handleBuyGemEndTurn}  />
-          <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
-        </div>
+          <div>
+            <RaisedButton
+              label={`BUY GEM FOR ${price} LIRA`}
+              style={{ margin: 12 }}
+              primary={true}
+              onTouchTap={this.handleBuyGemEndTurn}
+              disabled={money < price}
+            />
+            <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+          </div>
       </div>
     );
   }

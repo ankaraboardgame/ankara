@@ -137,7 +137,7 @@ router.post('/market/:marketSize/:currentMarketIdx/updateTile', (req, res, next)
 // 5. MOSQUES (2)
 router.post('/mosque/:mosqueSize/:tileChosen', (req, res, next) => {
   // small mosque: left - fabric, right - fruit
-  // large mosque: left - spice, right - jewelry
+  // large mosque: left - spice, right - heirloom
   const mosque = req.params.mosqueSize;
   const tile = req.params.tileChosen;
   let good, abilities, ability;
@@ -157,7 +157,7 @@ router.post('/mosque/:mosqueSize/:tileChosen', (req, res, next) => {
       good = 'spice';
       ability = '2LiraFor1AdditionalGood'; // only for warehouse
     } else {
-      good = 'jewelry';
+      good = 'heirloom';
       ability = 'add1Assistant'; // max 1 time, 5 assistants total
     }
   }
@@ -198,20 +198,22 @@ router.post('/mosque/:mosqueSize/:tileChosen', (req, res, next) => {
 // 6. BLACK MARKET (1)
 router.post('/blackMarket/:goodChosen/:diceRoll/', (req, res, next) => {
   const diceRoll = +req.params.diceRoll;
+  const wbSize = req.player.wheelbarrow.size;
 
   const updateGoodPromise = gamesRef.child(req.game.id)
     .child(`merchants/${req.player.id}/wheelbarrow/${req.params.goodChosen}`)
-    .transaction(function(currentGood){
-      return currentGood + 1;
+    .transaction(function(currentGoodCount){
+      if (currentGoodCount >= wbSize) return wbSize;
+      else return currentGoodCount + 1;
     })
 
   const updateHeirloomPromise = gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/wheelbarrow/jewelry`)
-    .transaction(currentJewelry => {
-      if (diceRoll === 7 || diceRoll === 8) return currentJewelry + 1;
-      else if (diceRoll === 9 || diceRoll === 10) return currentJewelry + 2;
-      else if (diceRoll === 11 || diceRoll === 12) return currentJewelry + 3;
-      else return currentJewelry;
+    .child(`merchants/${req.player.id}/wheelbarrow/heirloom`)
+    .transaction(currentHeirlooms => {
+      if (diceRoll === 7 || diceRoll === 8) return currentHeirlooms + 1;
+      else if (diceRoll === 9 || diceRoll === 10) return currentHeirlooms + 2;
+      else if (diceRoll === 11 || diceRoll === 12) return currentHeirlooms + 3;
+      else return currentHeirlooms;
     })
 
   Promise.all([updateGoodPromise, updateHeirloomPromise])
@@ -233,15 +235,19 @@ router.post('/teaHouse/:gamble/:diceRoll', (req, res, next) => {
     .catch(next);
 })
 
-// 8. CARAVANSARY (1) - +5 lira OR +1 good, random --- need to put the randomnization of bonus cards in the front-end
-router.post('/caravansary/:type', (req, res, next) => {
-  const type = req.params.type;
+// 8. CARAVANSARY (1)
+router.post('/caravansary/:bonusCardType', (req, res, next) => {
+  const type = req.params.bonusCardType;
   gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/${type}`)
-    .transaction(currentMoneyOrGood => {
-      if (type === 'money') return currentMoneyOrGood + 5;
-      else return currentMoneyOrGood + 1;
+    .child(`merchants/${req.player.id}/bonusCards`)
+    .push({ type })
+    .then(() => {
+      return gamesRef.child(`${req.game.id}/caravansary/index`)
+        .transaction(i => ++i)
+        .catch(next)
     })
-    .then(() => { res.sendStatus(204); })
+    .then(() => {
+      res.sendStatus(204);
+    })
     .catch(next);
 })

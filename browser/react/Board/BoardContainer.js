@@ -15,12 +15,12 @@ class BoardContainer extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-
   handleClick(evt) {
         // highlight the cell one color, and highlight all possible moves another color OR should it show a closer/zoomed in viw of the location?
   }
 
   render() {
+
     return (
       <div id="board-container">
         {
@@ -47,6 +47,7 @@ class BoardContainer extends React.Component {
 const mapStateToProps = ({board, positions, user, firebase, game}) => ({
   board: board.board,
   gameId: game.id,
+  winnerId: game.winnerId,
   user: user.user,
   game: dataToJS(firebase, `games/${game.id}`),
   merchants: dataToJS(firebase, `games/${game.id}/merchants`),
@@ -55,7 +56,8 @@ const mapStateToProps = ({board, positions, user, firebase, game}) => ({
 
 const mapDispatchToProps = dispatch => ({
   openModal: (modalType, payload) => dispatch(loadModal(modalType, payload)),
-  closeModal: () => dispatch(hideModal())
+  closeModal: () => dispatch(hideModal()),
+  setWinner: (winnerId) => dispatch(setWinnerRedux(winnerId))
 })
 
 export default compose(

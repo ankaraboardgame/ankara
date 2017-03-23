@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Ruslan+Display');
+@import url('https://fonts.googleapis.com/css?family=Ruslan+Display|UnifrakturCook:700');
+
 body {
   background-image: url('images/board-background.jpg'); 
 }
@@ -28,6 +31,13 @@ body {
   height: 50px;
 }
 
+/*h1 {
+  font-family: 'Ruslan Display', cursive;
+  letter-spacing: 3pt;
+  font-size: 120px;
+  color: darkred;
+  text-shadow: -1px 0 #222, 0 1px #222, 1px 0 #222, 0 -1px #222;
+}*/
 
 /* -------- LOCATION MODALS --- */
 #location-modal-container {
@@ -178,6 +188,7 @@ body {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 /* -------- PLAYER ------- */
