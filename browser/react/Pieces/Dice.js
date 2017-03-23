@@ -19,11 +19,14 @@ export default class Dice extends React.Component {
     return (
       <div>
         <ReactDice
+          disableIndividual={true}
           numDice={2}
           rollDone={this.rollDoneCallback}
           ref={dice => this.reactDice = dice}
-          faceColor="#afa2ac"
-          outlineColor="#000000"
+          faceColor="white"
+          dotColor="black"
+          outline={true}
+          outlineColor="black"
         />
       </div>
     );

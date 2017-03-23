@@ -7,8 +7,8 @@ import Modal from '../Modal/Modal';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { MERCHANT_ENCOUNTER } from '../Modal/turn_dialog_types'
 
-import { endTurn } from '../../routes/player';
 import { merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
+import { endTurn } from '../../routes/move';
 
 class PickUpAssistant extends React.Component {
   constructor(props) {
@@ -29,16 +29,16 @@ class PickUpAssistant extends React.Component {
   }
 
   handleEndTurn() {
-    this.props.closeModal();
-    endTurn(this.props.gameId, this.props.userId);
+    endTurn(this.props.gameId, this.props.userId)
+      .then(() => this.props.closeModal());
   }
 
   render() {
     return (
       <Modal>
         <div id="turn-dialog-container">
-          <img onClick={this.handlePickUpAssistant} src="images/turn_dialogs/pick_up_assistant.png" id="icon-turn-dialog"/>
-          <img onClick={this.handleEndTurn} src="images/turn_dialogs/end_turn.png" id="icon-turn-dialog"/>
+          <img onClick={this.handlePickUpAssistant} src="images/turn_dialogs/pick_up_assistant.png" id="icon-turn-dialog" />
+          <img onClick={this.handleEndTurn} src="images/turn_dialogs/end_turn.png" id="icon-turn-dialog" />
         </div>
       </Modal>
     );
