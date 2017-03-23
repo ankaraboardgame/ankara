@@ -34,6 +34,14 @@ router.post('/wainwright', (req, res, next) => {
   .catch(next);
 })
 
+router.post('/wainwright/earnRuby', (req, res, next) => {
+  gamesRef.child(req.game.id)
+    .child(`merchants/${req.player.id}/wheelbarrow/ruby`)
+    .transaction(function(currentRubies){
+      return currentRubies + 1;
+    });
+})
+
  // 2. WAREHOUSES (3) - Depending on the goodType, player will get max amount
 router.post('/warehouse/:goodType', (req, res, next) => {
   const playerId = req.player.id;
@@ -118,10 +126,9 @@ router.post('/market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloo
             .child(`merchants/${req.player.id}/wheelbarrow`)
             .set(transaction)
         })
-        .then(() => {
-          res.sendStatus(204)
-        })
-        .catch(next);
+    })
+    .then(() => {
+      res.sendStatus(204)
     })
     .catch(next)
 })
@@ -131,6 +138,7 @@ router.post('/market/:marketSize/:currentMarketIdx/updateTile', (req, res, next)
   gamesRef.child(req.game.id)
     .child(`${req.params.marketSize}/currentMarketIdx`)
     .set(nextMarketIdx)
+    .then(() => res.sendStatus(204))
     .catch(next)
 })
 

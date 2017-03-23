@@ -8,6 +8,10 @@ export const actionBuyWbExt = (gameId, playerId) => {
   return axios.post(`api/game/${gameId}/player/${playerId}/location/wainwright`)
 }
 
+export const earnRuby = (gameId, playerId) => {
+  return axios.post(`api/game/${gameId}/player/${playerId}/location/wainwright/earnRuby`)
+}
+
 // 2. Warehouse Action: Max Good
 export const actionMaxGood = (gameId, playerId, goodType) => {
   return axios.post(`api/game/${gameId}/player/${playerId}/location/warehouse/${ goodType }`);
