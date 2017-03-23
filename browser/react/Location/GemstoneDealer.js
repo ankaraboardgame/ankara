@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import { dataToJS } from 'react-redux-firebase'
 
 import Modal from '../Modal/Modal';
 
@@ -11,8 +12,13 @@ import { endTurn } from '../../routes/move';
 class GemstoneDealer extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { gemPrice: null };
     this.handleBuyGemEndTurn = this.handleBuyGemEndTurn.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
+  }
+
+  componentDidMount (){
+    this.setState({ gemPrice: +this.props.gameData.gemstoneDealer });
   }
 
   handleBuyGemEndTurn(){
@@ -27,14 +33,16 @@ class GemstoneDealer extends React.Component {
   }
 
   render() {
+    const price = this.state.gemPrice;
+
     return (
       <Modal>
         <div id="location-modal-container">
           <img src={`images/locations/gemstone_dealer.png`} id="img-location" />
-          <p>All the gems that money can buy.</p>
+          <p>All the gems that money can buy. Current price: {price} lira.</p>
           <div>
-            <RaisedButton label="Buy a gem." style={{ margin: 12 }} primary={true} onTouchTap={this.handleBuyGemEndTurn}  />
-            <RaisedButton label="No thanks." style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+            <RaisedButton label={`BUY GEM FOR ${price} LIRA`} style={{ margin: 12 }} primary={true} onTouchTap={this.handleBuyGemEndTurn}  />
+            <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
           </div>
         </div>
       </Modal>
@@ -44,7 +52,8 @@ class GemstoneDealer extends React.Component {
 
 const mapStateToProps = state => ({
   gameId: state.game.id,
-  playerId: state.user.user.uid
+  playerId: state.user.user.uid,
+  gameData: dataToJS(state.firebase, `games/${state.game.id}`)
 })
 
 const mapDispatchToProps = dispatch => ({

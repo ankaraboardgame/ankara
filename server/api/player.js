@@ -12,20 +12,10 @@ const router = module.exports = require('express').Router();
  * req.game = holds current game info
  */
 
-// get all players
-router.get('/', (req, res, next) => {
-  res.send(req.game.merchants);
-});
-
 // load one player
 router.param('playerId', (req, res, next, playerId) => {
   req.player = req.game.merchants[playerId];
   next();
-});
-
-// get one player
-router.get('/:playerId', (req, res, next) => {
-  res.send(req.player);
 });
 
 // end player turn
@@ -37,6 +27,7 @@ router.post('/:playerId/end', (req, res, next) => {
     .then(() => {
       res.sendStatus(204);
     })
+    .catch(next);
 });
 
 // SUBROUTES: player moves

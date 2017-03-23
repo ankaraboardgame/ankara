@@ -10,7 +10,6 @@ import { MERCHANT_ENCOUNTER } from '../Modal/turn_dialog_types'
 import { merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
 import { endTurn } from '../../routes/move';
 
-
 class DropAssistant extends React.Component {
   constructor(props) {
     super(props);

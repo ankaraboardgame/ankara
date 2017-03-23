@@ -34,5 +34,5 @@ router.post('/:otherMerchantId', (req, res, next) => {
   .then(() => {
     res.sendStatus(204);
   })
-  .catch(console.error);
+  .catch(next);
 });

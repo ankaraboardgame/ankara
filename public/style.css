@@ -19,6 +19,17 @@ body {
   margin-left: 140px;
 }
 
+.highlighted {
+  border: 2px solid yellow;
+}
+
+.tea-house-number {
+  width: 5px;
+  position: relative;
+  float: left;
+  border: 1px solid white;
+}
+
 /* still need to fix location of the image! */
 #exchange-card img {
   height: 260px;
@@ -96,7 +107,7 @@ body {
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 10000;
+    z-index: 1500;
     overflow: auto;
     text-align: center;
     padding: 4px;

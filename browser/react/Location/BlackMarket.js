@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
 
 import Modal from '../Modal/Modal';
 import Dice from '../Pieces/Dice';
@@ -14,38 +12,69 @@ import { endTurn } from '../../routes/move';
 class BlackMarket extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { selectedGood: null }
+    this.handleSelectGood = this.handleSelectGood.bind(this);
+    this.handleDiceRoll = this.handleDiceRoll.bind(this);
     this.handleGetBlackMarketGoodsEndTurn = this.handleGetBlackMarketGoodsEndTurn.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
   }
 
-  handleGetBlackMarketGoodsEndTurn(selectedGood, dice1, dice2){
-    actionBlackMarket(this.props.gameId, this.props.playerId)
-      .then(() => endTurn(this.props.gameId, this.props.playerId, selectedGood, dice1, dice2))
+  handleSelectGood (evt, good){
+    this.setState({ selectedGood: good });
+  }
+
+  handleDiceRoll (rollSum){
+    const good = this.state.selectedGood;
+    setTimeout(() => {
+      this.handleGetBlackMarketGoodsEndTurn(good, rollSum)
+    }, 2000)
+  }
+
+  handleGetBlackMarketGoodsEndTurn (selectedGood, rollSum){
+    actionBlackMarket(this.props.gameId, this.props.playerId, selectedGood, rollSum)
+      .then(() => endTurn(this.props.gameId, this.props.playerId))
       .then(() => this.props.closeModal())
       .catch(console.error);
   }
 
-  handleEndTurn(){
+  handleEndTurn (){
     endTurn(this.props.gameId, this.props.playerId)
       .then(() => this.props.closeModal())
       .catch(console.error);
   }
 
   render() {
+    const selectedClassName = 'highlighted';
+    const selectedGood = this.state.selectedGood;
+
     return (
       <Modal>
         <div id="location-modal-container">
           <img src={`images/locations/black_market.png`} id="img-location" />
-          <p>1. Pick up one fabric, spice, or fruit.</p>
-          <p>2. Roll for an heirloom (blue good).</p>
+          <p>Pick up one fabric, spice, or fruit, then roll the dice to see if you get heirlooms!</p>
           <div>
-            <DropDownMenu value={'Select...'}>
-              <MenuItem value={'fabric'} primaryText="Fabric" />
-              <MenuItem value={'spice'} primaryText="Spice" />
-              <MenuItem value={'fruit'} primaryText="Fruit" />
-            </DropDownMenu>
-            <Dice />
-            <RaisedButton label="No thanks" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+          <div id="market-row">
+            <img
+              className={selectedGood === 'fabric' && selectedClassName}
+              onClick={(evt) => this.handleSelectGood(evt, 'fabric')}
+              src="./images/cart/fabric.png"
+            />
+            <img
+              className={selectedGood === 'fruit' && selectedClassName}
+              onClick={(evt) => this.handleSelectGood(evt, 'fruit')}
+              src="./images/cart/fruits.png"
+            />
+            <img
+              className={selectedGood === 'spice' && selectedClassName}
+              onClick={(evt) => this.handleSelectGood(evt, 'spice')}
+              src="./images/cart/spices.png"
+            />
+          </div>
+          {
+            selectedGood &&
+            <Dice done={this.handleDiceRoll} />
+          }
+          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
           </div>
         </div>
       </Modal>
