@@ -32,6 +32,7 @@ class MerchantEncounter extends React.Component {
     return (
       <Modal>
         <div id="turn-dialog-container">
+          <text>You must pay { this.props.merchantCount * 2 } lira!</text>
           <img onClick={this.handleMerchantEncounter} src="images/turn_dialogs/pay_merchants.png" id="icon-turn-dialog"/>
           <img onClick={this.handleEndTurn} src="images/turn_dialogs/end_turn.png" id="icon-turn-dialog"/>
         </div>
@@ -40,10 +41,11 @@ class MerchantEncounter extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   currentPosition: state.modal.payload.currentPosition,
   gameId: state.game.id,
   userId: state.user.user.uid,
+  merchantCount: state.modal.payload.merchCount
 });
 
 const mapDispatchToProps = dispatch => {
