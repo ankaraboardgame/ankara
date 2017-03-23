@@ -34,13 +34,13 @@ class CellContainer extends React.Component {
 
     // There should only be one merchant that matches current user
     const userMerchant = merchants[currentUserId];
-    const activeStatus = this.props.merchants &&
-      cellActiveStatus(
+    const activeStatus = this.props.merchants && (this.props.game.playerTurn === currentUserId) ?
+      (cellActiveStatus(
         this.props.coords,
         userMerchant.position.coordinates,
         userMerchant.position.possibleMoves
         ) ?
-        null : {opacity: '0.2'};
+        null : {opacity: '0.2'}) : null;
 
     return connectDropTarget(
       <div id="cell-container" style={activeStatus}>
@@ -51,18 +51,7 @@ class CellContainer extends React.Component {
         <div id="player-container">
           {playerPieces}
         </div>
-        {isOver &&
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            height: '100%',
-            width: '100%',
-            zIndex: 1,
-            opacity: 0.5,
-            backgroundColor: 'yellow'
-          }} />
-        }
+        { isOver && <div id="player-hover-overlay" /> }
       </div>
     );
   }
