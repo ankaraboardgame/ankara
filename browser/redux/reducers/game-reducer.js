@@ -1,10 +1,11 @@
 // import { merge } from 'lodash';
 
-import { SETTING_GAME } from '../action-creators/game';
+import { SETTING_GAME, SETTING_WINNER } from '../action-creators/game';
 
 /******** INITIAL STATE ********/
 const initialState = {
-  id: null
+  id: null,
+  winnerId: null
 };
 
 /********** REDUCER  **********/
@@ -14,6 +15,10 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case SETTING_GAME:
       newState.id = action.id;
+      break;
+
+    case SETTING_WINNER:
+      newState.winnerId = action.winnerId;
       break;
 
     default:
