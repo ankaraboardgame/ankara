@@ -12,7 +12,7 @@ function Game (gameId, usersObj){
     leftCost: 1,
     rightCost: 1
   };
-  this.largeMarket = {
+  this.smallMarket = {
     currentMarketIdx: 0,
     demandTiles: [
       {img: 'smallmarket_1.jpg', fruit: 2, fabric: 1, heirloom: 1, spice: 1},
@@ -22,14 +22,14 @@ function Game (gameId, usersObj){
       {img: 'smallmarket_5.jpg', fruit: 2, fabric: 0, heirloom: 1, spice: 2}
     ]
   };
-  this.smallMarket = {
+  this.largeMarket = {
     currentMarketIdx: 0,
     demandTiles: [
-      {img: 'smallmarket_1.jpg', fruit: 2, fabric: 1, heirloom: 1, spice: 1},
-      {img: 'smallmarket_2.jpg', fruit: 1, fabric: 1, heirloom: 1, spice: 2},
-      {img: 'smallmarket_3.jpg', fruit: 1, fabric: 1, heirloom: 0, spice: 3},
-      {img: 'smallmarket_4.jpg', fruit: 2, fabric: 1, heirloom: 0, spice: 2},
-      {img: 'smallmarket_5.jpg', fruit: 2, fabric: 0, heirloom: 1, spice: 2}
+      {img: 'largemarket_1.jpg', fruit: 0, fabric: 2, heirloom: 2, spice: 1},
+      {img: 'largemarket_2.jpg', fruit: 0, fabric: 1, heirloom: 3, spice: 1},
+      {img: 'largemarket_3.jpg', fruit: 1, fabric: 2, heirloom: 2, spice: 0},
+      {img: 'largemarket_4.jpg', fruit: 1, fabric: 1, heirloom: 3, spice: 0},
+      {img: 'largemarket_5.jpg', fruit: 1, fabric: 1, heirloom: 2, spice: 1}
     ]
   };
   this.caravansary = {
@@ -55,6 +55,7 @@ function shuffle(array){
     array[i] = array[j];
     array[j] = temp;
   }
+  return array;
 }
 
 function Merchant (id, i){
