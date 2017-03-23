@@ -35,7 +35,7 @@ function Merchant (id, i){
   this.number = i;
   this.position = new Position();
   this.assistants = {};
-  this.assistantsCount = {};
+  this.assistantsCount = 4;
   this.bonusCards = {};
   this.wheelbarrow = {
     fabric: 0,
