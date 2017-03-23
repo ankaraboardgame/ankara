@@ -48,7 +48,7 @@ export const Room = props => {
             JOIN
           </RaisedButton>
         </form>
-        <RaisedButton secondary={true} onTouchTap={(evt) => props.handleStart(evt, props.roomId)}>
+        <RaisedButton secondary={true} style={{margin: 15}} onTouchTap={(evt) => props.handleStart(evt, props.roomId)}>
           START
         </RaisedButton>
       </Paper>
