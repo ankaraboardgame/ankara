@@ -6,14 +6,17 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import { Wheelbarrow, Fruits, Fabric, Spices, Gems, Money, Ruby } from './FooterComponents'
 import RulesSideBar from './RulesSideBar';
 import BonusCardsMosqueTiles from './BonusCards&MosqueTiles';
+import PlayerInfo from './PlayerColor&Name';
 
 const Footer = (props) => {
   const wb = props.wheelbarrow;
+  const gamesRef = props.gamesRef;
+  const playerId = props.playerId;
   return (
     <footer className="black">
       <div id="dash-footer">
+        <PlayerInfo gamesRef={gamesRef} playerId={playerId} />
         <RulesSideBar />
-        <BonusCardsMosqueTiles/>
         <Badge
           className="badge"
           badgeContent={wb.size}

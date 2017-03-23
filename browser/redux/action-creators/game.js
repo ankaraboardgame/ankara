@@ -2,11 +2,11 @@ import axios from 'axios';
 import { hashHistory } from 'react-router';
 
 /********* CONSTANTS ********/
-export const CREATE_GAME = 'CREATE_GAME';
+export const SETTING_GAME = 'SETTING_GAME';
 
 /******* ACTION CREATORS ********/
-export const createGame = (id) => ({
-    type: CREATE_GAME,
+export const settingGame = (id) => ({
+    type: SETTING_GAME,
     id
 });
 
@@ -17,10 +17,9 @@ export const fetchNewGame = (roomId, usersMap) => {
 
     axios.post(`/api/game/${roomId}`, {usersMap})
       .then(() => {
-        dispatch(createGame(roomId));
+        dispatch(settingGame(roomId));
         hashHistory.push('/game');
       })
       .catch(console.error);
   }
-
 }

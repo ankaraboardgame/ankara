@@ -3,6 +3,7 @@ const db = admin.database();
 const gamesRef = db.ref('games');
 const gameCountRef = db.ref('gameCount');
 const sessionRef = db.ref('session');
+const usersRef = db.ref('users');
 
 const Game = require('../../game/logic.js');
 const router = module.exports = require('express').Router();
@@ -17,6 +18,11 @@ router.post('/:roomId', (req, res, next) => {
   const roomId = req.params.roomId;
   const usersMap = req.body.usersMap;
   gamesRef.child(roomId).set(new Game(roomId, usersMap))
+    .then(() => {
+      Object.keys(usersMap).forEach((id) => {
+        usersRef.child(id).set(roomId);
+      });
+  })
   .then(() => {
     res.sendStatus(204);
   })
