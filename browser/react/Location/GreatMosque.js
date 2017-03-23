@@ -1,27 +1,74 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { dataToJS } from 'react-redux-firebase';
 
 import Modal from '../Modal/Modal';
+import { loadModal, hideModal } from '../../redux/action-creators/modals';
+import { endTurn } from '../../routes/move';
+import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
 
 class GreatMosque extends React.Component {
   constructor(props) {
     super(props);
+
+    this.whichDialog = whichDialog.bind(this);
+    this.handleAssistant = this.handleAssistant.bind(this);
+    this.handleMerchant = this.handleMerchant.bind(this);
+  }
+
+  // Assistant dialogs
+  handleAssistant() {
+    this.props.closeModal();
+    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
+      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
+      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
+    } else {
+      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
+    }
+  }
+
+  // Merchant dialogs
+  handleMerchant() {
+    this.props.closeModal();
+    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
+  }
+
+  // Ends Turn
+  handleEndTurn() {
+    endTurn(this.props.gameId, this.props.playerId)
+      .then(() => this.props.closeModal())
+      .catch(console.error);
   }
 
   render() {
+    const onClose = this.props.payload.zoom ? this.props.closeModal : null;
+
     return (
-      <Modal>
+      <Modal onClose={onClose}>
         <div id="location-modal-container">
           <img src={`images/locations/great_mosque.png`} id="img-location" />
+          { this.whichDialog(this.props.payload) }
         </div>
       </Modal>
     );
   }
+
+  renderAction() {
+    return <h3>ACTION TEXT WILL GO HERE!</h3>;
+  }
 }
+
+const mapStateToProps = state => ({
+  gameId: state.game.id,
+  playerId: state.user.user.uid,
+  payload: state.modal.payload,
+  currentPosition: state.modal.payload.currentPosition,
+  merchants: dataToJS(state.firebase, `games/${state.game.id}/merchants`)
+});
 
 const mapDispatchToProps = dispatch => ({
   closeModal: () => dispatch(hideModal()),
   openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
 });
 
-export default connect(null, mapDispatchToProps)(GreatMosque);
+export default connect(mapStateToProps, mapDispatchToProps)(GreatMosque);

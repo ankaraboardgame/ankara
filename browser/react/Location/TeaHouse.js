@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
+import { dataToJS } from 'react-redux-firebase';
 
 import Modal from '../Modal/Modal';
 import Dice from '../Pieces/Dice';
@@ -10,15 +11,45 @@ import Dice from '../Pieces/Dice';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionTeaHouse } from '../../routes/location';
 import { endTurn } from '../../routes/move';
+import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
 
 class TeaHouse extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = { gambledNumber: null }
+
     this.handleChooseNumber = this.handleChooseNumber.bind(this);
     this.handleDiceRoll = this.handleDiceRoll.bind(this);
     this.handleTeaHouseEndTurn = this.handleTeaHouseEndTurn.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.whichDialog = whichDialog.bind(this);
+    this.handleAssistant = this.handleAssistant.bind(this);
+    this.handleMerchant = this.handleMerchant.bind(this);
+  }
+
+  // Assistant dialogs
+  handleAssistant() {
+    this.props.closeModal();
+    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
+      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
+      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
+    } else {
+      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
+    }
+  }
+
+  // Merchant dialogs
+  handleMerchant() {
+    this.props.closeModal();
+    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
+  }
+
+  // Ends Turn
+  handleEndTurn() {
+    endTurn(this.props.gameId, this.props.playerId)
+      .then(() => this.props.closeModal())
+      .catch(console.error);
   }
 
   handleChooseNumber (evt, good){
@@ -47,9 +78,20 @@ class TeaHouse extends React.Component {
   }
 
   render() {
-    const gambledNumber = this.state.gambledNumber;
-    console.log('gambling', gambledNumber);
+    const onClose = this.props.payload.zoom ? this.props.closeModal : null;
 
+    return (
+      <Modal onClose={onClose}>
+        <div id="location-modal-container">
+          <img src={`images/locations/tea_house.png`} id="img-location" />
+          { this.whichDialog(this.props.payload) }
+        </div>
+      </Modal>
+    );
+  }
+
+  renderAction() {
+    const gambledNumber = this.state.gambledNumber;
     const ddMenuStyle = {
       backgroundColor: 'white',
       marginLeft: 100,
@@ -58,10 +100,8 @@ class TeaHouse extends React.Component {
     }
 
     return (
-      <Modal>
-        <div id="location-modal-container">
-          <img src={`images/locations/tea_house.png`} id="img-location" />
-          <p>If the dice roll meets or exceeds your gamble, you get the sum you name. Otherwise, you walk away with only two lira.</p>
+      <div>
+        <p>If the dice roll meets or exceeds your gamble, you get the sum you name. Otherwise, you walk away with only two lira.</p>
           <div className='row'>
             <DropDownMenu value={this.state.gambledNumber} style={ddMenuStyle} onChange={this.handleChooseNumber}>
               <MenuItem value={2} primaryText="2" />
@@ -81,17 +121,19 @@ class TeaHouse extends React.Component {
               <Dice done={this.handleDiceRoll} />
             }
           </div>
-          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
-        </div>
-      </Modal>
+          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />   
+      </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
   gameId: state.game.id,
-  playerId: state.user.user.uid
-})
+  playerId: state.user.user.uid,
+  payload: state.modal.payload,
+  currentPosition: state.modal.payload.currentPosition,
+  merchants: dataToJS(state.firebase, `games/${state.game.id}/merchants`)
+});
 
 const mapDispatchToProps = dispatch => ({
   closeModal: () => dispatch(hideModal()),

@@ -31,21 +31,28 @@ class AppContainer extends React.Component {
 
     return (
       <MuiThemeProvider>
-      {
-        gamesRef && this.props.user ?
-        <div id="app-container">
-          <h1>Constantinople</h1>
-          <p>{ gamesRef.playerMap[gamesRef.playerTurn]} is playing...</p>
-          <BoardContainer gamesRef={gamesRef} />
-          <FooterContainer
-            clientId={currentUserId}
-            gameId={this.props.gameId}
-            gamesRef={gamesRef}
-          />
-          <ModalRootContainer gamesRef={gamesRef} />
-        </div> :
-        <CircularProgress size={60} thickness={7} />
-      }
+        {
+          gamesRef && this.props.user ?
+          <div id="game-container">
+            <div id="player-box-container">
+              <img src={'images/player/redplayer.png'} id="player-icons" />
+              <img src={'images/player/blueplayer.png'} id="player-icons" />
+              <img src={'images/player/greenplayer.png'} id="player-icons" />
+              <img src={'images/player/yellowplayer.png'} id="player-icons" />
+            </div>
+            <div id="app-container">
+              <img src={`images/Constantinople-Title.png`} id="game-title" />
+              {/*<p>{ gamesRef.playerMap[gamesRef.playerTurn]} is playing...</p>*/}
+              <BoardContainer />
+              <FooterContainer
+                clientId={currentUserId}
+                gameId={this.props.gameId}
+                gamesRef={gamesRef} />
+              <ModalRootContainer gamesRef={gamesRef} />
+            </div>
+          </div> :
+          <CircularProgress size={60} thickness={7} />
+        }
       </MuiThemeProvider>
     );
   }
@@ -58,7 +65,6 @@ const fbGameWrappedContainer = firebaseConnect(({ gameId }) => {
 const mapStateToProps = (state) => ({
   user: state.user.user,
   gameId: state.game.id,
-  firebase: state.firebase,
   gamesRef: dataToJS(state.firebase, `games/${state.game.id}`)
 })
 
