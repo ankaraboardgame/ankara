@@ -11,7 +11,6 @@ import { endTurn } from '../../routes/move';
 class LargeMarket extends React.Component {
   constructor(props) {
     super(props);
-    console.log('largemarket', props)
     this.state = {
       fruit: 0,
       fabric: 0,
@@ -29,16 +28,10 @@ class LargeMarket extends React.Component {
     actionTradeGoods(this.props.gameId, this.props.playerId, 'largeMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
       .then(() => {
         actionChangeTile(this.props.gameId, this.props.playerId, 'largeMarket', currentMarketIdx)
-        .then(() => endTurn(this.props.gameId, this.props.playerId))
-        .then(() => this.props.closeModal())
       })
-      .catch(console.error)
-  }
-
-  handleEndTurn (){
-    endTurn(this.props.gameId, this.props.playerId)
+      .then(() => endTurn(this.props.gameId, this.props.playerId))
       .then(() => this.props.closeModal())
-      .catch(console.error);
+      .catch(console.error)
   }
 
   handleGoodClick(event){
@@ -85,6 +78,6 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   playerId: state.user.user.uid,
   gameId: state.game.id
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LargeMarket);

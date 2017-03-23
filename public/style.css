@@ -32,7 +32,8 @@ body {
 
 #img-location {
   border-radius: 6px;
-  max-width: 700px;
+  max-width: 500px;
+  cursor: pointer;
 }
 
 #market-row {
