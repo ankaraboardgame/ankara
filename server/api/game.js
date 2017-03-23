@@ -23,6 +23,7 @@ router.post('/:roomId', (req, res, next) => {
         usersRef.child(id).set(roomId);
       });
   })
+
   .then(() => {
     res.sendStatus(204);
   })
