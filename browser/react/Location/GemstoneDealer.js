@@ -27,15 +27,14 @@ class GemstoneDealer extends React.Component {
   }
 
   render() {
-    const style = { margin: 12 }
     return (
       <Modal>
         <div id="location-modal-container">
           <img src={`images/locations/gemstone_dealer.png`} id="img-location" />
-          <p><em>All the gems that money can buy.</em></p>
+          <p>All the gems that money can buy.</p>
           <div>
-            <RaisedButton label="Buy a gem." style={style} primary={true} onTouchTap={this.handleBuyGemEndTurn}  />
-            <RaisedButton label="No thanks." style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+            <RaisedButton label="Buy a gem." style={{ margin: 12 }} primary={true} onTouchTap={this.handleBuyGemEndTurn}  />
+            <RaisedButton label="No thanks." style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
           </div>
         </div>
       </Modal>
