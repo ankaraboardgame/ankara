@@ -70,7 +70,7 @@ class BlackMarket extends React.Component {
               src="./images/cart/spices.png"
             />
           </div>
-          { 
+          {
             selectedGood &&
             <Dice done={this.handleDiceRoll} />
           }

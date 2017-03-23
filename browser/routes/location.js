@@ -25,7 +25,7 @@ export const actionTradeGoods = (gameId, playerId, marketSize, fabricNum, fruitN
 
 // 5. Mosques
 export const actionBuyMosqueTile = (gameId, playerId, mosqueSize, selectedTile) => {
-  return axios.post(`api/game/${gameId}/player/${playerId}/location/mosque/${mosqueSize}/${selectedTile}`)
+  return axios.post(`api/game/${gameId}/player/${playerId}/location/mosque/${mosqueSize}/${selectedTile}`);
 }
 
 // 6. Black Market

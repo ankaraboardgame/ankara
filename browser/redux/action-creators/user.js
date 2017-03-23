@@ -24,6 +24,7 @@ export const loadCurrentUser = () => {
                         return snap;
                     }).then(snapshot => {
                         const gameId = snapshot.val();
+                        console.log(gameId)
                         dispatch(settingGame(gameId));
                     })
             } else {
