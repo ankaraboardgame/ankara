@@ -57,6 +57,15 @@ h1 {
   margin-bottom: 20px;
 }
 
+#mosque-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
 #market-row img {
   border-radius: 20%;
   height: 40px;
