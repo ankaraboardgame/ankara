@@ -62,6 +62,7 @@ export function merchantCount(currentUserId, currentCoords, merchantsObj) {
 }
 
 export function whichDialog(modalPayload) {
+  let wheelbarrow = undefined;
   switch (modalPayload.dialog) {
     case 'drop_assistant':
       return (
@@ -103,33 +104,38 @@ export function whichDialog(modalPayload) {
       );
 
     case 'smuggler_receive':
+      wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
       return (
-        <div>
+        <div id="turn-dialog-half">
           <p>Select the good you would like to receive from smuggler!</p>
           <div id="market-row">
-            <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerGoodClick} />
-            <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleSmugglerGoodClick} />
-            <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleSmugglerGoodClick} />
-            <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleSmugglerGoodClick} />
+            { wheelbarrow.fabric < wheelbarrow.size &&
+              <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerGoodClick} /> }
+            { wheelbarrow.fruit < wheelbarrow.size &&
+              <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleSmugglerGoodClick} /> }
+            { wheelbarrow.spice < wheelbarrow.size &&
+              <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleSmugglerGoodClick} /> }
+            { wheelbarrow.heirloom < wheelbarrow.size &&
+              <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleSmugglerGoodClick} /> }
           </div>
         </div>
       )
 
     case 'smuggler_pay':
-      const wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
+      wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
       return (
-        <div>
+        <div id="turn-dialog-half">
           <p>Select how you would like to pay smuggler</p>
           <div id="market-row">
-            { wheelbarrow && wheelbarrow.fabric > 0 &&
+            { wheelbarrow.fabric > 0 &&
               <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerPayClick} /> }
-            { wheelbarrow && wheelbarrow.fruit > 0 &&
+            { wheelbarrow.fruit > 0 &&
             <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleSmugglerPayClick} /> }
-            { wheelbarrow && wheelbarrow.spice > 0 &&
+            { wheelbarrow.spice > 0 &&
             <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleSmugglerPayClick} /> }
-            { wheelbarrow && wheelbarrow.heirloom > 0 &&
+            { wheelbarrow.heirloom > 0 &&
             <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleSmugglerPayClick} /> }
-            { wheelbarrow && wheelbarrow.money >= 2 &&
+            { wheelbarrow.money >= 2 &&
             <img id="lira" src="./images/money/two_lira.png" onTouchTap={this.handleSmugglerPayClick} /> }
           </div>
         </div>
