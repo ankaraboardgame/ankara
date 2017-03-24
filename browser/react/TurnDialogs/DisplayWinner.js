@@ -19,7 +19,7 @@ class DisplayWinner extends React.Component {
     return (
       <Modal>
         <div id="winner-modal-container">
-          <h2>Winner: {this.props.winnerId}</h2>
+          <h2>Winner</h2>
           <div>
             <RaisedButton label="OK" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndGame}  />
           </div>

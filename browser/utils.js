@@ -103,3 +103,14 @@ export function whichDialog(modalPayload) {
       return null;
   }
 }
+
+
+/** ------- GAME WINNER CHECK ---------- */
+function doesSomeoneHaveFiveRubies(merchantsObj) {
+  let merchArr = Object.keys(merchantsObj);
+  let winner = false;
+  merchArr.forEach((merchant) => {
+    if (merchantsObj[merchant].wheelbarrow.ruby === 5) winner = true;
+  });
+  return winner;
+}
