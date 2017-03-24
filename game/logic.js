@@ -49,7 +49,7 @@ function Merchant (id, i){
   this.position = new Position();
   this.assistants = {
     count: 4,
-    out: {}
+    out: []
   };
   this.bonusCards = {};
   this.wheelbarrow = {
@@ -79,15 +79,6 @@ function Merchant (id, i){
       ability: '2LiraFor1Good'
     }
   };
-
-  for (let i = 0; i < 4; i++){
-    this.assistants[i] = new Assistant(i); // initialize assistants
-  }
-}
-
-function Assistant (id){
-  this.id = id;
-  this.position = '0,0';
 }
 
 function Position (coords = '0,0', possibleMoves = ['1,0', '2,0', '0,1', '1,1', '0,2']) {
