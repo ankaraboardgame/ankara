@@ -359,3 +359,86 @@ footer .badge {
   margin-top: 10px;
   margin-bottom: 20px;
 }
+
+/* ---- WINNER DIALOG ---- */
+#winner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 400px;
+  background-color: #d0cabe;
+}
+
+#winner-text {
+  color: white;
+  font-size: 40px;
+}
+
+#game-summary {
+  padding: 1em 1em 1em 1em;
+  border-top: 1px solid rgba(255,255,255,.5);
+  border-bottom: 1px solid rgba(255,255,255,.5);
+}
+
+#game-summary-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+#game-header-text {
+  color: darkslategrey;
+}
+
+table {
+  background-color: #d0cabe;
+  table-layout: auto!important;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+table tr td {
+  border-top: 1px solid hsla(0,0%,100%,.06)!important;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255,255,255,.5);
+}
+
+tr {
+  display: table-row;
+  border-bottom: 1px solid rgba(255,255,255,.5);
+}
+
+table tr:nth-child(2n) {
+  background-color: rgba(0,0,0,.015);
+}
+
+.th-center {
+  color: darkslategrey;
+  padding: 10px 10px 10px 10px;
+  font-size: 16px;
+  font-family: Garamond;
+  font-variant: small-caps;
+  text-align: center;
+}
+
+.td-center {
+  color: darkslategrey;
+  padding: 10px 10px 10px 10px;
+  font-size: 14px;
+  font-family: Garamond;
+  font-variant: small-caps;
+  text-align: center;
+}
+
+.td-name {
+  color: darkslategrey;
+  padding: 10px 10px 10px 10px;
+  font-size: 14px;
+  font-family: Garamond;
+  font-variant: small-caps;
+  text-align: left;
+}

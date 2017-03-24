@@ -13,6 +13,8 @@ import {
   dataToJS
 } from 'react-redux-firebase'
 import ModalRootContainer from './Modal/ModalRootContainer';
+import DisplayWinner from './TurnDialogs/DisplayWinner';
+import LastTurn from './TurnDialogs/LastTurn';
 
 // PLUGIN required for Material-UI. Provides an onTouchTap() event handler.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -35,6 +37,7 @@ class AppContainer extends React.Component {
           gamesRef && this.props.user ?
           <div id="game-container">
             <div id="player-box-container">
+              { gamesRef.lastRound ? <text>LAST ROUND!</text> : null}
               <img src={'images/player/redplayer.png'} id="player-icons" />
               <img src={'images/player/blueplayer.png'} id="player-icons" />
               <img src={'images/player/greenplayer.png'} id="player-icons" />
@@ -48,6 +51,12 @@ class AppContainer extends React.Component {
                 gameId={this.props.gameId}
                 gamesRef={gamesRef} />
               <ModalRootContainer gamesRef={gamesRef} />
+              { 
+                gamesRef.lastRound && gamesRef.merchants[gamesRef.playerTurn].number === 0 ?
+                <DisplayWinner
+                  merchants={gamesRef.merchants}
+                /> : null 
+              }
             </div>
           </div> :
           <CircularProgress size={60} thickness={7} />
