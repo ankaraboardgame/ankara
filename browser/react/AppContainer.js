@@ -38,7 +38,7 @@ class AppContainer extends React.Component {
           <div id="game-container">
             <PlayerButtons gamesRef={gamesRef} />
             <div id="app-container">
-              <img src={`images/Constantinople-Title.png`} id="game-title" />
+              <img src={`images/Constantinople-Title-2.png`} id="game-title" />
               {/*<p>{ gamesRef.playerMap[gamesRef.playerTurn]} is playing...</p>*/}
               <BoardContainer />
               <FooterContainer
