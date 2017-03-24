@@ -8,7 +8,8 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import RaisedButton from 'material-ui/RaisedButton';
 import { actionTradeGoods, actionChangeTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
+import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, } from '../../utils';
+import { richEnoughForSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 class SmallMarket extends React.Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class SmallMarket extends React.Component {
     this.handleAssistant = this.handleAssistant.bind(this);
     this.handleMerchant = this.handleMerchant.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
+
   }
 
   // Assistant dialogs
@@ -55,14 +57,14 @@ class SmallMarket extends React.Component {
 
   handleTradeGood(){
     const playerOffer = this.state;
-    const currentMarketIdx = this.props.gamesRef.largeMarket.currentMarketIdx;
+    const currentMarketIdx = this.props.gamesRef.smallMarket.currentMarketIdx;
 
     actionTradeGoods(this.props.gameId, this.props.playerId, 'smallMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
       .then(() => {
         actionChangeTile(this.props.gameId, this.props.playerId, 'smallMarket', currentMarketIdx)
       })
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.props.closeModal())
+      // .then(() => endTurn(this.props.gameId, this.props.playerId))
+      .then(() => handleSmuggler(this))
       .catch(console.error)
   }
 
@@ -111,7 +113,10 @@ class SmallMarket extends React.Component {
       </div>
     );
   }
+
 }
+
+
 
 const mapStateToProps = state => ({
   gameId: state.game.id,
