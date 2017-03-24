@@ -9,7 +9,11 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionBuyMosqueTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
 
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
+import { whichDialog } from '../../utils';
+import { handleMerchant } from '../../utils/otherMerchants.js';
+import { handleAssistant } from '../../utils/assistants.js';
+
+/****************** Component ********************/
 
 class SmallMosque extends React.Component {
   constructor(props) {
@@ -18,8 +22,8 @@ class SmallMosque extends React.Component {
     this.handleBuySpiceTile = this.handleBuySpiceTile.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
     this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = this.handleAssistant.bind(this);
-    this.handleMerchant = this.handleMerchant.bind(this);
+    this.handleAssistant = handleAssistant.bind(this);
+    this.handleMerchant = handleMerchant.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
   }
 
@@ -37,23 +41,6 @@ class SmallMosque extends React.Component {
     .then(() => endTurn(this.props.gameId, this.props.playerId))
     .then(() => this.props.closeModal())
     .catch(console.error)
-  }
-
-  // Assistant dialogs
-  handleAssistant() {
-    this.props.closeModal();
-    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
-      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
-    } else {
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
-    }
-  }
-
-  // Merchant dialogs
-  handleMerchant() {
-    this.props.closeModal();
-    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
   }
 
   // Ends Turn
