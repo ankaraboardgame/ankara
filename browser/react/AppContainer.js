@@ -42,7 +42,6 @@ class AppContainer extends React.Component {
             </div>
             <div id="app-container">
               <img src={`images/Constantinople-Title-2.png`} id="game-title" />
-              {/*<p>{ gamesRef.playerMap[gamesRef.playerTurn]} is playing...</p>*/}
               <BoardContainer />
               <FooterContainer
                 clientId={currentUserId}
