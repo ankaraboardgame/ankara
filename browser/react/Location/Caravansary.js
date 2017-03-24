@@ -8,8 +8,14 @@ import Dice from '../Pieces/Dice';
 
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { endTurn } from '../../routes/move';
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
 import { actionGetBonusCard } from '../../routes/location';
+
+import { whichDialog } from '../../utils';
+import { handleMerchant } from '../../utils/otherMerchants.js';
+import { handleAssistant } from '../../utils/assistants.js';
+
+
+/****************** Component ********************/
 
 class Caravansary extends React.Component {
   constructor(props) {
