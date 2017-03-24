@@ -15,7 +15,6 @@ const router = module.exports = require('express').Router();
 // load one player
 router.param('playerId', (req, res, next, playerId) => {
   req.player = req.game.merchants[playerId];
-  req.merchantRef = gamesRef.child(playerId);
   next();
 });
 
@@ -46,8 +45,14 @@ router.post('/:playerId/win', (req, res, next) => {
 // SUBROUTES: player moves
 router.use('/:playerId/move', require('./move.js'));
 
-// SUBROUTES: player encounters with other merchants
+// SUBROUTES: player encounters with other merchants or smuggler
 router.use('/:playerId/encounter', require('./encounter.js'));
 
 // SUBROUTES: player stops on a location
 router.use('/:playerId/location', require('./location.js'));
+
+// SUBROUTES: player picks up / drops assistant on a location
+router.use('/:playerId/assistant', require('./assistant.js'));
+
+// SUBROUTES: player uses a bonus card or mosque tile ability
+router.use('/:playerId/bonus', require('./bonus.js'));
