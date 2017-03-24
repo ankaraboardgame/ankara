@@ -26,7 +26,7 @@ class FabricWarehouse extends React.Component {
     this.props.closeModal();
     if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
       let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter' });
+      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter' });
     } else {
       this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
     }
@@ -57,7 +57,7 @@ class FabricWarehouse extends React.Component {
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
-          <img src={`images/locations/fabric_warehouse.png`} id="img-location" />
+          <img src={`images/locations/fabric_warehouse.jpg`} id="img-location" />
           { this.whichDialog(this.props.payload) }
         </div>
       </Modal>
@@ -67,8 +67,8 @@ class FabricWarehouse extends React.Component {
   renderAction() {
     const style = { margin: 12 };
     return (
-      <div>
-        <p>Look at all the fabric! <br /><br />You can now fully load your wheelbarrow with fabric. Come back later if you need more! <br /></p>
+      <div id="turn-dialog-half">
+        <p>Look at all the fabric! <br /><br />You can now fully load your wheelbarrow with fabric.<br />Come back later if you need more! <br /></p>
         <div>
           <RaisedButton label="Max fabric and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
         </div>

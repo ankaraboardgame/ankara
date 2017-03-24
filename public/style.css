@@ -9,6 +9,18 @@ body {
   width: 50%;
 }
 
+/* ------- TURN DIALOG TEXT --- */
+#turn-dialog-half {
+  background-image: url('images/action-text-box-half.jpg');
+  background-size: 100% 100%;
+  min-height: 100px;
+}
+
+#turn-dialog-full {
+  background-image: url('images/action-text-box.jpg');
+  background-size: 100% 100%;
+}
+
 /* ------- GAME CONTAINER ---- */
 #game-container {
   display: flex;
@@ -48,7 +60,6 @@ body {
   box-shadow: 8px 8px 12px #333;
   border: 1px solid white;
   background-color: black;
-  color: white;
   position: relative;
   max-width: 500px;
 }

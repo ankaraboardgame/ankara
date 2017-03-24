@@ -21,7 +21,7 @@ class GreatMosque extends React.Component {
     this.props.closeModal();
     if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
       let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
+      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
     } else {
       this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
     }
@@ -46,7 +46,7 @@ class GreatMosque extends React.Component {
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
-          <img src={`images/locations/great_mosque.png`} id="img-location" />
+          <img src={`images/locations/great_mosque.jpg`} id="img-location" />
           { this.whichDialog(this.props.payload) }
         </div>
       </Modal>

@@ -33,7 +33,7 @@ class TeaHouse extends React.Component {
     this.props.closeModal();
     if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
       let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
+      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
     } else {
       this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
     }
@@ -83,7 +83,7 @@ class TeaHouse extends React.Component {
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
-          <img src={`images/locations/tea_house.png`} id="img-location" />
+          <img src={`images/locations/tea_house.jpg`} id="img-location" />
           { this.whichDialog(this.props.payload) }
         </div>
       </Modal>
@@ -100,8 +100,8 @@ class TeaHouse extends React.Component {
     }
 
     return (
-      <div>
-        <p>If the dice roll meets or exceeds your gamble, you get the sum you name. Otherwise, you walk away with only two lira.</p>
+      <div id="turn-dialog-full">
+        <p>If the dice roll meets or exceeds your gamble,<br />you get the sum you name.<br />Otherwise, you walk away with only two lira.</p>
           <div className='row'>
             <DropDownMenu value={this.state.gambledNumber} style={ddMenuStyle} onChange={this.handleChooseNumber}>
               <MenuItem value={2} primaryText="2" />

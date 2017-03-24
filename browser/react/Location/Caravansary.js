@@ -27,7 +27,7 @@ class Caravansary extends React.Component {
     this.props.closeModal();
     if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
       let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
+      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
     } else {
       this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
     }
@@ -48,8 +48,8 @@ class Caravansary extends React.Component {
 
   handleGetCard (type){
     actionGetBonusCard(this.props.gameId, this.props.playerId, type)
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
       .then(() => this.props.closeModal())
+      .then(() => endTurn(this.props.gameId, this.props.playerId))
       .catch(console.error);
   }  
 
@@ -59,7 +59,7 @@ class Caravansary extends React.Component {
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
-          <img src={`images/locations/caravansary.png`} id="img-location" />
+          <img src={`images/locations/caravansary.jpg`} id="img-location" />
           { this.whichDialog(this.props.payload) }          
         </div>
       </Modal>
@@ -71,7 +71,7 @@ class Caravansary extends React.Component {
     const bonusCard = caravansary.bonusCards[caravansary.index];
 
     return (
-      <div>
+      <div id="turn-dialog-full">
         <p>You just drew a bonus card!</p>
         <div>
           <img src={`images/bonus_cards/${bonusCard.img}`} />

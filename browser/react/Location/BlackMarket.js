@@ -30,7 +30,7 @@ class BlackMarket extends React.Component {
     this.props.closeModal();
     if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
       let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
+      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
     } else {
       this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
     }
@@ -74,7 +74,7 @@ class BlackMarket extends React.Component {
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
-          <img src={`images/locations/black_market.png`} id="img-location" />
+          <img src={`images/locations/black_market.jpg`} id="img-location" />
           { this.whichDialog(this.props.payload) }
         </div>
       </Modal>
@@ -87,7 +87,7 @@ class BlackMarket extends React.Component {
     const selectedGood = this.state.selectedGood;
 
     return (
-      <div>
+      <div id="turn-dialog-full">
         <p>Pick up one fabric, spice, or fruit, then roll the dice to see if you get heirlooms!</p>
           <div>
             <div id="market-row">
