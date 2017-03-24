@@ -76,7 +76,7 @@ class SpiceWarehouse extends React.Component {
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
-          <img src={`images/locations/spice_warehouse.png`} id="img-location" />
+          <img src={`images/locations/spice_warehouse.jpg`} id="img-location" />
           { this.whichDialog(this.props.payload) }
         </div>
       </Modal>
@@ -86,8 +86,10 @@ class SpiceWarehouse extends React.Component {
   renderAction() {
     const style = { margin: 12 };
     return (
-      <div>
-        <p>Look at all the spices! <br /><br />Your wheelbarrow is now fully loaded with spices. Come back later if you need more! <br /></p>
+      <div id="turn-dialog-half">
+        <div id="text-box">
+          <p>Look at all the spices! <br /><br />Your wheelbarrow is now fully loaded with spices.<br />Come back later if you need more! <br /></p>
+        </div>
         <div>
           <RaisedButton label="Max spice and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
         </div>
