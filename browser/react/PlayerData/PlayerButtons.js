@@ -59,10 +59,26 @@ console.log('state playerId', this.state.selectedPlayer);
           <div>
           <p>{gamesRef.playerMap[selectedPlayer]}</p>
           <p>Wheelbarrow</p>
-            <div><img id="player-data-icons" src="./images/cart/fabric.png" /><p>{gamesRef.merchants[selectedPlayer].wheelbarrow.fabric}</p></div>
-            <div><img id="player-data-icons" src="./images/cart/fruits.png" /><p>{gamesRef.merchants[selectedPlayer].wheelbarrow.fruit}</p></div>
-            <div><img id="player-data-icons" src="./images/cart/spices.png" /><p>{gamesRef.merchants[selectedPlayer].wheelbarrow.spice}</p></div>
-            <div><img id="player-data-icons" src="./images/cart/heirlooms.png" /><p>{gamesRef.merchants[selectedPlayer].wheelbarrow.heirloom}</p></div>
+            <table>
+              <tbody>
+                <tr>
+                  <td><img id="player-data-icons" src="./images/cart/fabric.png" />Fabric</td>
+                  <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.fabric}/${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
+                </tr>
+                <tr>
+                  <td><img id="player-data-icons" src="./images/cart/fruits.png" />Fruit</td>
+                  <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.fruit}/${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
+                </tr>
+                <tr>
+                  <td><img id="player-data-icons" src="./images/cart/heirlooms.png" />Heirloom</td>
+                  <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.heirloom}/${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
+                </tr>
+                <tr>
+                  <td><img id="player-data-icons" src="./images/cart/spices.png" />Spice</td>
+                  <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.spice}/${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         }
         </div>
