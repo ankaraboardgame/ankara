@@ -10,17 +10,33 @@ function smugglerOnLocation(currentCoords, smuggler) {
   return false;
 }
 
-export function richEnoughForSmuggler(currentUserId, merchantsObj) {
-  const wheelbarrow = merchantsObj[currentUserId].wheelbarrow;
+function isBroke(wheelbarrow) {
   if (wheelbarrow.fabric > 0 ||
       wheelbarrow.spice > 0 ||
       wheelbarrow.heirloom > 0 ||
       wheelbarrow.fruit > 0 ||
       wheelbarrow.money >= 2) {
+    return false;
+  }
+  return true;
+}
 
+function isFull(wheelbarrow) {
+  if ( wheelbarrow.fabric >= wheelbarrow.size &&
+      wheelbarrow.spice >= wheelbarrow.size &&
+      wheelbarrow.fruit >= wheelbarrow.size &&
+      wheelbarrow.heirloom >= wheelbarrow.size) {
     return true;
   }
   return false;
+}
+
+export function canTalkToSmuggler(currentUserId, merchantsObj) {
+  const wheelbarrow = merchantsObj[currentUserId].wheelbarrow;
+  if (isBroke(wheelbarrow) || isFull(wheelbarrow)) {
+    return false;
+  }
+  return true;
 }
 
 // Smuggler encounter

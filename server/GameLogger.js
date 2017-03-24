@@ -132,6 +132,7 @@ const GameLogger = function() {
     /*
       money earned
       dropped assistant/picked up assistant?
+      smuggler reassingment
     */
 
   });

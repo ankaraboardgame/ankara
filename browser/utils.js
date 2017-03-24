@@ -95,7 +95,7 @@ export function whichDialog(modalPayload) {
           <p>Here be the smuggler! <br /><br />You can get a resource of your choice <br /> But! You must give him 2 lira or a random good of your choice in return...</p>
           <div>
             <RaisedButton label={`Talk to smuggler`} style={{ margin: 12 }} primary={true} onTouchTap={this.talkToSmuggler}
-              disabled={!this.richEnoughForSmuggler(this.props.playerId, this.props.merchants)}/>
+              disabled={!this.canTalkToSmuggler(this.props.playerId, this.props.merchants)}/>
             <RaisedButton label="End turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
           </div>
         </div>

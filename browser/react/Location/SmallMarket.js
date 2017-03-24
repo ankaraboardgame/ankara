@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { actionTradeGoods, actionChangeTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
 import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, } from '../../utils';
-import { richEnoughForSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 class SmallMarket extends React.Component {
   constructor(props) {
@@ -34,7 +34,7 @@ class SmallMarket extends React.Component {
     this.handleEndTurn = this.handleEndTurn.bind(this);
 
     /** smuggler functions */
-    this.richEnoughForSmuggler = richEnoughForSmuggler.bind(this);
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
     this.handleSmuggler = handleSmuggler.bind(this);
     this.talkToSmuggler = talkToSmuggler.bind(this);
     this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
