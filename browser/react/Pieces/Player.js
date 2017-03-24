@@ -4,9 +4,7 @@ import { DragSource } from 'react-dnd';
 const Player = props => {
   const { connectDragSource, isDragging, playerNum } = props;
   return connectDragSource(
-    <div
-      className="player-container"
-      style={{
+    <div style={{
         opacity: isDragging ? 0.5 : 1,
         cursor: 'move',
         color: 'black'

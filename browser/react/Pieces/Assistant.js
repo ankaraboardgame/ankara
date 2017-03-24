@@ -3,7 +3,7 @@ import React from 'react';
 const Assistant = props => {
   const { playerNum } = props;
   return (
-    <div className="assistant-container">
+    <div>
       { 
         playerNum === 0 ? <img src="images/player/redplayer-assistant.png" className="assistant-icon" /> :
         playerNum === 1 ? <img src="images/player/blueplayer-assistant.png" className="assistant-icon" /> :
