@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { DropTarget } from 'react-dnd';
 import { firebaseConnect } from 'react-redux-firebase';
 
-import { cellActiveStatus, canMovePlayer, assistantOnLocation } from '../../utils';
+import { cellActiveStatus, canMovePlayer, assistantOnLocation, mapCoordToLocation } from '../../utils';
 import { movePlayer } from '../../routes/move';
-import { DROP_ASSISTANT, PICK_UP_ASSISTANT } from '../Modal/turn_dialog_types';
+import { loadModal, hideModal } from '../../redux/action-creators/modals';
 
 import Cell from './Cell';
 import Player from '../Pieces/Player';
@@ -14,6 +14,13 @@ import Player from '../Pieces/Player';
 class CellContainer extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleOnClick = this.handleOnClick.bind(this);
+  }
+
+  handleOnClick(e) {
+    e.preventDefault();
+    this.props.openModal(mapCoordToLocation(this.props.coords), { zoom: true });
   }
 
 
@@ -44,35 +51,25 @@ class CellContainer extends React.Component {
 
     // There should only be one merchant that matches current user
     const userMerchant = merchants[currentUserId];
-    const activeStatus = this.props.merchants &&
-      cellActiveStatus(
+    const activeStatus = this.props.merchants && (this.props.game.playerTurn === currentUserId) ?
+      (cellActiveStatus(
         this.props.coords,
         userMerchant.position.coordinates,
         userMerchant.position.possibleMoves
-      ) ?
-      null : {opacity: '0.2'};
+        ) ?
+        null : {opacity: '0.2'}) : null;
 
     return connectDropTarget(
       <div id="cell-container" style={activeStatus}>
         <Cell
           coords={this.props.coords}
           name={this.props.name}
+          handleOnClick={this.handleOnClick}
         />
         <div id="player-container">
           { playerPieces }
         </div>
-        {isOver &&
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            height: '100%',
-            width: '100%',
-            zIndex: 1,
-            opacity: 0.5,
-            backgroundColor: 'yellow'
-          }} />
-        }
+        { isOver && <div id="player-hover-overlay" /> }
       </div>
     );
   }
@@ -87,15 +84,20 @@ const mapStateToProps = (state, ownProps) => ({
   merchants: ownProps.merchants
 });
 
+const mapDispatchToProps = dispatch => ({
+  closeModal: () => dispatch(hideModal()),
+  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
+});
+
 const cellTarget = {
   canDrop(props) {
     return canMovePlayer(props.coords, props.merchants[props.user.uid].position.possibleMoves);
   },
   drop(props) {
     if (assistantOnLocation(props.coords, props.merchants[props.user.uid].assistants)) {
-      props.openModal(PICK_UP_ASSISTANT, { currentPosition: props.coords});
+      props.openModal(mapCoordToLocation(props.coords), { currentPosition: props.coords, dialog: 'pick_up_assistant' })
     } else {
-      props.openModal(DROP_ASSISTANT, { currentPosition: props.coords});
+      props.openModal(mapCoordToLocation(props.coords), { currentPosition: props.coords, dialog: 'drop_assistant' })
     }
     movePlayer(props.gameId, props.user.uid, props.coords, props.cellPossibleMoves);
   }
@@ -110,5 +112,5 @@ const collect = (connect, monitor) => {
 
 export default compose(
   DropTarget('player', cellTarget, collect),
-  connect(mapStateToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(CellContainer);

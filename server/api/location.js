@@ -222,20 +222,22 @@ router.post('/mosque/:mosqueSize/:selectedTile', (req, res, next) => {
 // 6. BLACK MARKET (1)
 router.post('/blackMarket/:goodChosen/:diceRoll/', (req, res, next) => {
   const diceRoll = +req.params.diceRoll;
+  const wbSize = req.player.wheelbarrow.size;
 
   const updateGoodPromise = gamesRef.child(req.game.id)
     .child(`merchants/${req.player.id}/wheelbarrow/${req.params.goodChosen}`)
-    .transaction(function(currentGood){
-      return currentGood + 1;
+    .transaction(function(currentGoodCount){
+      if (currentGoodCount >= wbSize) return wbSize;
+      else return currentGoodCount + 1;
     })
 
   const updateHeirloomPromise = gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/wheelbarrow/jewelry`)
-    .transaction(currentJewelry => {
-      if (diceRoll === 7 || diceRoll === 8) return currentJewelry + 1;
-      else if (diceRoll === 9 || diceRoll === 10) return currentJewelry + 2;
-      else if (diceRoll === 11 || diceRoll === 12) return currentJewelry + 3;
-      else return currentJewelry;
+    .child(`merchants/${req.player.id}/wheelbarrow/heirloom`)
+    .transaction(currentHeirlooms => {
+      if (diceRoll === 7 || diceRoll === 8) return currentHeirlooms + 1;
+      else if (diceRoll === 9 || diceRoll === 10) return currentHeirlooms + 2;
+      else if (diceRoll === 11 || diceRoll === 12) return currentHeirlooms + 3;
+      else return currentHeirlooms;
     })
 
   Promise.all([updateGoodPromise, updateHeirloomPromise])

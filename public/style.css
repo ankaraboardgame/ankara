@@ -2,16 +2,42 @@
 @import url('https://fonts.googleapis.com/css?family=Ruslan+Display|UnifrakturCook:700');
 
 body {
-  background-color: wheat;
+  background-image: url('images/board-background.jpg'); 
 }
 
-h1 {
+#game-title {
+  width: 50%;
+}
+
+/* ------- GAME CONTAINER ---- */
+#game-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+/* ------- PLAYER ICON BOX ---- */
+#player-box-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 500px;
+  padding: 25px 25px 0px 25px;
+  align-self: center;
+}
+
+#player-icons {
+  width: 50px;
+  height: 50px;
+}
+
+/*h1 {
   font-family: 'Ruslan Display', cursive;
   letter-spacing: 3pt;
   font-size: 120px;
   color: darkred;
   text-shadow: -1px 0 #222, 0 1px #222, 1px 0 #222, 0 -1px #222;
-}
+}*/
 
 /* -------- LOCATION MODALS --- */
 #location-modal-container {
@@ -24,6 +50,7 @@ h1 {
   background-color: black;
   color: white;
   position: relative;
+  max-width: 500px;
 }
 
 #exchange-card {
@@ -187,6 +214,17 @@ h1 {
   top: 30px;
   display: flex;
   justify-content: center;
+}
+
+#player-hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  opacity: 0.5;
+  background-color: yellow;
 }
 
 /* -------- BOARD -------- */
