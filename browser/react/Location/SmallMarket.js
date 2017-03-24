@@ -23,7 +23,8 @@ class SmallMarket extends React.Component {
       fruit: 0,
       fabric: 0,
       heirloom: 0,
-      spice: 0
+      spice: 0,
+      tradeOffer: false
     }
 
     this.handleTradeGood = this.handleTradeGood.bind(this);
@@ -32,6 +33,7 @@ class SmallMarket extends React.Component {
     this.handleAssistant = handleAssistant.bind(this);
     this.handleMerchant = handleMerchant.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.handleTradeOfferReset = this.handleTradeOfferReset.bind(this);
   }
 
   // Ends Turn
@@ -62,9 +64,20 @@ class SmallMarket extends React.Component {
     let quantity;
     if(this.state[good] < currentDemandTile[good] && this.state[good] < currentWheelbarrow[good]){
       this.setState({
-        [event.target.id]: ++this.state[event.target.id]
+        [event.target.id]: ++this.state[event.target.id],
+        tradeOffer: true
       })
     }
+  }
+
+  handleTradeOfferReset(){
+    this.setState({
+      fruit: 0,
+      fabric: 0,
+      heirloom: 0,
+      spice: 0,
+      tradeOffer: false
+    })
   }
 
   render() {
@@ -94,8 +107,12 @@ class SmallMarket extends React.Component {
           <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleGoodClick} /><p>{this.state.fruit}</p>
           <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleGoodClick} /><p>{this.state.spice}</p>
           <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleGoodClick} /><p>{this.state.heirloom}</p>
-          <RaisedButton label="Trade Goods" style={style} primary={true} onTouchTap={this.handleTradeGood}  />
         </div>
+        <div id="market-row">
+          <RaisedButton label="Trade Goods" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeGood}  />
+          <RaisedButton label="Reset" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
+        </div>
+        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
       </div>
     );
   }

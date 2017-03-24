@@ -74,7 +74,7 @@ class Wainwright extends React.Component {
             wheelbarrow.money < 7 ?
             <div>
               <div id="text-box">
-                <p>Sorry, you do not have enough money at this time. You must end your turn.</p>
+                <p>Sorry, you do not have enough money at this time. End your turn.</p>
               </div>
               <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
             </div>

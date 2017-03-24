@@ -52,7 +52,7 @@ class GreatMosque extends React.Component {
 
   render() {
     const onClose = this.props.payload.zoom ? this.props.closeModal : null;
-    
+
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">

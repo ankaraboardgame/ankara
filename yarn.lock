@@ -3405,6 +3405,10 @@ react-addons-transition-group@^15.0.0:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
+react-collapsible@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-collapsible/-/react-collapsible-1.4.0.tgz#76571edc09877a3f3d1b2298d6c9ccee9421935e"
+
 react-dice-complete@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-dice-complete/-/react-dice-complete-1.0.2.tgz#00228a05a1a06111a4704a7a1f8386b618ee4432"
