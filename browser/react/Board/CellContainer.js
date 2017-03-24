@@ -133,6 +133,7 @@ const mapStateToProps = (state, ownProps) => ({
   possibleMoves: ownProps.cellPossibleMoves,
   game: ownProps.game,
   merchants: ownProps.merchants,
+  self: ownProps.merchants[state.user.user.uid],
   gamesRef: dataToJS(state.firebase, `games/${state.game.id}`)
 });
 
@@ -149,6 +150,6 @@ const collect = (connect, monitor) => {
 };
 
 export default compose(
-  DropTarget('player', cellTarget, collect),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  DropTarget('player', cellTarget, collect)
 )(CellContainer);

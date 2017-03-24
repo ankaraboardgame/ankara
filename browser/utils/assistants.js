@@ -21,7 +21,8 @@ export const openAssistantDialog = (props) => {
       mapCoordToLocation(props.coords),
       {
         currentPosition: props.coords,
-        dialog: 'drop_assistant'
+        dialog: 'drop_assistant',
+        assistantCount: props.self.assistants.count
       }
     );
   }

@@ -22,27 +22,10 @@ class Caravansary extends React.Component {
     super(props);
 
     this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = this.handleAssistant.bind(this);
-    this.handleMerchant = this.handleMerchant.bind(this);
+    this.handleAssistant = handleAssistant.bind(this);
+    this.handleMerchant = handleMerchant.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
     this.handleGetCard = this.handleGetCard.bind(this);
-  }
-
-  // Assistant dialogs
-  handleAssistant() {
-    this.props.closeModal();
-    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
-      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
-    } else {
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
-    }
-  }
-
-  // Merchant dialogs
-  handleMerchant() {
-    this.props.closeModal();
-    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
   }
 
   // Ends Turn

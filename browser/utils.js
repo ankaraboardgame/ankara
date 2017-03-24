@@ -56,6 +56,7 @@ export function whichDialog(modalPayload) {
             style={{ margin: 12 }}
             primary={true}
             onTouchTap={() => this.handleAssistant('drop')}
+            disabled={!modalPayload.assistantCount}
           />
           <RaisedButton
             label="No thanks, I'll end my turn"
