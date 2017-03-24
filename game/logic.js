@@ -2,7 +2,8 @@ const {
   shuffle,
   bonusCards,
   largeMarketDemandTiles,
-  smallMarketDemandTiles
+  smallMarketDemandTiles,
+  getRandomInt,
 } = require('./accessories.js');
 
 /**
@@ -41,6 +42,10 @@ function Game (gameId, usersObj){
   this.playerIds.forEach((id, i) => {
     this.merchants[id] = new Merchant(id, i);
   });
+
+  this.smuggler = {};
+  this.smuggler.coordinates = `${getRandomInt(0,4)},${getRandomInt(0,3)}`;
+
 }
 
 function Merchant (id, i){

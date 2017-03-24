@@ -31,8 +31,7 @@ class DisplayWinner extends React.Component {
 
 const mapStateToProps = state => ({
   gameId: state.game.id,
-  playerId: state.user.user.uid,
-  winnerId: state.game.winnerId
+  playerId: state.user.user.uid
 })
 
 const mapDispatchToProps = dispatch => ({
