@@ -2,7 +2,7 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { DropTarget } from 'react-dnd';
-import { firebaseConnect } from 'react-redux-firebase';
+import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 
 import { cellActiveStatus, canMovePlayer, assistantOnLocation, mapCoordToLocation } from '../../utils';
 import { movePlayer } from '../../routes/move';
@@ -65,6 +65,7 @@ class CellContainer extends React.Component {
           coords={this.props.coords}
           name={this.props.name}
           handleOnClick={this.handleOnClick}
+          gamesRef={this.props.gamesRef}
         />
         <div id="player-container">
           { playerPieces }
@@ -81,7 +82,8 @@ const mapStateToProps = (state, ownProps) => ({
   coords: ownProps.coords,
   possibleMoves: ownProps.cellPossibleMoves,
   game: ownProps.game,
-  merchants: ownProps.merchants
+  merchants: ownProps.merchants,
+  gamesRef: dataToJS(state.firebase, `games/${state.game.id}`)
 });
 
 const mapDispatchToProps = dispatch => ({
