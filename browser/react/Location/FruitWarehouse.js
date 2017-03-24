@@ -68,10 +68,12 @@ class FruitWarehouse extends React.Component {
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-half">
-        <p>Look at all the fruits! <br /><br />You can now fully load your wheelbarrow with fruits.<br />Come back later if you need more! <br /></p>
-          <div>
-            <RaisedButton label="Max fruit and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
-          </div>
+        <div id="text-box">
+          <p>Look at all the fruits! <br /><br />You can now fully load your wheelbarrow with fruits.<br />Come back later if you need more! <br /></p>
+        </div>
+        <div>
+          <RaisedButton label="Max fruit and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
+        </div>
       </div>
     );
   }

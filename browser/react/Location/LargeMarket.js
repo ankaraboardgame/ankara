@@ -97,7 +97,9 @@ class LargeMarket extends React.Component {
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-full">
-        <p>Select the goods you would like to trade for money!</p>
+        <div id="text-box">
+          <p>Select the goods you would like to trade for money!</p>
+        </div>
         <div id="market-row">
           <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleGoodClick} /><p>{this.state.fabric}</p>
           <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleGoodClick} /><p>{this.state.fruit}</p>

@@ -86,22 +86,30 @@ class Wainwright extends React.Component {
         {
             wheelbarrow.money < 7 ?
             <div>
-            <p>Sorry, you do not have enough money at this time. You must end your turn.</p>
+              <div id="text-box">
+                <p>Sorry, you do not have enough money at this time. You must end your turn.</p>
+              </div>
               <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
             </div>
             : wheelbarrow.size === 4 ?
             <div>
-              <p>You have a wheelbarrow size of 4. You can buy one more extension, and earn a ruby!</p>
+              <div id="text-box">
+                <p>You have a wheelbarrow size of 4. You can buy one more extension, and earn a ruby!</p>
+              </div>
               <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtensionEarnRuby}  />
             </div>
             : wheelbarrow.size === 5 ?
             <div>
-              <p>You already have the largest size of wheelbarrow.</p>
+              <div id="text-box">
+                <p>You already have the largest size of wheelbarrow.</p>
+              </div>
               <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
             </div>
             :
             <div>
-              <p>You can buy a wheelbarrow extension here.<br /><br />Each extension cost 7 Lira. <br />You can buy a maximum of 3 extensions, <br />at which point you will receive 1 ruby. <br /></p>
+              <div id="text-box">
+                <p>You can buy a wheelbarrow extension here.<br /><br />Each extension cost 7 Lira. <br />You can buy a maximum of 3 extensions, <br />at which point you will receive 1 ruby. <br /></p>
+              </div>
               <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtension}  />
             </div>
           }

@@ -6,8 +6,18 @@ body {
 }
 
 #game-title {
-  width: 50%;
+  width: 60%;
   padding: 20px 0px 20px 0px;
+}
+
+#text-box {
+  margin: 20px 40px 10px 40px;
+}
+
+p {
+  font-family: Garamond;
+  font-size: 20px;
+  font-variant: small-caps;
 }
 
 /* ------- TURN DIALOG TEXT --- */

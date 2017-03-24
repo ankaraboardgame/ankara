@@ -77,7 +77,9 @@ class GemstoneDealer extends React.Component {
 
     return (
       <div id="turn-dialog-half">
-        <p>All the gems that money can buy. Current price: {price} lira.</p>
+        <div id="text-box">
+          <p>All the gems that money can buy. Current price: {price} lira.</p>
+        </div>
           <div>
             <RaisedButton
               label={`BUY GEM FOR ${price} LIRA`}

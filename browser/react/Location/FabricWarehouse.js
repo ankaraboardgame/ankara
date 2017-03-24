@@ -68,7 +68,9 @@ class FabricWarehouse extends React.Component {
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-half">
-        <p>Look at all the fabric! <br /><br />You can now fully load your wheelbarrow with fabric.<br />Come back later if you need more! <br /></p>
+        <div id="text-box">
+          <p>Look at all the fabric! <br /><br />You can now fully load your wheelbarrow with fabric.<br />Come back later if you need more! <br /></p>
+        </div>
         <div>
           <RaisedButton label="Max fabric and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
         </div>
