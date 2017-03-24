@@ -156,7 +156,7 @@ export function whichDialog(modalPayload) {
 
 
 /** ------- GAME WINNER CHECK ---------- */
-function doesSomeoneHaveFiveRubies(merchantsObj) {
+export function doesSomeoneHaveFiveRubies(merchantsObj) {
   let merchArr = Object.keys(merchantsObj);
   let winner = false;
   merchArr.forEach((merchant) => {
