@@ -8,7 +8,8 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import RaisedButton from 'material-ui/RaisedButton';
 import { actionTradeGoods, actionChangeTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, smugglerOnLocation, richEnoughForSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick, reassignSmuggler} from '../../utils';
+import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, } from '../../utils';
+import { richEnoughForSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 class SmallMarket extends React.Component {
   constructor(props) {
