@@ -9,13 +9,21 @@ import Dice from '../Pieces/Dice';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionBlackMarket } from '../../routes/location';
 import { endTurn } from '../../routes/move';
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils'; 
+import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
+import { richEnoughForSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 class BlackMarket extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { selectedGood: null }
+    this.state = {
+      selectedGood: null,
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    }
+
     this.handleSelectGood = this.handleSelectGood.bind(this);
     this.handleDiceRoll = this.handleDiceRoll.bind(this);
     this.handleGetBlackMarketGoodsEndTurn = this.handleGetBlackMarketGoodsEndTurn.bind(this);
@@ -23,6 +31,13 @@ class BlackMarket extends React.Component {
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = this.handleAssistant.bind(this);
     this.handleMerchant = this.handleMerchant.bind(this);
+
+    /** smuggler functions */
+    this.richEnoughForSmuggler = richEnoughForSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   // Assistant dialogs
@@ -55,8 +70,7 @@ class BlackMarket extends React.Component {
 
   handleGetBlackMarketGoodsEndTurn (selectedGood, rollSum){
     actionBlackMarket(this.props.gameId, this.props.playerId, selectedGood, rollSum)
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.props.closeModal())
+      .then(() => this.handleSmuggler())
       .catch(console.error);
   }
 
