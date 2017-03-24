@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Ruslan+Display');
 @import url('https://fonts.googleapis.com/css?family=Ruslan+Display|UnifrakturCook:700');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
-body {
-  background-image: url('images/board-background.jpg'); 
+html body {
+  background-image: url('images/board-background.jpg');
+  margin: 0px;
 }
 
 #game-title {
@@ -25,6 +27,11 @@ p {
   background-image: url('images/action-text-box-half.jpg');
   background-size: 100% 100%;
   min-height: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
 }
 
 #turn-dialog-full {
@@ -37,9 +44,11 @@ p {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  min-height: 100vh;
 }
-/* ------- PLAYER ICON BOX ---- */
-#player-box-container {
+
+/* ------- PLAYER DATA BOX ---- */
+#player-buttons-column {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -49,9 +58,64 @@ p {
   align-self: center;
 }
 
+#player-buttons-column img {
+  cursor: pointer;
+}
+
 #player-icons {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
+}
+
+#player-data-icons {
+  border-radius: 20%;
+  height: 40px;
+}
+
+#player-info-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 600px;
+  align-self: center;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background: rgba(0, 0, 0, 0.85);
+  position: absolute;
+  z-index: 2;
+}
+
+#player-detailed-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  align-self: center;
+  height: 600px;
+  margin: 0px 30px 0px 30px;
+  color: white;
+}
+
+
+#player-detailed-info p {
+  font-family: 'Roboto', sans-serif;
+}
+
+#player-info-row th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+table {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+tbody tr:nth-child(odd){
+  background: rgba(0, 0, 0, 0.8);
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 /*h1 {
@@ -256,7 +320,10 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
   width: 85%;
+  height: auto;
+  margin-bottom: 50px;
 }
 
 #row-container {
@@ -300,13 +367,6 @@ footer {
   width:100%;
 }
 
-.img-circle {
-  border-radius: 20%;
-  /*border: 2px solid #d3d3d3;*/
-  height: 40px;
-  float: left;
-}
-
 .img-money {
   height: 40px;
   float: left;
@@ -342,6 +402,70 @@ footer .badge {
 
 }
 
+/* -------- New Footer -------- */
+
+#footer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  position: relative;
+  bottom: 0px;
+}
+
+#new-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  background: rgba(0, 0, 0, 0.65);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  width: auto;
+  position: relative;
+  bottom: 0px;
+  padding: 20px 50px 20px 50px;
+}
+
+#new-footer p {
+  font-family: 'Roboto', sans-serif;
+}
+
+#name {
+  color: white;
+  margin-left: 15px;
+  margin-right: 50px;
+}
+
+
+#notifications p {
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  background-color: #a80a0a;
+  color: white;
+  font-size: 13px;
+  font-family: Arial;
+  text-align: center;
+  vertical-align: center;
+  position: relative;
+  padding-top: 1px;
+  margin-left: -13px;
+  margin-top: -20px;
+}
+
+#playerName {
+  margin-left: 20px;
+  vertical-align: center;
+}
+
+.footer-icons {
+  border-radius: 20%;
+  margin-left: 20px;
+  height: 40px;
+  float: left;
+}
+
 /* -------- APP -------- */
 
 #app-container {
@@ -349,6 +473,14 @@ footer .badge {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+#circular-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  height: 100vh;
 }
 
 #dash-footer {

@@ -65,12 +65,6 @@ class SmallMosque extends React.Component {
 
   render() {
     const onClose = this.props.payload.zoom ? this.props.closeModal : null;
-    const fabricRequired = this.props.gamesRef.smallMosque.fabric;
-    const spiceRequired = this.props.gamesRef.smallMosque.spice;
-    const playerId = this.props.playerId;
-    const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
-    const abilities = this.props.gamesRef.merchants[playerId].abilities;
-    const style = { margin: 12 };
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
@@ -82,6 +76,12 @@ class SmallMosque extends React.Component {
   }
 
   renderAction() {
+    const fabricRequired = this.props.gamesRef.smallMosque.fabric;
+    const spiceRequired = this.props.gamesRef.smallMosque.spice;
+    const playerId = this.props.playerId;
+    const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
+    const abilities = this.props.gamesRef.merchants[playerId].abilities;
+    const style = { margin: 12 };
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
