@@ -44,7 +44,7 @@ class GreatMosque extends React.Component {
     this.props.closeModal();
     if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
       let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
+      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
     } else {
       this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
     }
@@ -65,17 +65,30 @@ class GreatMosque extends React.Component {
 
   render() {
     const onClose = this.props.payload.zoom ? this.props.closeModal : null;
+    
+    return (
+      <Modal onClose={onClose}>
+        <div id="location-modal-container">
+          <img src={`images/locations/great_mosque.jpg`} id="img-location" />
+          { this.whichDialog(this.props.payload) }
+        </div>
+      </Modal>
+    );
+  }
+
+  renderAction() {
     const heirloomRequired = this.props.gamesRef.greatMosque.heirloom;
     const fruitRequired = this.props.gamesRef.greatMosque.fruit;
     const playerId = this.props.playerId;
     const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
     const abilities = this.props.gamesRef.merchants[playerId].abilities;
     const style = { margin: 12 };
+
     return (
-      <Modal onClose={onClose}>
-        <div id="location-modal-container">
-          <img src={`images/locations/great_mosque.png`} id="img-location" />
+      <div id="turn-dialog-full">
+        <div id="text-box">
           <p>You can buy a tile if you have enough ressources<br /> and if you have not acquired it yet. <br /><br />When you aquire both Great Mosque<br /> tiles, you will earn a ruby.</p>
+        </div>
           <div id="mosque-row">
             <div id="mosque-heirloom">
               {
@@ -111,14 +124,8 @@ class GreatMosque extends React.Component {
             </div>
           </div>
         <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn} />
-          { this.whichDialog(this.props.payload) } // DAN TO CHECK THIS
-        </div>
-      </Modal>
+      </div>
     );
-  }
-
-  renderAction() {
-    return <h3>ACTION TEXT WILL GO HERE!</h3>;
   }
 }
 

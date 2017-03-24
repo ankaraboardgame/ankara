@@ -27,7 +27,7 @@ class Wainwright extends React.Component {
     this.props.closeModal();
     if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
       let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
+      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
     } else {
       this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
     }
@@ -64,64 +64,58 @@ class Wainwright extends React.Component {
   }
 
   render() {
-    const style = { margin: 12 };
-    const playerId = this.props.playerId;
-    const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
     const onClose = this.props.payload.zoom ? this.props.closeModal : null;
 
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
-          <img src={`images/locations/wainwright.png`} id="img-location" />
-          {
-            wheelbarrow.money < 7 ?
-            <div>
-            <p>Sorry, you do not have enough money at this time. You must end your turn.</p>
-              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
-            </div>
-            : wheelbarrow.size === 4 ?
-            <div>
-              <p>You have a wheelbarrow size of 4. You can buy one more extension, and earn a ruby!</p>
-              <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtensionEarnRuby}  />
-            </div>
-            : wheelbarrow.size === 5 ?
-            <div>
-              <p>You already have the largest size of wheelbarrow.</p>
-              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
-            </div>
-            :
-            <div>
-              <p>You can buy a wheelbarrow extension here.<br /><br />Each extension cost 7 Lira. <br />You can buy a maximum of 3 extensions, <br />at which point you will receive 1 ruby. <br /></p>
-              <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtension}  />
-            </div>
-          }
-          { this.whichDialog(this.props.payload) } // DAN TO CHECK THIS
+          <img src={`images/locations/wainwright.jpg`} id="img-location" />
+          { this.whichDialog(this.props.payload) }
         </div>
       </Modal>
     );
   }
 
-//   renderAction() {
-//     const style = { margin: 12 };
-//     const playerId = this.props.playerId;
-//     const money = this.props.gamesRef.merchants[playerId].wheelbarrow.money;
-//     return (
-//       <div>
-//         {
-//           money < 7 ?
-//           <div>
-//           <p>Sorry, you do not have enough money at this time. You must end your turn.</p>
-//             <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
-//           </div>
-//           :
-//           <div>
-//             <p>You can buy a wheelbarrow extension here.<br /><br />Each extension cost 7 Lira. <br />You can buy a maximum of 3 extensions, <br />at which point you will receive 1 ruby. <br /></p>
-//             <RaisedButton label="Buy an Extension" style={style} primary={true} onTouchTap={this.handleBuyExtension}  />
-//           </div>
-//         }
-//       </div>
-//     );
-//   }
+  renderAction() {
+    const style = { margin: 12 };
+    const playerId = this.props.playerId;
+    const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
+
+    return (
+      <div id="turn-dialog-half">
+        {
+            wheelbarrow.money < 7 ?
+            <div>
+              <div id="text-box">
+                <p>Sorry, you do not have enough money at this time. You must end your turn.</p>
+              </div>
+              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+            </div>
+            : wheelbarrow.size === 4 ?
+            <div>
+              <div id="text-box">
+                <p>You have a wheelbarrow size of 4. You can buy one more extension, and earn a ruby!</p>
+              </div>
+              <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtensionEarnRuby}  />
+            </div>
+            : wheelbarrow.size === 5 ?
+            <div>
+              <div id="text-box">
+                <p>You already have the largest size of wheelbarrow.</p>
+              </div>
+              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+            </div>
+            :
+            <div>
+              <div id="text-box">
+                <p>You can buy a wheelbarrow extension here.<br /><br />Each extension cost 7 Lira. <br />You can buy a maximum of 3 extensions, <br />at which point you will receive 1 ruby. <br /></p>
+              </div>
+              <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtension}  />
+            </div>
+          }
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => ({

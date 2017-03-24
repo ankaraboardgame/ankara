@@ -4,6 +4,15 @@ const gamesRef = db.ref('games');
 
 const router = module.exports = require('express').Router();
 
+/**
+ * Move routes
+ * ...api/game/:gameId/player/:playerId/move/...
+ *
+ * preloaded on req:
+ * req.game = specific game instance
+ * req.player = the player hitting this route
+ */
+
 router.post('/', (req, res, next) => {
   const playerId = req.player.id;
   const gameId = req.game.id
