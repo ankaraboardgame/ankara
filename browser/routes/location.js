@@ -39,7 +39,6 @@ export const actionBuyMosqueTile = (gameId, playerId, mosqueSize, selectedTile) 
 
 // 6. Black Market
 export const actionBlackMarket = (gameId, playerId, selectedGood, diceRoll) => {
-  console.log(gameId, playerId, selectedGood, diceRoll)
   return axios.post(`api/game/${gameId}/player/${playerId}/location/blackmarket/${selectedGood}/${diceRoll}`)
 }
 

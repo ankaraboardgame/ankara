@@ -9,33 +9,48 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionBuyMosqueTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
 
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
+import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, handleEndTurn, beforeEndTurn } from '../../utils';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 
 class GreatMosque extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    };
+
     this.handleBuyHeirloomTile = this.handleBuyHeirloomTile.bind(this);
     this.handleBuyFruitTile = this.handleBuyFruitTile.bind(this);
-    this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.handleEndTurn = handleEndTurn.bind(this);
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = this.handleAssistant.bind(this);
     this.handleMerchant = this.handleMerchant.bind(this);
+    this.beforeEndTurn = beforeEndTurn.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   handleBuyHeirloomTile(){
     const playerId = this.props.playerId;
     actionBuyMosqueTile(this.props.gameId, this.props.playerId, 'greatMosque', 'heirloom')
-    .then(() => endTurn(this.props.gameId, this.props.playerId))
-    .then(() => this.props.closeModal())
+    .then(this.beforeEndTurn)
     .catch(console.error)
   }
 
   handleBuyFruitTile(){
     const playerId = this.props.playerId;
     actionBuyMosqueTile(this.props.gameId, this.props.playerId, 'greatMosque', 'fruit')
-    .then(() => endTurn(this.props.gameId, this.props.playerId))
-    .then(() => this.props.closeModal())
+    .then(this.beforeEndTurn)
     .catch(console.error)
   }
 
@@ -65,7 +80,7 @@ class GreatMosque extends React.Component {
 
   render() {
     const onClose = this.props.payload.zoom ? this.props.closeModal : null;
-    
+
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">

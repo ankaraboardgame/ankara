@@ -43,7 +43,6 @@ export function canTalkToSmuggler(currentUserId, merchantsObj) {
 export function handleSmuggler() {
   const currentPosition = this.props.currentPosition;
   const smuggler = this.props.gamesRef.smuggler;
-  console.log('handle smuggler');
   if (smugglerOnLocation(currentPosition, smuggler)) {
     this.props.closeModal();
     this.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler' });
@@ -54,7 +53,6 @@ export function handleSmuggler() {
 
 // Smuggler - handle decision to talk to smuggler
 export function talkToSmuggler() {
-  console.log('talkToSmuggler');
   const currentPosition = this.props.currentPosition;
   this.props.closeModal();
   this.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler_receive' });
@@ -62,7 +60,6 @@ export function talkToSmuggler() {
 
 // Smuggler - handle receive good and show pay dialog
 export function handleSmugglerGoodClick(event) {
-  console.log('handleSmugglerGoodClick');
   const good = event.target.id;
   const currentPosition = this.props.currentPosition;
   const currentWheelbarrow = this.props.merchants[this.props.playerId].wheelbarrow;
@@ -79,10 +76,8 @@ export function handleSmugglerGoodClick(event) {
 // Smuggler - handle pay
 export function handleSmugglerPayClick(event) {
   const trade = event.target.id;
-  console.log('handleSmugglerPayClick');
 
   this.setState({ smuggler: { goodWanted: this.state.smuggler.goodWanted, trade }}, function() {
-    console.log('local state', this.state.smuggler);
     encounterSmuggler(this.props.gameId, this.props.playerId, this.state.smuggler.goodWanted, this.state.smuggler.trade)
     .then(this.handleEndTurn);
   });

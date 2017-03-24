@@ -8,7 +8,7 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import RaisedButton from 'material-ui/RaisedButton';
 import { actionTradeGoods, actionChangeTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, } from '../../utils';
+import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, handleEndTurn, beforeEndTurn } from '../../utils';
 import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 class SmallMarket extends React.Component {
@@ -24,14 +24,15 @@ class SmallMarket extends React.Component {
         goodWanted: null,
         trade: null
       }
-    }
+    };
 
     this.handleTradeGood = this.handleTradeGood.bind(this);
     this.handleGoodClick = this.handleGoodClick.bind(this);
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = this.handleAssistant.bind(this);
     this.handleMerchant = this.handleMerchant.bind(this);
-    this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.handleEndTurn = handleEndTurn.bind(this);
+    this.beforeEndTurn = beforeEndTurn.bind(this);
 
     /** smuggler functions */
     this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
@@ -39,7 +40,6 @@ class SmallMarket extends React.Component {
     this.talkToSmuggler = talkToSmuggler.bind(this);
     this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
     this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
-
   }
 
   // Assistant dialogs
@@ -74,7 +74,7 @@ class SmallMarket extends React.Component {
       .then(() => {
         actionChangeTile(this.props.gameId, this.props.playerId, 'smallMarket', currentMarketIdx)
       })
-      .then(() => this.handleSmuggler())
+      .then(this.beforeEndTurn)
       .catch(console.error)
   }
 
@@ -123,7 +123,6 @@ class SmallMarket extends React.Component {
       </div>
     );
   }
-
 }
 
 const mapStateToProps = state => ({

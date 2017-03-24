@@ -10,16 +10,32 @@ import { actionBuyWbExt, earnRuby } from '../../routes/location';
 import { endTurn } from '../../routes/move';
 
 import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 class Wainwright extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    };
+
     this.handleBuyExtension = this.handleBuyExtension.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
     this.handleBuyExtensionEarnRuby = this.handleBuyExtensionEarnRuby.bind(this);
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = this.handleAssistant.bind(this);
     this.handleMerchant = this.handleMerchant.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   // Assistant dialogs
@@ -48,8 +64,7 @@ class Wainwright extends React.Component {
 
   handleBuyExtension(){
     actionBuyWbExt(this.props.gameId, this.props.playerId)
-    .then(() => endTurn(this.props.gameId, this.props.playerId))
-    .then(() => this.props.closeModal())
+    .then(this.handleSmuggler)
     .catch(console.error)
   }
 
@@ -58,8 +73,7 @@ class Wainwright extends React.Component {
     .then(() => {
       earnRuby(this.props.gameId, this.props.playerId)
     })
-    .then(() => endTurn(this.props.gameId, this.props.playerId))
-    .then(() => this.props.closeModal())
+    .then(this.handleSmuggler)
     .catch(console.error)
   }
 

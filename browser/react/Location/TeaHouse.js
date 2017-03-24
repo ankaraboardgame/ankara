@@ -12,12 +12,19 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionTeaHouse } from '../../routes/location';
 import { endTurn } from '../../routes/move';
 import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 class TeaHouse extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { gambledNumber: null }
+    this.state = {
+      gambledNumber: null,
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    };
 
     this.handleChooseNumber = this.handleChooseNumber.bind(this);
     this.handleDiceRoll = this.handleDiceRoll.bind(this);
@@ -26,6 +33,13 @@ class TeaHouse extends React.Component {
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = this.handleAssistant.bind(this);
     this.handleMerchant = this.handleMerchant.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   // Assistant dialogs
@@ -66,8 +80,7 @@ class TeaHouse extends React.Component {
 
   handleTeaHouseEndTurn (gamble, rollSum){
     actionTeaHouse(this.props.gameId, this.props.playerId, gamble, rollSum)
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.props.closeModal())
+      .then(this.handleSmuggler)
       .catch(console.error);
   }
 
@@ -123,7 +136,7 @@ class TeaHouse extends React.Component {
               <Dice done={this.handleDiceRoll} />
             }
           </div>
-          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />   
+          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
       </div>
     );
   }

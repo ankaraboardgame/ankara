@@ -9,33 +9,48 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionBuyMosqueTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
 
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
+import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, handleEndTurn, beforeEndTurn } from '../../utils';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+
 
 class SmallMosque extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    };
+
     this.handleBuyFabricTile = this.handleBuyFabricTile.bind(this);
     this.handleBuySpiceTile = this.handleBuySpiceTile.bind(this);
-    this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.handleEndTurn = handleEndTurn.bind(this);
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = this.handleAssistant.bind(this);
     this.handleMerchant = this.handleMerchant.bind(this);
-    this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.beforeEndTurn = beforeEndTurn.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   handleBuyFabricTile(){
     const playerId = this.props.playerId;
     actionBuyMosqueTile(this.props.gameId, this.props.playerId, 'smallMosque', 'fabric')
-    .then(() => endTurn(this.props.gameId, this.props.playerId))
-    .then(() => this.props.closeModal())
+    .then(this.beforeEndTurn)
     .catch(console.error)
   }
 
   handleBuySpiceTile(){
     const playerId = this.props.playerId;
     actionBuyMosqueTile(this.props.gameId, this.props.playerId, 'smallMosque', 'spice')
-    .then(() => endTurn(this.props.gameId, this.props.playerId))
-    .then(() => this.props.closeModal())
+    .then(this.beforeEndTurn)
     .catch(console.error)
   }
 
@@ -65,12 +80,7 @@ class SmallMosque extends React.Component {
 
   render() {
     const onClose = this.props.payload.zoom ? this.props.closeModal : null;
-    const fabricRequired = this.props.gamesRef.smallMosque.fabric;
-    const spiceRequired = this.props.gamesRef.smallMosque.spice;
-    const playerId = this.props.playerId;
-    const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
-    const abilities = this.props.gamesRef.merchants[playerId].abilities;
-    const style = { margin: 12 };
+
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
@@ -82,6 +92,13 @@ class SmallMosque extends React.Component {
   }
 
   renderAction() {
+    const fabricRequired = this.props.gamesRef.smallMosque.fabric;
+    const spiceRequired = this.props.gamesRef.smallMosque.spice;
+    const playerId = this.props.playerId;
+    const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
+    const abilities = this.props.gamesRef.merchants[playerId].abilities;
+    const style = { margin: 12 };
+
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
@@ -123,7 +140,7 @@ class SmallMosque extends React.Component {
           </div>
         <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn} />
       </div>
-    )
+    );
   }
 }
 

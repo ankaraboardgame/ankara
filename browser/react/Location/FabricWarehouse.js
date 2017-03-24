@@ -9,16 +9,31 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionMaxGood } from '../../routes/location';
 import { endTurn } from '../../routes/move';
 import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 class FabricWarehouse extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    }
 
     this.handleMaxGoodEndTurn = this.handleMaxGoodEndTurn.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = this.handleAssistant.bind(this);
     this.handleMerchant = this.handleMerchant.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   // Assistant dialogs
@@ -37,11 +52,11 @@ class FabricWarehouse extends React.Component {
     this.props.closeModal();
     this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
   }
-  
+
   handleMaxGoodEndTurn(){
     actionMaxGood(this.props.gameId, this.props.playerId, this.props.goodType)
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.props.closeModal())
+      .then(() => this.handleSmuggler())
+      .catch(console.error);
   }
 
   // Ends Turn

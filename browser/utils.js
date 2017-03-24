@@ -1,5 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import { endTurn } from './routes/move';
 
 export function cellActiveStatus(cell, currentPlayerPosition, possibleMoves) {
   const fullView = possibleMoves.concat(currentPlayerPosition);
@@ -137,6 +138,17 @@ export function whichDialog(modalPayload) {
     default:
       return null;
   }
+}
+
+// Ends Turn
+export function handleEndTurn() {
+  endTurn(this.props.gameId, this.props.playerId)
+    .then(() => this.props.closeModal())
+    .catch(console.error);
+}
+
+export function beforeEndTurn() {
+  this.handleSmuggler();
 }
 
 
