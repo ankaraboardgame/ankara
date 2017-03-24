@@ -31,7 +31,7 @@ p {
   flex-direction: row;
   align-items: center;
   align-content: center;
-  justify-content: center;
+  justify-content: center
 }
 
 #turn-dialog-full {
