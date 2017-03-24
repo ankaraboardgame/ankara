@@ -1,13 +1,14 @@
 const request = require('supertest');
-const express = require('express');
+const { expect } = require('chai');
 
-const app = express();
+const admin = require('firebase-admin');
+const db = admin.database();
+const gamesRef = db.ref('games');
 
-app.get('/user', function(req, res) {
-  res.status(200).json({ name: 'tobi' });
-});
+// const agent = request.agent();
+const server = 'http://localhost:1337';
 
-request(app)
+request(server)
   .get('/user')
   .expect('Content-Type', /json/)
   .expect('Content-Length', '15')
@@ -16,12 +17,20 @@ request(app)
     if (err) throw err;
   });
 
-describe('GET /user', function() {
-  it('respond with json', function(done) {
-    request(app)
-      .get('/user')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
+describe('GET /', function() {
+  it('respond with 200', function(done) {
+    request(server)
+      .get('/')
+      .expect('Content-Type', /html/)
       .expect(200, done);
   });
 });
+
+// describe('POST /api/game/:gameId', function() {
+//   it('creates a new game in the db', function(done) {
+//     request(server)
+//       .get('/')
+//       .expect('Content-Type', /html/)
+//       .expect(200, done);
+//   });
+// });

@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "superagent": "^3.5.2"
+  }
+}
