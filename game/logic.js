@@ -3,7 +3,7 @@ const {
   bonusCards,
   largeMarketDemandTiles,
   smallMarketDemandTiles,
-  getRandomInt,
+  getRandomPosition,
 } = require('./accessories.js');
 
 /**
@@ -44,7 +44,7 @@ function Game (gameId, usersObj){
   });
 
   this.smuggler = {};
-  this.smuggler.coordinates = `${getRandomInt(0,4)},${getRandomInt(0,3)}`;
+  this.smuggler.coordinates = getRandomPosition(4, 3);
 
 }
 

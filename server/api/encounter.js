@@ -3,6 +3,8 @@ const db = admin.database();
 const gamesRef = db.ref('games');
 const Promise = require('bluebird');
 
+const { getRandomPosition } = require('../../game/accessories.js');
+
 const router = module.exports = require('express').Router();
 
 /**
@@ -65,6 +67,14 @@ router.post('/smuggler', (req, res, next) => {
   }
 
   promiseForTrade
+  .then(() => {
+    // reassign smuggler position
+    return gamesRef.child(req.game.id)
+    .child('smuggler').child('coordinates')
+    .transaction(() => {
+      return getRandomPosition(4, 3);
+    });
+  })
   .then(() => {
     res.sendStatus(204);
   })

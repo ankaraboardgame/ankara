@@ -1,4 +1,5 @@
 import { mapCoordToLocation } from '../utils';
+import { encounterSmuggler } from '../routes/encounter';
 
 /** Smuggler Logic */
 
@@ -9,63 +10,66 @@ function smugglerOnLocation(currentCoords, smuggler) {
   return false;
 }
 
+export function richEnoughForSmuggler(currentUserId, merchantsObj) {
+  const wheelbarrow = merchantsObj[currentUserId].wheelbarrow;
+  if (wheelbarrow.fabric > 0 ||
+      wheelbarrow.spice > 0 ||
+      wheelbarrow.heirloom > 0 ||
+      wheelbarrow.fruit > 0 ||
+      wheelbarrow.money >= 2) {
+
+    return true;
+  }
+  return false;
+}
+
 // Smuggler encounter
-export function handleSmuggler(context) {
-  const currentPosition = context.props.currentPosition;
-  const smuggler = context.props.gamesRef.smuggler;
+export function handleSmuggler() {
+  const currentPosition = this.props.currentPosition;
+  const smuggler = this.props.gamesRef.smuggler;
   console.log('handle smuggler');
   if (smugglerOnLocation(currentPosition, smuggler)) {
-    context.props.closeModal();
-    context.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler' });
+    this.props.closeModal();
+    this.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler' });
   } else {
-    context.handleEndTurn();
+    this.handleEndTurn();
   }
 }
 
 // Smuggler - handle decision to talk to smuggler
-export function talkToSmuggler(context) {
+export function talkToSmuggler() {
   console.log('talkToSmuggler');
-  const currentPosition = context.props.currentPosition;
-  context.props.closeModal();
-  context.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler_receive' });
+  const currentPosition = this.props.currentPosition;
+  this.props.closeModal();
+  this.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler_receive' });
 }
 
 // Smuggler - handle receive good and show pay dialog
-export function handleSmugglerGoodClick(event, context) {
+export function handleSmugglerGoodClick(event) {
   console.log('handleSmugglerGoodClick');
   const good = event.target.id;
-  const currentPosition = context.props.currentPosition;
-  const currentWheelbarrow = context.props.merchants[context.props.playerId].wheelbarrow;
+  const currentPosition = this.props.currentPosition;
+  const currentWheelbarrow = this.props.merchants[this.props.playerId].wheelbarrow;
   //wheelbarrow size validation
   if(currentWheelbarrow[good] < currentWheelbarrow.size) {
-    context.props.closeModal();
-    //axios to receive chosen good
+    this.props.closeModal();
+    this.setState({ smuggler: { goodWanted: good }});
 
     //pay smuggler with good or 2 lira
-    context.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler_pay'});
-  } else {
-    //end turn if player was stupidly trying to receive good that you can't carry more.
-    context.handleEndTurn();
+    this.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler_pay'});
   }
 }
 
-// Smuggler - handle pay and reassignSmuggler(end turn)
-export function handleSmugglerPayClick(event, context) {
-
+// Smuggler - handle pay
+export function handleSmugglerPayClick(event) {
+  const trade = event.target.id;
   console.log('handleSmugglerPayClick');
-  if (event.target.id === 'twolira') {
-    //pay two lira
-    //axios call to decrement two lira
-    reassignSmuggler(context);
-  } else { //clicked good
 
-    //axios call to decrement good chosen.
-    reassignSmuggler(context);
-  }
+  this.setState({ smuggler: { goodWanted: this.state.smuggler.goodWanted, trade }}, function() {
+    console.log('local state', this.state.smuggler);
+    encounterSmuggler(this.props.gameId, this.props.playerId, this.state.smuggler.goodWanted, this.state.smuggler.trade)
+    .then(this.handleEndTurn);
+  });
+
 }
 
-// ReassignSmuggler
-function reassignSmuggler(context) {
-  //axios call to reassignSmuggler
-  context.handleEndTurn();
-}

@@ -19,6 +19,10 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function getRandomPosition(max_x, max_y) {
+  return `${getRandomInt(0,max_x)},${getRandomInt(0,max_y)}`;
+}
+
 const bonusCards = [
   {type: 'fiveLira', img: 'five-lira.png'},
   {type: 'fiveLira', img: 'five-lira.png'},
@@ -51,5 +55,5 @@ module.exports = {
   bonusCards,
   largeMarketDemandTiles,
   smallMarketDemandTiles,
-  getRandomInt
+  getRandomPosition
 };

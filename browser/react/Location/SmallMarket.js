@@ -19,7 +19,11 @@ class SmallMarket extends React.Component {
       fruit: 0,
       fabric: 0,
       heirloom: 0,
-      spice: 0
+      spice: 0,
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
     }
 
     this.handleTradeGood = this.handleTradeGood.bind(this);
@@ -28,6 +32,13 @@ class SmallMarket extends React.Component {
     this.handleAssistant = this.handleAssistant.bind(this);
     this.handleMerchant = this.handleMerchant.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
+
+    /** smuggler functions */
+    this.richEnoughForSmuggler = richEnoughForSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
 
   }
 
@@ -63,8 +74,7 @@ class SmallMarket extends React.Component {
       .then(() => {
         actionChangeTile(this.props.gameId, this.props.playerId, 'smallMarket', currentMarketIdx)
       })
-      // .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => handleSmuggler(this))
+      .then(() => this.handleSmuggler())
       .catch(console.error)
   }
 
@@ -115,8 +125,6 @@ class SmallMarket extends React.Component {
   }
 
 }
-
-
 
 const mapStateToProps = state => ({
   gameId: state.game.id,
