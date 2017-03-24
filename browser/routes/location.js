@@ -3,6 +3,10 @@
 import React from 'react';
 import axios from 'axios';
 
+export const earnRuby = (gameId, playerId) => {
+  return axios.post(`api/game/${gameId}/player/${playerId}/location/wainwright/earnRuby`)
+}
+
 // 1. Wainwright -- Front end to check if the wheelbarrow is already max size
 export const actionBuyWbExt = (gameId, playerId) => {
   return axios.post(`api/game/${gameId}/player/${playerId}/location/wainwright`)

@@ -34,6 +34,14 @@ router.post('/wainwright', (req, res, next) => {
   .catch(next);
 })
 
+router.post('/wainwright/earnRuby', (req, res, next) => {
+  gamesRef.child(req.game.id)
+    .child(`merchants/${req.player.id}/wheelbarrow/ruby`)
+    .transaction(function(currentRubies){
+      return currentRubies + 1;
+    });
+})
+
  // 2. WAREHOUSES (3) - Depending on the goodType, player will get max amount
 router.post('/warehouse/:goodType', (req, res, next) => {
   const playerId = req.player.id;
@@ -118,10 +126,9 @@ router.post('/market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloo
             .child(`merchants/${req.player.id}/wheelbarrow`)
             .set(transaction)
         })
-        .then(() => {
-          res.sendStatus(204)
-        })
-        .catch(next);
+    })
+    .then(() => {
+      res.sendStatus(204)
     })
     .catch(next)
 })
@@ -131,34 +138,33 @@ router.post('/market/:marketSize/:currentMarketIdx/updateTile', (req, res, next)
   gamesRef.child(req.game.id)
     .child(`${req.params.marketSize}/currentMarketIdx`)
     .set(nextMarketIdx)
+    .then(() => res.sendStatus(204))
     .catch(next)
 })
 
 // 5. MOSQUES (2)
-router.post('/mosque/:mosqueSize/:tileChosen', (req, res, next) => {
-  // small mosque: left - fabric, right - fruit
-  // large mosque: left - spice, right - heirloom
+router.post('/mosque/:mosqueSize/:selectedTile', (req, res, next) => {
+  // small mosque: fabric & spice
+  // great mosque: heirloom & fruit
   const mosque = req.params.mosqueSize;
-  const tile = req.params.tileChosen;
-  let good, abilities, ability;
+  const tile = req.params.selectedTile;
+  let abilities, ability;
 
   if (mosque === 'smallMosque') {
-    if (tile === 'left') {
-      good = 'fabric';
+    if (tile === 'fabric') {
       ability = 'dieTurnOrRoll'; // only for tea house or black market
-    } else {
-      good = 'fruit';
-      ability = '2LiraToReturn1Assistant';
+    }
+    if (tile === 'spice'){
+      ability = '2LiraFor1Good'; // any warehouse
     }
   }
 
   if (mosque === 'greatMosque') {
-    if (tile === 'left') {
-      good = 'spice';
-      ability = '2LiraFor1AdditionalGood'; // only for warehouse
-    } else {
-      good = 'heirloom';
-      ability = 'add1Assistant'; // max 1 time, 5 assistants total
+    if (tile === 'heirloom') {
+      ability = 'add1Assistant'; // can only be used once
+    }
+    if (tile === 'fruit'){
+      ability = '2LiraToReturn1Assistant'; // only once in a turn
     }
   }
 
@@ -170,28 +176,46 @@ router.post('/mosque/:mosqueSize/:tileChosen', (req, res, next) => {
     .then(() => {
 
       if (!abilities[ability]){
-        abilities.ability = ability
+        abilities[tile].acquired = true
       }
 
       const updateMosqueRate = gamesRef.child(req.game.id)
       .child(`${mosque}/${tile}`)
       .transaction(currentTileRate => {
-        return currentTileRate++
+        return ++currentTileRate
       })
 
       const updatePlayerWheelbarrow = gamesRef.child(req.game.id)
-      .child(`merchants/${req.player.id}/wheelbarrow/${good}`)
+      .child(`merchants/${req.player.id}/wheelbarrow/${tile}`)
       .transaction(currentGood => {
-        return currentGood--
+        return --currentGood
       })
 
       const updatePlayerAbilities = gamesRef.child(req.game.id)
       .child(`merchants/${req.player.id}/abilities`)
       .set(abilities)
+      .then(() => {
+        if(tile === 'fruit' || tile === 'heirloom'){
+          if(abilities.fruit.acquired && abilities.heirloom.acquired){
+            gamesRef.child(req.game.id)
+            .child(`merchants/${req.player.id}/wheelbarrow/ruby`)
+            .transaction(currentRubies => {
+              return currentRubies + 1
+            })
+        }}
+        if(tile === 'fabric' || tile === 'spice'){
+          if(abilities.fabric.acquired && abilities.spice.acquired){
+            gamesRef.child(req.game.id)
+            .child(`merchants/${req.player.id}/wheelbarrow/ruby`)
+            .transaction(currentRubies => {
+              return currentRubies + 1
+            })
+        }}
+      })
 
       return Promise.all([updateMosqueRate, updatePlayerWheelbarrow, updatePlayerAbilities])
     })
-    .then(() => { res.sendStatus(204); })
+    .then(() => res.sendStatus(204))
     .catch(next)
 })
 
