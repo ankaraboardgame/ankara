@@ -15,12 +15,12 @@ function Game (gameId, usersObj){
   this.playerIds = Object.keys(usersObj);
   this.playerMap = usersObj;
   this.smallMosque = {
-    leftCost: 1,
-    rightCost: 1
+    fabric: 2,
+    spice: 2
   };
   this.greatMosque = {
-    leftCost: 1,
-    rightCost: 1
+    heirloom: 2,
+    fruit: 2
   };
   this.smallMarket = {
     currentMarketIdx: 0,
@@ -61,7 +61,24 @@ function Merchant (id, i){
     money: i + 2,
     size: 2
   }
-  this.abilities = {};
+  this.abilities = {
+    heirloom: {
+      acquired: false,
+      ability: 'add1Assistant'
+    },
+    fruit: {
+      acquired: false,
+      ability: '2LiraToReturn1Assistant'
+    },
+    fabric: {
+      acquired: false,
+      ability: 'dieTurnOrRoll'
+    },
+    spice: {
+      acquired: false,
+      ability: '2LiraFor1Good'
+    }
+  };
 
   for (let i = 0; i < 4; i++){
     this.assistants[i] = new Assistant(i); // initialize assistants

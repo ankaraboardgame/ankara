@@ -6,16 +6,17 @@ import { dataToJS } from 'react-redux-firebase';
 import Modal from '../Modal/Modal';
 
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
-import { actionBuyWbExt } from '../../routes/location';
+import { actionBuyWbExt, earnRuby } from '../../routes/location';
 import { endTurn } from '../../routes/move';
+
 import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
 
 class Wainwright extends React.Component {
   constructor(props) {
     super(props);
-
     this.handleBuyExtension = this.handleBuyExtension.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.handleBuyExtensionEarnRuby = this.handleBuyExtensionEarnRuby.bind(this);
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = this.handleAssistant.bind(this);
     this.handleMerchant = this.handleMerchant.bind(this);
@@ -47,6 +48,17 @@ class Wainwright extends React.Component {
 
   handleBuyExtension(){
     actionBuyWbExt(this.props.gameId, this.props.playerId)
+    .then(() => endTurn(this.props.gameId, this.props.playerId))
+    .then(() => this.props.closeModal())
+    .catch(console.error)
+  }
+
+  handleBuyExtensionEarnRuby(){
+    actionBuyWbExt(this.props.gameId, this.props.playerId)
+    .then(() => {
+      earnRuby(this.props.gameId, this.props.playerId)
+    })
+    .then(() => endTurn(this.props.gameId, this.props.playerId))
     .then(() => this.props.closeModal())
     .catch(console.error)
   }
@@ -67,21 +79,32 @@ class Wainwright extends React.Component {
   renderAction() {
     const style = { margin: 12 };
     const playerId = this.props.playerId;
-    const money = this.props.gamesRef.merchants[playerId].wheelbarrow.money;
+    const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
+
     return (
       <div id="turn-dialog-half">
         {
-          money < 7 ?
-          <div>
-          <p>Sorry, you do not have enough money at this time. You must end your turn.</p>
-            <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
-          </div>
-          :
-          <div>
-            <p>You can buy a wheelbarrow extension here.<br /><br />Each extension cost 7 Lira. <br />You can buy a maximum of 3 extensions, <br />at which point you will receive 1 ruby. <br /></p>
-            <RaisedButton label="Buy an Extension" style={style} primary={true} onTouchTap={this.handleBuyExtension}  />
-          </div>
-        }
+            wheelbarrow.money < 7 ?
+            <div>
+            <p>Sorry, you do not have enough money at this time. You must end your turn.</p>
+              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+            </div>
+            : wheelbarrow.size === 4 ?
+            <div>
+              <p>You have a wheelbarrow size of 4. You can buy one more extension, and earn a ruby!</p>
+              <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtensionEarnRuby}  />
+            </div>
+            : wheelbarrow.size === 5 ?
+            <div>
+              <p>You already have the largest size of wheelbarrow.</p>
+              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+            </div>
+            :
+            <div>
+              <p>You can buy a wheelbarrow extension here.<br /><br />Each extension cost 7 Lira. <br />You can buy a maximum of 3 extensions, <br />at which point you will receive 1 ruby. <br /></p>
+              <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtension}  />
+            </div>
+          }
       </div>
     );
   }
