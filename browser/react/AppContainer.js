@@ -14,7 +14,7 @@ import {
 } from 'react-redux-firebase'
 import ModalRootContainer from './Modal/ModalRootContainer';
 
-import PlayerButtons from './PlayerData/PlayerButtons';
+import PlayerMenu from './PlayerMenu/PlayerButtons';
 
 // PLUGIN required for Material-UI. Provides an onTouchTap() event handler.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -36,7 +36,7 @@ class AppContainer extends React.Component {
         {
           gamesRef && this.props.user ?
           <div id="game-container">
-            <PlayerButtons gamesRef={gamesRef} />
+            <PlayerMenu gamesRef={gamesRef} />
             <div id="app-container">
               <img src={`images/Constantinople-Title-2.png`} id="game-title" />
               <BoardContainer />
