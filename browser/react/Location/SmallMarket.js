@@ -8,7 +8,7 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import RaisedButton from 'material-ui/RaisedButton';
 import { actionTradeGoods, actionChangeTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, smugglerOnLocation } from '../../utils';
+import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, smugglerOnLocation, richEnoughForSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick, reassignSmuggler} from '../../utils';
 
 class SmallMarket extends React.Component {
   constructor(props) {
@@ -28,12 +28,6 @@ class SmallMarket extends React.Component {
     this.handleMerchant = this.handleMerchant.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
 
-    //smuggler logic
-    this.handleSmuggler = this.handleSmuggler.bind(this);
-    this.talkToSmuggler = this.talkToSmuggler.bind(this);
-    this.handleSmugglerGoodClick = this.handleSmugglerGoodClick.bind(this);
-    this.handleSmugglerPayClick = this.handleSmugglerPayClick.bind(this);
-    this.reassignSmuggler = this.reassignSmuggler.bind(this);
   }
 
   // Assistant dialogs
@@ -60,67 +54,6 @@ class SmallMarket extends React.Component {
       .catch(console.error);
   }
 
-  // Smuggler encounter dialog
-  handleSmuggler() {
-    console.log('handle smuggler');
-    if (smugglerOnLocation(this.props.currentPosition, this.props.gamesRef.smuggler)) {
-      this.props.closeModal();
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'smuggler' });
-    } else {
-      this.handleEndTurn();
-    }
-  }
-
-  // Smuggler - handle decision to talk to smuggler
-  talkToSmuggler() {
-    this.props.closeModal();
-    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'smuggler_receive' });
-  }
-
-  // Smuggler - handle receive good and show pay dialog
-  handleSmugglerGoodClick(event) {
-    console.log('handleSmugglerGoodClick');
-    const good = event.target.id;
-    const currentWheelbarrow = this.props.gamesRef.merchants[this.props.playerId].wheelbarrow;
-    //wheelbarrow size validation
-    if(currentWheelbarrow[good] < currentWheelbarrow.size) {
-      this.props.closeModal();
-      //axios to receive chosen good
-
-      //pay smuggler with good or 2 lira
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'smuggler_pay'});
-    } else {
-      //end turn if player was stupidly trying to receive good that you can't carry more.
-      this.handleEndTurn();
-    }
-  }
-
-  // Smuggler - handle pay and reassignSmuggler(end turn)
-  handleSmugglerPayClick(event) {
-    console.log('handleSmugglerPayClick');
-    if (event.target.id === 'twolira') {
-      //pay two lira
-      //axios call to decrement two lira
-      this.reassignSmuggler();
-    } else { //clicked good
-      const good = event.target.id;
-      const currentWheelbarrow = this.props.gamesRef.merchants[this.props.playerId].wheelbarrow;
-      if(currentWheelbarrow[good] < 1) {
-        //nothing happens if player clicks on good that the player doesn't own.
-        retrun;
-      } else {
-        //axios call to decrement good chosen.
-        this.reassignSmuggler();
-      }
-    }
-
-  }
-
-  reassignSmuggler() {
-    //axios call to reassignSmuggler
-    this.handleEndTurn();
-  }
-
   handleTradeGood(){
     const playerOffer = this.state;
     const currentMarketIdx = this.props.gamesRef.smallMarket.currentMarketIdx;
@@ -130,7 +63,7 @@ class SmallMarket extends React.Component {
         actionChangeTile(this.props.gameId, this.props.playerId, 'smallMarket', currentMarketIdx)
       })
       // .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.handleSmuggler())
+      .then(() => handleSmuggler(this))
       .catch(console.error)
   }
 
@@ -178,35 +111,6 @@ class SmallMarket extends React.Component {
     );
   }
 
-  smugglerAction() {
-    return (
-      <div>
-        <p>Select the good you would like to receive from smuggler!</p>
-        <div id="market-row">
-          <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerGoodClick} />
-          <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleSmugglerGoodClick} />
-          <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleSmugglerGoodClick} />
-          <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleSmugglerGoodClick} />
-        </div>
-      </div>
-    )
-  }
-
-  renderSmugglerPayAction() {
-    //FIX: render only goods you own
-    return (
-      <div>
-        <p>Select how you would like to pay smuggler</p>
-        <div id="market-row">
-          <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerPayClick} />
-          <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleSmugglerPayClick} />
-          <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleSmugglerPayClick} />
-          <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleSmugglerPayClick} />
-          <img id="twolira" src="./images/money/two_lira.png" onTouchTap={this.handleSmugglerPayClick} />
-        </div>
-      </div>
-    )
-  }
 }
 
 

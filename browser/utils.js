@@ -67,6 +67,20 @@ export function smugglerOnLocation(currentCoords, smuggler) {
   return false;
 }
 
+export function richEnoughForSmuggler(currentUserId, merchantsObj) {
+  const wheelbarrow = merchantsObj[currentUserId].wheelbarrow;
+  if (wheelbarrow.fabric > 0 ||
+      wheelbarrow.spice > 0 ||
+      wheelbarrow.heirloom > 0 ||
+      wheelbarrow.fruit > 0 ||
+      wheelbarrow.money >= 2) {
+
+    return true;
+
+  }
+  return false;
+}
+
 export function whichDialog(modalPayload) {
   switch (modalPayload.dialog) {
     case 'drop_assistant':
@@ -101,19 +115,111 @@ export function whichDialog(modalPayload) {
         <div>
           <p>Here be the smuggler! <br /><br />You can get a resource of your choice <br /> But! You must give him 2 lira or a random good of your choice in return...</p>
           <div>
-            <RaisedButton label={`Talk to smuggler`} style={{ margin: 12 }} primary={true} onTouchTap={this.talkToSmuggler} />
+            <RaisedButton label={`Talk to smuggler`} style={{ margin: 12 }} primary={true} onTouchTap={() => talkToSmuggler(this)}
+              disabled={!richEnoughForSmuggler(this.props.playerId, this.props.merchants)}/>
             <RaisedButton label="End turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
           </div>
         </div>
       );
 
     case 'smuggler_receive':
-      return this.smugglerAction();
+      return (
+        <div>
+          <p>Select the good you would like to receive from smuggler!</p>
+          <div id="market-row">
+            <img id="fabric" src="./images/cart/fabric.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
+            <img id="fruit" src="./images/cart/fruits.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
+            <img id="spice" src="./images/cart/spices.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
+            <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
+          </div>
+        </div>
+      )
 
     case 'smuggler_pay':
-      return this.renderSmugglerPayAction();
+      const wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
+      return (
+        <div>
+          <p>Select how you would like to pay smuggler</p>
+          <div id="market-row">
+            { wheelbarrow && wheelbarrow.fabric > 0 &&
+              <img id="fabric" src="./images/cart/fabric.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
+            { wheelbarrow && wheelbarrow.fruit > 0 &&
+            <img id="fruit" src="./images/cart/fruits.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
+            { wheelbarrow && wheelbarrow.spice > 0 &&
+            <img id="spice" src="./images/cart/spices.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
+            { wheelbarrow && wheelbarrow.heirloom > 0 &&
+            <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
+            { wheelbarrow && wheelbarrow.money >= 2 &&
+            <img id="twolira" src="./images/money/two_lira.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
+          </div>
+        </div>
+      )
 
     default:
       return null;
   }
 }
+
+
+/** Smuggler Logic */
+// Smuggler encounter
+export function handleSmuggler(context) {
+  const currentPosition = context.props.currentPosition;
+  const smuggler = context.props.gamesRef.smuggler;
+  console.log('handle smuggler');
+  if (smugglerOnLocation(currentPosition, smuggler)) {
+    context.props.closeModal();
+    context.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler' });
+  } else {
+    context.handleEndTurn();
+  }
+}
+
+// Smuggler - handle decision to talk to smuggler
+export function talkToSmuggler(context) {
+  console.log('talkToSmuggler');
+  const currentPosition = context.props.currentPosition;
+  context.props.closeModal();
+  context.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler_receive' });
+}
+
+// Smuggler - handle receive good and show pay dialog
+export function handleSmugglerGoodClick(event, context) {
+  console.log('handleSmugglerGoodClick');
+  const good = event.target.id;
+  const currentPosition = context.props.currentPosition;
+  const currentWheelbarrow = context.props.merchants[context.props.playerId].wheelbarrow;
+  //wheelbarrow size validation
+  if(currentWheelbarrow[good] < currentWheelbarrow.size) {
+    context.props.closeModal();
+    //axios to receive chosen good
+
+    //pay smuggler with good or 2 lira
+    context.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler_pay'});
+  } else {
+    //end turn if player was stupidly trying to receive good that you can't carry more.
+    context.handleEndTurn();
+  }
+}
+
+// Smuggler - handle pay and reassignSmuggler(end turn)
+export function handleSmugglerPayClick(event, context) {
+
+  console.log('handleSmugglerPayClick');
+  if (event.target.id === 'twolira') {
+    //pay two lira
+    //axios call to decrement two lira
+    reassignSmuggler(context);
+  } else { //clicked good
+
+    //axios call to decrement good chosen.
+    reassignSmuggler(context);
+  }
+}
+
+// ReassignSmuggler
+export function reassignSmuggler(context) {
+  //axios call to reassignSmuggler
+  context.handleEndTurn();
+}
+/** Smuggler logic ends */
