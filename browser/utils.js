@@ -1,5 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import { talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from './utils/smuggler';
 
 export function cellActiveStatus(cell, currentPlayerPosition, possibleMoves) {
   const fullView = possibleMoves.concat(currentPlayerPosition);
@@ -60,6 +61,20 @@ export function merchantCount(currentUserId, currentCoords, merchantsObj) {
   return merchantCount;
 }
 
+export function richEnoughForSmuggler(currentUserId, merchantsObj) {
+  const wheelbarrow = merchantsObj[currentUserId].wheelbarrow;
+  if (wheelbarrow.fabric > 0 ||
+      wheelbarrow.spice > 0 ||
+      wheelbarrow.heirloom > 0 ||
+      wheelbarrow.fruit > 0 ||
+      wheelbarrow.money >= 2) {
+
+    return true;
+
+  }
+  return false;
+}
+
 export function whichDialog(modalPayload) {
   switch (modalPayload.dialog) {
     case 'drop_assistant':
@@ -94,12 +109,58 @@ export function whichDialog(modalPayload) {
         <div id="turn-dialog-half">
           <p>Here be the smuggler! <br /><br />You can get a resource of your choice <br /> But! You must give him 2 lira or a random good of your choice in return...</p>
           <div>
-            <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+            <RaisedButton label={`Talk to smuggler`} style={{ margin: 12 }} primary={true} onTouchTap={() => talkToSmuggler(this)}
+              disabled={!richEnoughForSmuggler(this.props.playerId, this.props.merchants)}/>
+            <RaisedButton label="End turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
           </div>
         </div>
       );
-    
+
+    case 'smuggler_receive':
+      return (
+        <div>
+          <p>Select the good you would like to receive from smuggler!</p>
+          <div id="market-row">
+            <img id="fabric" src="./images/cart/fabric.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
+            <img id="fruit" src="./images/cart/fruits.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
+            <img id="spice" src="./images/cart/spices.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
+            <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
+          </div>
+        </div>
+      )
+
+    case 'smuggler_pay':
+      const wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
+      return (
+        <div>
+          <p>Select how you would like to pay smuggler</p>
+          <div id="market-row">
+            { wheelbarrow && wheelbarrow.fabric > 0 &&
+              <img id="fabric" src="./images/cart/fabric.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
+            { wheelbarrow && wheelbarrow.fruit > 0 &&
+            <img id="fruit" src="./images/cart/fruits.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
+            { wheelbarrow && wheelbarrow.spice > 0 &&
+            <img id="spice" src="./images/cart/spices.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
+            { wheelbarrow && wheelbarrow.heirloom > 0 &&
+            <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
+            { wheelbarrow && wheelbarrow.money >= 2 &&
+            <img id="twolira" src="./images/money/two_lira.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
+          </div>
+        </div>
+      )
+
     default:
       return null;
   }
+}
+
+
+/** ------- GAME WINNER CHECK ---------- */
+export function doesSomeoneHaveFiveRubies(merchantsObj) {
+  let merchArr = Object.keys(merchantsObj);
+  let winner = false;
+  merchArr.forEach((merchant) => {
+    if (merchantsObj[merchant].wheelbarrow.ruby === 5) winner = true;
+  });
+  return winner;
 }
