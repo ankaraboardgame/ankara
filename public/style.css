@@ -25,12 +25,13 @@ p {
 /* ------- TURN DIALOG TEXT --- */
 #turn-dialog-half {
   background-image: url('images/action-text-box-half.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 500px auto;
-  overflow-y: hidden;
-  margin-bottom: 0
+  background-size: 100% 100%;
+  min-height: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
 }
 
 #turn-dialog-full {
