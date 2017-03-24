@@ -1,3 +1,5 @@
+/* eslint react/prop-types: 0 */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -13,7 +15,6 @@ import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } fr
 class SpiceWarehouse extends React.Component {
   constructor(props) {
     super(props);
-
     this.handleMaxGoodEndTurn = this.handleMaxGoodEndTurn.bind(this);
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = this.handleAssistant.bind(this);
@@ -23,10 +24,20 @@ class SpiceWarehouse extends React.Component {
 
   // Assistant dialogs
   handleAssistant() {
+    const { playerId, currentPosition, merchants } = this.props;
+    // handle assistant here
+
     this.props.closeModal();
-    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
-      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
+
+    if (merchantOnLocation(playerId, currentPosition, merchants)) {
+      let numMerchants = merchantCount(playerId, currentPosition, merchants);
+      this.props.openModal(
+        mapCoordToLocation(currentPosition),
+        {
+          currentPosition: currentPosition,
+          dialog: 'merchant_encounter' // sends to handleMerchant() below
+        }
+      );
     } else {
       this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
     }
@@ -34,8 +45,16 @@ class SpiceWarehouse extends React.Component {
 
   // Merchant dialogs
   handleMerchant() {
+    const { currentPosition } = this.props;
+    // handle merchant encounter here
+
     this.props.closeModal();
-    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
+    this.props.openModal(
+      mapCoordToLocation(currentPosition),
+      {
+        currentPosition: currentPosition, dialog: 'action' // sends to renderAction() below
+      }
+    );
   }
 
   // Ends Turn
