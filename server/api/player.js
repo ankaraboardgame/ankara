@@ -15,7 +15,7 @@ const router = module.exports = require('express').Router();
 // load one player
 router.param('playerId', (req, res, next, playerId) => {
   req.player = req.game.merchants[playerId];
-  req.playerRef = gamesRef.child(playerId);
+  req.merchantRef = gamesRef.child(playerId);
   next();
 });
 
