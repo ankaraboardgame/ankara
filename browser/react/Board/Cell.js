@@ -4,18 +4,15 @@ import { mapCoordToLocation } from '../../utils';
 
 const Cell = props => {
   const tile = mapCoordToLocation(props.coords);
-  // return (
-    // {
-      if (tile === 'LARGE_MARKET') {
-        return renderLargeMarketTiles(props);
-      } else if (tile === 'SMALL_MARKET') {
-        return renderSmallMarketTiles(props);
-      } else {
-        return renderOtherTiles(props);
-      }
-    // }
-  // );
+    if (tile === 'LARGE_MARKET') {
+      return renderLargeMarketTiles(props);
+    } else if (tile === 'SMALL_MARKET') {
+      return renderSmallMarketTiles(props);
+    } else {
+      return renderOtherTiles(props);
+    }
 }
+export default Cell;
 
 function renderOtherTiles(props) {
   return (
@@ -70,5 +67,3 @@ function renderSmallMarketTiles(props) {
     </div>
   );
 };
-
-export default Cell;
