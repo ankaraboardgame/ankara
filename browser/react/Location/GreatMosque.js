@@ -111,12 +111,12 @@ class GreatMosque extends React.Component {
             </div>
           </div>
         <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn} />
-          { this.whichDialog(this.props.payload) } // DAN TO CHECK THIS
         </div>
       </Modal>
     );
   }
 
+  // { this.whichDialog(this.props.payload) }
   renderAction() {
     return <h3>ACTION TEXT WILL GO HERE!</h3>;
   }

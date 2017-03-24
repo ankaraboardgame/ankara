@@ -14,6 +14,8 @@ import {
 } from 'react-redux-firebase'
 import ModalRootContainer from './Modal/ModalRootContainer';
 
+import PlayerButtons from './PlayerData/PlayerButtons';
+
 // PLUGIN required for Material-UI. Provides an onTouchTap() event handler.
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
@@ -34,12 +36,7 @@ class AppContainer extends React.Component {
         {
           gamesRef && this.props.user ?
           <div id="game-container">
-            <div id="player-box-container">
-              <img src={'images/player/redplayer.png'} id="player-icons" />
-              <img src={'images/player/blueplayer.png'} id="player-icons" />
-              <img src={'images/player/greenplayer.png'} id="player-icons" />
-              <img src={'images/player/yellowplayer.png'} id="player-icons" />
-            </div>
+            <PlayerButtons gamesRef={gamesRef} />
             <div id="app-container">
               <img src={`images/Constantinople-Title.png`} id="game-title" />
               {/*<p>{ gamesRef.playerMap[gamesRef.playerTurn]} is playing...</p>*/}
@@ -51,7 +48,9 @@ class AppContainer extends React.Component {
               <ModalRootContainer gamesRef={gamesRef} />
             </div>
           </div> :
-          <CircularProgress size={60} thickness={7} />
+          <div id="circular-progress">
+            <CircularProgress size={60} thickness={7} />
+          </div>
         }
       </MuiThemeProvider>
     );

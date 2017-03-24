@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Ruslan+Display|UnifrakturCook:700');
 
 body {
-  background-image: url('images/board-background.jpg'); 
+  background-image: url('images/board-background.jpg');
 }
 
 #game-title {
@@ -16,19 +16,45 @@ body {
   justify-content: space-between;
 }
 /* ------- PLAYER ICON BOX ---- */
-#player-box-container {
+#player-buttons-column {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 500px;
+  height: 300px;
   padding: 25px 25px 0px 25px;
   align-self: center;
 }
 
 #player-icons {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
+}
+
+#player-data-icons {
+  border-radius: 20%;
+  height: 40px;
+}
+
+#player-info-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 350px;
+  align-self: center;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#player-detailed-info {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  height: 350px;
+  align-self: center;
+  padding: 25px 25px 0px 0px;
 }
 
 /*h1 {
@@ -327,6 +353,14 @@ footer .badge {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+#circular-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  height: 100vh;
 }
 
 #dash-footer {
