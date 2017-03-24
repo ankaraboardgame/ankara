@@ -107,7 +107,15 @@ class CellContainer extends React.Component {
           handleOnClick={this.handleOnClick}
           gamesRef={gamesRef}
         />
-        { [...playerPieces, ...assistantPieces, smugglerPiece] }
+        <div className="player-container">
+          { [...playerPieces] }
+        </div>
+        <div className="smuggler-container">
+          { [smugglerPiece] }
+        </div>
+        <div className="assistant-container">
+          { [...assistantPieces] }
+        </div>
         { isOver && <div className="player-hover-overlay" /> }
       </div>
     );
