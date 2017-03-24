@@ -10,6 +10,7 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 
 import Cell from './Cell';
 import Player from '../Pieces/Player';
+import Smuggler from '../Pieces/Smuggler';
 
 class CellContainer extends React.Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class CellContainer extends React.Component {
 
     const currentUserId = this.props.user.uid;
     const merchants = this.props.merchants;
+    const smuggler = this.props.game.smuggler;
 
     const playerPieces = merchants && Object.keys(merchants)
       .map( (merchantId) => {
@@ -47,6 +49,10 @@ class CellContainer extends React.Component {
       })
       .filter(Boolean);
 
+    const smugglerPiece = smuggler && this.props.coords === smuggler.coordinates && (
+      <Smuggler key={'smuggler'}/>
+    )
+
     const { connectDropTarget, isOver } = this.props;
 
     // There should only be one merchant that matches current user
@@ -56,7 +62,7 @@ class CellContainer extends React.Component {
         this.props.coords,
         userMerchant.position.coordinates,
         userMerchant.position.possibleMoves
-        ) ?
+      ) ?
         null : {opacity: '0.2'}) : null;
 
     return connectDropTarget(
@@ -67,7 +73,7 @@ class CellContainer extends React.Component {
           handleOnClick={this.handleOnClick}
         />
         <div id="player-container">
-          { playerPieces }
+          { [...playerPieces, smugglerPiece] }
         </div>
         { isOver && <div id="player-hover-overlay" /> }
       </div>

@@ -29,7 +29,8 @@ const GameLogger = function() {
         });
       });
 
-    });
+    })
+    .then(console.error);
 
     // Player turn change
     gamesRef.child(gameId).child('playerTurn').on('value', snapshot => {
@@ -38,7 +39,8 @@ const GameLogger = function() {
         text: `${playerMap[activePlayerId]}\'s turn`,
         timestamp: getCurrUnixTime()
       });
-    });
+    })
+    .then(console.error);
 
     // Gemstone price change
     gamesRef.child(gameId).child('gemstoneDealer').on('value', snapshot => {
@@ -47,7 +49,8 @@ const GameLogger = function() {
         text: `Gem stone is currently being sold at ${newGemStonePrice} liras`,
         timestamp: getCurrUnixTime()
       });
-    });
+    })
+    .then(console.error);
 
     // // Small market demand change
     // gamesRef.child(gameId).child('smallMarket').child('demandTile').on('value', snapshot => {
@@ -82,7 +85,8 @@ const GameLogger = function() {
             timestamp: getCurrUnixTime()
           });
         }
-      });
+      })
+      .then(console.error);
 
       // Wheelbarrow size increment
       let initialSize = undefined;
@@ -96,7 +100,8 @@ const GameLogger = function() {
             timestamp: getCurrUnixTime()
           });
         }
-      });
+      })
+      .then(console.error);
 
       // ruby change
       let initialRuby = undefined;
@@ -110,7 +115,8 @@ const GameLogger = function() {
             timestamp: getCurrUnixTime()
           });
         }
-      });
+      })
+      .then(console.error);
 
       // money amount change
       // gamesRef.child(gameId).child('merchants').child(playerId).child('wheelbarrow').child('money').on('value', snapshot => {

@@ -38,7 +38,7 @@ class FruitWarehouse extends React.Component {
     this.props.closeModal();
     this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
   }
-  
+
   handleMaxGoodEndTurn(){
     actionMaxGood(this.props.gameId, this.props.playerId, this.props.goodType)
       .then(() => endTurn(this.props.gameId, this.props.playerId))

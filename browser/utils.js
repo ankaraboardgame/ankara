@@ -60,6 +60,13 @@ export function merchantCount(currentUserId, currentCoords, merchantsObj) {
   return merchantCount;
 }
 
+export function smugglerOnLocation(currentCoords, smuggler) {
+  if (currentCoords === smuggler.coordinates) {
+    return true;
+  }
+  return false;
+}
+
 export function whichDialog(modalPayload) {
   switch (modalPayload.dialog) {
     case 'drop_assistant':
@@ -94,11 +101,18 @@ export function whichDialog(modalPayload) {
         <div>
           <p>Here be the smuggler! <br /><br />You can get a resource of your choice <br /> But! You must give him 2 lira or a random good of your choice in return...</p>
           <div>
-            <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+            <RaisedButton label={`Talk to smuggler`} style={{ margin: 12 }} primary={true} onTouchTap={this.talkToSmuggler} />
+            <RaisedButton label="End turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
           </div>
         </div>
       );
-    
+
+    case 'smuggler_receive':
+      return this.smugglerAction();
+
+    case 'smuggler_pay':
+      return this.renderSmugglerPayAction();
+
     default:
       return null;
   }
