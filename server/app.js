@@ -43,19 +43,19 @@ app.use('/api', require('./api'));
 
 /** Default Error-handling Middleware */
 app.use(function (err, req, res, next) {
-    console.error(err.stack);
-    res.status(err.status || 500).send(err.message);
+  console.error(err.stack);
+  res.status(err.status || 500).send(err.message);
 });
 
 /** Game logger */
 const GameLogger = require('./GameLogger');
-GameLogger();
+// GameLogger();
 
 /** Starting Server */
 
 const PORT = process.env.PORT || 1337;
 server.listen(PORT, () => {
-    console.log('Server now listening on port', PORT);
+  console.log('Server now listening on port', PORT);
 });
 
 module.exports = app;

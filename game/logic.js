@@ -2,7 +2,8 @@ const {
   shuffle,
   bonusCards,
   largeMarketDemandTiles,
-  smallMarketDemandTiles
+  smallMarketDemandTiles,
+  getRandomPosition,
 } = require('./accessories.js');
 
 /**
@@ -41,6 +42,10 @@ function Game (gameId, usersObj){
   this.playerIds.forEach((id, i) => {
     this.merchants[id] = new Merchant(id, i);
   });
+
+  this.smuggler = {};
+  this.smuggler.coordinates = getRandomPosition(4, 3);
+
 }
 
 function Merchant (id, i){
@@ -79,15 +84,6 @@ function Merchant (id, i){
       ability: '2LiraFor1Good'
     }
   };
-
-  for (let i = 0; i < 4; i++){
-    this.assistants[i] = new Assistant(i); // initialize assistants
-  }
-}
-
-function Assistant (id){
-  this.id = id;
-  this.position = '0,0';
 }
 
 function Position (coords = '0,0', possibleMoves = ['1,0', '2,0', '0,1', '1,1', '0,2']) {

@@ -8,52 +8,49 @@ import Modal from '../Modal/Modal';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionBuyRuby } from '../../routes/location';
 import { endTurn } from '../../routes/move';
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
 
+import { whichDialog, handleEndTurn, beforeEndTurn } from '../../utils';
+import { handleMerchant } from '../../utils/otherMerchants.js';
+import { handleAssistant } from '../../utils/assistants.js';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+
+/****************** Component ********************/
 class GemstoneDealer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { gemPrice: null };
-    this.handleBuyGemEndTurn = this.handleBuyGemEndTurn.bind(this);
-    this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.state = {
+      gemPrice: null,
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    };
+
+    this.handleBuyGem = this.handleBuyGem.bind(this);
+    this.handleEndTurn = handleEndTurn.bind(this);
     this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = this.handleAssistant.bind(this);
-    this.handleMerchant = this.handleMerchant.bind(this);
-  }
+    this.handleAssistant = handleAssistant.bind(this);
+    this.handleMerchant = handleMerchant.bind(this);
+    this.beforeEndTurn = beforeEndTurn.bind(this);
 
-  // Assistant dialogs
-  handleAssistant() {
-    this.props.closeModal();
-    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
-      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
-    } else {
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
-    }
-  }
-
-  // Merchant dialogs
-  handleMerchant() {
-    this.props.closeModal();
-    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   componentDidMount (){
     this.setState({ gemPrice: +this.props.gameData.gemstoneDealer });
   }
 
-  handleBuyGemEndTurn(){
+  handleBuyGem(){
     actionBuyRuby(this.props.gameId, this.props.playerId)
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.props.closeModal());
-  }
-
-  // Ends Turn
-  handleEndTurn() {
-    endTurn(this.props.gameId, this.props.playerId)
-      .then(() => this.props.closeModal())
+      .then(this.beforeEndTurn)
       .catch(console.error);
+
   }
 
   render() {
@@ -63,7 +60,7 @@ class GemstoneDealer extends React.Component {
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
-          <img src={`images/locations/gemstone_dealer.png`} id="img-location" />
+          <img src={`images/locations/gemstone_dealer.jpg`} id="img-location" />
           { this.whichDialog(this.props.payload) }
         </div>
       </Modal>
@@ -76,17 +73,19 @@ class GemstoneDealer extends React.Component {
     const money = this.props.gameData.merchants[this.props.playerId].wheelbarrow.money
 
     return (
-      <div>
-        <p>All the gems that money can buy. Current price: {price} lira.</p>
+      <div id="turn-dialog-half">
+        <div id="text-box">
+          <p>All the gems that money can buy. Current price: {price} lira.</p>
+        </div>
           <div>
             <RaisedButton
               label={`BUY GEM FOR ${price} LIRA`}
               style={{ margin: 12 }}
               primary={true}
-              onTouchTap={this.handleBuyGemEndTurn}
+              onTouchTap={this.handleBuyGem}
               disabled={money < price}
             />
-            <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+            <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.beforeEndTurn} />
           </div>
       </div>
     );

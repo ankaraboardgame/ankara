@@ -1,14 +1,15 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import { endTurn } from './routes/move';
 
 export function cellActiveStatus(cell, currentPlayerPosition, possibleMoves) {
   const fullView = possibleMoves.concat(currentPlayerPosition);
   return fullView.indexOf(cell) > -1;
-};
+}
 
 export function canMovePlayer(cell, possibleMoves) {
   return possibleMoves.indexOf(cell) > -1;
-};
+}
 
 import { BLACK_MARKET, CARAVANSARY, FABRIC_WAREHOUSE, FRUIT_WAREHOUSE, GEMSTONE_DEALER, GREAT_MOSQUE, LARGE_MARKET, SMALL_MARKET, SMALL_MOSQUE, SPICE_WAREHOUSE, TEA_HOUSE, WAINWRIGHT } from './react/Modal/location_types';
 
@@ -31,57 +32,40 @@ export function mapCoordToLocation(coords) {
   return coordsMap[coords];
 }
 
-export function assistantOnLocation(currentCoords, assistantsObj) {
-  for (let i = 0; i < assistantsObj.length; i++) {
-    if (assistantsObj[i].position === currentCoords) return true;
-  }
-  return false;
-}
-
-export function merchantOnLocation(currentUserId, currentCoords, merchantsObj) {
-  let merchantOn = false;
-  let merchantsArray = Object.keys(merchantsObj);
-  merchantsArray.forEach((merchant) => {
-    if (merchant !== currentUserId && merchantsObj[merchant].position.coordinates === currentCoords) {
-      merchantOn = true;
-    }
-  });
-  return merchantOn;
-}
-
-export function merchantCount(currentUserId, currentCoords, merchantsObj) {
-  let merchantsArray = Object.keys(merchantsObj);
-  let merchantCount = 0;
-  merchantsArray.forEach((merchant) => {
-    if (merchant !== currentUserId && merchantsObj[merchant].position.coordinates === currentCoords) {
-      merchantCount++;
-    }
-  });
-  return merchantCount;
-}
-
 export function whichDialog(modalPayload) {
+  let wheelbarrow = undefined;
   switch (modalPayload.dialog) {
     case 'drop_assistant':
       return (
-        <div>
-          <RaisedButton label="Drop an assistant" style={{ margin: 12 }} primary={true} onTouchTap={this.handleAssistant}  />
-          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+        <div id="turn-dialog-half">
+            <RaisedButton
+              label="Drop an assistant"
+              style={{ margin: 12 }}
+              primary={true}
+              onTouchTap={() => this.handleAssistant('drop')}
+              disabled={!modalPayload.assistantCount}
+              />
+            <RaisedButton
+              label="No thanks, I'll end my turn"
+              style={{ margin: 12 }}
+              primary={true}
+              onTouchTap={this.handleEndTurn}
+              />
         </div>
       );
 
     case 'pick_up_assistant':
       return (
-        <div>
-          <RaisedButton label="Pick up your assistant" style={{ margin: 12 }} primary={true} onTouchTap={this.handleAssistant}  />
+        <div id="turn-dialog-half">
+          <RaisedButton label="Pick up your assistant" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleAssistant('pickup')}  />
           <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
         </div>
       );
 
     case 'merchant_encounter':
       return (
-        <div>
-          <RaisedButton label={`Pay merchants ${this.props.merchantCount * 2} Lira to continue!`} style={{ margin: 12 }} primary={true} onTouchTap={this.handleMerchant}  />
+        <div id="turn-dialog-half">
+          <RaisedButton label={`Pay merchants ${modalPayload.merchantCount * 2} Lira to continue!`} style={{ margin: 12 }} primary={true} onTouchTap={this.handleMerchant}  />
           <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
         </div>
       );
@@ -91,15 +75,77 @@ export function whichDialog(modalPayload) {
 
     case 'smuggler':
       return (
-        <div>
-          <p>Here be the smuggler! <br /><br />You can get a resource of your choice <br /> But! You must give him 2 lira or a random good of your choice in return...</p>
+        <div id="turn-dialog-full">
+          <p>Here be the smuggler! You can get a resource of your choice. But! You must give him 2 lira or a random good of your choice in return...</p>
           <div>
-            <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+            <RaisedButton label={`Talk to smuggler`} style={{ margin: 12 }} primary={true} onTouchTap={this.talkToSmuggler}
+              disabled={!this.canTalkToSmuggler(this.props.playerId, this.props.merchants)}/>
+            <RaisedButton label="End turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
           </div>
         </div>
       );
-    
+
+    case 'smuggler_receive':
+      wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
+      return (
+        <div id="turn-dialog-full">
+          <p>Select the good you would like to receive from smuggler!</p>
+          <div>
+            { wheelbarrow.fabric < wheelbarrow.size &&
+              <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerGoodClick} /> }
+            { wheelbarrow.fruit < wheelbarrow.size &&
+              <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleSmugglerGoodClick} /> }
+            { wheelbarrow.spice < wheelbarrow.size &&
+              <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleSmugglerGoodClick} /> }
+            { wheelbarrow.heirloom < wheelbarrow.size &&
+              <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleSmugglerGoodClick} /> }
+          </div>
+        </div>
+      )
+
+    case 'smuggler_pay':
+      wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
+      return (
+        <div id="turn-dialog-full">
+          <p>Select how you would like to pay smuggler</p>
+          <div>
+            { wheelbarrow.fabric > 0 &&
+            <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerPayClick} /> }
+            { wheelbarrow.fruit > 0 &&
+            <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleSmugglerPayClick} /> }
+            { wheelbarrow.spice > 0 &&
+            <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleSmugglerPayClick} /> }
+            { wheelbarrow.heirloom > 0 &&
+            <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleSmugglerPayClick} /> }
+            { wheelbarrow.money >= 2 &&
+            <img id="lira" src="./images/money/two_lira.png" onTouchTap={this.handleSmugglerPayClick} /> }
+          </div>
+        </div>
+      )
+
     default:
       return null;
   }
+}
+
+// Ends Turn
+export function handleEndTurn() {
+  endTurn(this.props.gameId, this.props.playerId)
+    .then(() => this.props.closeModal())
+    .catch(console.error);
+}
+
+export function beforeEndTurn() {
+  this.handleSmuggler();
+}
+
+
+/** ------- GAME WINNER CHECK ---------- */
+export function doesSomeoneHaveFiveRubies(merchantsObj) {
+  let merchArr = Object.keys(merchantsObj);
+  let winner = false;
+  merchArr.forEach((merchant) => {
+    if (merchantsObj[merchant].wheelbarrow.ruby === 5) winner = true;
+  });
+  return winner;
 }

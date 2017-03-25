@@ -11,38 +11,39 @@ import Dice from '../Pieces/Dice';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionTeaHouse } from '../../routes/location';
 import { endTurn } from '../../routes/move';
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
 
+import { whichDialog } from '../../utils';
+import { handleMerchant } from '../../utils/otherMerchants.js';
+import { handleAssistant } from '../../utils/assistants.js';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+
+/****************** Component ********************/
 class TeaHouse extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { gambledNumber: null }
+    this.state = {
+      gambledNumber: null,
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    };
 
     this.handleChooseNumber = this.handleChooseNumber.bind(this);
     this.handleDiceRoll = this.handleDiceRoll.bind(this);
     this.handleTeaHouseEndTurn = this.handleTeaHouseEndTurn.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
     this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = this.handleAssistant.bind(this);
-    this.handleMerchant = this.handleMerchant.bind(this);
-  }
+    this.handleAssistant = handleAssistant.bind(this);
+    this.handleMerchant = handleMerchant.bind(this);
 
-  // Assistant dialogs
-  handleAssistant() {
-    this.props.closeModal();
-    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
-      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
-    } else {
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
-    }
-  }
-
-  // Merchant dialogs
-  handleMerchant() {
-    this.props.closeModal();
-    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   // Ends Turn
@@ -66,8 +67,7 @@ class TeaHouse extends React.Component {
 
   handleTeaHouseEndTurn (gamble, rollSum){
     actionTeaHouse(this.props.gameId, this.props.playerId, gamble, rollSum)
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.props.closeModal())
+      .then(this.handleSmuggler)
       .catch(console.error);
   }
 
@@ -83,7 +83,7 @@ class TeaHouse extends React.Component {
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
-          <img src={`images/locations/tea_house.png`} id="img-location" />
+          <img src={`images/locations/tea_house.jpg`} id="img-location" />
           { this.whichDialog(this.props.payload) }
         </div>
       </Modal>
@@ -100,8 +100,10 @@ class TeaHouse extends React.Component {
     }
 
     return (
-      <div>
-        <p>If the dice roll meets or exceeds your gamble, you get the sum you name. Otherwise, you walk away with only two lira.</p>
+      <div id="turn-dialog-full">
+        <div id="text-box">
+          <p>If the dice roll meets or exceeds your gamble,<br />you get the sum you name.<br />Otherwise, you walk away with only two lira.</p>
+        </div>
           <div className='row'>
             <DropDownMenu value={this.state.gambledNumber} style={ddMenuStyle} onChange={this.handleChooseNumber}>
               <MenuItem value={2} primaryText="2" />
@@ -121,7 +123,7 @@ class TeaHouse extends React.Component {
               <Dice done={this.handleDiceRoll} />
             }
           </div>
-          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />   
+          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
       </div>
     );
   }

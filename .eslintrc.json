@@ -6,8 +6,5 @@
         "ecmaFeatures": {
             "jsx": true
         }
-    },
-    "react": {
-        "prop-types": 0
     }
 }

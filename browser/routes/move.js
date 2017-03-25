@@ -11,3 +11,17 @@ export const endTurn = (gameId, playerId) => {
 export const setWinner = (gameId, playerId) => {
   return axios.post(`/api/game/${gameId}/player/${playerId}/win`);
 };
+
+export const pickupAssistant = (gameId, playerId, coordinates) => {
+  return axios.post(
+    `api/game/${gameId}/player/${playerId}/assistant/pickup`,
+    { coordinates }
+  );
+}
+
+export const dropAssistant = (gameId, playerId, coordinates) => {
+  return axios.post(
+    `api/game/${gameId}/player/${playerId}/assistant/drop`,
+    { coordinates }
+  );
+}

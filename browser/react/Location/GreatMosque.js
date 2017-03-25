@@ -9,51 +9,51 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionBuyMosqueTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
 
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
+import { whichDialog, handleEndTurn, beforeEndTurn } from '../../utils';
+import { handleMerchant } from '../../utils/otherMerchants.js';
+import { handleAssistant } from '../../utils/assistants.js';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
-
+/****************** Component ********************/
 class GreatMosque extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    };
+
     this.handleBuyHeirloomTile = this.handleBuyHeirloomTile.bind(this);
     this.handleBuyFruitTile = this.handleBuyFruitTile.bind(this);
-    this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.handleEndTurn = handleEndTurn.bind(this);
     this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = this.handleAssistant.bind(this);
-    this.handleMerchant = this.handleMerchant.bind(this);
+    this.handleAssistant = handleAssistant.bind(this);
+    this.handleMerchant = handleMerchant.bind(this);
+    this.beforeEndTurn = beforeEndTurn.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   handleBuyHeirloomTile(){
     const playerId = this.props.playerId;
     actionBuyMosqueTile(this.props.gameId, this.props.playerId, 'greatMosque', 'heirloom')
-    .then(() => endTurn(this.props.gameId, this.props.playerId))
-    .then(() => this.props.closeModal())
+    .then(this.beforeEndTurn)
     .catch(console.error)
   }
 
   handleBuyFruitTile(){
     const playerId = this.props.playerId;
     actionBuyMosqueTile(this.props.gameId, this.props.playerId, 'greatMosque', 'fruit')
-    .then(() => endTurn(this.props.gameId, this.props.playerId))
-    .then(() => this.props.closeModal())
+    .then(this.beforeEndTurn)
     .catch(console.error)
-  }
-
-  // Assistant dialogs
-  handleAssistant() {
-    this.props.closeModal();
-    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
-      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
-    } else {
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
-    }
-  }
-
-  // Merchant dialogs
-  handleMerchant() {
-    this.props.closeModal();
-    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
   }
 
   // Ends Turn
@@ -65,17 +65,30 @@ class GreatMosque extends React.Component {
 
   render() {
     const onClose = this.props.payload.zoom ? this.props.closeModal : null;
+
+    return (
+      <Modal onClose={onClose}>
+        <div id="location-modal-container">
+          <img src={`images/locations/great_mosque.jpg`} id="img-location" />
+          { this.whichDialog(this.props.payload) }
+        </div>
+      </Modal>
+    );
+  }
+
+  renderAction() {
     const heirloomRequired = this.props.gamesRef.greatMosque.heirloom;
     const fruitRequired = this.props.gamesRef.greatMosque.fruit;
     const playerId = this.props.playerId;
     const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
     const abilities = this.props.gamesRef.merchants[playerId].abilities;
     const style = { margin: 12 };
+
     return (
-      <Modal onClose={onClose}>
-        <div id="location-modal-container">
-          <img src={`images/locations/great_mosque.png`} id="img-location" />
-          <p>You can buy a tile if you have enough ressources<br /> and if you have not acquired it yet. <br /><br />When you aquire both Great Mosque<br /> tiles, you will earn a ruby.</p>
+      <div id="turn-dialog-full">
+        <div id="text-box">
+          <p>You can buy a tile if you have enough ressources<br /> and if you have not acquired it yet. <br /><br />Earn a ruby when you have acquired both tiles.</p>
+        </div>
           <div id="mosque-row">
             <div id="mosque-heirloom">
               {
@@ -111,14 +124,8 @@ class GreatMosque extends React.Component {
             </div>
           </div>
         <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn} />
-          { this.whichDialog(this.props.payload) } // DAN TO CHECK THIS
-        </div>
-      </Modal>
+      </div>
     );
-  }
-
-  renderAction() {
-    return <h3>ACTION TEXT WILL GO HERE!</h3>;
   }
 }
 

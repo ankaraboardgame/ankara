@@ -1,3 +1,5 @@
+/* eslint react/prop-types: 0 */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -8,34 +10,43 @@ import Modal from '../Modal/Modal';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionMaxGood } from '../../routes/location';
 import { endTurn } from '../../routes/move';
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
 
+import { whichDialog } from '../../utils';
+import { handleMerchant } from '../../utils/otherMerchants.js';
+import { handleAssistant } from '../../utils/assistants.js';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+
+/****************** Component ********************/
 class SpiceWarehouse extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleMaxGoodEndTurn = this.handleMaxGoodEndTurn.bind(this);
-    this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = this.handleAssistant.bind(this);
-    this.handleMerchant = this.handleMerchant.bind(this);
-    this.handleEndTurn = this.handleEndTurn.bind(this);
-  }
-
-  // Assistant dialogs
-  handleAssistant() {
-    this.props.closeModal();
-    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
-      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
-    } else {
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
+    this.state = {
+      assistantHere: false,
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
     }
+
+    this.handleMaxGoodEndTurn = this.handleMaxGoodEndTurn.bind(this);
+    this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.handleAssistant = handleAssistant.bind(this);
+    this.handleMerchant = handleMerchant.bind(this);
+    this.whichDialog = whichDialog.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
-  // Merchant dialogs
-  handleMerchant() {
-    this.props.closeModal();
-    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
+  handleMaxGoodEndTurn(){
+    actionMaxGood(this.props.gameId, this.props.playerId, this.props.goodType)
+      .then(this.handleSmuggler)
+      .catch(console.error);
   }
 
   // Ends Turn
@@ -45,19 +56,13 @@ class SpiceWarehouse extends React.Component {
       .catch(console.error);
   }
 
-  handleMaxGoodEndTurn(){
-    actionMaxGood(this.props.gameId, this.props.playerId, this.props.goodType)
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.props.closeModal())
-  }
-
   render() {
     const onClose = this.props.payload.zoom ? this.props.closeModal : null;
 
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
-          <img src={`images/locations/spice_warehouse.png`} id="img-location" />
+          <img src={`images/locations/spice_warehouse.jpg`} id="img-location" />
           { this.whichDialog(this.props.payload) }
         </div>
       </Modal>
@@ -67,11 +72,13 @@ class SpiceWarehouse extends React.Component {
   renderAction() {
     const style = { margin: 12 };
     return (
-      <div>
-        <p>Look at all the spices! <br /><br />Your wheelbarrow is now fully loaded with spices. Come back later if you need more! <br /></p>
-        <div>
+      <div id="turn-dialog-half">
+        <div id="text-box">
+          <div className="turn-dialog-column">
+            <p>Look at all the spices! <br /><br />Come back later if you need more! <br /></p>
+          </div>
           <RaisedButton label="Max spice and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
-        </div>
+          </div>
       </div>
     );
   }
