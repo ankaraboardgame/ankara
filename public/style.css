@@ -31,12 +31,20 @@ p {
   flex-direction: row;
   align-items: center;
   align-content: center;
-  justify-content: center;
+  justify-content: center
 }
 
 #turn-dialog-full {
   background-image: url('images/action-text-box.jpg');
   background-size: 100% 100%;
+}
+
+.turn-dialog-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center
 }
 
 /* ------- GAME CONTAINER ---- */
