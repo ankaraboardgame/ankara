@@ -1,5 +1,5 @@
-const { expect } = require('chai');
-const firebaseAdmin = require('firebase-admin');
+// const { expect } = require('chai');
+// const firebaseAdmin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
 // const serviceAccount = require('../../tests/secret-firebase-test-server.json');
@@ -10,10 +10,10 @@ const firebaseAdmin = require('firebase-admin');
 //   databaseURL: 'https://istanbul-test.firebaseio.com/'
 // });
 
-const db = firebaseAdmin.database();
+// const db = firebaseAdmin.database();
 
 // const agent = request.agent();
-const SERVER = 'http://localhost:1337';
+// const SERVER = 'http://localhost:1337';
 
 // describe('POST /', function(){
 //   it('responds with 200', function(done){
