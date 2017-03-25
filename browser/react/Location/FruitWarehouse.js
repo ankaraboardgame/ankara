@@ -8,27 +8,42 @@ import Modal from '../Modal/Modal';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionMaxGood } from '../../routes/location';
 import { endTurn } from '../../routes/move';
+
 import { whichDialog } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 /****************** Component ********************/
-
 class FruitWarehouse extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    }
 
     this.handleMaxGoodEndTurn = this.handleMaxGoodEndTurn.bind(this);
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = handleAssistant.bind(this);
     this.handleMerchant = handleMerchant.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   handleMaxGoodEndTurn(){
     actionMaxGood(this.props.gameId, this.props.playerId, this.props.goodType)
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.props.closeModal())
+      .then(() => this.handleSmuggler())
+      .catch(console.error);
   }
 
   // Ends Turn
@@ -55,10 +70,10 @@ class FruitWarehouse extends React.Component {
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-half">
-        <div id="text-box">
-          <p>Look at all the fruits! <br /><br />You can now fully load your wheelbarrow with fruits.<br />Come back later if you need more! <br /></p>
-        </div>
-        <div>
+        <div className="turn-dialog-column">
+          <div id="text-box">
+            <p>Look at all the fruits! <br /><br />Come back later if you need more! <br /></p>
+          </div>
           <RaisedButton label="Max fruit and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
         </div>
       </div>

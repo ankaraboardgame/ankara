@@ -13,6 +13,7 @@ import { actionGetBonusCard } from '../../routes/location';
 import { whichDialog } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 
 /****************** Component ********************/
@@ -21,11 +22,25 @@ class Caravansary extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    }
+
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = handleAssistant.bind(this);
     this.handleMerchant = handleMerchant.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
     this.handleGetCard = this.handleGetCard.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   // Ends Turn
@@ -37,10 +52,9 @@ class Caravansary extends React.Component {
 
   handleGetCard (type){
     actionGetBonusCard(this.props.gameId, this.props.playerId, type)
-      .then(() => this.props.closeModal())
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
+      .then(() => this.handleSmuggler())
       .catch(console.error);
-  }  
+  }
 
   render() {
     const onClose = this.props.payload.zoom ? this.props.closeModal : null;
@@ -49,7 +63,7 @@ class Caravansary extends React.Component {
       <Modal onClose={onClose}>
         <div id="location-modal-container">
           <img src={`images/locations/caravansary.jpg`} id="img-location" />
-          { this.whichDialog(this.props.payload) }          
+          { this.whichDialog(this.props.payload) }
         </div>
       </Modal>
     );

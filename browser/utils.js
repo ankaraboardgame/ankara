@@ -1,6 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import { talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from './utils/smuggler';
+import { endTurn } from './routes/move';
 
 export function cellActiveStatus(cell, currentPlayerPosition, possibleMoves) {
   const fullView = possibleMoves.concat(currentPlayerPosition);
@@ -32,22 +32,8 @@ export function mapCoordToLocation(coords) {
   return coordsMap[coords];
 }
 
-export function richEnoughForSmuggler(currentUserId, merchantsObj) {
-  const wheelbarrow = merchantsObj[currentUserId].wheelbarrow;
-  if (wheelbarrow.fabric > 0 ||
-      wheelbarrow.spice > 0 ||
-      wheelbarrow.heirloom > 0 ||
-      wheelbarrow.fruit > 0 ||
-      wheelbarrow.money >= 2) {
-
-    return true;
-
-  }
-  return false;
-}
-
 export function whichDialog(modalPayload) {
-  console.log(modalPayload);
+  let wheelbarrow = undefined;
   switch (modalPayload.dialog) {
     case 'drop_assistant':
       return (
@@ -109,20 +95,22 @@ export function whichDialog(modalPayload) {
 
     case 'smuggler':
       return (
-        <div id="turn-dialog-half">
-          <p>Here be the smuggler! <br /><br />You can get a resource of your choice <br /> But! You must give him 2 lira or a random good of your choice in return...</p>
-          <div>
+        <div id="turn-dialog-full">
+          <div id="text-box">
+            <p>Here be the smuggler!<br /><br />You can get a resource of your choice<br />But! You must give him 2 lira or a random good of your choice in return...</p>
+          </div>
+          <div id="market-row">
             <RaisedButton
               label={`Talk to smuggler`}
               style={{ margin: 12 }}
               primary={true}
-              onTouchTap={() => talkToSmuggler(this)}
-              disabled={!richEnoughForSmuggler(this.props.playerId, this.props.merchants)}
+              onTouchTap={this.talkToSmuggler}
+              disabled={!this.canTalkToSmuggler(this.props.playerId, this.props.merchants)}
             />
             <RaisedButton
               label="End turn now"
               style={{ margin: 12 }}
-              secondary={true}
+              primary={true}
               onTouchTap={this.handleEndTurn}
             />
           </div>
@@ -130,34 +118,43 @@ export function whichDialog(modalPayload) {
       );
 
     case 'smuggler_receive':
+      wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
       return (
-        <div>
-          <p>Select the good you would like to receive from smuggler!</p>
+        <div id="turn-dialog-full">
+          <div id="text-bos">
+            <p>Select the good you would like to receive from smuggler!</p>
+          </div>
           <div id="market-row">
-            <img id="fabric" src="./images/cart/fabric.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
-            <img id="fruit" src="./images/cart/fruits.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
-            <img id="spice" src="./images/cart/spices.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
-            <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
+            { wheelbarrow.fabric < wheelbarrow.size &&
+              <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerGoodClick} /> }
+            { wheelbarrow.fruit < wheelbarrow.size &&
+              <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleSmugglerGoodClick} /> }
+            { wheelbarrow.spice < wheelbarrow.size &&
+              <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleSmugglerGoodClick} /> }
+            { wheelbarrow.heirloom < wheelbarrow.size &&
+              <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleSmugglerGoodClick} /> }
           </div>
         </div>
       );
 
     case 'smuggler_pay':
-      const wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
+      wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
       return (
-        <div>
-          <p>Select how you would like to pay smuggler</p>
+        <div id="turn-dialog-full">
+          <div id="text-bos">
+            <p>Select how you would like to pay smuggler</p>
+          </div>
           <div id="market-row">
-            { wheelbarrow && wheelbarrow.fabric > 0 &&
-              <img id="fabric" src="./images/cart/fabric.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
-            { wheelbarrow && wheelbarrow.fruit > 0 &&
-            <img id="fruit" src="./images/cart/fruits.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
-            { wheelbarrow && wheelbarrow.spice > 0 &&
-            <img id="spice" src="./images/cart/spices.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
-            { wheelbarrow && wheelbarrow.heirloom > 0 &&
-            <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
-            { wheelbarrow && wheelbarrow.money >= 2 &&
-            <img id="twolira" src="./images/money/two_lira.png" onTouchTap={(evt) => handleSmugglerPayClick(evt, this)} /> }
+            { wheelbarrow.fabric > 0 &&
+            <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerPayClick} /> }
+            { wheelbarrow.fruit > 0 &&
+            <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleSmugglerPayClick} /> }
+            { wheelbarrow.spice > 0 &&
+            <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleSmugglerPayClick} /> }
+            { wheelbarrow.heirloom > 0 &&
+            <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleSmugglerPayClick} /> }
+            { wheelbarrow.money >= 2 &&
+            <img id="lira" src="./images/money/two_lira.png" onTouchTap={this.handleSmugglerPayClick} /> }
           </div>
         </div>
       )
@@ -165,6 +162,17 @@ export function whichDialog(modalPayload) {
     default:
       return null;
   }
+}
+
+// Ends Turn
+export function handleEndTurn() {
+  endTurn(this.props.gameId, this.props.playerId)
+    .then(() => this.props.closeModal())
+    .catch(console.error);
+}
+
+export function beforeEndTurn() {
+  this.handleSmuggler();
 }
 
 

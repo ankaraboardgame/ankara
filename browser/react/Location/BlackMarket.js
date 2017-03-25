@@ -13,6 +13,7 @@ import { endTurn } from '../../routes/move';
 import { whichDialog } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 /****************** Component ********************/
 
@@ -20,7 +21,14 @@ class BlackMarket extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { selectedGood: null }
+    this.state = {
+      selectedGood: null,
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    }
+
     this.handleSelectGood = this.handleSelectGood.bind(this);
     this.handleDiceRoll = this.handleDiceRoll.bind(this);
     this.handleGetBlackMarketGoodsEndTurn = this.handleGetBlackMarketGoodsEndTurn.bind(this);
@@ -28,6 +36,13 @@ class BlackMarket extends React.Component {
     this.handleAssistant = handleAssistant.bind(this);
     this.handleMerchant = handleMerchant.bind(this);
     this.whichDialog = whichDialog.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   handleSelectGood (evt, good){
@@ -43,8 +58,7 @@ class BlackMarket extends React.Component {
 
   handleGetBlackMarketGoodsEndTurn (selectedGood, rollSum){
     actionBlackMarket(this.props.gameId, this.props.playerId, selectedGood, rollSum)
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.props.closeModal())
+      .then(() => this.handleSmuggler())
       .catch(console.error);
   }
 

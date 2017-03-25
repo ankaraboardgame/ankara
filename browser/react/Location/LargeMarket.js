@@ -9,29 +9,44 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { actionTradeGoods, actionChangeTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
 
-import { whichDialog } from '../../utils';
+import { whichDialog, handleEndTurn, beforeEndTurn } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 /****************** Component ********************/
-
 class LargeMarket extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       fruit: 0,
       fabric: 0,
       heirloom: 0,
       spice: 0,
-      tradeOffer: false
-    }
+      tradeOffer: false,
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    };
+
     this.handleTradeGood = this.handleTradeGood.bind(this);
     this.handleGoodClick = this.handleGoodClick.bind(this);
     this.whichDialog = whichDialog.bind(this);
     this.handleAssistant = handleAssistant.bind(this);
     this.handleMerchant = handleMerchant.bind(this);
-    this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.handleEndTurn = handleEndTurn.bind(this);
+    this.beforeEndTurn = beforeEndTurn.bind(this);
     this.handleTradeOfferReset = this.handleTradeOfferReset.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
+
   }
 
   // Ends Turn
@@ -49,8 +64,7 @@ class LargeMarket extends React.Component {
       .then(() => {
         actionChangeTile(this.props.gameId, this.props.playerId, 'largeMarket', currentMarketIdx)
       })
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.props.closeModal())
+      .then(this.beforeEndTurn)
       .catch(console.error)
   }
 

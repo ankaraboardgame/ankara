@@ -14,20 +14,39 @@ import { endTurn } from '../../routes/move';
 import { whichDialog } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
+import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
 /****************** Component ********************/
-
 class SpiceWarehouse extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      assistantHere: false
-    };
+      assistantHere: false,
+      smuggler: {
+        goodWanted: null,
+        trade: null
+      }
+    }
+
     this.handleMaxGoodEndTurn = this.handleMaxGoodEndTurn.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
     this.handleAssistant = handleAssistant.bind(this);
     this.handleMerchant = handleMerchant.bind(this);
     this.whichDialog = whichDialog.bind(this);
+
+    /** smuggler functions */
+    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+    this.talkToSmuggler = talkToSmuggler.bind(this);
+    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
+    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
+  }
+
+  handleMaxGoodEndTurn(){
+    actionMaxGood(this.props.gameId, this.props.playerId, this.props.goodType)
+      .then(this.handleSmuggler)
+      .catch(console.error);
   }
 
   // Ends Turn
@@ -35,12 +54,6 @@ class SpiceWarehouse extends React.Component {
     endTurn(this.props.gameId, this.props.playerId)
       .then(() => this.props.closeModal())
       .catch(console.error);
-  }
-
-  handleMaxGoodEndTurn(){
-    actionMaxGood(this.props.gameId, this.props.playerId, this.props.goodType)
-      .then(() => endTurn(this.props.gameId, this.props.playerId))
-      .then(() => this.props.closeModal())
   }
 
   render() {
@@ -61,11 +74,11 @@ class SpiceWarehouse extends React.Component {
     return (
       <div id="turn-dialog-half">
         <div id="text-box">
-          <p>Look at all the spices! <br /><br />Your wheelbarrow is now fully loaded with spices.<br />Come back later if you need more! <br /></p>
-        </div>
-        <div>
+          <div className="turn-dialog-column">
+            <p>Look at all the spices! <br /><br />Come back later if you need more! <br /></p>
+          </div>
           <RaisedButton label="Max spice and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
-        </div>
+          </div>
       </div>
     );
   }

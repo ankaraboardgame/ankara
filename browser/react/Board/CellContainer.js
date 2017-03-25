@@ -34,6 +34,7 @@ class CellContainer extends React.Component {
     const currentUserId = this.props.user.uid;
     const smuggler = this.props.game.smuggler;
     const playerTurn = this.props.game.playerTurn;
+    const game = this.props.game;
     const {
       gamesRef,
       user,
@@ -54,7 +55,7 @@ class CellContainer extends React.Component {
               activePlayer={playerTurn}
               currentUser={user}
               playerId={merchantId}
-              playerNum={merchants[merchantId].number}
+              playerNum={selfData.number}
             />
           )
         } else {
@@ -86,7 +87,6 @@ class CellContainer extends React.Component {
           }
         })
         .map(({asstCoords, number}) => (<Assistant key={`${number}-${asstCoords}`} playerNum={number} />))
-        .filter(Boolean);
     }
 
     const smugglerPiece = smuggler && (coords === smuggler.coordinates) && (
@@ -102,7 +102,7 @@ class CellContainer extends React.Component {
           userMerchant.position.coordinates,
           userMerchant.position.possibleMoves
         )
-    if (merchants && !cellActive) {
+    if (merchants && !cellActive && game.playerTurn === currentUserId) {
       activeStatus = { opacity: '0.2' };
     }
 

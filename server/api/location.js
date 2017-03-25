@@ -234,10 +234,11 @@ router.post('/blackMarket/:goodChosen/:diceRoll/', (req, res, next) => {
   const updateHeirloomPromise = gamesRef.child(req.game.id)
     .child(`merchants/${req.player.id}/wheelbarrow/heirloom`)
     .transaction(currentHeirlooms => {
-      if (diceRoll === 7 || diceRoll === 8) return currentHeirlooms + 1;
-      else if (diceRoll === 9 || diceRoll === 10) return currentHeirlooms + 2;
-      else if (diceRoll === 11 || diceRoll === 12) return currentHeirlooms + 3;
-      else return currentHeirlooms;
+      let newHeirlooms = currentHeirlooms
+      if (diceRoll === 7 || diceRoll === 8) newHeirlooms =  currentHeirlooms + 1;
+      else if (diceRoll === 9 || diceRoll === 10) newHeirlooms = currentHeirlooms + 2;
+      else if (diceRoll === 11 || diceRoll === 12) newHeirlooms = currentHeirlooms + 3;
+      return newHeirlooms > wbSize ? wbSize : newHeirlooms;
     })
 
   Promise.all([updateGoodPromise, updateHeirloomPromise])
