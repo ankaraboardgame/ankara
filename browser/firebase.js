@@ -1,7 +1,7 @@
 'use strict';
 
 // import firebase from 'firebase';
-import config from '../secret.config.js'
+import config from '../firebase.config.js'
 
 const firebase = require("firebase/app");
 require("firebase/auth");
