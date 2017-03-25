@@ -42,9 +42,9 @@ class CellContainer extends React.Component {
       connectDropTarget,
       isOver,
       coords,
-      merchants
+      merchants,
+      selfData
     } = this.props;
-    const assistants = merchants[currentUserId].assistants.out;
 
     const playerPieces = merchants ? Object.keys(merchants)
       .map( (merchantId) => {
@@ -55,7 +55,7 @@ class CellContainer extends React.Component {
               activePlayer={playerTurn}
               currentUser={user}
               playerId={merchantId}
-              playerNum={merchants[merchantId].number}
+              playerNum={selfData.number}
             />
           )
         } else {
@@ -65,15 +65,18 @@ class CellContainer extends React.Component {
       .filter(Boolean)
       : [];
 
-    const assistantPieces = assistants ?
-      Object.keys(assistants)
-      .map(key => assistants[key])
+    let assistantPieces = [];
+    if (merchants){
+      for (let merchant in merchants){
+        assistantPieces = assistantPieces.concat(Object.keys(merchant.assistants.out).map(key => merchant.assistants.out[key]));
+      }
+      assistantPieces
       .map( (assistantCoords) => {
         if ( assistantCoords === coords) {
           return (
             <Assistant
               key={assistantCoords}
-              playerNum={merchants[currentUserId].number}
+              playerNum={selfData.number}
             />
           )
         } else {
@@ -81,14 +84,14 @@ class CellContainer extends React.Component {
         }
       })
       .filter(Boolean)
-      : [];
+    }
 
     const smugglerPiece = smuggler && (coords === smuggler.coordinates) && (
       <Smuggler key={'smuggler'} />
     )
 
     // There should only be one merchant that matches current user
-    const userMerchant = merchants[currentUserId];
+    const userMerchant = selfData;
 
     let activeStatus;
     let cellActive = cellActiveStatus(
@@ -127,7 +130,7 @@ class CellContainer extends React.Component {
 
 const cellTarget = {
   canDrop(props) {
-    return canMovePlayer(props.coords, props.merchants[props.user.uid].position.possibleMoves);
+    return canMovePlayer(props.coords, props.selfData.position.possibleMoves);
   },
   drop(props) {
     openAssistantDialog(props);
@@ -142,7 +145,7 @@ const mapStateToProps = (state, ownProps) => ({
   possibleMoves: ownProps.cellPossibleMoves,
   game: ownProps.game,
   merchants: ownProps.merchants,
-  self: ownProps.merchants[state.user.user.uid],
+  selfData: ownProps.merchants[state.user.user.uid],
   gamesRef: dataToJS(state.firebase, `games/${state.game.id}`)
 });
 
