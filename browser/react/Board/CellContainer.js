@@ -47,7 +47,7 @@ class CellContainer extends React.Component {
     } = this.props;
 
     const playerPieces = merchants ? Object.keys(merchants)
-      .map( (merchantId) => {
+      .map( merchantId => {
         if ( merchants[merchantId].position.coordinates === coords) {
           return (
             <Player
@@ -55,7 +55,7 @@ class CellContainer extends React.Component {
               activePlayer={playerTurn}
               currentUser={user}
               playerId={merchantId}
-              playerNum={selfData.number}
+              playerNum={merchants[merchantId].number}
             />
           )
         } else {
@@ -94,13 +94,11 @@ class CellContainer extends React.Component {
     )
 
     // There should only be one merchant that matches current user
-    const userMerchant = selfData;
-
     let activeStatus;
     let cellActive = cellActiveStatus(
           coords,
-          userMerchant.position.coordinates,
-          userMerchant.position.possibleMoves
+          selfData.position.coordinates,
+          selfData.position.possibleMoves
         )
     if (merchants && !cellActive && game.playerTurn === currentUserId) {
       activeStatus = { opacity: '0.2' };
