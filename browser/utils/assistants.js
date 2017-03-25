@@ -22,7 +22,7 @@ export const openAssistantDialog = (props) => {
       {
         currentPosition: props.coords,
         dialog: 'drop_assistant',
-        assistantCount: props.self.assistants.count
+        assistantCount: props.selfData.assistants.count
       }
     );
   }
