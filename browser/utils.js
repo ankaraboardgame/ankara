@@ -76,8 +76,10 @@ export function whichDialog(modalPayload) {
     case 'smuggler':
       return (
         <div id="turn-dialog-full">
-          <p>Here be the smuggler! You can get a resource of your choice. But! You must give him 2 lira or a random good of your choice in return...</p>
-          <div>
+          <div id="text-box">
+            <p>Here be the smuggler!<br /><br />You can get a resource of your choice<br />But! You must give him 2 lira or a random good of your choice in return...</p>
+          </div>
+          <div id="market-row">
             <RaisedButton label={`Talk to smuggler`} style={{ margin: 12 }} primary={true} onTouchTap={this.talkToSmuggler}
               disabled={!this.canTalkToSmuggler(this.props.playerId, this.props.merchants)}/>
             <RaisedButton label="End turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
@@ -89,8 +91,10 @@ export function whichDialog(modalPayload) {
       wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
       return (
         <div id="turn-dialog-full">
-          <p>Select the good you would like to receive from smuggler!</p>
-          <div>
+          <div id="text-bos">
+            <p>Select the good you would like to receive from smuggler!</p>
+          </div>
+          <div id="market-row">
             { wheelbarrow.fabric < wheelbarrow.size &&
               <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerGoodClick} /> }
             { wheelbarrow.fruit < wheelbarrow.size &&
@@ -107,8 +111,10 @@ export function whichDialog(modalPayload) {
       wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
       return (
         <div id="turn-dialog-full">
-          <p>Select how you would like to pay smuggler</p>
-          <div>
+          <div id="text-bos">
+            <p>Select how you would like to pay smuggler</p>
+          </div>
+          <div id="market-row">
             { wheelbarrow.fabric > 0 &&
             <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerPayClick} /> }
             { wheelbarrow.fruit > 0 &&
