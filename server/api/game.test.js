@@ -35,11 +35,11 @@ describe('Game route:', function () {
     }
 
   /** First we clear the database before beginning each run */
-  before(function (done) {
-    gamesRef.set({})
-    .then(() => { done(); })
-    .catch((err) => { done(err); })
-  });
+  // before(function (done) {
+  //   gamesRef.set({})
+  //   .then(() => { done(); })
+  //   .catch((err) => { done(err); })
+  // });
 
   /** Also, we empty the tables after each spec */
   // afterEach(function (done) {
