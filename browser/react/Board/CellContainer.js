@@ -34,6 +34,7 @@ class CellContainer extends React.Component {
     const currentUserId = this.props.user.uid;
     const smuggler = this.props.game.smuggler;
     const playerTurn = this.props.game.playerTurn;
+    const game = this.props.game;
     const {
       gamesRef,
       user,
@@ -95,7 +96,7 @@ class CellContainer extends React.Component {
           userMerchant.position.coordinates,
           userMerchant.position.possibleMoves
         )
-    if (merchants && !cellActive) {
+    if (merchants && !cellActive && game.playerTurn === currentUserId) {
       activeStatus = { opacity: '0.2' };
     }
 
