@@ -8,9 +8,13 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import RaisedButton from 'material-ui/RaisedButton';
 import { actionTradeGoods, actionChangeTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, handleEndTurn, beforeEndTurn } from '../../utils';
+
+import { whichDialog, handleEndTurn, beforeEndTurn } from '../../utils';
+import { handleMerchant } from '../../utils/otherMerchants.js';
+import { handleAssistant } from '../../utils/assistants.js';
 import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
+/****************** Component ********************/
 class SmallMarket extends React.Component {
   constructor(props) {
     super(props);
@@ -20,19 +24,22 @@ class SmallMarket extends React.Component {
       fabric: 0,
       heirloom: 0,
       spice: 0,
+      tradeOffer: false,
       smuggler: {
         goodWanted: null,
         trade: null
       }
     };
 
+
     this.handleTradeGood = this.handleTradeGood.bind(this);
     this.handleGoodClick = this.handleGoodClick.bind(this);
     this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = this.handleAssistant.bind(this);
-    this.handleMerchant = this.handleMerchant.bind(this);
     this.handleEndTurn = handleEndTurn.bind(this);
     this.beforeEndTurn = beforeEndTurn.bind(this);
+    this.handleAssistant = handleAssistant.bind(this);
+    this.handleMerchant = handleMerchant.bind(this);
+    this.handleTradeOfferReset = this.handleTradeOfferReset.bind(this);
 
     /** smuggler functions */
     this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
@@ -40,23 +47,6 @@ class SmallMarket extends React.Component {
     this.talkToSmuggler = talkToSmuggler.bind(this);
     this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
     this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
-  }
-
-  // Assistant dialogs
-  handleAssistant() {
-    this.props.closeModal();
-    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
-      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
-    } else {
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
-    }
-  }
-
-  // Merchant dialogs
-  handleMerchant() {
-    this.props.closeModal();
-    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
   }
 
   // Ends Turn
@@ -86,9 +76,20 @@ class SmallMarket extends React.Component {
     let quantity;
     if(this.state[good] < currentDemandTile[good] && this.state[good] < currentWheelbarrow[good]){
       this.setState({
-        [event.target.id]: ++this.state[event.target.id]
+        [event.target.id]: ++this.state[event.target.id],
+        tradeOffer: true
       })
     }
+  }
+
+  handleTradeOfferReset(){
+    this.setState({
+      fruit: 0,
+      fabric: 0,
+      heirloom: 0,
+      spice: 0,
+      tradeOffer: false
+    })
   }
 
   render() {
@@ -118,8 +119,12 @@ class SmallMarket extends React.Component {
           <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleGoodClick} /><p>{this.state.fruit}</p>
           <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleGoodClick} /><p>{this.state.spice}</p>
           <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleGoodClick} /><p>{this.state.heirloom}</p>
-          <RaisedButton label="Trade Goods" style={style} primary={true} onTouchTap={this.handleTradeGood}  />
         </div>
+        <div id="market-row">
+          <RaisedButton label="Trade Goods" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeGood}  />
+          <RaisedButton label="Reset" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
+        </div>
+        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
       </div>
     );
   }

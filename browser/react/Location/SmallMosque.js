@@ -9,10 +9,12 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionBuyMosqueTile } from '../../routes/location';
 import { endTurn } from '../../routes/move';
 
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount, handleEndTurn, beforeEndTurn } from '../../utils';
+import { whichDialog, handleEndTurn, beforeEndTurn } from '../../utils';
+import { handleMerchant } from '../../utils/otherMerchants.js';
+import { handleAssistant } from '../../utils/assistants.js';
 import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
-
+/****************** Component ********************/
 class SmallMosque extends React.Component {
   constructor(props) {
     super(props);
@@ -28,8 +30,8 @@ class SmallMosque extends React.Component {
     this.handleBuySpiceTile = this.handleBuySpiceTile.bind(this);
     this.handleEndTurn = handleEndTurn.bind(this);
     this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = this.handleAssistant.bind(this);
-    this.handleMerchant = this.handleMerchant.bind(this);
+    this.handleAssistant = handleAssistant.bind(this);
+    this.handleMerchant = handleMerchant.bind(this);
     this.beforeEndTurn = beforeEndTurn.bind(this);
 
     /** smuggler functions */
@@ -38,6 +40,7 @@ class SmallMosque extends React.Component {
     this.talkToSmuggler = talkToSmuggler.bind(this);
     this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
     this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
+
   }
 
   handleBuyFabricTile(){
@@ -52,23 +55,6 @@ class SmallMosque extends React.Component {
     actionBuyMosqueTile(this.props.gameId, this.props.playerId, 'smallMosque', 'spice')
     .then(this.beforeEndTurn)
     .catch(console.error)
-  }
-
-  // Assistant dialogs
-  handleAssistant() {
-    this.props.closeModal();
-    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
-      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter'});
-    } else {
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
-    }
-  }
-
-  // Merchant dialogs
-  handleMerchant() {
-    this.props.closeModal();
-    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
   }
 
   // Ends Turn

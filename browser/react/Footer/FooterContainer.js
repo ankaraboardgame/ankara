@@ -3,7 +3,8 @@ import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
-import DashFooter from './DashFooter';
+// import DashFooter from './DashFooter';
+import NewFooter from './NewFooter';
 
 class Footer extends Component {
   constructor(props){
@@ -16,7 +17,7 @@ class Footer extends Component {
     const gamesRef = this.props.gamesRef;
     return(
         gamesRef &&
-        <DashFooter wheelbarrow={ gamesRef.merchants[playerId].wheelbarrow } gamesRef={gamesRef} playerId={playerId} />
+        <NewFooter wheelbarrow={ gamesRef.merchants[playerId].wheelbarrow } gamesRef={gamesRef} playerId={playerId} />
     )
   }
 }

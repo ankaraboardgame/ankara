@@ -5,11 +5,11 @@ import { endTurn } from './routes/move';
 export function cellActiveStatus(cell, currentPlayerPosition, possibleMoves) {
   const fullView = possibleMoves.concat(currentPlayerPosition);
   return fullView.indexOf(cell) > -1;
-};
+}
 
 export function canMovePlayer(cell, possibleMoves) {
   return possibleMoves.indexOf(cell) > -1;
-};
+}
 
 import { BLACK_MARKET, CARAVANSARY, FABRIC_WAREHOUSE, FRUIT_WAREHOUSE, GEMSTONE_DEALER, GREAT_MOSQUE, LARGE_MARKET, SMALL_MARKET, SMALL_MOSQUE, SPICE_WAREHOUSE, TEA_HOUSE, WAINWRIGHT } from './react/Modal/location_types';
 
@@ -32,50 +32,32 @@ export function mapCoordToLocation(coords) {
   return coordsMap[coords];
 }
 
-export function assistantOnLocation(currentCoords, assistantsObj) {
-  for (let i = 0; i < assistantsObj.length; i++) {
-    if (assistantsObj[i].position === currentCoords) return true;
-  }
-  return false;
-}
-
-export function merchantOnLocation(currentUserId, currentCoords, merchantsObj) {
-  let merchantOn = false;
-  let merchantsArray = Object.keys(merchantsObj);
-  merchantsArray.forEach((merchant) => {
-    if (merchant !== currentUserId && merchantsObj[merchant].position.coordinates === currentCoords) {
-      merchantOn = true;
-    }
-  });
-  return merchantOn;
-}
-
-export function merchantCount(currentUserId, currentCoords, merchantsObj) {
-  let merchantsArray = Object.keys(merchantsObj);
-  let merchantCount = 0;
-  merchantsArray.forEach((merchant) => {
-    if (merchant !== currentUserId && merchantsObj[merchant].position.coordinates === currentCoords) {
-      merchantCount++;
-    }
-  });
-  return merchantCount;
-}
-
 export function whichDialog(modalPayload) {
   let wheelbarrow = undefined;
   switch (modalPayload.dialog) {
     case 'drop_assistant':
       return (
         <div id="turn-dialog-half">
-          <RaisedButton label="Drop an assistant" style={{ margin: 12 }} primary={true} onTouchTap={this.handleAssistant}  />
-          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+          <RaisedButton
+            label="Drop an assistant"
+            style={{ margin: 12 }}
+            primary={true}
+            onTouchTap={() => this.handleAssistant('drop')}
+            disabled={!modalPayload.assistantCount}
+          />
+          <RaisedButton
+            label="No thanks, I'll end my turn"
+            style={{ margin: 12 }}
+            primary={true}
+            onTouchTap={this.handleEndTurn}
+          />
         </div>
       );
 
     case 'pick_up_assistant':
       return (
         <div id="turn-dialog-half">
-          <RaisedButton label="Pick up your assistant" style={{ margin: 12 }} primary={true} onTouchTap={this.handleAssistant}  />
+          <RaisedButton label="Pick up your assistant" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleAssistant('pickup')}  />
           <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
         </div>
       );
