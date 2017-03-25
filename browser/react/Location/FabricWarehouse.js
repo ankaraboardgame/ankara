@@ -42,6 +42,12 @@ class FabricWarehouse extends React.Component {
 
   }
 
+  // Merchant dialogs
+  handleMerchant() {
+    this.props.closeModal();
+    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
+  }
+
   handleMaxGoodEndTurn(){
     actionMaxGood(this.props.gameId, this.props.playerId, this.props.goodType)
       .then(() => this.handleSmuggler())
@@ -72,10 +78,10 @@ class FabricWarehouse extends React.Component {
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-half">
-        <div id="text-box">
-          <p>Look at all the fabric! <br /><br />You can now fully load your wheelbarrow with fabric.<br />Come back later if you need more! <br /></p>
-        </div>
-        <div>
+        <div className="turn-dialog-column">
+          <div id="text-box">
+            <p>Look at all the fabric! <br /><br />Come back later if you need more! <br /></p>
+          </div>
           <RaisedButton label="Max fabric and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
         </div>
       </div>

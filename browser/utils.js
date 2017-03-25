@@ -38,19 +38,19 @@ export function whichDialog(modalPayload) {
     case 'drop_assistant':
       return (
         <div id="turn-dialog-half">
-          <RaisedButton
-            label="Drop an assistant"
-            style={{ margin: 12 }}
-            primary={true}
-            onTouchTap={() => this.handleAssistant('drop')}
-            disabled={!modalPayload.assistantCount}
-          />
-          <RaisedButton
-            label="No thanks, I'll end my turn"
-            style={{ margin: 12 }}
-            primary={true}
-            onTouchTap={this.handleEndTurn}
-          />
+            <RaisedButton
+              label="Drop an assistant"
+              style={{ margin: 12 }}
+              primary={true}
+              onTouchTap={() => this.handleAssistant('drop')}
+              disabled={!modalPayload.assistantCount}
+              />
+            <RaisedButton
+              label="No thanks, I'll end my turn"
+              style={{ margin: 12 }}
+              primary={true}
+              onTouchTap={this.handleEndTurn}
+              />
         </div>
       );
 

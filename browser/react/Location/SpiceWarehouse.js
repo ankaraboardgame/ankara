@@ -74,11 +74,11 @@ class SpiceWarehouse extends React.Component {
     return (
       <div id="turn-dialog-half">
         <div id="text-box">
-          <p>Look at all the spices! <br /><br />Your wheelbarrow is now fully loaded with spices.<br />Come back later if you need more! <br /></p>
-        </div>
-        <div>
+          <div className="turn-dialog-column">
+            <p>Look at all the spices! <br /><br />Come back later if you need more! <br /></p>
+          </div>
           <RaisedButton label="Max spice and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
-        </div>
+          </div>
       </div>
     );
   }
