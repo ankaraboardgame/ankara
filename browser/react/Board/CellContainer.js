@@ -54,7 +54,7 @@ class CellContainer extends React.Component {
               activePlayer={playerTurn}
               currentUser={user}
               playerId={merchantId}
-              playerNum={selfData.number}
+              playerNum={merchants[merchantId].number}
             />
           )
         } else {
@@ -66,23 +66,27 @@ class CellContainer extends React.Component {
 
     let assistantPieces = [];
     if (merchants){
-      for (let merchant in merchants){
-        assistantPieces = assistantPieces.concat(Object.keys(merchant.assistants.out).map(key => merchant.assistants.out[key]));
-      }
-      assistantPieces
-      .map( (assistantCoords) => {
-        if ( assistantCoords === coords) {
-          return (
-            <Assistant
-              key={assistantCoords}
-              playerNum={selfData.number}
-            />
-          )
-        } else {
-          return null;
+      for (let key in merchants){
+        const out = merchants[key].assistants.out;
+        const outCoords = out && Object.keys(out)
+                                       .map(k => out[k])
+                                       .filter(asstCoords => asstCoords === coords);
+        if (out && outCoords.length) {
+          assistantPieces = assistantPieces.concat({
+            out: merchants[key].assistants.out,
+            number: merchants[key].number
+          })
         }
-      })
-      .filter(Boolean)
+      }
+      assistantPieces = assistantPieces
+        .map(({out, number}) => {
+          return {
+            asstCoords: Object.keys(out).map(key => out[key])[0],
+            number
+          }
+        })
+        .map(({asstCoords, number}) => (<Assistant key={`${number}-${asstCoords}`} playerNum={number} />))
+        .filter(Boolean);
     }
 
     const smugglerPiece = smuggler && (coords === smuggler.coordinates) && (

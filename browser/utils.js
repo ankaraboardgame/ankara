@@ -47,6 +47,7 @@ export function richEnoughForSmuggler(currentUserId, merchantsObj) {
 }
 
 export function whichDialog(modalPayload) {
+  console.log(modalPayload);
   switch (modalPayload.dialog) {
     case 'drop_assistant':
       return (
@@ -59,9 +60,9 @@ export function whichDialog(modalPayload) {
             disabled={!modalPayload.assistantCount}
           />
           <RaisedButton
-            label="No thanks, I'll end my turn"
+            label="End turn now"
             style={{ margin: 12 }}
-            primary={true}
+            secondary={true}
             onTouchTap={this.handleEndTurn}
           />
         </div>
@@ -70,16 +71,36 @@ export function whichDialog(modalPayload) {
     case 'pick_up_assistant':
       return (
         <div id="turn-dialog-half">
-          <RaisedButton label="Pick up your assistant" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleAssistant('pickup')}  />
-          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+          <RaisedButton
+            label="Pick up your assistant"
+            style={{ margin: 12 }}
+            primary={true}
+            onTouchTap={() => this.handleAssistant('pickup')}
+          />
+          <RaisedButton
+            label="End turn now"
+            style={{ margin: 12 }}
+            secondary={true}
+            onTouchTap={this.handleEndTurn}
+          />
         </div>
       );
 
     case 'merchant_encounter':
       return (
         <div id="turn-dialog-half">
-          <RaisedButton label={`Pay merchants ${modalPayload.merchantCount * 2} Lira to continue!`} style={{ margin: 12 }} primary={true} onTouchTap={this.handleMerchant}  />
-          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+          <RaisedButton
+            label={`Pay other merchants ${modalPayload.merchantCount * 2} lira`}
+            style={{ margin: 12 }}
+            primary={true}
+            onTouchTap={this.handleMerchant}
+          />
+          <RaisedButton
+            label="End turn now"
+            style={{ margin: 12 }}
+            secondary={true}
+            onTouchTap={this.handleEndTurn}
+          />
         </div>
       );
 
@@ -91,9 +112,19 @@ export function whichDialog(modalPayload) {
         <div id="turn-dialog-half">
           <p>Here be the smuggler! <br /><br />You can get a resource of your choice <br /> But! You must give him 2 lira or a random good of your choice in return...</p>
           <div>
-            <RaisedButton label={`Talk to smuggler`} style={{ margin: 12 }} primary={true} onTouchTap={() => talkToSmuggler(this)}
-              disabled={!richEnoughForSmuggler(this.props.playerId, this.props.merchants)}/>
-            <RaisedButton label="End turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+            <RaisedButton
+              label={`Talk to smuggler`}
+              style={{ margin: 12 }}
+              primary={true}
+              onTouchTap={() => talkToSmuggler(this)}
+              disabled={!richEnoughForSmuggler(this.props.playerId, this.props.merchants)}
+            />
+            <RaisedButton
+              label="End turn now"
+              style={{ margin: 12 }}
+              secondary={true}
+              onTouchTap={this.handleEndTurn}
+            />
           </div>
         </div>
       );
@@ -109,7 +140,7 @@ export function whichDialog(modalPayload) {
             <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={(evt) => handleSmugglerGoodClick(evt, this)} />
           </div>
         </div>
-      )
+      );
 
     case 'smuggler_pay':
       const wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
