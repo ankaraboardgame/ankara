@@ -13,7 +13,7 @@ export default class SideBar extends Component {
 
   handleToggle(){
     this.setState({open: !this.state.open});
-  };
+  }
 
   render() {
     return (

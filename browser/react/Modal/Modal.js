@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class Modal extends Component {
 
     onOverlayClick() {
-        this.props.onClose ? this.props.onClose() : null;
+        return this.props.onClose ? this.props.onClose() : null;
     }
 
     onDialogClick(evt) {
