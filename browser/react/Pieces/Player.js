@@ -3,19 +3,19 @@ import { DragSource } from 'react-dnd';
 
 const Player = props => {
   const { connectDragSource, isDragging, playerNum } = props;
+  const images = [
+    'images/player/redplayer.png',
+    'images/player/blueplayer.png',
+    'images/player/greenplayer.png',
+    'images/player/yellowplayer.png'
+  ];
   return connectDragSource(
     <div style={{
         opacity: isDragging ? 0.5 : 1,
         cursor: 'move',
         color: 'black'
       }}>
-      {
-        playerNum === 0 ? <img src="images/player/redplayer.png" className="player-icon" /> :
-        playerNum === 1 ? <img src="images/player/blueplayer.png" className="player-icon" /> :
-        playerNum === 2 ? <img src="images/player/greenplayer.png" className="player-icon" /> :
-        playerNum === 3 ? <img src="images/player/yellowplayer.png" className="player-icon" /> :
-        null
-      }
+      <img src={images[playerNum]} className="player-icon" />
     </div>
   );
 }

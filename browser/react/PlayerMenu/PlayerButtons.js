@@ -62,10 +62,10 @@ class PlayerButtons extends Component {
     return (
       <div id="player-info-row">
         <div id="player-buttons-column">
-          <img src={'images/player/redplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('red') } />
-          <img src={'images/player/blueplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('blue')} />
-          <img src={'images/player/greenplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('green')} />
-          <img src={'images/player/yellowplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('yellow')} />
+          { gamesRef.playerIds[0] && <img src={'images/player/redplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('red') } /> }
+          { gamesRef.playerIds[1] && <img src={'images/player/blueplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('blue')} /> }
+          { gamesRef.playerIds[2] && <img src={'images/player/greenplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('green')} /> }
+          { gamesRef.playerIds[3] && <img src={'images/player/yellowplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('yellow')} /> }
         </div>
         {
           display && selectedPlayer &&

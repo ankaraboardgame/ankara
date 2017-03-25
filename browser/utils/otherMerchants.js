@@ -3,8 +3,9 @@ import { mapCoordToLocation } from './board.js';
 
 export function handleMerchant() {
   const { gameId, playerId, currentPosition, payload } = this.props;
-  const { otherMerchantsArray } = payload;
-  actionPayMerchants(gameId, playerId, otherMerchantsArray)
+  const { otherMerchants } = payload;
+
+  actionPayMerchants(gameId, playerId, otherMerchants)
   .then(() => {
     this.props.closeModal();
     this.props.openModal(

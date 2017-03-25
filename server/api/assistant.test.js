@@ -1,19 +1,19 @@
-const { expect } = require('chai');
-const firebaseAdmin = require('firebase-admin');
+// const { expect } = require('chai');
+// const firebaseAdmin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
-const serviceAccount = require('../../tests/secret-firebase-test-server.json');
+// const serviceAccount = require('../../tests/secret-firebase-test-server.json');
 
 // Initialize the app with a service account, granting admin privileges
-firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert(serviceAccount),
-  databaseURL: 'https://istanbul-test.firebaseio.com/'
-});
+// firebaseAdmin.initializeApp({
+//   credential: firebaseAdmin.credential.cert(serviceAccount),
+//   databaseURL: 'https://istanbul-test.firebaseio.com/'
+// });
 
-const db = firebaseAdmin.database();
+// const db = firebaseAdmin.database();
 
 // const agent = request.agent();
-const SERVER = 'http://localhost:1337';
+// const SERVER = 'http://localhost:1337';
 
 // describe('POST /', function(){
 //   it('responds with 200', function(done){
