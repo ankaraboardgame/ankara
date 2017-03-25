@@ -17,7 +17,7 @@ const Footer = (props) => {
   return (
     <div id="footer-container">
       <div id="new-footer">
-        <img src={`images/player/${colorMap[playerNum]}player.png`} id="player-icon" />
+        <img src={`images/player/${colorMap[playerNum]}player.png`} className="player-icon" />
         <p id="name">{gamesRef.playerMap[playerId]}</p>
         <RulesSideBar />
         <GameHistorySideBar />

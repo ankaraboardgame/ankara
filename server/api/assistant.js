@@ -39,7 +39,6 @@ router.post('/drop', (req, res, next) => {
  * example req.body: { coordinates: "0,1" }
  */
 router.post('/pickup', (req, res, next) => {
-  console.log(req.player);
   const coords = req.body.coordinates;
   const assistantsRef = gamesRef
     .child(`${req.game.id}/merchants/${req.player.id}/assistants`);
@@ -57,7 +56,7 @@ router.post('/pickup', (req, res, next) => {
       assistantsRef.child('out').set(assistantsOut);
     })
     .then(() => {
-      res.send(req.player);
+      res.sendStatus(204);
     })
     .catch(next);
 });

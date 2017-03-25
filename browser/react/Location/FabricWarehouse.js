@@ -8,7 +8,11 @@ import Modal from '../Modal/Modal';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionMaxGood } from '../../routes/location';
 import { endTurn } from '../../routes/move';
-import { whichDialog, merchantOnLocation, mapCoordToLocation, merchantCount } from '../../utils';
+import { whichDialog } from '../../utils';
+import { handleMerchant } from '../../utils/otherMerchants.js';
+import { handleAssistant } from '../../utils/assistants.js';
+
+/****************** Component ********************/
 
 class FabricWarehouse extends React.Component {
   constructor(props) {
@@ -17,19 +21,8 @@ class FabricWarehouse extends React.Component {
     this.handleMaxGoodEndTurn = this.handleMaxGoodEndTurn.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
     this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = this.handleAssistant.bind(this);
-    this.handleMerchant = this.handleMerchant.bind(this);
-  }
-
-  // Assistant dialogs
-  handleAssistant() {
-    this.props.closeModal();
-    if (merchantOnLocation(this.props.playerId, this.props.currentPosition, this.props.merchants)) {
-      let numMerchants = merchantCount(this.props.playerId, this.props.currentPosition, this.props.merchants);
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { merchantCount: numMerchants, currentPosition: this.props.currentPosition, dialog: 'merchant_encounter' });
-    } else {
-      this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
-    }
+    this.handleAssistant = handleAssistant.bind(this);
+    this.handleMerchant = handleMerchant.bind(this);
   }
 
   // Merchant dialogs
@@ -68,10 +61,10 @@ class FabricWarehouse extends React.Component {
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-half">
-        <div id="text-box">
-          <p>Look at all the fabric! <br /><br />Come back later if you need more! <br /></p>
-        </div>
-        <div>
+        <div className="turn-dialog-column">
+          <div id="text-box">
+            <p>Look at all the fabric! <br /><br />Come back later if you need more! <br /></p>
+          </div>
           <RaisedButton label="Max fabric and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
         </div>
       </div>

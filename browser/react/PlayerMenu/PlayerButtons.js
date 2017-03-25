@@ -62,10 +62,10 @@ class PlayerButtons extends Component {
     return (
       <div id="player-info-row">
         <div id="player-buttons-column">
-          <img src={'images/player/redplayer.png'} id="player-icons" onTouchTap={() => this.handleButtonClick('red') } />
-          <img src={'images/player/blueplayer.png'} id="player-icons" onTouchTap={() => this.handleButtonClick('blue')} />
-          <img src={'images/player/greenplayer.png'} id="player-icons" onTouchTap={() => this.handleButtonClick('green')} />
-          <img src={'images/player/yellowplayer.png'} id="player-icons" onTouchTap={() => this.handleButtonClick('yellow')} />
+          <img src={'images/player/redplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('red') } />
+          <img src={'images/player/blueplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('blue')} />
+          <img src={'images/player/greenplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('green')} />
+          <img src={'images/player/yellowplayer.png'} className="player-icons" onTouchTap={() => this.handleButtonClick('yellow')} />
         </div>
         {
           display && selectedPlayer &&
@@ -74,27 +74,27 @@ class PlayerButtons extends Component {
             <table>
               <tbody>
                 <tr>
-                  <td><img id="player-data-icons" src="./images/cart/fabric.png" /></td>
+                  <td><img className="player-data-icons" src="./images/cart/fabric.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.fabric} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
                 <tr>
-                  <td><img id="player-data-icons" src="./images/cart/fruits.png" /></td>
+                  <td><img className="player-data-icons" src="./images/cart/fruits.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.fruit} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
                 <tr>
-                  <td><img id="player-data-icons" src="./images/cart/heirlooms.png" /></td>
+                  <td><img className="player-data-icons" src="./images/cart/heirlooms.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.heirloom} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
                 <tr>
-                  <td><img id="player-data-icons" src="./images/cart/spices.png" /></td>
+                  <td><img className="player-data-icons" src="./images/cart/spices.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.spice} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
                 <tr>
-                  <td><img id="player-data-icons" src="./images/money/lira.png" /></td>
+                  <td><img className="player-data-icons" src="./images/money/lira.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.money}`}</td>
                 </tr>
                 <tr>
-                  <td><img id="player-data-icons" src="./images/money/ruby.png" /></td>
+                  <td><img className="player-data-icons" src="./images/money/ruby.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.ruby}`}</td>
                 </tr>
               </tbody>

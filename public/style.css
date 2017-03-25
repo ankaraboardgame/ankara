@@ -39,6 +39,14 @@ p {
   background-size: 100% 100%;
 }
 
+.turn-dialog-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center
+}
+
 /* ------- GAME CONTAINER ---- */
 #game-container {
   display: flex;
@@ -62,12 +70,12 @@ p {
   cursor: pointer;
 }
 
-#player-icons {
+.player-icons {
   width: 45px;
   height: 45px;
 }
 
-#player-data-icons {
+.player-data-icons {
   border-radius: 20%;
   height: 40px;
 }
@@ -286,23 +294,23 @@ tbody tr:nth-child(odd){
   flex-wrap: wrap;
 }
 
-/* -------- PLAYER ------- */
-#player-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
-  box-shadow: 0px 0px 10px white;
+/* -------- MOVING PIECES ------- */
+.player-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 45px;
+  box-shadow: 0px 0px 10px lemonchiffon;
 }
 
-#player-container {
+.player-container {
   position: absolute;
   width: 100%;
-  top: 30px;
+  top: 15%;
   display: flex;
   justify-content: center;
 }
 
-#player-hover-overlay {
+.player-hover-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -311,6 +319,37 @@ tbody tr:nth-child(odd){
   z-index: 1;
   opacity: 0.5;
   background-color: yellow;
+}
+
+.assistant-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 35px;
+  box-shadow: 0px 0px 9px lemonchiffon;
+}
+
+.assistant-container {
+  position: absolute;
+  width: 100%;
+  top: 80%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 5;
+}
+
+.smuggler-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 40px;
+  box-shadow: 0px 0px 9px lemonchiffon;
+}
+
+.smuggler-container {
+  position: absolute;
+  width: 100%;
+  top: 40%;
+  display: flex;
+  justify-content: center;
 }
 
 /* -------- BOARD -------- */
