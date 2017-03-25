@@ -4,16 +4,14 @@ const levels = {
     ['fruit_warehouse', 'spice_warehouse', 'black_market'],
     ['caravansary', 'small_market', 'tea_house'],
     ['large_market', 'wainwright', 'gemstone_dealer']
-    ],
+  ],
   full: [
     ['great_mosque', 'PostOffice', 'fabric_warehouse', 'small_mosque'],
     ['fruit_warehouse', 'PoliceStation', 'Fountain', 'spice_warehouse'],
     ['black_market', 'caravansary', 'small_market', 'tea_house'],
     ['SultansPalace', 'large_market', 'wainwright', 'gemstone_dealer']
-    ]
+  ]
 }
-
-// let cells = document.querySelectorAll('.cell');
 
 /**
  * Game constructor takes a level to determine location card order.
@@ -32,17 +30,11 @@ export function Game (levelName){
   }
 }
 
-Game.prototype.start = function(){}
-
 function Location(name, x, y){
   this.name = name;
-  this.x = x;
-  this.y = y;
   this.coords = `${x},${y}`;
-  // this.cell = document.getElementById(this.coords);
 
-  // to figure out possible moves,
-  // make combos of up, down, left right
+  // to figure out possible moves, make combos of up, down, left right
   const steps = [[0, 1], [0, -1], [-1, 0], [1, 0]]
 
   // add one-step moves
@@ -58,24 +50,4 @@ function Location(name, x, y){
 
   this.possibleMoves = possibleMoves
             .filter((coords, i) => possibleMoves.indexOf(coords) === i && coords !== this.coords)
-
-  // const cellHeading = document.createElement('p');
-  // cellHeading.innerHTML = `(${this.coords}) ${this.name}`;
-  // this.cell.insertBefore(cellHeading, this.cell.firstChild);
-
-  // const cellImage = document.createElement('img');
-  // cellImage.src = `images/locations/${this.name}.png`;
-  // cellImage.className = 'img-location';
-  // this.cell.insertBefore(cellImage, this.cell.firstChild);
-
-  // this.cell.addEventListener('mouseover', function(e){
-  //   cells.forEach(cell => {
-  //     cell.setAttribute('style', 'background-color: none');
-  //     if (this.possibleMoves.indexOf(cell.id) === -1){
-  //       cell.setAttribute('style', 'opacity: 0.2;');
-  //     }
-  //   })
-  // }.bind(this))
 }
-
-// const istanbul = new Game('basic');

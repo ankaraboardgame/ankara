@@ -43,7 +43,7 @@ app.use('/api', require('./api'));
 
 /** Default Error-handling Middleware */
 app.use(function (err, req, res, next) {
-  console.error(err.stack);
+  // console.error(err.stack);
   res.status(err.status || 500).send(err.message);
 });
 
