@@ -25,10 +25,12 @@ class DisplayWinner extends React.Component {
     return (
       <Modal>
         <div id="winner-container">
-          <text id="winner-text">Winner is {winner.id}</text>
+          <div id="winner-text-box">
+            <text id="winner-text">Winner is {winner.id}</text>
+          </div>
           <GameSummary merchants={this.props.merchants} />
-          <div>
-            <RaisedButton label="OK" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndGame}  />
+          <div id="end-game-btn">
+            <RaisedButton label="End Game" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndGame}  />
           </div>
         </div>
       </Modal>

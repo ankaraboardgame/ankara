@@ -8,7 +8,7 @@ const GameSummary = props => {
       </div>
       <table>
           <thead>
-              <tr style={{backgroundColor: 'rgba(0,0,0,.015)'}}>
+              <tr style={{backgroundColor: 'rgba(215, 117, 79,.2)'}}>
                   <th className="th-center" style={{ textAlign: 'left' }}>Name</th>
                   <th className="th-center">Rubies</th>
                   <th className="th-center">Lira</th>
@@ -23,14 +23,14 @@ const GameSummary = props => {
                 props.merchants && Object.keys(props.merchants).map(merchant => {
                   let merchObj = props.merchants[merchant];
                   return (
-                    <tr key={merchant}>
+                    <tr className="tr-game-summary" key={merchant}>
                       <td className="td-name">{merchObj.id}</td>
                       <td className="td-center">{merchObj.wheelbarrow.ruby}</td>
                       <td className="td-center">{merchObj.wheelbarrow.money}</td>
                       <td className="td-center">{merchObj.wheelbarrow.heirloom}</td>
                       <td className="td-center">{merchObj.wheelbarrow.fabric}</td>
                       <td className="td-center">{merchObj.wheelbarrow.fruit}</td>
-                      <td className="td-center">{merchObj.wheelbarrow.Spices}</td>
+                      <td className="td-center">{merchObj.wheelbarrow.spice}</td>
                     </tr>
                   );
                 })

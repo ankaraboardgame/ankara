@@ -120,19 +120,11 @@ table {
   font-size: 16px;
 }
 
-tbody tr:nth-child(odd){
+.tr-player tbody tr:nth-child(odd){
   background: rgba(0, 0, 0, 0.8);
   padding-left: 30px;
   padding-right: 30px;
 }
-
-/*h1 {
-  font-family: 'Ruslan Display', cursive;
-  letter-spacing: 3pt;
-  font-size: 120px;
-  color: darkred;
-  text-shadow: -1px 0 #222, 0 1px #222, 1px 0 #222, 0 -1px #222;
-}*/
 
 /* -------- LOCATION MODALS --- */
 #location-modal-container {
@@ -536,16 +528,28 @@ footer .badge {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 400px;
   background-color: #d0cabe;
+  border-radius: 6px;
+}
+
+#winner-text-box {
+  margin: 20px 0px 20px 0px;
+  padding: 0em 1em 0em 1em;
 }
 
 #winner-text {
-  color: white;
+  color: darkslategray;
   font-size: 40px;
+  font-family: Garamond;
+  font-weight: bold;
+}
+
+#end-game-btn {
+  margin: 20px 0px 20px 0px;
 }
 
 #game-summary {
+  background-color: rgba(215, 117, 79, .1);
   padding: 1em 1em 1em 1em;
   border-top: 1px solid rgba(255,255,255,.5);
   border-bottom: 1px solid rgba(255,255,255,.5);
@@ -555,10 +559,17 @@ footer .badge {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  padding-bottom: 10px;
 }
 
 #game-header-text {
-  color: darkslategrey;
+  color: darkslategray;
+  font-family: Garamond;
+  font-variant: small-caps;
+  text-align: left;
+  font-weight: bold;
+  font-size: 26px;
+  text-shadow: 3px 1px 1px rgba(150, 150, 150, 0.29);
 }
 
 table {
@@ -566,6 +577,7 @@ table {
   table-layout: auto!important;
   margin-bottom: 5px;
   width: 100%;
+  border-collapse: collapse;
 }
 
 table tr td {
@@ -578,7 +590,7 @@ thead {
   border-bottom: 1px solid rgba(255,255,255,.5);
 }
 
-tr {
+.tr-game-summary {
   display: table-row;
   background-color: #d0cabe;
 }
@@ -590,7 +602,7 @@ table tr:nth-child(2n) {
 .th-center {
   color: darkslategrey;
   padding: 10px 10px 10px 10px;
-  font-size: 16px;
+  font-size: 20px;
   font-family: Garamond;
   font-variant: small-caps;
   text-align: center;
@@ -599,7 +611,7 @@ table tr:nth-child(2n) {
 .td-center {
   color: darkslategrey;
   padding: 10px 10px 10px 10px;
-  font-size: 14px;
+  font-size: 17px;
   font-family: Garamond;
   font-variant: small-caps;
   text-align: center;
@@ -608,7 +620,7 @@ table tr:nth-child(2n) {
 .td-name {
   color: darkslategrey;
   padding: 10px 10px 10px 10px;
-  font-size: 14px;
+  font-size: 17px;
   font-family: Garamond;
   font-variant: small-caps;
   text-align: left;

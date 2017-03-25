@@ -39,7 +39,7 @@ class AppContainer extends React.Component {
           gamesRef && this.props.user ?
           <div id="game-container">
             <PlayerMenu gamesRef={gamesRef} />
-            { games.Ref.lastRound ? <h3> LAST ROUND</h3> : null}
+            { gamesRef.lastRound ? <h3> LAST ROUND</h3> : null}
             <div id="app-container">
               <img src={`images/Constantinople-Title-2.png`} id="game-title" />
               <BoardContainer />

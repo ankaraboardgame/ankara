@@ -73,27 +73,27 @@ class PlayerButtons extends Component {
             <p>{gamesRef.playerMap[selectedPlayer]}</p>
             <table>
               <tbody>
-                <tr>
+                <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/cart/fabric.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.fabric} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
-                <tr>
+                <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/cart/fruits.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.fruit} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
-                <tr>
+                <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/cart/heirlooms.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.heirloom} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
-                <tr>
+                <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/cart/spices.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.spice} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
-                <tr>
+                <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/money/lira.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.money}`}</td>
                 </tr>
-                <tr>
+                <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/money/ruby.png" /></td>
                   <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.ruby}`}</td>
                 </tr>
