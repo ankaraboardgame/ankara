@@ -10,11 +10,12 @@ const server = http.createServer(app);
 const firebaseAdmin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
+var productionServiceAccount = require('../firebase.deploy.config.js')
 var serviceAccount = require('../secret-istanbul-aa7c8-firebase-adminsdk-inz62-81ab05ed15.json');
 
 // Initialize the app with a service account, granting admin privileges
 firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert(serviceAccount),
+  credential: firebaseAdmin.credential.cert(serviceAccount || productionServiceAccount),
   databaseURL: 'https://istanbul-aa7c8.firebaseio.com/'
 });
 
