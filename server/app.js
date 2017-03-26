@@ -27,8 +27,6 @@ if(!serviceAccount.private_key){
   serviceAccount = require('../secret.firebase.env')
 }
 
-console.log('serviceAccount', serviceAccount);
-
 // Initialize the app with a service account, granting admin privileges
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount),
