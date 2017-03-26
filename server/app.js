@@ -9,8 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const firebaseAdmin = require('firebase-admin');
 
-// Fetch the service account key JSON file contents
-
+// process.env - config vars set-up on heroku side
 let serviceAccount = {
 	type: process.env.FIREBASE_TYPE,
 	project_id: process.env.FIREBASE_PROJECT_ID,
@@ -28,7 +27,8 @@ if(!serviceAccount.private_key){
   serviceAccount = require('../secret.firebase.env')
 }
 
-console.log('serviceAccount', serviceAccount);
+console.log('serviceAccount', serviceAccount)
+
 // Initialize the app with a service account, granting admin privileges
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount),
