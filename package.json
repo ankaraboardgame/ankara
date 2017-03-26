@@ -1,5 +1,5 @@
 {
-  "name": "capstone-istanbul",
+  "name": "constantinople",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sokmeann/istanbul.git"
+    "url": "git+https://github.com/sokmeann/constantinople.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sokmeann/istanbul/issues"
+    "url": "https://github.com/sokmeann/constantinople/issues"
   },
-  "homepage": "https://github.com/sokmeann/istanbul#readme",
+  "homepage": "https://github.com/sokmeann/constantinople#readme",
   "dependencies": {
     "axios": "^0.15.3",
     "babel-core": "^6.24.0",

@@ -4,7 +4,7 @@ import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 
-import config from '../../secret.config.js';
+import config from '../../firebase.config.js';
 
 import { loadCurrentUser } from './action-creators/user';
 
