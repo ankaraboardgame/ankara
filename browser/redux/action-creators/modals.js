@@ -1,8 +1,8 @@
-/** Constants */
+/** --------- Constants -------- */
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';
 
-/** Action-creators */
+/** --------- Action-creators -------- */
 export const loadModal = (modalType, payload) => {
     return {
         type: SHOW_MODAL,

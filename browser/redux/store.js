@@ -4,7 +4,7 @@ import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 
-import config from '../../secret.config.js';
+import config from '../../firebase.config.js';
 
 import { loadCurrentUser } from './action-creators/user';
 
@@ -17,13 +17,6 @@ const rrfConfig = {
   enableLogging: false, // enable/disable Firebase's database logging
 }
 
-// firebase config
-const fbConfig = {
-    apiKey: 'AIzaSyAVDzcIW786xqTB6qL5C815PxqvRT3FP38',
-    authDomain: 'istanbul-aa7c8.firebaseio.com',
-    databaseURL: 'https://istanbul-aa7c8.firebaseio.com/'
-};
-
 /***** STORE *****/
 const store = createStore(
   rootReducer,
@@ -32,7 +25,7 @@ const store = createStore(
       thunkMiddleware.withExtraArgument(getFirebase), // allows our thunks to have access to getFirebase
       createLogger({ collapsed: true })
     ),
-    reactReduxFirebase(fbConfig, { rrfConfig })
+    reactReduxFirebase(config.firebase, { rrfConfig })
   )
 );
 

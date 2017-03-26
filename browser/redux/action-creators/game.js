@@ -1,22 +1,17 @@
 import axios from 'axios';
 import { hashHistory } from 'react-router';
 
-/********* CONSTANTS ********/
+/** --------- Constants -------- */
 export const SETTING_GAME = 'SETTING_GAME';
 export const SETTING_WINNER = 'SETTING_WINNER';
 
-/******* ACTION CREATORS ********/
+/** --------- Action-creators -------- */
 export const settingGame = (id) => ({
     type: SETTING_GAME,
     id
 });
 
-export const settingWinner = (winnerId) => ({
-    type: SETTING_WINNER,
-    winnerId
-});
-
-/** -------- THUNK-DISPATCHERS --------- */
+/** -------- Thunk dispatchers --------- */
 export const fetchNewGame = (roomId, usersMap) => {
 
   return dispatch => {
