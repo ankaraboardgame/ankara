@@ -11,21 +11,24 @@ const firebaseAdmin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
 
-const serviceAccount = {
-	type: process.env.FIREBASE_TYPE || require('../secret.firebase.env.js').FIREBASE_TYPE,
-	project_id: process.env.FIREBASE_PROJECT_ID || require('../secret.firebase.env.js').FIREBASE_PROJECT_ID,
-	private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID || require('../secret.firebase.env.js').FIREBASE_PRIVATE_KEY_ID,
-	private_key: process.env.FIREBASE_PRIVATE_KEY || require('../secret.firebase.env.js').FIREBASE_PRIVATE_KEY,
-	client_email: process.env.FIREBASE_CLIENT_EMAIL || require('../secret.firebase.env.js').FIREBASE_CLIENT_EMAIL,
-	client_id: process.env.FIREBASE_CLIENT_ID || require('../secret.firebase.env.js').FIREBASE_CLIENT_ID,
-	auth_uri: process.env.FIREBASE_AUTH_URI || require('../secret.firebase.env.js').FIREBASE_AUTH_URI,
-	token_uri: process.env.FIREBASE_TOKEN_URI || require('../secret.firebase.env.js').FIREBASE_TOKEN_URI,
-	auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL || require('../secret.firebase.env.js').FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
-	client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL || require('../secret.firebase.env.js').FIREBASE_CLIENT_X509_CERT_URL
+let serviceAccount = {
+	type: process.env.FIREBASE_TYPE,
+	project_id: process.env.FIREBASE_PROJECT_ID,
+	private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+	private_key: process.env.FIREBASE_PRIVATE_KEY,
+	client_email: process.env.FIREBASE_CLIENT_EMAIL,
+	client_id: process.env.FIREBASE_CLIENT_ID,
+	auth_uri: process.env.FIREBASE_AUTH_URI,
+	token_uri: process.env.FIREBASE_TOKEN_URI,
+	auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+	client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL
 };
 
-console.log('serviceAccount', serviceAccount);
+if(!serviceAccount.private_key){
+  serviceAccount = require('../secret.firebase.env')
+}
 
+console.log('serviceAccount', serviceAccount);
 // Initialize the app with a service account, granting admin privileges
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount),
