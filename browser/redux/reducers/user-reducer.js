@@ -1,15 +1,12 @@
-// import axios from 'axios';
-// import { merge } from 'lodash';
-
-
+/** --------- Action-creators -------- */
 import { SET_USER } from '../action-creators/user';
 
-/******** INITIAL STATE ********/
+/** --------- Initial state -------- */
 const initialState = {
   user: null,
 };
 
-/********** REDUCER  **********/
+/** --------- User reducer -------- */
 export default function (state = initialState, action) {
   const newState = Object.assign({}, state);
 
