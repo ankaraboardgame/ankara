@@ -13,6 +13,8 @@ import {
   dataToJS
 } from 'react-redux-firebase'
 import ModalRootContainer from './Modal/ModalRootContainer';
+import DisplayWinner from './TurnDialogs/DisplayWinner';
+import LastTurn from './TurnDialogs/LastTurn';
 
 import PlayerMenu from './PlayerMenu/PlayerButtons';
 
@@ -37,6 +39,7 @@ class AppContainer extends React.Component {
           gamesRef && this.props.user ?
           <div id="game-container">
             <PlayerMenu gamesRef={gamesRef} />
+            { gamesRef.lastRound ? <h3> LAST ROUND</h3> : null}
             <div id="app-container">
               <img src={`images/Constantinople-Title-2.png`} id="game-title" />
               <BoardContainer />
@@ -45,6 +48,12 @@ class AppContainer extends React.Component {
                 gameId={this.props.gameId}
                 gamesRef={gamesRef} />
               <ModalRootContainer gamesRef={gamesRef} />
+              { 
+                gamesRef.lastRound && gamesRef.merchants[gamesRef.playerTurn].number === 0 ?
+                <DisplayWinner
+                  merchants={gamesRef.merchants}
+                /> : null 
+              }
             </div>
           </div> :
           <div id="circular-progress">

@@ -1,14 +1,12 @@
-// import axios from 'axios';
-// import { merge } from 'lodash';
-
+/** --------- Action-creators -------- */
 import { SET_JOINED_TRUE, SET_JOINED_FALSE } from '../action-creators/room';
 
-/******** INITIAL STATE ********/
+/** --------- Initial state -------- */
 const initialState = {
   joined: false
 };
 
-/********** REDUCER  **********/
+/** --------- Room reducer -------- */
 export default function (state = initialState, action) {
   const newState = Object.assign({}, state);
 

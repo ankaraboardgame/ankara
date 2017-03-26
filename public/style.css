@@ -31,7 +31,8 @@ p {
   flex-direction: row;
   align-items: center;
   align-content: center;
-  justify-content: center
+  justify-content: center;
+  border-radius: 6px;
 }
 
 #turn-dialog-full {
@@ -44,7 +45,8 @@ p {
   flex-direction: column;
   align-items: center;
   align-content: center;
-  justify-content: center
+  justify-content: center;
+  border-radius: 6px;
 }
 
 /* ------- GAME CONTAINER ---- */
@@ -73,6 +75,11 @@ p {
 .player-icons {
   width: 45px;
   height: 45px;
+}
+
+.player-icon-active {
+  border-radius: 45px;
+  border: 2px solid #cccccc;
 }
 
 .player-data-icons {
@@ -120,19 +127,11 @@ table {
   font-size: 16px;
 }
 
-tbody tr:nth-child(odd){
+.tr-player tbody tr:nth-child(odd){
   background: rgba(0, 0, 0, 0.8);
   padding-left: 30px;
   padding-right: 30px;
 }
-
-/*h1 {
-  font-family: 'Ruslan Display', cursive;
-  letter-spacing: 3pt;
-  font-size: 120px;
-  color: darkred;
-  text-shadow: -1px 0 #222, 0 1px #222, 1px 0 #222, 0 -1px #222;
-}*/
 
 /* -------- LOCATION MODALS --- */
 #location-modal-container {
@@ -140,8 +139,10 @@ tbody tr:nth-child(odd){
   flex-direction: column;
   justify-content: center;
   border-radius: 6px;
-  box-shadow: 8px 8px 12px #333;
-  border: 1px solid white;
+  border: 2px solid #cccccc;
+  -webkit-box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
+  -moz-box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
+  box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
   background-color: black;
   position: relative;
   max-width: 500px;
@@ -331,10 +332,11 @@ tbody tr:nth-child(odd){
 .assistant-container {
   position: absolute;
   width: 100%;
-  top: 80%;
+  bottom: 0;
+  right: 5px;
   display: flex;
-  justify-content: flex-end;
-  padding: 5;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .smuggler-icon {
@@ -379,8 +381,10 @@ tbody tr:nth-child(odd){
   flex-direction: column;
   position: relative;
   margin: 5px;
-  border: 2px solid black;
-  box-shadow: 5px 5px 2px #333;
+  border: 2px solid #cccccc;
+  -webkit-box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
+  -moz-box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
+  box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
   border-radius: 6px;
 }
 
@@ -529,4 +533,107 @@ footer .badge {
   flex-direction: row;
   margin-top: 10px;
   margin-bottom: 20px;
+}
+
+/* ---- WINNER DIALOG ---- */
+#winner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #d0cabe;
+  border-radius: 6px;
+}
+
+#winner-text-box {
+  margin: 20px 0px 20px 0px;
+  padding: 0em 1em 0em 1em;
+}
+
+#winner-text {
+  color: darkslategray;
+  font-size: 40px;
+  font-family: Garamond;
+  font-weight: bold;
+}
+
+#end-game-btn {
+  margin: 20px 0px 20px 0px;
+}
+
+#game-summary {
+  background-color: rgba(215, 117, 79, .1);
+  padding: 1em 1em 1em 1em;
+  border-top: 1px solid rgba(255,255,255,.5);
+  border-bottom: 1px solid rgba(255,255,255,.5);
+}
+
+#game-summary-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-bottom: 10px;
+}
+
+#game-header-text {
+  color: darkslategray;
+  font-family: Garamond;
+  font-variant: small-caps;
+  text-align: left;
+  font-weight: bold;
+  font-size: 26px;
+  text-shadow: 3px 1px 1px rgba(150, 150, 150, 0.29);
+}
+
+table {
+  background-color: #d0cabe;
+  table-layout: auto!important;
+  margin-bottom: 5px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table tr td {
+  border-top: 1px solid hsla(0,0%,100%,.06)!important;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255,255,255,.5);
+}
+
+.tr-game-summary {
+  display: table-row;
+  background-color: #d0cabe;
+}
+
+table tr:nth-child(2n) {
+  background-color: rgba(0,0,0,.015);
+}
+
+.th-center {
+  color: darkslategrey;
+  padding: 10px 10px 10px 10px;
+  font-size: 20px;
+  font-family: Garamond;
+  font-variant: small-caps;
+  text-align: center;
+}
+
+.td-center {
+  color: darkslategrey;
+  padding: 10px 10px 10px 10px;
+  font-size: 17px;
+  font-family: Garamond;
+  font-variant: small-caps;
+  text-align: center;
+}
+
+.td-name {
+  color: darkslategrey;
+  padding: 10px 10px 10px 10px;
+  font-size: 17px;
+  font-family: Garamond;
+  font-variant: small-caps;
+  text-align: left;
 }

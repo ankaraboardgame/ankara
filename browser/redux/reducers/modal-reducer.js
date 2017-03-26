@@ -1,13 +1,13 @@
-/** Constant */
+/** --------- Action-creators -------- */
 import { SHOW_MODAL, HIDE_MODAL } from '../action-creators/modals';
 
-/** Initial State */
+/** --------- Initial state -------- */
 const initialModalState = {
     modalType: null,
     payload: null
 };
 
-/** Modal reducer */
+/** --------- Modal Reducer -------- */
 export default function (state = initialModalState, action) {
     const newState = Object.assign({}, state);
 

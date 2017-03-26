@@ -3,7 +3,7 @@
 // import firebase from 'firebase';
 import config from '../firebase.config.js'
 
-const firebase = require("firebase/app");
+const firebase = require("firebase");
 require("firebase/auth");
 require("firebase/database");
 
