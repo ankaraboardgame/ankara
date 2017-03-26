@@ -10,19 +10,18 @@ const server = http.createServer(app);
 const firebaseAdmin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
-const secretFile = require('../secret.firebase.env.js')
 
 const serviceAccount = {
-	type: process.env.FIREBASE_TYPE || secretFile.FIREBASE_TYPE,
-	project_id: process.env.FIREBASE_PROJECT_ID || secretFile.FIREBASE_PROJECT_ID,
-	private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID || secretFile.FIREBASE_PRIVATE_KEY_ID,
-	private_key: process.env.FIREBASE_PRIVATE_KEY || secretFile.FIREBASE_PRIVATE_KEY,
-	client_email: process.env.FIREBASE_CLIENT_EMAIL || secretFile.FIREBASE_CLIENT_EMAIL,
-	client_id: process.env.FIREBASE_CLIENT_ID || secretFile.FIREBASE_CLIENT_ID,
-	auth_uri: process.env.FIREBASE_AUTH_URI || secretFile.FIREBASE_AUTH_URI,
-	token_uri: process.env.FIREBASE_TOKEN_URI || secretFile.FIREBASE_TOKEN_URI,
-	auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL || secretFile.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
-	client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL || secretFile.FIREBASE_CLIENT_X509_CERT_URL
+	type: process.env.FIREBASE_TYPE || require('../secret.firebase.env.js').FIREBASE_TYPE,
+	project_id: process.env.FIREBASE_PROJECT_ID || require('../secret.firebase.env.js').FIREBASE_PROJECT_ID,
+	private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID || require('../secret.firebase.env.js').FIREBASE_PRIVATE_KEY_ID,
+	private_key: process.env.FIREBASE_PRIVATE_KEY || require('../secret.firebase.env.js').FIREBASE_PRIVATE_KEY,
+	client_email: process.env.FIREBASE_CLIENT_EMAIL || require('../secret.firebase.env.js').FIREBASE_CLIENT_EMAIL,
+	client_id: process.env.FIREBASE_CLIENT_ID || require('../secret.firebase.env.js').FIREBASE_CLIENT_ID,
+	auth_uri: process.env.FIREBASE_AUTH_URI || require('../secret.firebase.env.js').FIREBASE_AUTH_URI,
+	token_uri: process.env.FIREBASE_TOKEN_URI || require('../secret.firebase.env.js').FIREBASE_TOKEN_URI,
+	auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL || require('../secret.firebase.env.js').FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+	client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL || require('../secret.firebase.env.js').FIREBASE_CLIENT_X509_CERT_URL
 };
 
 console.log('serviceAccount', serviceAccount);
