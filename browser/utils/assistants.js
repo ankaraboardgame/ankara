@@ -40,7 +40,7 @@ const merchantsOnLocation = (playerId, currentPosition, merchantsObj) => {
 };
 
 export function handleAssistant (action) {
-  const { gameId, playerId, currentPosition, merchants } = this.props;
+  const { gameId, playerId, currentPosition, merchants, selfData } = this.props;
   if (action === 'drop'){
     dropAssistant(gameId, playerId, currentPosition);
   } else if (action === 'pickup'){
@@ -58,6 +58,7 @@ export function handleAssistant (action) {
         currentPosition: currentPosition,
         otherMerchants: otherMerchantsArray,
         merchantCount: otherMerchantsArray.length,
+        money: selfData.wheelbarrow.money,
         dialog: 'merchant_encounter' // sends to handleMerchant()
       }
     );

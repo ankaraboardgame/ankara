@@ -20,7 +20,6 @@ class BoardContainer extends React.Component {
   }
 
   render() {
-
     return (
       <div id="board-container">
         {
@@ -30,11 +29,12 @@ class BoardContainer extends React.Component {
                 user={this.props.user}
                 key={index}
                 row={row}
-                game={this.props.game}
+                game={this.props.gameData}
                 gameId={this.props.gameId}
-                merchants={this.props.merchants}
+                merchants={this.props.gameData.merchants}
                 openModal={this.props.openModal}
                 closeModal={this.props.closeModal}
+                selfData={this.props.gameData.merchants[this.props.user.uid]}
               />
             );
           })
@@ -49,8 +49,7 @@ const mapStateToProps = ({board, positions, user, firebase, game}) => ({
   gameId: game.id,
   winnerId: game.winnerId,
   user: user.user,
-  game: dataToJS(firebase, `games/${game.id}`),
-  merchants: dataToJS(firebase, `games/${game.id}/merchants`),
+  gameData: dataToJS(firebase, `games/${game.id}`),
   auth: pathToJS(firebase, 'auth')
 });
 

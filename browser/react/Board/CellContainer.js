@@ -5,7 +5,7 @@ import { DropTarget } from 'react-dnd';
 import { dataToJS } from 'react-redux-firebase';
 
 import { cellActiveStatus, canMovePlayer, mapCoordToLocation } from '../../utils';
-import { openAssistantDialog } from '../../utils/assistants.js'
+import { openAssistantDialog } from '../../utils/assistants.js';
 import { movePlayer } from '../../routes/move';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 
@@ -146,7 +146,7 @@ const mapStateToProps = (state, ownProps) => ({
   possibleMoves: ownProps.cellPossibleMoves,
   game: ownProps.game,
   merchants: ownProps.merchants,
-  selfData: ownProps.merchants[state.user.user.uid],
+  selfData: ownProps.selfData,
   gamesRef: dataToJS(state.firebase, `games/${state.game.id}`)
 });
 
