@@ -4,9 +4,13 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "validate": "check-node-version --node '>= 6.7.0'",
+    "prep": "npm run validate",
+    "postinstall": "npm run prep && npm run build",
+    "build": "webpack",
     "start": "node server/app.js",
     "start-dev": "webpack -w & nodemon --watch server -e js,html server/app.js",
-    "build": "webpack -w & nodemon --watch server -e js,html server/app.js",
+    "build-dev": "webpack -w & nodemon --watch server -e js,html server/app.js",
     "test": "mocha --compilers js:babel-register browser/**/*.test.js browser/react/**/*.test.js game/**/*.test.js server/**/*.test.js"
   },
   "repository": {
