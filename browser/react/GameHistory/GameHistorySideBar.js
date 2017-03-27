@@ -44,14 +44,14 @@ class GameHistorySideBar extends Component {
 }
 
 const fbHistoryContainer = firebaseConnect(({ gameId }) => {
-  return [`gameHistory/${gameId}`];
+  return [`gameLog/${gameId}`];
 })(GameHistorySideBar);
 
 const mapStateToProps = (state) => ({
   userId: state.user.user.uid,
   gameId: state.game.id,
   firebase: state.firebase,
-  historyRef: dataToJS(state.firebase, `gameHistory/${state.game.id}`)
+  historyRef: dataToJS(state.firebase, `gameLog/${state.game.id}`)
 })
 
 export default connect(mapStateToProps)(fbHistoryContainer)

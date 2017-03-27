@@ -6,6 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import BoardContainer from './Board/BoardContainer';
 import FooterContainer from './Footer/FooterContainer';
+import NotificationComponent from './Notification/NotificationComponent';
 import {
   firebaseConnect,
   isLoaded,
@@ -31,6 +32,7 @@ class AppContainer extends React.Component {
 
   render() {
     const gamesRef = this.props.gamesRef;
+    const gameLog = this.props.gameLog;
     const currentUserId = this.props.user && this.props.user.uid;
 
     return (
@@ -48,11 +50,12 @@ class AppContainer extends React.Component {
                 gameId={this.props.gameId}
                 gamesRef={gamesRef} />
               <ModalRootContainer gamesRef={gamesRef} />
-              { 
+              <NotificationComponent gameLog={gameLog} gameId={this.props.gameId} />
+              {
                 gamesRef.lastRound && gamesRef.merchants[gamesRef.playerTurn].number === 0 ?
                 <DisplayWinner
                   merchants={gamesRef.merchants}
-                /> : null 
+                /> : null
               }
             </div>
           </div> :
@@ -66,13 +69,14 @@ class AppContainer extends React.Component {
 }
 
 const fbGameWrappedContainer = firebaseConnect(({ gameId }) => {
-  return [`games/${gameId}`];
+  return [`games/${gameId}`, `gameLog/${gameId}`];
 })(AppContainer);
 
 const mapStateToProps = (state) => ({
   user: state.user.user,
   gameId: state.game.id,
-  gamesRef: dataToJS(state.firebase, `games/${state.game.id}`)
+  gamesRef: dataToJS(state.firebase, `games/${state.game.id}`),
+  gameLog: dataToJS(state.firebase, `gameLog/${state.game.id}`),
 })
 
 export default connect(mapStateToProps)(fbGameWrappedContainer)

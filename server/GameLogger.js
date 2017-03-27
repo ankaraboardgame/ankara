@@ -2,7 +2,7 @@ const admin = require('firebase-admin');
 const db = admin.database();
 const roomsRef = db.ref('rooms');
 const gamesRef = db.ref('games');
-const gameHistoryRef = db.ref('gameHistory');
+const gameLogRef = db.ref('gameLog');
 
 const util = require('./util');
 const log = util.log;
@@ -18,7 +18,7 @@ const GameLogger = function() {
 
     const ignoreFirstEvent = {};
 
-    gameHistoryRef.child(gameId).once('value', function(snapshot) {
+    gameLogRef.child(gameId).once('value', function(snapshot) {
 
       //Log players who joined the game
       Object.keys(playerMap).forEach(mapKey => {
@@ -30,7 +30,6 @@ const GameLogger = function() {
       });
 
     })
-    .then(console.error);
 
     // Player turn change
     gamesRef.child(gameId).child('playerTurn').on('value', snapshot => {
@@ -40,7 +39,6 @@ const GameLogger = function() {
         timestamp: getCurrUnixTime()
       });
     })
-    .then(console.error);
 
     // Gemstone price change
     gamesRef.child(gameId).child('gemstoneDealer').on('value', snapshot => {
@@ -50,7 +48,6 @@ const GameLogger = function() {
         timestamp: getCurrUnixTime()
       });
     })
-    .then(console.error);
 
     // // Small market demand change
     // gamesRef.child(gameId).child('smallMarket').child('demandTile').on('value', snapshot => {
@@ -86,7 +83,6 @@ const GameLogger = function() {
           });
         }
       })
-      .then(console.error);
 
       // Wheelbarrow size increment
       let initialSize = undefined;
@@ -101,7 +97,6 @@ const GameLogger = function() {
           });
         }
       })
-      .then(console.error);
 
       // ruby change
       let initialRuby = undefined;
@@ -116,7 +111,6 @@ const GameLogger = function() {
           });
         }
       })
-      .then(console.error);
 
       // money amount change
       // gamesRef.child(gameId).child('merchants').child(playerId).child('wheelbarrow').child('money').on('value', snapshot => {
