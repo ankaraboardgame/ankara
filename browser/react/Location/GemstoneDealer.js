@@ -12,7 +12,7 @@ import { endTurn } from '../../routes/move';
 import { whichDialog, handleEndTurn, beforeEndTurn } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
-import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+import { canTalkToSmuggler, handleSmuggler, handleSmugglerGoodWantedClick, handleSmugglerGoodToTrade, tradeWithSmuggler } from '../../utils/smuggler';
 
 /****************** Component ********************/
 class GemstoneDealer extends React.Component {
@@ -37,9 +37,9 @@ class GemstoneDealer extends React.Component {
     /** smuggler functions */
     this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
     this.handleSmuggler = handleSmuggler.bind(this);
-    this.talkToSmuggler = talkToSmuggler.bind(this);
-    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
-    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
+    this.handleSmugglerGoodWantedClick = handleSmugglerGoodWantedClick.bind(this);
+    this.handleSmugglerGoodToTrade = handleSmugglerGoodToTrade.bind(this);
+    this.tradeWithSmuggler = tradeWithSmuggler.bind(this);
   }
 
   componentDidMount (){

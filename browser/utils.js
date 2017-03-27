@@ -94,17 +94,76 @@ export function whichDialog(modalPayload) {
       return this.renderAction();
 
     case 'smuggler':
+      const selectedGoodWanted = this.state.smuggler.goodWanted;
+      const selectedGoodToTrade = this.state.smuggler.trade;
+      const selectedClassName = 'highlighted';
+      wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
       return (
         <div id="turn-dialog-full">
           <div id="text-box">
-            <p>Here be the smuggler!<br /><br />You can get a resource of your choice<br />But! You must give him 2 lira or a random good of your choice in return...</p>
+            <p>You can get a resource of your choice<br />But! You must give him 2 lira or a random good</p>
+          </div>
+          <div id="text-box">
+            <p>Select your resource</p>
+          </div>
+          <div id="market-row">
+            { wheelbarrow.fabric < wheelbarrow.size &&
+              <img id="fabric"
+                   src="./images/cart/fabric.png"
+                   onTouchTap={this.handleSmugglerGoodWantedClick}
+                   className={selectedGoodWanted === 'fabric' && selectedClassName} /> }
+            { wheelbarrow.fruit < wheelbarrow.size &&
+              <img id="fruit"
+                   src="./images/cart/fruits.png"
+                   onTouchTap={this.handleSmugglerGoodWantedClick}
+                   className={selectedGoodWanted === 'fruit' && selectedClassName} /> }
+            { wheelbarrow.spice < wheelbarrow.size &&
+              <img id="spice"
+                   src="./images/cart/spices.png"
+                   onTouchTap={this.handleSmugglerGoodWantedClick}
+                   className={selectedGoodWanted === 'spice' && selectedClassName} /> }
+            { wheelbarrow.heirloom < wheelbarrow.size &&
+              <img id="heirloom"
+                   src="./images/cart/heirlooms.png"
+                   onTouchTap={this.handleSmugglerGoodWantedClick}
+                   className={selectedGoodWanted === 'heirloom' && selectedClassName} /> }
+          </div>
+          <div id="text-box">
+            <p>Select how you would like to pay smuggler</p>
+          </div>
+          <div id="market-row">
+            { wheelbarrow.fabric > 0 &&
+            <img id="fabric"
+                 src="./images/cart/fabric.png"
+                 onTouchTap={this.handleSmugglerGoodToTrade}
+                 className={selectedGoodToTrade === 'fabric' && selectedClassName} /> }
+            { wheelbarrow.fruit > 0 &&
+            <img id="fruit"
+                 src="./images/cart/fruits.png"
+                 onTouchTap={this.handleSmugglerGoodToTrade}
+                 className={selectedGoodToTrade === 'fruit' && selectedClassName} /> }
+            { wheelbarrow.spice > 0 &&
+            <img id="spice"
+                 src="./images/cart/spices.png"
+                 onTouchTap={this.handleSmugglerGoodToTrade}
+                 className={selectedGoodToTrade === 'spice' && selectedClassName} /> }
+            { wheelbarrow.heirloom > 0 &&
+            <img id="heirloom"
+                 src="./images/cart/heirlooms.png"
+                 onTouchTap={this.handleSmugglerGoodToTrade}
+                 className={selectedGoodToTrade === 'heirloom' && selectedClassName} /> }
+            { wheelbarrow.money >= 2 &&
+            <img id="lira"
+                 src="./images/money/two_lira.png"
+                 onTouchTap={this.handleSmugglerGoodToTrade}
+                 className={selectedGoodToTrade === 'lira' && selectedClassName} /> }
           </div>
           <div id="market-row">
             <RaisedButton
-              label={`Talk to smuggler`}
+              label={`Trade with Smuggler`}
               style={{ margin: 12 }}
               primary={true}
-              onTouchTap={this.talkToSmuggler}
+              onTouchTap={this.tradeWithSmuggler}
               disabled={!this.canTalkToSmuggler(this.props.playerId, this.props.merchants)}
             />
             <RaisedButton
@@ -116,48 +175,6 @@ export function whichDialog(modalPayload) {
           </div>
         </div>
       );
-
-    case 'smuggler_receive':
-      wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
-      return (
-        <div id="turn-dialog-full">
-          <div id="text-bos">
-            <p>Select the good you would like to receive from smuggler!</p>
-          </div>
-          <div id="market-row">
-            { wheelbarrow.fabric < wheelbarrow.size &&
-              <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerGoodClick} /> }
-            { wheelbarrow.fruit < wheelbarrow.size &&
-              <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleSmugglerGoodClick} /> }
-            { wheelbarrow.spice < wheelbarrow.size &&
-              <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleSmugglerGoodClick} /> }
-            { wheelbarrow.heirloom < wheelbarrow.size &&
-              <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleSmugglerGoodClick} /> }
-          </div>
-        </div>
-      );
-
-    case 'smuggler_pay':
-      wheelbarrow = this.props.merchants && this.props.merchants[this.props.playerId].wheelbarrow;
-      return (
-        <div id="turn-dialog-full">
-          <div id="text-bos">
-            <p>Select how you would like to pay smuggler</p>
-          </div>
-          <div id="market-row">
-            { wheelbarrow.fabric > 0 &&
-            <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleSmugglerPayClick} /> }
-            { wheelbarrow.fruit > 0 &&
-            <img id="fruit" src="./images/cart/fruits.png" onTouchTap={this.handleSmugglerPayClick} /> }
-            { wheelbarrow.spice > 0 &&
-            <img id="spice" src="./images/cart/spices.png" onTouchTap={this.handleSmugglerPayClick} /> }
-            { wheelbarrow.heirloom > 0 &&
-            <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleSmugglerPayClick} /> }
-            { wheelbarrow.money >= 2 &&
-            <img id="lira" src="./images/money/two_lira.png" onTouchTap={this.handleSmugglerPayClick} /> }
-          </div>
-        </div>
-      )
 
     default:
       return null;

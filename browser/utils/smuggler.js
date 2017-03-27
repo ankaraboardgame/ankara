@@ -51,36 +51,17 @@ export function handleSmuggler() {
   }
 }
 
-// Smuggler - handle decision to talk to smuggler
-export function talkToSmuggler() {
-  const currentPosition = this.props.currentPosition;
-  this.props.closeModal();
-  this.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler_receive' });
-}
-
-// Smuggler - handle receive good and show pay dialog
-export function handleSmugglerGoodClick(event) {
+export function handleSmugglerGoodWantedClick(event) {
   const good = event.target.id;
-  const currentPosition = this.props.currentPosition;
-  const currentWheelbarrow = this.props.merchants[this.props.playerId].wheelbarrow;
-  //wheelbarrow size validation
-  if(currentWheelbarrow[good] < currentWheelbarrow.size) {
-    this.props.closeModal();
-    this.setState({ smuggler: { goodWanted: good }});
-
-    //pay smuggler with good or 2 lira
-    this.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler_pay'});
-  }
+  this.setState({ smuggler: { goodWanted: good, trade: this.state.smuggler.trade }});
 }
 
-// Smuggler - handle pay
-export function handleSmugglerPayClick(event) {
+export function handleSmugglerGoodToTrade(event) {
   const trade = event.target.id;
-
-  this.setState({ smuggler: { goodWanted: this.state.smuggler.goodWanted, trade }}, function() {
-    encounterSmuggler(this.props.gameId, this.props.playerId, this.state.smuggler.goodWanted, this.state.smuggler.trade)
-    .then(this.handleEndTurn);
-  });
-
+  this.setState({ smuggler: { goodWanted: this.state.smuggler.goodWanted, trade }});
 }
 
+export function tradeWithSmuggler() {
+  encounterSmuggler(this.props.gameId, this.props.playerId, this.state.smuggler.goodWanted, this.state.smuggler.trade)
+  .then(this.handleEndTurn);
+}
