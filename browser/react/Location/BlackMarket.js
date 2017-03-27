@@ -26,7 +26,8 @@ class BlackMarket extends React.Component {
       smuggler: {
         goodWanted: null,
         trade: null
-      }
+      },
+      rolled: false
     }
 
     this.handleSelectGood = this.handleSelectGood.bind(this);
@@ -50,6 +51,7 @@ class BlackMarket extends React.Component {
   }
 
   handleDiceRoll (rollSum){
+    this.setState({ rolled: true })
     const good = this.state.selectedGood;
     setTimeout(() => {
       this.handleGetBlackMarketGoodsEndTurn(good, rollSum)
@@ -115,7 +117,13 @@ class BlackMarket extends React.Component {
               selectedGood &&
               <Dice done={this.handleDiceRoll} />
             }
-            <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+            <RaisedButton
+              label="End my turn"
+              style={style}
+              primary={true}
+              onTouchTap={this.handleEndTurn}
+              disabled={this.state.rolled}
+            />
         </div>
       </div>
     );
