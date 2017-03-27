@@ -8,6 +8,8 @@ const Cell = props => {
       return renderLargeMarketTiles(props);
     } else if (tile === 'SMALL_MARKET') {
       return renderSmallMarketTiles(props);
+    } else if (tile === 'GEMSTONE_DEALER') {
+      return renderGemstoneDealerTile(props);
     } else {
       return renderOtherTiles(props);
     }
@@ -24,11 +26,28 @@ function renderOtherTiles(props) {
       }}
       onClick={props.handleOnClick}
     >
-      <img src={`images/locations/${props.name}.jpg`} className="img-location"/>
+      <img src={`images/locations/${props.name}.jpg`} className="img-location" />
       <text className="cell-text">{props.coords}</text>
     </div>
   );
-};
+}
+
+function renderGemstoneDealerTile(props) {
+  const currentPrice = props.gamesRef.gemstoneDealer;
+  return (
+    <div
+      style={{
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+      onClick={props.handleOnClick}
+    >
+      <img src={`images/locations/gemstone_dealer_${currentPrice}.png`} className="img-location" />
+      <text className="cell-text">{props.coords}</text>
+    </div>
+  );
+}
 
 function renderLargeMarketTiles(props) {
   const currentMarketIdx = props.gamesRef.largeMarket.currentMarketIdx;
@@ -43,11 +62,11 @@ function renderLargeMarketTiles(props) {
         }}
         onClick={props.handleOnClick}
       >
-        <img src={`images/market/large/${currentDemandTile.img}`} className="img-location"/>
+        <img src={`images/market/large/${currentDemandTile.img}`} className="img-location" />
         <text className="cell-text">{props.coords}</text>
     </div>
   );
-};
+}
 
 function renderSmallMarketTiles(props) {
   const currentMarketIdx = props.gamesRef.smallMarket.currentMarketIdx;
@@ -66,4 +85,4 @@ function renderSmallMarketTiles(props) {
       <text className="cell-text">{props.coords}</text>
     </div>
   );
-};
+}

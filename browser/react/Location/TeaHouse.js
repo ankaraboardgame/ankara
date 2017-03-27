@@ -28,7 +28,8 @@ class TeaHouse extends React.Component {
       smuggler: {
         goodWanted: null,
         trade: null
-      }
+      },
+      rolled: false
     };
 
     this.handleChooseNumber = this.handleChooseNumber.bind(this);
@@ -67,6 +68,7 @@ class TeaHouse extends React.Component {
   }
 
   handleDiceRoll (rollSum){
+    this.setState({ rolled: true })
     const gamble = this.state.gambledNumber;
     setTimeout(() => {
       this.handleTeaHouseEndTurn(gamble, rollSum)
@@ -132,7 +134,7 @@ class TeaHouse extends React.Component {
               <Dice done={this.handleDiceRoll} />
             }
           </div>
-          <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+          <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={this.handleEndTurn} disabled={this.state.rolled}  />
           <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
       </div>
     );

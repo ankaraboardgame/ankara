@@ -20,6 +20,7 @@ const Row = props => {
               merchants={props.merchants}
               openModal={props.openModal}
               closeModal={props.closeModal}
+              selfData={props.selfData}
             />
           );
         })
