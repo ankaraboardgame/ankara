@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 
 import { zoomIn } from 'react-animations';
 import { StyleSheet, css } from 'aphrodite';
+
+/** -------- Selectors ---------- */
+import { getBoard } from '../../redux/reducers/board-reducer';
 
 import Row from './Row';
 
@@ -23,8 +25,7 @@ class BoardContainer extends React.Component {
   }
 
   render() {
-    const { board, merchants } = this.props;
-
+    const { board } = this.props;
     return (
         <div className={css(animateStyles.zoomIn)} id="board-container">
             {
@@ -33,7 +34,6 @@ class BoardContainer extends React.Component {
                   <Row
                     key={index}
                     row={row}
-                    merchants={merchants}
                   />
                 );
               })
@@ -43,16 +43,11 @@ class BoardContainer extends React.Component {
   }
 }
 
-const mapStateToProps = ({ board: { board }, game: { id: gameId }, firebase }) => ({
-  board: board,
-  merchants: dataToJS(firebase, `games/${gameId}/merchants`)
+const mapStateToProps = state => ({
+  board: getBoard(state),
 });
 
 export default compose(
   DragDropContext(HTML5Backend),
-  firebaseConnect(({gameId}) => ([
-    `games/${gameId}`,
-    `games/${gameId}/merchants`
-  ])),
   connect(mapStateToProps)
 )(BoardContainer);

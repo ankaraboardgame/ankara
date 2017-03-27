@@ -12,9 +12,6 @@ export default class Modal extends Component {
   }
 
   render() {
-    const overlayStyle = this.props.overlayStyle ? this.props.overlayStyle : {};
-    const contentStyle = this.props.contentStyle ? this.props.contentStyle : {};
-    const dialogStyle = this.props.dialogStyle ? this.props.dialogStyle : {};
     return (
       <ReactCSSTransitionGroup
         transitionName="modal-anim"
@@ -24,9 +21,9 @@ export default class Modal extends Component {
         transitionLeave={false}
       >
         <div key="modal">
-          <div className="modal-overlay-div" style={overlayStyle} />
-            <div className="modal-content-div" style={contentStyle} onClick={this.onOverlayClick.bind(this)}>
-            <div className="modal-dialog-div" style={dialogStyle} onClick={this.onDialogClick}>                         
+          <div className="modal-overlay-div"/>
+            <div className="modal-content-div" onClick={this.onOverlayClick.bind(this)}>
+            <div className="modal-dialog-div" onClick={this.onDialogClick}>                         
               {this.props.children}
             </div>
           </div>

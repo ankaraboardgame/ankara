@@ -8,7 +8,7 @@ const assistantOnLocation = (currentCoords, {out}) => {
 }
 
 export const openAssistantDialog = (props) => {
-  if (assistantOnLocation(props.coords, props.merchants[props.userId].assistants)) {
+  if (assistantOnLocation(props.coords, props.merchantsData[props.userId].assistants)) {
     props.openModal(
       mapCoordToLocation(props.coords),
       {
@@ -22,7 +22,7 @@ export const openAssistantDialog = (props) => {
       {
         currentPosition: props.coords,
         dialog: 'drop_assistant',
-        assistantCount: props.selfData.assistants.count
+        assistantCount: props.userAssistants.count
       }
     );
   }

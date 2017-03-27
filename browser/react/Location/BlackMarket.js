@@ -15,6 +15,10 @@ import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
 import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
 
+/** -------- Selectors -------- */
+import { getGameId } from '../../redux/reducers/game-reducer';
+import { getUserId } from '../../redux/reducers/user-reducer'; 
+
 /****************** Component ********************/
 
 class BlackMarket extends React.Component {
@@ -123,8 +127,8 @@ class BlackMarket extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  gameId: state.game.id,
-  playerId: state.user.user.uid,
+  gameId: getGameId(state),
+  playerId: getUserId(state),
   payload: state.modal.payload,
   currentPosition: state.modal.payload.currentPosition,
   merchants: dataToJS(state.firebase, `games/${state.game.id}/merchants`)

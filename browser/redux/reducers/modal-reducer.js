@@ -27,4 +27,12 @@ export default function (state = initialModalState, action) {
   }
 
   return newState;
-}
+};
+
+export const getModalType = state => (state.modal.modalType);
+
+export const getModalPayload = state => (state.modal.payload);
+
+export const getModalCurrentPosition = state => (state.modal.payload.currentPosition);
+
+export const getModalDialog = state => (state.modal.payload.dialog);

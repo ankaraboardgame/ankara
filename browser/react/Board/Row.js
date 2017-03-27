@@ -2,7 +2,7 @@ import React from 'react';
 
 import CellContainer from './CellContainer';
 
-const Row = ({ row, merchants }) => {
+const Row = ({ row }) => {
   return (
     <div id="row-container">
       {
@@ -13,7 +13,6 @@ const Row = ({ row, merchants }) => {
               name={cell.name}
               coords={cell.coords}
               cellPossibleMoves={cell.possibleMoves}
-              merchants={merchants}
             />
           );
         })

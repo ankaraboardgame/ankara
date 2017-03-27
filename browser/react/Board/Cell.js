@@ -30,9 +30,9 @@ function renderOtherTiles({ name, coords, handleOnClick }) {
   );
 };
 
-function renderLargeMarketTiles({ handleOnClick, coords, gameData }) {
-  const currentMarketIdx = gameData.largeMarket.currentMarketIdx;
-  const currentDemandTile = gameData.largeMarket.demandTiles[currentMarketIdx];
+function renderLargeMarketTiles({ handleOnClick, coords, largeMarketData }) {
+  const currentMarketIdx = largeMarketData.currentMarketIdx;
+  const currentDemandTile = largeMarketData.demandTiles[currentMarketIdx];
 
   return (
     <div
@@ -49,9 +49,9 @@ function renderLargeMarketTiles({ handleOnClick, coords, gameData }) {
   );
 };
 
-function renderSmallMarketTiles({ handleOnClick, coords, gameData }) {
-  const currentMarketIdx = gameData.smallMarket.currentMarketIdx;
-  const currentDemandTile = gameData.smallMarket.demandTiles[currentMarketIdx];
+function renderSmallMarketTiles({ handleOnClick, coords, smallMarketData }) {
+  const currentMarketIdx = smallMarketData.currentMarketIdx;
+  const currentDemandTile = smallMarketData.demandTiles[currentMarketIdx];
 
   return (
     <div

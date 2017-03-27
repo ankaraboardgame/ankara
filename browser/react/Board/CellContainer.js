@@ -9,12 +9,16 @@ import { openAssistantDialog } from '../../utils/assistants.js'
 import { movePlayer } from '../../routes/move';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 
+/** ---------- Selectors ----------- */
+import { getUserId, getUserData, getUserPosition, getUserAssistants } from '../../redux/reducers/user-reducer';
+import { getGameId, getGameMerchants, getSmuggler, getPlayerTurn, getLargeMarketData, getSmallMarketData, getGemstoneDealerData } from '../../redux/reducers/game-reducer';
+
 import Cell from './Cell';
 import Player from '../Pieces/Player';
 import Assistant from '../Pieces/Assistant';
 import Smuggler from '../Pieces/Smuggler';
 
-/******************* Container ********************/
+/** ---------- Container ------------ */
 
 class CellContainer extends React.Component {
   constructor(props) {
@@ -32,26 +36,32 @@ class CellContainer extends React.Component {
 
   render() {
     const {
-      gameData,
-      userId,
-      name,
       connectDropTarget,
       isOver,
-      coords,
-      merchants,
-      selfData,
-      gameData: { smuggler, playerTurn }
+      gameId,
+      userId,
+      merchantsData,
+      userPosition,
+      smuggler,
+      playerTurn,
+      largeMarketData,
+      smallMarketData,
+      gemstoneDealerData,
+      name,
+      coords
     } = this.props;
-    const playerPieces = merchants ? Object.keys(merchants)
+
+    // player pieces
+    const playerPieces = merchantsData ? Object.keys(merchantsData)
       .map( merchantId => {
-        if ( merchants[merchantId].position.coordinates === coords) {
+        if ( merchantsData[merchantId].position.coordinates === coords) {
           return (
             <Player
               key={merchantId}
               activePlayer={playerTurn}
               currentUser={userId}
               playerId={merchantId}
-              playerNum={merchants[merchantId].number}
+              playerNum={merchantsData[merchantId].number}
             />
           )
         } else {
@@ -61,17 +71,18 @@ class CellContainer extends React.Component {
       .filter(Boolean)
       : [];
 
+    // assistant pieces
     let assistantPieces = [];
-    if (merchants){
-      for (let key in merchants){
-        const out = merchants[key].assistants.out;
+    if (merchantsData){
+      for (let merchantId in merchantsData){
+        const out = merchantsData[merchantId].assistants.out;
         const outCoords = out && Object.keys(out)
                                        .map(k => out[k])
                                        .filter(asstCoords => asstCoords === coords);
         if (out && outCoords.length) {
           assistantPieces = assistantPieces.concat({
-            out: merchants[key].assistants.out,
-            number: merchants[key].number
+            out: merchantsData[merchantId].assistants.out,
+            number: merchantsData[merchantId].number
           })
         }
       }
@@ -85,18 +96,19 @@ class CellContainer extends React.Component {
         .map(({ asstCoords, number }) => (<Assistant key={`${number}-${asstCoords}`} playerNum={number} />))
     }
 
+    // smuggler piece
     const smugglerPiece = smuggler && (coords === smuggler.coordinates) && (
-      <Smuggler key={'smuggler'} />
+      <Smuggler key="smuggler" />
     )
 
     // There should only be one merchant that matches current user
     let activeStatus;
     let cellActive = cellActiveStatus(
           coords,
-          selfData.position.coordinates,
-          selfData.position.possibleMoves
+          userPosition.coordinates,
+          userPosition.possibleMoves
         )
-    if (merchants && !cellActive && playerTurn === userId) {
+    if (merchantsData && !cellActive && playerTurn === userId) {
       activeStatus = { opacity: '0.2' };
     }
 
@@ -106,13 +118,15 @@ class CellContainer extends React.Component {
           coords={coords}
           name={name}
           handleOnClick={this.handleOnClick}
-          gameData={gameData}
+          largeMarketData={largeMarketData}
+          smallMarketData={smallMarketData}
+          gemstoneDealerData={gemstoneDealerData}
         />
         <div className="player-container">
           { [...playerPieces] }
         </div>
         <div className="smuggler-container">
-          { [smugglerPiece] }
+          { smugglerPiece }
         </div>
         <div className="assistant-container">
           { [...assistantPieces] }
@@ -123,11 +137,11 @@ class CellContainer extends React.Component {
   }
 }
 
-/**************** Higher Order Component *****************/
+/** ----------- Higher Order Components ----------- */
 
 const cellTarget = {
-  canDrop({ coords, selfData: { position: { possibleMoves } } }) {
-    return canMovePlayer(coords, possibleMoves);
+  canDrop({ coords, userPosition }) {
+    return canMovePlayer(coords, userPosition.possibleMoves);
   },
   drop(props) {
     const { gameId, userId, coords, cellPossibleMoves } = props;
@@ -143,12 +157,17 @@ const collect = (connect, monitor) => {
   };
 };
 
-const mapStateToProps = ({ user: { user: { uid: userId } }, game: { id: gameId }, firebase }, { name, coords, cellPossibleMoves, merchants }) => ({
-  gameData: dataToJS(firebase, `games/${gameId}`),
-  gameId: gameId,
-  selfData: merchants[userId],
-  userId: userId,
-  merchants: merchants,
+const mapStateToProps = (state, { name, coords, cellPossibleMoves }) => ({
+  gameId: getGameId(state),
+  userId: getUserId(state),
+  merchantsData: getGameMerchants(state),
+  userPosition: getUserPosition(state),
+  userAssistants: getUserAssistants(state),
+  smuggler: getSmuggler(state),
+  playerTurn: getPlayerTurn(state),
+  largeMarketData: getLargeMarketData(state),
+  smallMarketData: getSmallMarketData(state),
+  gemstoneDealerData: getGemstoneDealerData(state),
   name: name,
   coords: coords,
   possibleMoves: cellPossibleMoves,

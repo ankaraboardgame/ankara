@@ -1,4 +1,4 @@
-/** CONSTANTS */
+/** ------- Constants -------- */
 export const BLACK_MARKET = 'BLACK_MARKET';
 export const CARAVANSARY = 'CARAVANSARY';
 export const FABRIC_WAREHOUSE = 'FABRIC_WAREHOUSE';
