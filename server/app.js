@@ -9,33 +9,23 @@ const app = express();
 const server = http.createServer(app);
 const firebaseAdmin = require('firebase-admin');
 
-// Fetch the service account key JSON file contents
-// var productionServiceAccount = require('../firebase.deploy.config.js')
-var serviceAccount = require('../secret-istanbul-aa7c8-firebase-adminsdk-inz62-81ab05ed15.json');
+// process.env - config vars set-up on heroku side
+let serviceAccount = {
+	type: process.env.FIREBASE_TYPE,
+	project_id: process.env.FIREBASE_PROJECT_ID,
+	private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+	private_key: process.env.FIREBASE_PRIVATE_KEY,
+	client_email: process.env.FIREBASE_CLIENT_EMAIL,
+	client_id: process.env.FIREBASE_CLIENT_ID,
+	auth_uri: process.env.FIREBASE_AUTH_URI,
+	token_uri: process.env.FIREBASE_TOKEN_URI,
+	auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+	client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL
+};
 
-// const type = process.env.fb_type;
-// const project_id = process.env.fb_project_id;
-// const private_key_id = process.env.fb_private_key_id;
-// const private_key = process.env.fb_private_key;
-// const client_email = process.env.fb_client_email;
-// const client_id = process.env.fb_client_id;
-// const auth_uri = process.env.fb_auth_uri;
-// const token_uri = process.env.fb_token_uri;
-// const auth_provider_x509_cert_url = process.env.fb_auth_provider_x509_cert_url;
-// const client_x509_cert_url = process.env.fb_client_x509_cert_url;
-
-// const serviceAccount = {
-// 	type,
-// 	project_id,
-// 	private_key_id,
-// 	private_key,
-// 	client_email,
-// 	client_id,
-// 	auth_uri,
-// 	token_uri,
-// 	auth_provider_x509_cert_url,
-// 	client_x509_cert_url
-// };
+if(!serviceAccount.private_key){
+  serviceAccount = require('../secret.firebase.env')
+}
 
 // Initialize the app with a service account, granting admin privileges
 firebaseAdmin.initializeApp({
