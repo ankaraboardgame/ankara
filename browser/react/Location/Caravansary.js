@@ -14,7 +14,7 @@ import { whichDialog } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
 import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
-
+import { handleMoreOptionsClick, handleGoBackClick, handleBonusFiveLiraClick, handleBonusOneGoodClick, handleBonusGood } from '../../utils/MoreOptions';
 
 /****************** Component ********************/
 
@@ -41,6 +41,13 @@ class Caravansary extends React.Component {
     this.talkToSmuggler = talkToSmuggler.bind(this);
     this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
     this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
+
+    /** access more options */
+    this.handleMoreOptionsClick = handleMoreOptionsClick.bind(this);
+    this.handleGoBackClick = handleGoBackClick.bind(this);
+    this.handleBonusFiveLiraClick = handleBonusFiveLiraClick.bind(this);
+    this.handleBonusOneGoodClick = handleBonusOneGoodClick.bind(this);
+    this.handleBonusGood = handleBonusGood.bind(this);
   }
 
   // Ends Turn
@@ -72,7 +79,7 @@ class Caravansary extends React.Component {
   renderAction() {
     const caravansary = this.props.gamesRef.caravansary;
     const bonusCard = caravansary.bonusCards[caravansary.index];
-
+    const style = { margin: 12 };
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
@@ -88,7 +95,8 @@ class Caravansary extends React.Component {
             primary={true}
             onTouchTap={() => this.handleGetCard(bonusCard.type)}
           />
-          <RaisedButton label="End my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+        <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+          <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
         </div>
       </div>
     );

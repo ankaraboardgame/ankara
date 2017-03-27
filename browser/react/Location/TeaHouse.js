@@ -16,6 +16,7 @@ import { whichDialog } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
 import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+import { handleMoreOptionsClick, handleGoBackClick, handleBonusFiveLiraClick, handleBonusOneGoodClick, handleBonusGood } from '../../utils/MoreOptions';
 
 /****************** Component ********************/
 class TeaHouse extends React.Component {
@@ -44,6 +45,13 @@ class TeaHouse extends React.Component {
     this.talkToSmuggler = talkToSmuggler.bind(this);
     this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
     this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
+
+    /** access more options */
+    this.handleMoreOptionsClick = handleMoreOptionsClick.bind(this);
+    this.handleGoBackClick = handleGoBackClick.bind(this);
+    this.handleBonusFiveLiraClick = handleBonusFiveLiraClick.bind(this);
+    this.handleBonusOneGoodClick = handleBonusOneGoodClick.bind(this);
+    this.handleBonusGood = handleBonusGood.bind(this);
   }
 
   // Ends Turn
@@ -98,6 +106,7 @@ class TeaHouse extends React.Component {
       width: 100,
       fontSize: 18
     }
+    const style = { margin: 12 }
 
     return (
       <div id="turn-dialog-full">
@@ -123,7 +132,8 @@ class TeaHouse extends React.Component {
               <Dice done={this.handleDiceRoll} />
             }
           </div>
-          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+          <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+          <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
       </div>
     );
   }

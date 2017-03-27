@@ -141,6 +141,7 @@ const cellTarget = {
 
 const mapStateToProps = (state, ownProps) => ({
   user: state.user.user,
+  playerId: state.user.user.uid,
   name: ownProps.name,
   coords: ownProps.coords,
   possibleMoves: ownProps.cellPossibleMoves,

@@ -13,6 +13,7 @@ import { whichDialog, handleEndTurn, beforeEndTurn } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
 import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+import { handleMoreOptionsClick, handleGoBackClick, handleBonusFiveLiraClick, handleBonusOneGoodClick, handleBonusGood } from '../../utils/MoreOptions';
 
 /****************** Component ********************/
 class GreatMosque extends React.Component {
@@ -40,6 +41,13 @@ class GreatMosque extends React.Component {
     this.talkToSmuggler = talkToSmuggler.bind(this);
     this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
     this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
+
+    /** access more options */
+    this.handleMoreOptionsClick = handleMoreOptionsClick.bind(this);
+    this.handleGoBackClick = handleGoBackClick.bind(this);
+    this.handleBonusFiveLiraClick = handleBonusFiveLiraClick.bind(this);
+    this.handleBonusOneGoodClick = handleBonusOneGoodClick.bind(this);
+    this.handleBonusGood = handleBonusGood.bind(this);
   }
 
   handleBuyHeirloomTile(){
@@ -124,6 +132,7 @@ class GreatMosque extends React.Component {
             </div>
           </div>
         <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn} />
+        <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
       </div>
     );
   }
