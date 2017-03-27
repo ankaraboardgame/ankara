@@ -80,6 +80,7 @@ export function whichDialog(modalPayload) {
             style={{ margin: 12 }}
             primary={true}
             onTouchTap={this.handleMerchant}
+            disabled={modalPayload.money < 2}
           />
           <RaisedButton
             label="End turn now"
