@@ -2,24 +2,18 @@ import React from 'react';
 
 import CellContainer from './CellContainer';
 
-const Row = props => {
+const Row = ({ row, merchants }) => {
   return (
     <div id="row-container">
       {
-        props.row && props.row.map(cell => {
+        row && row.map(cell => {
           return (
-            <CellContainer
-              gameId={props.gameId}
-              user={props.user}
+            <CellContainer  
               key={cell.coords}
               name={cell.name}
-              userId={props.userId}
               coords={cell.coords}
               cellPossibleMoves={cell.possibleMoves}
-              game={props.game}
-              merchants={props.merchants}
-              openModal={props.openModal}
-              closeModal={props.closeModal}
+              merchants={merchants}
             />
           );
         })

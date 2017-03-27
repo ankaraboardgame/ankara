@@ -70,7 +70,7 @@ class Caravansary extends React.Component {
   }
 
   renderAction() {
-    const caravansary = this.props.gamesRef.caravansary;
+    const caravansary = this.props.gameData.caravansary;
     const bonusCard = caravansary.bonusCards[caravansary.index];
 
     return (

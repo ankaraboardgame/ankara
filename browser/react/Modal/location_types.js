@@ -11,5 +11,3 @@ export const SMALL_MOSQUE = 'SMALL_MOSQUE';
 export const SPICE_WAREHOUSE = 'SPICE_WAREHOUSE';
 export const TEA_HOUSE = 'TEA_HOUSE';
 export const WAINWRIGHT = 'WAINWRIGHT';
-
-export const SHOW_WINNER = 'SHOW_WINNER';

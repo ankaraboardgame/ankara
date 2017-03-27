@@ -58,7 +58,7 @@ class SmallMarket extends React.Component {
 
   handleTradeGood(){
     const playerOffer = this.state;
-    const currentMarketIdx = this.props.gamesRef.smallMarket.currentMarketIdx;
+    const currentMarketIdx = this.props.gameData.smallMarket.currentMarketIdx;
 
     actionTradeGoods(this.props.gameId, this.props.playerId, 'smallMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
       .then(() => {
@@ -70,9 +70,9 @@ class SmallMarket extends React.Component {
 
   handleGoodClick(event){
     const good = event.target.id;
-    const currentMarketIdx = this.props.gamesRef.smallMarket.currentMarketIdx;
-    const currentDemandTile = this.props.gamesRef.smallMarket.demandTiles[currentMarketIdx];
-    const currentWheelbarrow = this.props.gamesRef.merchants[this.props.playerId].wheelbarrow;
+    const currentMarketIdx = this.props.gameData.smallMarket.currentMarketIdx;
+    const currentDemandTile = this.props.gameData.smallMarket.demandTiles[currentMarketIdx];
+    const currentWheelbarrow = this.props.gameData.merchants[this.props.playerId].wheelbarrow;
     let quantity;
     if(this.state[good] < currentDemandTile[good] && this.state[good] < currentWheelbarrow[good]){
       this.setState({
@@ -93,8 +93,8 @@ class SmallMarket extends React.Component {
   }
 
   render() {
-    const currentMarketIdx = this.props.gamesRef.smallMarket.currentMarketIdx;
-    const currentDemandTile = this.props.gamesRef.smallMarket.demandTiles[currentMarketIdx];
+    const currentMarketIdx = this.props.gameData.smallMarket.currentMarketIdx;
+    const currentDemandTile = this.props.gameData.smallMarket.demandTiles[currentMarketIdx];
     const onClose = this.props.payload.zoom ? this.props.closeModal : null;
 
     return (

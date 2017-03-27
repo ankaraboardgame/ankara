@@ -77,11 +77,11 @@ class GreatMosque extends React.Component {
   }
 
   renderAction() {
-    const heirloomRequired = this.props.gamesRef.greatMosque.heirloom;
-    const fruitRequired = this.props.gamesRef.greatMosque.fruit;
+    const heirloomRequired = this.props.gameData.greatMosque.heirloom;
+    const fruitRequired = this.props.gameData.greatMosque.fruit;
     const playerId = this.props.playerId;
-    const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
-    const abilities = this.props.gamesRef.merchants[playerId].abilities;
+    const wheelbarrow = this.props.gameData.merchants[playerId].wheelbarrow;
+    const abilities = this.props.gameData.merchants[playerId].abilities;
     const style = { margin: 12 };
 
     return (

@@ -15,7 +15,6 @@ export default class Dice extends React.Component {
   }
 
   rollDoneCallback(num) {
-    console.log('rolled', num);
     if (this.state.rollCount > 0) {
       this.props.done(num);
     }

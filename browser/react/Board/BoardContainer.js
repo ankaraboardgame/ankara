@@ -3,62 +3,50 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase';
+import { firebaseConnect, dataToJS } from 'react-redux-firebase';
+
+import { zoomIn } from 'react-animations';
+import { StyleSheet, css } from 'aphrodite';
 
 import Row from './Row';
 
-import { loadModal, hideModal } from '../../redux/action-creators/modals';
+const animateStyles = StyleSheet.create({
+  zoomIn: {
+    animationName: zoomIn,
+    animationDuration: '.75s'
+  }
+});
 
 class BoardContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(evt) {
-        // highlight the cell one color, and highlight all possible moves another color OR should it show a closer/zoomed in viw of the location?
   }
 
   render() {
+    const { board, merchants } = this.props;
 
     return (
-      <div id="board-container">
-        {
-          this.props.board && this.props.board.grid.map((row, index) => {
-            return (
-              <Row
-                user={this.props.user}
-                key={index}
-                row={row}
-                game={this.props.game}
-                gameId={this.props.gameId}
-                merchants={this.props.merchants}
-                openModal={this.props.openModal}
-                closeModal={this.props.closeModal}
-              />
-            );
-          })
-        }
-      </div>
+        <div className={css(animateStyles.zoomIn)} id="board-container">
+            {
+              board && board.grid.map((row, index) => {
+                return (
+                  <Row
+                    key={index}
+                    row={row}
+                    merchants={merchants}
+                  />
+                );
+              })
+            }
+        </div>
     );
   }
 }
 
-const mapStateToProps = ({board, positions, user, firebase, game}) => ({
-  board: board.board,
-  gameId: game.id,
-  winnerId: game.winnerId,
-  user: user.user,
-  game: dataToJS(firebase, `games/${game.id}`),
-  merchants: dataToJS(firebase, `games/${game.id}/merchants`),
-  auth: pathToJS(firebase, 'auth')
+const mapStateToProps = ({ board: { board }, game: { id: gameId }, firebase }) => ({
+  board: board,
+  merchants: dataToJS(firebase, `games/${gameId}/merchants`)
 });
-
-const mapDispatchToProps = dispatch => ({
-  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload)),
-  closeModal: () => dispatch(hideModal()),
-  setWinner: (winnerId) => dispatch(setWinnerRedux(winnerId))
-})
 
 export default compose(
   DragDropContext(HTML5Backend),
@@ -66,5 +54,5 @@ export default compose(
     `games/${gameId}`,
     `games/${gameId}/merchants`
   ])),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps)
 )(BoardContainer);

@@ -8,7 +8,7 @@ const assistantOnLocation = (currentCoords, {out}) => {
 }
 
 export const openAssistantDialog = (props) => {
-  if (assistantOnLocation(props.coords, props.merchants[props.user.uid].assistants)) {
+  if (assistantOnLocation(props.coords, props.merchants[props.userId].assistants)) {
     props.openModal(
       mapCoordToLocation(props.coords),
       {

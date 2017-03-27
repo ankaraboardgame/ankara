@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import Badge from 'material-ui/Badge';
@@ -7,7 +7,7 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 import { Wheelbarrow, Fruits, Fabric, Spices, Heirlooms, Money, Ruby } from '../Footer/FooterComponents'
 
-class PlayerButtons extends Component {
+class PlayerButtons extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -21,7 +21,7 @@ class PlayerButtons extends Component {
 
   handleButtonClick(color){
     const colorMap = { red: 0, blue: 1, green: 2, yellow: 3 }
-    const merchants = this.props.gamesRef.merchants;
+    const merchants = this.props.gameData.merchants;
     const selectedPlayer = this.state.currentPlayer;
     let playerId = null;
 
@@ -55,47 +55,45 @@ class PlayerButtons extends Component {
   }
 
   render(){
-    const color = this.state.color
-    const selectedPlayer = this.state.selectedPlayer;
-    const gamesRef = this.props.gamesRef;
-    const display = this.state.display;
+    const { color, selecterPlayer, display } = this.state;
+    const { gameData } = this.props;
     return (
       <div id="player-info-row">
         <div id="player-buttons-column">
-          { gamesRef.playerIds[0] && <img src={'images/player/redplayer.png'} className={"player-icons " + (gamesRef.playerIds[0] === gamesRef.playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('red') } /> }
-          { gamesRef.playerIds[1] && <img src={'images/player/blueplayer.png'} className={"player-icons " + (gamesRef.playerIds[1] === gamesRef.playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('blue')} /> }
-          { gamesRef.playerIds[2] && <img src={'images/player/greenplayer.png'} className={"player-icons " + (gamesRef.playerIds[2] === gamesRef.playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('green')} /> }
-          { gamesRef.playerIds[3] && <img src={'images/player/yellowplayer.png'} className={"player-icons " + (gamesRef.playerIds[3] === gamesRef.playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('yellow')} /> }
+          { gameData.playerIds[0] && <img src={'images/player/redplayer.png'} className={"player-icons " + (gameData.playerIds[0] === gameData.playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('red') } /> }
+          { gameData.playerIds[1] && <img src={'images/player/blueplayer.png'} className={"player-icons " + (gameData.playerIds[1] === gameData.playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('blue')} /> }
+          { gameData.playerIds[2] && <img src={'images/player/greenplayer.png'} className={"player-icons " + (gameData.playerIds[2] === gameData.playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('green')} /> }
+          { gameData.playerIds[3] && <img src={'images/player/yellowplayer.png'} className={"player-icons " + (gameData.playerIds[3] === gameData.playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('yellow')} /> }
         </div>
         {
           display && selectedPlayer &&
           <div id="player-detailed-info" onTouchTap={this.handleClose} >
-            <p>{gamesRef.playerMap[selectedPlayer]}</p>
+            <p>{gameData.playerMap[selectedPlayer]}</p>
             <table>
               <tbody>
                 <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/cart/fabric.png" /></td>
-                  <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.fabric} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
+                  <td>{`${gameData.merchants[selectedPlayer].wheelbarrow.fabric} / ${gameData.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
                 <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/cart/fruits.png" /></td>
-                  <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.fruit} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
+                  <td>{`${gameData.merchants[selectedPlayer].wheelbarrow.fruit} / ${gameData.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
                 <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/cart/heirlooms.png" /></td>
-                  <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.heirloom} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
+                  <td>{`${gameData.merchants[selectedPlayer].wheelbarrow.heirloom} / ${gameData.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
                 <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/cart/spices.png" /></td>
-                  <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.spice} / ${gamesRef.merchants[selectedPlayer].wheelbarrow.size}`}</td>
+                  <td>{`${gameData.merchants[selectedPlayer].wheelbarrow.spice} / ${gameData.merchants[selectedPlayer].wheelbarrow.size}`}</td>
                 </tr>
                 <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/money/lira.png" /></td>
-                  <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.money}`}</td>
+                  <td>{`${gameData.merchants[selectedPlayer].wheelbarrow.money}`}</td>
                 </tr>
                 <tr className="tr-player">
                   <td><img className="player-data-icons" src="./images/money/ruby.png" /></td>
-                  <td>{`${gamesRef.merchants[selectedPlayer].wheelbarrow.ruby}`}</td>
+                  <td>{`${gameData.merchants[selectedPlayer].wheelbarrow.ruby}`}</td>
                 </tr>
               </tbody>
             </table>

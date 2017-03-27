@@ -2,7 +2,7 @@ import React from 'react';
 
 import { mapCoordToLocation } from '../../utils';
 
-const Cell = props => {
+const Cell = (props) => {
   const tile = mapCoordToLocation(props.coords);
     if (tile === 'LARGE_MARKET') {
       return renderLargeMarketTiles(props);
@@ -14,7 +14,7 @@ const Cell = props => {
 }
 export default Cell;
 
-function renderOtherTiles(props) {
+function renderOtherTiles({ name, coords, handleOnClick }) {
   return (
     <div
       style={{
@@ -22,17 +22,17 @@ function renderOtherTiles(props) {
         display: 'flex',
         flexDirection: 'column'
       }}
-      onClick={props.handleOnClick}
+      onClick={handleOnClick}
     >
-      <img src={`images/locations/${props.name}.jpg`} className="img-location"/>
-      <text className="cell-text">{props.coords}</text>
+      <img src={`images/locations/${name}.jpg`} className="img-location"/>
+      <text className="cell-text">{coords}</text>
     </div>
   );
 };
 
-function renderLargeMarketTiles(props) {
-  const currentMarketIdx = props.gamesRef.largeMarket.currentMarketIdx;
-  const currentDemandTile = props.gamesRef.largeMarket.demandTiles[currentMarketIdx];
+function renderLargeMarketTiles({ handleOnClick, coords, gameData }) {
+  const currentMarketIdx = gameData.largeMarket.currentMarketIdx;
+  const currentDemandTile = gameData.largeMarket.demandTiles[currentMarketIdx];
 
   return (
     <div
@@ -41,17 +41,17 @@ function renderLargeMarketTiles(props) {
           display: 'flex',
           flexDirection: 'column'
         }}
-        onClick={props.handleOnClick}
+        onClick={handleOnClick}
       >
         <img src={`images/market/large/${currentDemandTile.img}`} className="img-location"/>
-        <text className="cell-text">{props.coords}</text>
+        <text className="cell-text">{coords}</text>
     </div>
   );
 };
 
-function renderSmallMarketTiles(props) {
-  const currentMarketIdx = props.gamesRef.smallMarket.currentMarketIdx;
-  const currentDemandTile = props.gamesRef.smallMarket.demandTiles[currentMarketIdx];
+function renderSmallMarketTiles({ handleOnClick, coords, gameData }) {
+  const currentMarketIdx = gameData.smallMarket.currentMarketIdx;
+  const currentDemandTile = gameData.smallMarket.demandTiles[currentMarketIdx];
 
   return (
     <div
@@ -60,10 +60,10 @@ function renderSmallMarketTiles(props) {
         display: 'flex',
         flexDirection: 'column'
       }}
-      onClick={props.handleOnClick}
+      onClick={handleOnClick}
     >
       <img src={`images/market/small/${currentDemandTile.img}`} className="img-location"/>
-      <text className="cell-text">{props.coords}</text>
+      <text className="cell-text">{coords}</text>
     </div>
   );
 };

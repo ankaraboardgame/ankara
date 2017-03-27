@@ -1,10 +1,5 @@
 import React from 'react';
-import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firebaseConnect, dataToJS } from 'react-redux-firebase';
-
-/** Winner Dialog Component */
-import DisplayWinner from '../TurnDialogs/DisplayWinner';
 
 /** Location Components */
 import BlackMarket from '../Location/BlackMarket';
@@ -27,43 +22,36 @@ import { BLACK_MARKET, CARAVANSARY, FABRIC_WAREHOUSE, FRUIT_WAREHOUSE, GEMSTONE_
 
 
 const MODAL_COMPONENTS = {
-    BLACK_MARKET: BlackMarket,
-    CARAVANSARY: Caravansary,
-    FABRIC_WAREHOUSE: FabricWarehouse,
-    FRUIT_WAREHOUSE: FruitWarehouse,
-    GEMSTONE_DEALER: GemstoneDealer,
-    GREAT_MOSQUE: GreatMosque,
-    LARGE_MARKET: LargeMarket,
-    SMALL_MARKET: SmallMarket,
-    SMALL_MOSQUE: SmallMosque,
-    SPICE_WAREHOUSE: SpiceWarehouse,
-    TEA_HOUSE: TeaHouse,
-    WAINWRIGHT: Wainwright
+  BLACK_MARKET: BlackMarket,
+  CARAVANSARY: Caravansary,
+  FABRIC_WAREHOUSE: FabricWarehouse,
+  FRUIT_WAREHOUSE: FruitWarehouse,
+  GEMSTONE_DEALER: GemstoneDealer,
+  GREAT_MOSQUE: GreatMosque,
+  LARGE_MARKET: LargeMarket,
+  SMALL_MARKET: SmallMarket,
+  SMALL_MOSQUE: SmallMosque,
+  SPICE_WAREHOUSE: SpiceWarehouse,
+  TEA_HOUSE: TeaHouse,
+  WAINWRIGHT: Wainwright
 };
 
-const ModalRootContainer = (props) => {
-    if (!props.modalType) {
-        return null;
-    }
+const ModalRootContainer = ({ modalType, payload, gameData }) => {
+  if (!modalType) {
+    return null;
+  }
 
-    const SpecificTurnDialog = MODAL_COMPONENTS[props.modalType];
+  const SpecificTurnDialog = MODAL_COMPONENTS[modalType];
 
-    return <SpecificTurnDialog payload={props.payload} gamesRef={props.gamesRef} />;
+  return <SpecificTurnDialog payload={payload} gameData={gameData} />;
 };
 
-const mapStateToProps = state => {
-    return {
-        userId: state.user.user.uid,
-        gameId: state.game.id,
-        modalType: state.modal.modalType,
-        payload: state.modal.payload
-    };
+const mapStateToProps = ({ modal: { modalType, payload } }, { gameData }) => {
+  return {
+    gameData: gameData,
+    modalType: modalType,
+    payload: payload
+  };
 };
 
-export default compose(
-  firebaseConnect(({gameId}) => ([
-    `games/${gameId}`,
-    `games/${gameId}/merchants`
-  ])),
-  connect(mapStateToProps)
-)(ModalRootContainer);
+export default connect(mapStateToProps)(ModalRootContainer);

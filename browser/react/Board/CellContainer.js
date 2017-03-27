@@ -31,21 +31,17 @@ class CellContainer extends React.Component {
   }
 
   render() {
-    const currentUserId = this.props.user.uid;
-    const smuggler = this.props.game.smuggler;
-    const playerTurn = this.props.game.playerTurn;
-    const game = this.props.game;
     const {
-      gamesRef,
-      user,
+      gameData,
+      userId,
       name,
       connectDropTarget,
       isOver,
       coords,
       merchants,
-      selfData
+      selfData,
+      gameData: { smuggler, playerTurn }
     } = this.props;
-
     const playerPieces = merchants ? Object.keys(merchants)
       .map( merchantId => {
         if ( merchants[merchantId].position.coordinates === coords) {
@@ -53,7 +49,7 @@ class CellContainer extends React.Component {
             <Player
               key={merchantId}
               activePlayer={playerTurn}
-              currentUser={user}
+              currentUser={userId}
               playerId={merchantId}
               playerNum={merchants[merchantId].number}
             />
@@ -80,13 +76,13 @@ class CellContainer extends React.Component {
         }
       }
       assistantPieces = assistantPieces
-        .map(({out, number}) => {
+        .map(({ out, number }) => {
           return {
             asstCoords: Object.keys(out).map(key => out[key])[0],
             number
           }
         })
-        .map(({asstCoords, number}) => (<Assistant key={`${number}-${asstCoords}`} playerNum={number} />))
+        .map(({ asstCoords, number }) => (<Assistant key={`${number}-${asstCoords}`} playerNum={number} />))
     }
 
     const smugglerPiece = smuggler && (coords === smuggler.coordinates) && (
@@ -100,7 +96,7 @@ class CellContainer extends React.Component {
           selfData.position.coordinates,
           selfData.position.possibleMoves
         )
-    if (merchants && !cellActive && game.playerTurn === currentUserId) {
+    if (merchants && !cellActive && playerTurn === userId) {
       activeStatus = { opacity: '0.2' };
     }
 
@@ -110,7 +106,7 @@ class CellContainer extends React.Component {
           coords={coords}
           name={name}
           handleOnClick={this.handleOnClick}
-          gamesRef={gamesRef}
+          gameData={gameData}
         />
         <div className="player-container">
           { [...playerPieces] }
@@ -130,30 +126,15 @@ class CellContainer extends React.Component {
 /**************** Higher Order Component *****************/
 
 const cellTarget = {
-  canDrop(props) {
-    return canMovePlayer(props.coords, props.selfData.position.possibleMoves);
+  canDrop({ coords, selfData: { position: { possibleMoves } } }) {
+    return canMovePlayer(coords, possibleMoves);
   },
   drop(props) {
+    const { gameId, userId, coords, cellPossibleMoves } = props;
     openAssistantDialog(props);
-    movePlayer(props.gameId, props.user.uid, props.coords, props.cellPossibleMoves);
+    movePlayer(gameId, userId, coords, cellPossibleMoves);
   }
 };
-
-const mapStateToProps = (state, ownProps) => ({
-  user: state.user.user,
-  name: ownProps.name,
-  coords: ownProps.coords,
-  possibleMoves: ownProps.cellPossibleMoves,
-  game: ownProps.game,
-  merchants: ownProps.merchants,
-  selfData: ownProps.merchants[state.user.user.uid],
-  gamesRef: dataToJS(state.firebase, `games/${state.game.id}`)
-});
-
-const mapDispatchToProps = dispatch => ({
-  closeModal: () => dispatch(hideModal()),
-  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
-});
 
 const collect = (connect, monitor) => {
   return {
@@ -161,6 +142,22 @@ const collect = (connect, monitor) => {
     isOver: monitor.isOver()
   };
 };
+
+const mapStateToProps = ({ user: { user: { uid: userId } }, game: { id: gameId }, firebase }, { name, coords, cellPossibleMoves, merchants }) => ({
+  gameData: dataToJS(firebase, `games/${gameId}`),
+  gameId: gameId,
+  selfData: merchants[userId],
+  userId: userId,
+  merchants: merchants,
+  name: name,
+  coords: coords,
+  possibleMoves: cellPossibleMoves,
+});
+
+const mapDispatchToProps = dispatch => ({
+  closeModal: () => dispatch(hideModal()),
+  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
+});
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

@@ -78,11 +78,11 @@ class SmallMosque extends React.Component {
   }
 
   renderAction() {
-    const fabricRequired = this.props.gamesRef.smallMosque.fabric;
-    const spiceRequired = this.props.gamesRef.smallMosque.spice;
+    const fabricRequired = this.props.gameData.smallMosque.fabric;
+    const spiceRequired = this.props.gameData.smallMosque.spice;
     const playerId = this.props.playerId;
-    const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
-    const abilities = this.props.gamesRef.merchants[playerId].abilities;
+    const wheelbarrow = this.props.gameData.merchants[playerId].wheelbarrow;
+    const abilities = this.props.gameData.merchants[playerId].abilities;
     const style = { margin: 12 };
 
     return (

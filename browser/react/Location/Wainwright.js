@@ -79,7 +79,7 @@ class Wainwright extends React.Component {
   renderAction() {
     const style = { margin: 12 };
     const playerId = this.props.playerId;
-    const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
+    const wheelbarrow = this.props.gameData.merchants[playerId].wheelbarrow;
 
     return (
       <div id="turn-dialog-half">
