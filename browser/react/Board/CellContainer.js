@@ -146,7 +146,7 @@ const mapStateToProps = (state, ownProps) => ({
   possibleMoves: ownProps.cellPossibleMoves,
   game: ownProps.game,
   merchants: ownProps.merchants,
-  selfData: ownProps.merchants[state.user.user.uid],
+  selfData: ownProps.selfData,
   gamesRef: dataToJS(state.firebase, `games/${state.game.id}`)
 });
 

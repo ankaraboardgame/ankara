@@ -60,7 +60,7 @@ class GemstoneDealer extends React.Component {
     return (
       <Modal onClose={onClose}>
         <div id="location-modal-container">
-          <img src={`images/locations/gemstone_dealer.jpg`} id="img-location" />
+          <img src={`images/locations/gemstone_dealer_${price}.png`} id="img-location" />
           { this.whichDialog(this.props.payload) }
         </div>
       </Modal>

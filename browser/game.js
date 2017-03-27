@@ -4,14 +4,16 @@ const levels = {
     ['fruit_warehouse', 'spice_warehouse', 'black_market'],
     ['caravansary', 'small_market', 'tea_house'],
     ['large_market', 'wainwright', 'gemstone_dealer']
-  ],
+    ],
   full: [
     ['great_mosque', 'PostOffice', 'fabric_warehouse', 'small_mosque'],
     ['fruit_warehouse', 'PoliceStation', 'Fountain', 'spice_warehouse'],
     ['black_market', 'caravansary', 'small_market', 'tea_house'],
     ['SultansPalace', 'large_market', 'wainwright', 'gemstone_dealer']
-  ]
+    ]
 }
+
+// let cells = document.querySelectorAll('.cell');
 
 /**
  * Game constructor takes a level to determine location card order.
@@ -32,6 +34,8 @@ export function Game (levelName){
 
 function Location(name, x, y){
   this.name = name;
+  this.x = x;
+  this.y = y;
   this.coords = `${x},${y}`;
 
   // to figure out possible moves, make combos of up, down, left right
