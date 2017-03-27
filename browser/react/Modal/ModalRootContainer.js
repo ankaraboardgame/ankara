@@ -5,7 +5,6 @@ import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 
 /** Winner Dialog Component */
 import DisplayWinner from '../TurnDialogs/DisplayWinner';
-import { doesSomeoneHaveFiveRubies } from '../../utils';
 
 /** Location Components */
 import BlackMarket from '../Location/BlackMarket';
@@ -47,10 +46,6 @@ const ModalRootContainer = (props) => {
         return null;
     }
 
-    if (doesSomeoneHaveFiveRubies(props.merchants)) {
-        return <DisplayWinner merchants={props.merchants} />
-    }
-
     const SpecificTurnDialog = MODAL_COMPONENTS[props.modalType];
 
     return <SpecificTurnDialog payload={props.payload} gamesRef={props.gamesRef} />;
@@ -61,8 +56,7 @@ const mapStateToProps = state => {
         userId: state.user.user.uid,
         gameId: state.game.id,
         modalType: state.modal.modalType,
-        payload: state.modal.payload,
-        merchants: dataToJS(state.firebase, `games/${state.game.id}/merchants`)
+        payload: state.modal.payload
     };
 };
 

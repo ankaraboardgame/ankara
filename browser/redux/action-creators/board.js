@@ -1,17 +1,17 @@
 import { Game } from '../../game';
 
-/** ------- CONSTANTS ------- */
+/** ------- Constants ------- */
 
 export const SET_BOARD = 'SET_BOARD';
 
-/** ------- ACTION-CREATORS ------- */
+/** ------- Action-creators ------- */
 
 const settingBoard = board => ({
   type: SET_BOARD,
   board
 });
 
-/** ------- THUNK ACTIONS ------- */
+/** ------- Thunk dispatchers ------- */
 
 export const loadBoard = () => {
   // for custom board, axios to backend to ask for board configuration

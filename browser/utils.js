@@ -186,3 +186,4 @@ export function doesSomeoneHaveFiveRubies(merchantsObj) {
   });
   return winner;
 }
+

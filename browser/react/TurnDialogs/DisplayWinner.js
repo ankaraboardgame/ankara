@@ -1,14 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import { dataToJS } from 'react-redux-firebase';
 
 import Modal from '../Modal/Modal';
+import GameSummary from './GameSummary';
 
+import { whoIsWinner } from '../../utils/winner';
 import { hideModal } from '../../redux/action-creators/modals';
 
 class DisplayWinner extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleEndGame = this.handleEndGame.bind(this);
   }
 
   handleEndGame (){
@@ -16,12 +21,16 @@ class DisplayWinner extends React.Component {
   }
 
   render() {
+    const winner = whoIsWinner(this.props.merchants);
     return (
       <Modal>
-        <div id="winner-modal-container">
-          <h2>Winner</h2>
-          <div>
-            <RaisedButton label="OK" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndGame}  />
+        <div id="winner-container">
+          <div id="winner-text-box">
+            <text id="winner-text">Winner is {winner.id}</text>
+          </div>
+          <GameSummary merchants={this.props.merchants} />
+          <div id="end-game-btn">
+            <RaisedButton label="End Game" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndGame}  />
           </div>
         </div>
       </Modal>
@@ -29,10 +38,11 @@ class DisplayWinner extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   gameId: state.game.id,
-  playerId: state.user.user.uid
-})
+  playerId: state.user.user.uid,
+  merchants: ownProps.merchants
+});
 
 const mapDispatchToProps = dispatch => ({
   closeModal: () => dispatch(hideModal()),

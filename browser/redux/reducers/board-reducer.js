@@ -1,13 +1,14 @@
-import axios from 'axios';
+/** --------- Action-creators -------- */
 
 import { SET_BOARD } from '../action-creators/board';
 
-/******** INITIAL STATE ********/
+/** --------- Initial state -------- */
+
 const initialState = {
   board: null
 };
 
-/********** REDUCER  **********/
+/** --------- Reducer -------- */
 export default function (state = initialState, action) {
   const newState = Object.assign({}, state)
 

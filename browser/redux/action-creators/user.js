@@ -1,18 +1,17 @@
-import { fbDB, fbAuth, googleProvider } from '../../firebase';
+import { fbDB, fbAuth } from '../../firebase';
 
 import { settingGame } from './game';
 
-/********* CONSTANTS ********/
+/** --------- Constants -------- */
 export const SET_USER = 'SET_USER';
 
-/******* ACTION CREATORS ********/
+/** --------- Action-creators -------- */
 export const settingUser = user => ({
     type: SET_USER,
     user
 });
 
-/** -------- THUNK-DISPATCHERS --------- */
-
+/** --------- Thunk dispatchers -------- */
 export const loadCurrentUser = () => {
 
     return (dispatch, getState) => {
