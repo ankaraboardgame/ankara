@@ -8,6 +8,11 @@ const usersRef = db.ref('users');
 const Game = require('../../game/logic.js');
 const router = module.exports = require('express').Router();
 
+/** Game Logging */
+const util = require('../util');
+const log = util.log;
+const getCurrUnixTime = util.getCurrUnixTime;
+
 /**
  * Game routes for initializing game
  * ...api/game...
@@ -25,6 +30,16 @@ router.post('/:roomId', (req, res, next) => {
   })
   .then(() => {
     res.sendStatus(204);
+    //game log
+    Object.keys(usersMap).map(userId => {
+      log(roomId, {
+        type: 'GAME_JOIN',
+        user: userId,
+        text: `${usersMap[userId]} joined the game`,
+        timestamp: getCurrUnixTime()
+      });
+    });
+
   })
   .catch(next);
 });

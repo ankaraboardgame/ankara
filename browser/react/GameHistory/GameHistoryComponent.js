@@ -27,12 +27,15 @@ export default class GameHistoryComponent extends Component {
   }
 
   render() {
+    const { userId, playerMap, historyRef } = this.props;
     const history = _.orderBy(this.props.historyRef, e => e.timestamp);
     return (
       <div>
-        { history && Object.keys(history).map(key => {
-          return (<p key={key}>{`${history[key].text}`}</p>)
-        })}
+        { /*history && Object.keys(history).map(key => {
+          let message = history[key].text;
+          message = message.replace('$', playerMap[userId]);
+          return (<p key={key}>{`${message}`}</p>)
+        })*/}
         <div style={ {float:"left", clear: "both"} }
           ref={(el) => { this.messagesEnd = el; }}>
         </div>

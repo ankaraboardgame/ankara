@@ -11,6 +11,9 @@ import {
   dataToJS
 } from 'react-redux-firebase'
 
+import { getGameId, getPlayerMap } from '../../redux/reducers/game-reducer';
+import { getUserId } from '../../redux/reducers/user-reducer';
+
 class GameHistorySideBar extends Component {
   constructor(props){
     super(props)
@@ -25,6 +28,7 @@ class GameHistorySideBar extends Component {
   };
 
   render() {
+    const { userId, playerMap, gameId, historyRef } = this.props;
     return (
       <div>
         <RaisedButton
@@ -36,7 +40,7 @@ class GameHistorySideBar extends Component {
           openSecondary={true}
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}>
-          <GameHistoryComponent historyRef={this.props.historyRef} userId={this.props.userId} />
+          <GameHistoryComponent historyRef={historyRef} userId={userId} playerMap={playerMap} />
         </Drawer>
       </div>
     );
@@ -48,9 +52,8 @@ const fbHistoryContainer = firebaseConnect(({ gameId }) => {
 })(GameHistorySideBar);
 
 const mapStateToProps = (state) => ({
-  userId: state.user.user.uid,
-  gameId: state.game.id,
-  firebase: state.firebase,
+  userId: getUserId(state),
+  playerMap: getPlayerMap(state),
   historyRef: dataToJS(state.firebase, `gameLog/${state.game.id}`)
 })
 
