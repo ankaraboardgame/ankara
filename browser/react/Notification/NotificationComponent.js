@@ -50,9 +50,17 @@ class NotificationComponent extends React.Component {
   }
 
   render() {
+    const style={
+      top: '0',
+      bottom: 'auto',
+      left: (window.innerWidth - 288) / 2,
+      transform: 'translate3d(0, 0, 0)'
+    }
+
     return (
       <div>
         <Snackbar
+          style={style}
           open={this.state.open}
           message={this.state.message}
           autoHideDuration={1500}

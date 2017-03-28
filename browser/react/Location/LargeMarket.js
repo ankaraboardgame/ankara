@@ -92,7 +92,7 @@ class LargeMarket extends React.Component {
           <RaisedButton label="Trade Goods" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeGood}  />
           <RaisedButton label="Reset" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
         </div>
-        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleActionEnd}  />
+        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );
