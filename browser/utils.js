@@ -33,61 +33,67 @@ export function mapCoordToLocation(coords) {
 }
 
 export function whichDialog(modalPayload) {
-  let wheelbarrow = undefined;
+  let wheelbarrow = undefined, bonusCards = undefined, nextDialog = undefined;
   switch (modalPayload.dialog) {
     case 'drop_assistant':
       return (
         <div id="turn-dialog-half">
-          <RaisedButton
-            label="Drop an assistant"
-            style={{ margin: 12 }}
-            primary={true}
-            onTouchTap={() => this.handleAssistant('drop')}
-            disabled={!modalPayload.assistantCount}
-          />
-          <RaisedButton
-            label="End turn now"
-            style={{ margin: 12 }}
-            secondary={true}
-            onTouchTap={this.handleEndTurn}
-          />
+          <div id="market-row">
+            <RaisedButton
+              label="Drop an assistant"
+              style={{ margin: 12 }}
+              primary={true}
+              onTouchTap={() => this.handleAssistant('drop')}
+              disabled={!modalPayload.assistantCount}
+              />
+            <RaisedButton
+              label="End turn now"
+              style={{ margin: 12 }}
+              secondary={true}
+              onTouchTap={this.handleEndTurn}
+              />
+          </div>
         </div>
       );
 
     case 'pick_up_assistant':
       return (
         <div id="turn-dialog-half">
-          <RaisedButton
-            label="Pick up your assistant"
-            style={{ margin: 12 }}
-            primary={true}
-            onTouchTap={() => this.handleAssistant('pickup')}
-          />
-          <RaisedButton
-            label="End turn now"
-            style={{ margin: 12 }}
-            secondary={true}
-            onTouchTap={this.handleEndTurn}
-          />
+          <div id="market-row">
+            <RaisedButton
+              label="Pick up your assistant"
+              style={{ margin: 12 }}
+              primary={true}
+              onTouchTap={() => this.handleAssistant('pickup')}
+            />
+            <RaisedButton
+              label="End turn now"
+              style={{ margin: 12 }}
+              secondary={true}
+              onTouchTap={this.handleEndTurn}
+            />
+          </div>
         </div>
       );
 
     case 'merchant_encounter':
       return (
         <div id="turn-dialog-half">
-          <RaisedButton
-            label={`Pay other merchants ${modalPayload.merchantCount * 2} lira`}
-            style={{ margin: 12 }}
-            primary={true}
-            onTouchTap={this.handleMerchant}
-            disabled={modalPayload.money < 2}
-          />
-          <RaisedButton
-            label="End turn now"
-            style={{ margin: 12 }}
-            secondary={true}
-            onTouchTap={this.handleEndTurn}
-          />
+          <div id="market-row">
+            <RaisedButton
+              label={`Pay other merchants ${modalPayload.merchantCount * 2} lira`}
+              style={{ margin: 12 }}
+              primary={true}
+              onTouchTap={this.handleMerchant}
+              disabled={modalPayload.money < 2}
+            />
+            <RaisedButton
+              label="End turn now"
+              style={{ margin: 12 }}
+              secondary={true}
+              onTouchTap={this.handleEndTurn}
+            />
+          </div>
         </div>
       );
 
@@ -160,6 +166,60 @@ export function whichDialog(modalPayload) {
         </div>
       )
 
+    case 'more_options':
+      bonusCards = this.props.merchants && this.props.merchants[this.props.playerId].bonusCards;
+      nextDialog = modalPayload.nextDialog;
+      return (
+        <div id="turn-dialog-full">
+          <div id="text-box">
+            {
+              !bonusCards.oneGood && !bonusCards.fiveLira ?
+              <div>
+                <p>You do not have any bonus cards or mosque tiles.</p>
+                <RaisedButton label="Go back"
+                style={{ margin: 12 }}
+                primary={true}
+                onTouchTap={() => this.handleGoBackClick(nextDialog)}
+                />
+              </div>
+              :
+              <div>
+                <p>You have {`${bonusCards.oneGood}`} Goods cards and {`${bonusCards.fiveLira}`} Lira cards. <br />Select the card you want to play.</p>
+                <div id="bonus-row">
+                  <div>
+                    {
+                      <img src="./images/bonus_cards/one-good.png" onTouchTap={() => this.handleBonusOneGoodClick(bonusCards.oneGood)} />
+                    }
+                  </div>
+                  <div>
+                    {
+                      <img src="./images/bonus_cards/five-lira.png" onTouchTap={() => this.handleBonusFiveLiraClick(bonusCards.fiveLira) } />
+                    }
+                  </div>
+              </div>
+              <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(nextDialog)} />
+            </div>
+          }
+        </div>
+      </div>
+      )
+
+      case 'bonus_select_one_good':
+        return (
+          <div id="turn-dialog-full">
+            <div id="text-box">
+              <p>You played a Goods bonus card. Select 1 good of your choice.</p>
+            </div>
+            <div id="market-row">
+              <img src="./images/cart/fabric.png" onTouchTap={() => this.handleBonusGood('fabric')} />
+              <img src="./images/cart/fruits.png" onTouchTap={() => this.handleBonusGood('fruit')} />
+              <img src="./images/cart/spices.png" onTouchTap={() => this.handleBonusGood('spice')} />
+              <img src="./images/cart/heirlooms.png" onTouchTap={() => this.handleBonusGood('heirloom')} />
+            </div>
+            <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick('more_options')} />
+          </div>
+        )
+
     default:
       return null;
   }
@@ -186,4 +246,3 @@ export function doesSomeoneHaveFiveRubies(merchantsObj) {
   });
   return winner;
 }
-

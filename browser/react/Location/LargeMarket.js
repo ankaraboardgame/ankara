@@ -13,6 +13,7 @@ import { whichDialog, handleEndTurn, beforeEndTurn } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
 import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+import { handleMoreOptionsClick, handleGoBackClick, handleBonusFiveLiraClick, handleBonusOneGoodClick, handleBonusGood } from '../../utils/MoreOptions';
 
 /****************** Component ********************/
 class LargeMarket extends React.Component {
@@ -47,6 +48,12 @@ class LargeMarket extends React.Component {
     this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
     this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
 
+    /** access more options */
+    this.handleMoreOptionsClick = handleMoreOptionsClick.bind(this);
+    this.handleGoBackClick = handleGoBackClick.bind(this);
+    this.handleBonusFiveLiraClick = handleBonusFiveLiraClick.bind(this);
+    this.handleBonusOneGoodClick = handleBonusOneGoodClick.bind(this);
+    this.handleBonusGood = handleBonusGood.bind(this);
   }
 
   // Ends Turn
@@ -126,6 +133,7 @@ class LargeMarket extends React.Component {
           <RaisedButton label="Reset" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
         </div>
         <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+        <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
       </div>
     );
   }

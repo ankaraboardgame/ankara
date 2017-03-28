@@ -28,7 +28,7 @@ p {
   background-size: 100% 100%;
   min-height: 100px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   align-content: center;
   justify-content: center;
@@ -47,6 +47,11 @@ p {
   align-content: center;
   justify-content: center;
   border-radius: 6px;
+}
+
+img.bonusCards {
+  width: 250px;
+  height: auto;
 }
 
 /* ------- GAME CONTAINER ---- */
@@ -177,6 +182,20 @@ table {
   flex-direction: row;
   margin-top: 10px;
   margin-bottom: 20px;
+}
+
+#bonus-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#bonus-row img {
+  width: 190px;
+  margin: 10px;
 }
 
 #mosque-row {
