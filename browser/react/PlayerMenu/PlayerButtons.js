@@ -1,12 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
+import { bounceInLeft, fadeInLeft } from 'react-animations';
+import { StyleSheet, css } from 'aphrodite';
+
 import { Wheelbarrow, Fruits, Fabric, Spices, Heirlooms, Money, Ruby } from '../Footer/FooterComponents'
 import { getPlayerIds, getPlayerTurn, getGameMerchants, getPlayerMap } from '../../redux/reducers/game-reducer';
+
+const animateStyles = StyleSheet.create({
+  bounceInLeft: {
+    animationName: bounceInLeft,
+    animationDuration: '1s'
+  },
+  fadeInLeft: {
+    animationName: fadeInLeft,
+    animationDuration: '.9s'
+  }
+});
 
 class PlayerButtons extends React.Component {
   constructor(props){
@@ -55,7 +70,7 @@ class PlayerButtons extends React.Component {
     const { color, selectedPlayer, display } = this.state;
     const { playerIds, playerTurn, merchantsData, playerMap } = this.props;
     return (
-      <div id="player-info-container">
+      <div className={css(animateStyles.fadeInLeft)} id="player-info-container">
         <div id="player-info-row">
             <div id="player-buttons-column">
               { playerIds[0] && <img src={'images/player/redplayer.png'} className={"player-icons " + (playerIds[0] === playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('red') } /> }
@@ -66,37 +81,41 @@ class PlayerButtons extends React.Component {
         </div>
         {
           display && selectedPlayer &&
-          <div id="player-detailed-info" onTouchTap={this.handleClose} >
-            <p>{playerMap[selectedPlayer]}</p>
-            <table>
-              <tbody>
-                <tr className="tr-player">
-                  <td><img className="player-data-icons" src="./images/cart/fabric.png" /></td>
-                  <td>{`${merchantsData[selectedPlayer].wheelbarrow.fabric} / ${merchantsData[selectedPlayer].wheelbarrow.size}`}</td>
-                </tr>
-                <tr className="tr-player">
-                  <td><img className="player-data-icons" src="./images/cart/fruits.png" /></td>
-                  <td>{`${merchantsData[selectedPlayer].wheelbarrow.fruit} / ${merchantsData[selectedPlayer].wheelbarrow.size}`}</td>
-                </tr>
-                <tr className="tr-player">
-                  <td><img className="player-data-icons" src="./images/cart/heirlooms.png" /></td>
-                  <td>{`${merchantsData[selectedPlayer].wheelbarrow.heirloom} / ${merchantsData[selectedPlayer].wheelbarrow.size}`}</td>
-                </tr>
-                <tr className="tr-player">
-                  <td><img className="player-data-icons" src="./images/cart/spices.png" /></td>
-                  <td>{`${merchantsData[selectedPlayer].wheelbarrow.spice} / ${merchantsData[selectedPlayer].wheelbarrow.size}`}</td>
-                </tr>
-                <tr className="tr-player">
-                  <td><img className="player-data-icons" src="./images/money/lira.png" /></td>
-                  <td>{`${merchantsData[selectedPlayer].wheelbarrow.money}`}</td>
-                </tr>
-                <tr className="tr-player">
-                  <td><img className="player-data-icons" src="./images/money/ruby.png" /></td>
-                  <td>{`${merchantsData[selectedPlayer].wheelbarrow.ruby}`}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <ReactCSSTransitionGroup
+            transitionName="modal-anim"
+            transitionAppear={true}
+            transitionAppearTimeout={300}
+            transitionEnter={false}
+            transitionLeave={false}
+            id="player-detailed-info"
+            onTouchTap={this.handleClose}
+          >
+            <text className="player-name-text">{playerMap[selectedPlayer]}</text>
+            <div className="player-detailed-row">
+              <img className="player-data-icons" src="./images/cart/fabric.png" />
+              {`${merchantsData[selectedPlayer].wheelbarrow.fabric} / ${merchantsData[selectedPlayer].wheelbarrow.size}`}
+            </div>
+            <div className="player-detailed-row">
+              <img className="player-data-icons" src="./images/cart/fruits.png" />
+              {`${merchantsData[selectedPlayer].wheelbarrow.fruit} / ${merchantsData[selectedPlayer].wheelbarrow.size}`}
+            </div>
+            <div className="player-detailed-row">
+              <img className="player-data-icons" src="./images/cart/heirlooms.png" />
+              {`${merchantsData[selectedPlayer].wheelbarrow.heirloom} / ${merchantsData[selectedPlayer].wheelbarrow.size}`}
+            </div>
+            <div className="player-detailed-row">
+              <img className="player-data-icons" src="./images/cart/spices.png" />
+              {`${merchantsData[selectedPlayer].wheelbarrow.spice} / ${merchantsData[selectedPlayer].wheelbarrow.size}`}
+            </div>
+            <div className="player-detailed-row">
+              <img className="player-data-icons" src="./images/money/lira.png" />
+              {`${merchantsData[selectedPlayer].wheelbarrow.money}`}
+            </div>
+            <div className="player-detailed-row">
+              <img className="player-data-icons" src="./images/money/ruby.png" />
+              {`${merchantsData[selectedPlayer].wheelbarrow.ruby}`}
+            </div>
+          </ReactCSSTransitionGroup>
         }
       
       </div>
