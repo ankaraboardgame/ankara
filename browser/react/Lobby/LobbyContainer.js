@@ -18,7 +18,9 @@ import { settingUser } from '../../redux/action-creators/user';
 import { joinRoom, leaveRoom } from '../../redux/action-creators/room';
 import { fetchNewGame } from '../../redux/action-creators/game';
 
-import { Room } from './Room.js'
+import { startGame, createRoom, joinRoom, deleteRoom } from '../../routes/lobby.js';
+
+import { Room } from './Room.js';
 
 /************ LobbyContainer ****************/
 
@@ -48,7 +50,7 @@ class LobbyContainer extends React.Component {
   componentDidMount() {
     fbAuth.onAuthStateChanged((user) => {
       if (user) {
-        this.props.setUser(user); 
+        this.props.setUser(user);
       } else {
         fbAuth.signInAnonymously().catch(function(error) {
           var errorCode = error.code;
@@ -63,12 +65,12 @@ class LobbyContainer extends React.Component {
   handleCreateRoom(event){
     event.preventDefault();
     const name = event.target[0].value;
-    this.roomsRef.push({name}).catch(console.error); // should dispatch action
+    createRoom(name);
   }
 
   handleDeleteRoom(event, roomId){
     event.preventDefault();
-    this.roomsRef.child(roomId).remove();
+    deleteRoom(roomId);
   }
 
   // add user to specific room after 'join room' button is clicked
