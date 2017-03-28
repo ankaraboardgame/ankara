@@ -32,9 +32,12 @@ class SmallMosque extends React.Component {
   }
 
   render() {
+    const { smallMosqueData } = this.props;
+    const tile1 = smallMosqueData.fabric;
+    const tile2 = smallMosqueData.spice;
     return (
       <div>
-        <img src={`images/locations/small_mosque.jpg`} id="img-location" />
+        <img src={`images/mosque/small/smallMosque_${tile1}_${tile2}.jpg`} id="img-location" />
         { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
       </div>
     );

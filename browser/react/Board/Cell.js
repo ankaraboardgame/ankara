@@ -1,19 +1,31 @@
 import React from 'react';
 
 import { mapCoordToLocation } from '../../utils/board';
+import { LARGE_MARKET, SMALL_MARKET, GEMSTONE_DEALER, SMALL_MOSQUE, GREAT_MOSQUE } from '../Modal/location_types';
 
 const Cell = (props) => {
   const tile = mapCoordToLocation(props.coords);
-    if (tile === 'LARGE_MARKET') {
-      return renderLargeMarketTiles(props);
-    } else if (tile === 'SMALL_MARKET') {
-      return renderSmallMarketTiles(props);
-    } else if (tile === 'GEMSTONE_DEALER') {
-      return renderGemstoneDealerTile(props);
-    } else {
-      return renderOtherTiles(props);
+    switch (tile) {
+      case LARGE_MARKET:
+        return renderLargeMarketTiles(props);
+        break;
+      case SMALL_MARKET:
+        return renderSmallMarketTiles(props);
+        break;
+      case GEMSTONE_DEALER:
+        return renderGemstoneDealerTile(props);
+        break;
+      case GREAT_MOSQUE:
+        return renderGreatMosqueTiles(props);
+        break;
+      case SMALL_MOSQUE:
+        return renderSmallMosqueTiles(props);
+        break;
+      default:
+        return renderOtherTiles(props);
     }
 }
+
 export default Cell;
 
 function renderOtherTiles({ name, coords, handleOnClick }) {
@@ -81,6 +93,42 @@ function renderSmallMarketTiles({ handleOnClick, coords, smallMarketData }) {
       onClick={handleOnClick}
     >
       <img src={`images/market/small/${currentDemandTile.img}`} className="img-location"/>
+      <text className="cell-text">{coords}</text>
+    </div>
+  );
+}
+
+function renderGreatMosqueTiles({ handleOnClick, coords, greatMosqueData }){
+  const tile1 = greatMosqueData.heirloom;
+  const tile2 = greatMosqueData.fruit;
+  return (
+    <div
+      style={{
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+      onClick={handleOnClick}
+    >
+      <img src={`images/mosque/great/greatMosque_${tile1}_${tile2}.jpg`} className="img-location"/>
+      <text className="cell-text">{coords}</text>
+    </div>
+  );
+}
+
+function renderSmallMosqueTiles({ handleOnClick, coords, smallMosqueData }){
+  const tile1 = smallMosqueData.fabric;
+  const tile2 = smallMosqueData.spice;
+  return (
+    <div
+      style={{
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+      onClick={handleOnClick}
+    >
+      <img src={`images/mosque/small/smallMosque_${tile1}_${tile2}.jpg`} className="img-location"/>
       <text className="cell-text">{coords}</text>
     </div>
   );

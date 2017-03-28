@@ -32,9 +32,12 @@ class GreatMosque extends React.Component {
   }
 
   render() {
+    const { greatMosqueData } = this.props;
+    const tile1 = greatMosqueData.heirloom;
+    const tile2 = greatMosqueData.fruit;
     return (
       <div>
-        <img src={`images/locations/great_mosque.jpg`} id="img-location" />
+        <img src={`images/mosque/great/greatMosque_${tile1}_${tile2}.jpg`} id="img-location" />
         { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
       </div>
     );
