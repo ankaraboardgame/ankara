@@ -22,7 +22,7 @@ injectTapEventPlugin();
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 /** ----------- Selectors ----------- */
-import { getGameId, getGameMerchants, getPlayerTurn, getLastRound } from '../redux/reducers/game-reducer';
+import { getGameId, getGameMerchants, getPlayerTurn, getLastRound, getPlayerMap } from '../redux/reducers/game-reducer';
 import { getUserId } from '../redux/reducers/user-reducer';
 
 const animateStyles = StyleSheet.create({
@@ -40,7 +40,7 @@ class AppContainer extends React.Component {
   constructor(props) {
     super(props);
     this.coins = new Audio('sounds/coins.wav');
-    this.coins = new Audio('sounds/chimes.mp3');
+    this.chimes = new Audio('sounds/chimes.mp3');
   }
 
   renderLoadingScreen() {
@@ -55,17 +55,21 @@ class AppContainer extends React.Component {
   /** For Audio */
   componentWillReceiveProps(nextProps) {
     if (this.props.merchants){
-      if (nextProps.merchants[nextProps.userId].wheelbarrow.money !== this.props.merchants[this.props.userId].wheelbarrow.money) {
+
+      const currentWheelbarrow = this.props.merchants[this.props.userId].wheelbarrow;
+      const nextWheelbarrow = nextProps.merchants[nextProps.userId].wheelbarrow;
+
+      if (nextWheelbarrow.money !== currentWheelbarrow.money) {
         this.coins.play();
       }
-      if (nextProps.merchants[nextProps.userId].wheelbarrow.ruby !== this.props.merchants[this.props.userId].wheelbarrow.ruby) {
+      if (nextWheelbarrow.ruby !== currentWheelbarrow.ruby) {
         this.chimes.play();
       }
     }
   }
 
   render() {
-    const { userId, merchants, playerTurn, lastRound } = this.props;
+    const { playerMap, userId, merchants, playerTurn, lastRound } = this.props;
     return (
       <MuiThemeProvider>
         {
@@ -82,6 +86,7 @@ class AppContainer extends React.Component {
                 lastRound && merchants[playerTurn].number === 0 ?
                 <DisplayWinner
                   merchants={merchants}
+                  playerMap={playerMap}
                 /> : null 
               }
             </div>
@@ -95,6 +100,7 @@ class AppContainer extends React.Component {
 const fbGameWrappedContainer = firebaseConnect(({ gameId }) => ([`games/${gameId}`]))(AppContainer);
 
 const mapStateToProps = state => ({
+  playerMap: getPlayerMap(state),
   gameId: getGameId(state),
   userId: getUserId(state),
   merchants: getGameMerchants(state),

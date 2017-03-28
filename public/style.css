@@ -315,6 +315,11 @@ table {
   flex-wrap: wrap;
 }
 
+.room-column {
+  display: flex;
+  flex-direction: column;
+}
+
 /* -------- MOVING PIECES ------- */
 .player-icon {
   width: 50px;

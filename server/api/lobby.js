@@ -12,9 +12,13 @@ const router = express.Router();
 
 router.post('/create', (req, res, next) => {
   const { name, creator } = req.body;
-  roomsRef.push({ name, creator })
-    .then(() => res.sendStatus(204))
-    .catch(next);
+  roomsRef.push({
+    name,
+    creator,
+    createdAt: admin.database.ServerValue.TIMESTAMP
+  })
+  .then(() => res.sendStatus(204))
+  .catch(next);
 });
 
 router.post('/join', (req, res, next) => {

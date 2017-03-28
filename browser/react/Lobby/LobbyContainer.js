@@ -13,6 +13,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
 
 import { settingUser } from '../../redux/action-creators/user';
 import { joinRoom, leaveRoom } from '../../redux/action-creators/room';
@@ -28,13 +29,17 @@ class LobbyContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { joined: null };
+    this.state = {
+      searchQuery: '',
+      joined: null
+    };
 
     this.removeUserFromRoom = this.removeUserFromRoom.bind(this);
     this.handleCreateRoom = this.handleCreateRoom.bind(this);
     this.addCurrentUserToRoom = this.addCurrentUserToRoom.bind(this);
     this.handleStartGame = this.handleStartGame.bind(this);
     this.handleDeleteRoom = this.handleDeleteRoom.bind(this);
+    this.handleSearchBar = this.handleSearchBar.bind(this);
   }
 
   componentDidMount() {
@@ -49,6 +54,10 @@ class LobbyContainer extends React.Component {
         });
       }
     });
+  }
+
+  handleSearchBar(event){
+    this.setState({searchQuery: event.target.value.toLowerCase()})
   }
 
   handleCreateRoom(event){
@@ -91,14 +100,28 @@ class LobbyContainer extends React.Component {
   render() {
     const roomData = this.props.roomData;
     const paperStyle = {
-      height: 130,
-      width: 800,
+      height: 100,
+      width: 500,
       padding: 20,
       margin: 20,
       backgroundColor: '#8C5942',
       textAlign: 'center',
       display: 'inline-block'
     };
+    const searchStyle = {
+      color: 'white',
+      fontTransform: 'uppercase',
+      fontStyle: 'italic',
+      fontSize: 24,
+      width: 500
+    };
+    const hintStyle = {
+      color: '#555',
+      fontTransform: 'uppercase',
+      fontStyle: 'italic',
+      fontSize: 24
+    };
+
 
     return (
       <MuiThemeProvider>
@@ -108,33 +131,45 @@ class LobbyContainer extends React.Component {
 
           <div id="create-room-button">
             <Paper style={paperStyle} zDepth={3}>
+
               <form onSubmit={ this.handleCreateRoom }>
                 <TextField hintText="Create new room" style={{marginLeft: 20}} />
-                <br />
                 <RaisedButton type="submit">
                   CREATE
                 </RaisedButton>
               </form>
+
             </Paper>
           </div>
 
-          <div className="row">
+          <Divider />
+
+          <TextField
+            onChange={this.handleSearchBar}
+            hintText="Search rooms"
+            hintStyle={hintStyle}
+            inputStyle={searchStyle}
+          />
+
+          <div className="room-column">
           {
             roomData &&
-            Object.keys(roomData).map(roomId => {
+            Object.keys(roomData).reverse().map(roomId => {
               return (
-                <Room
-                  key={roomId}
-                  roomId={roomId}
-                  roomData={roomData[roomId]}
-                  userId={this.props.userId}
-                  joined={this.state.joined}
-                  handleLeaveRoom={this.removeUserFromRoom}
-                  handleJoinRoom={this.addCurrentUserToRoom}
-                  handleStart={this.handleStartGame}
-                  handleDeleteRoom={this.handleDeleteRoom}
-                />
-              )
+                roomData[roomId].name.toLowerCase().includes(this.state.searchQuery)) ?
+                (
+                  <Room
+                    key={roomId}
+                    roomId={roomId}
+                    roomData={roomData[roomId]}
+                    userId={this.props.userId}
+                    joined={this.state.joined}
+                    handleLeaveRoom={this.removeUserFromRoom}
+                    handleJoinRoom={this.addCurrentUserToRoom}
+                    handleStart={this.handleStartGame}
+                    handleDeleteRoom={this.handleDeleteRoom}
+                  />
+                ) : null
             })
           }
           </div>
@@ -156,8 +191,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setUser: user => dispatch(settingUser(user)),
-  joinRoom: () => dispatch(joinRoom()),
-  leaveRoom: () => dispatch(leaveRoom()),
   startGame: (roomId, usersObj) => dispatch(fetchNewGame(roomId, usersObj))
 })
 
