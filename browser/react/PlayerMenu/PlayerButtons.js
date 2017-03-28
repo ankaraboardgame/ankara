@@ -26,23 +26,19 @@ class PlayerButtons extends React.Component {
     const selectedPlayer = this.state.currentPlayer;
     let playerId = null;
 
-    for(let merchant in merchantsData){
-      if(merchantsData[merchant].number === colorMap[color]) playerId = merchant
+    for (let merchant in merchantsData) {
+      if (merchantsData[merchant].number === colorMap[color]) playerId = merchant
     }
-
-    if(selectedPlayer === playerId){
-      this.setState({
-        color: null,
-        selectedPlayer: null,
-        display: false
-      })
-    }
-
-    if(selectedPlayer !== playerId){
+    
+    if (selectedPlayer !== playerId && this.state.display === false ) {
       this.setState({
         color: color,
         selectedPlayer: playerId,
         display: true
+      })
+    } else {
+      this.setState({
+        display: false
       })
     }
   }

@@ -88,7 +88,7 @@ class GreatMosque extends React.Component {
               }
             </div>
           </div>
-        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn} />
+        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleEndTurn} />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );
