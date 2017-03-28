@@ -1,13 +1,14 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from 'react';
+import { connect } from 'react-redux';
 import {
   firebaseConnect,
   isLoaded,
   isEmpty,
   dataToJS,
   pathToJS
-} from 'react-redux-firebase'
+} from 'react-redux-firebase';
 import { fbDB, fbAuth, googleProvider } from '../../firebase';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
@@ -67,7 +68,6 @@ class LobbyContainer extends React.Component {
 
   handleDeleteRoom(event, roomId){
     event.preventDefault();
-    console.log('deleting room');
     this.roomsRef.child(roomId).remove();
   }
 
@@ -108,13 +108,13 @@ class LobbyContainer extends React.Component {
   }
 
   render() {
-    const fbRoomData = this.props.fbRoomData;
+    const roomData = this.props.roomData;
     const paperStyle = {
-      height: 100,
+      height: 130,
       width: 800,
       padding: 20,
       margin: 20,
-      backgroundColor: 'navajowhite',
+      backgroundColor: '#8C5942',
       textAlign: 'center',
       display: 'inline-block'
     };
@@ -123,12 +123,13 @@ class LobbyContainer extends React.Component {
       <MuiThemeProvider>
         <div id="lobby-container">
 
-          <h1>Constantinople</h1>
+          <img src={`images/Constantinople-Title-2.png`} id="game-title" />
 
           <div id="create-room-button">
-            <Paper style={paperStyle} zDepth={2}>
+            <Paper style={paperStyle} zDepth={3}>
               <form onSubmit={ this.handleCreateRoom }>
                 <TextField hintText="Create new room" style={{marginLeft: 20}} />
+                <br />
                 <RaisedButton type="submit">
                   CREATE
                 </RaisedButton>
@@ -138,16 +139,16 @@ class LobbyContainer extends React.Component {
 
           <div className="row">
           {
-            fbRoomData &&
-            Object.keys(fbRoomData).map(roomId => {
+            roomData &&
+            Object.keys(roomData).map(roomId => {
               return (
                 <Room
                   key={roomId}
                   roomId={roomId}
-                  roomName={fbRoomData[roomId].name}
+                  roomName={roomData[roomId].name}
                   handleLeaveRoom={this.removeUserFromRoom}
                   handleJoinRoom={this.addCurrentUserToRoom}
-                  users={fbRoomData[roomId].users}
+                  users={roomData[roomId].users}
                   userId={this.props.userId}
                   joined={this.state.joined}
                   handleStart={this.handleStartGame}
@@ -167,7 +168,7 @@ class LobbyContainer extends React.Component {
 
 const mapStateToProps = (state) => ({
   userId: state.user.user && state.user.user.uid,
-  fbRoomData: dataToJS(state.firebase, 'rooms'),
+  roomData: dataToJS(state.firebase, 'rooms'),
   firebase: state.firebase,
   auth: pathToJS(firebase, 'auth'),
   joined: state.room.joined

@@ -23,6 +23,12 @@ let serviceAccount = {
 	client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL
 };
 
+
+// // environment variables
+// databaseURL = process.env.
+
+
+
 if(!serviceAccount.private_key){
   serviceAccount = require('../secret.firebase.env');
 }
@@ -32,6 +38,21 @@ firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount),
   databaseURL: 'https://istanbul-aa7c8.firebaseio.com/'
 });
+
+
+// const firebaseAdmin = require('firebase-admin');
+// const serviceAccount = require('./secret-firebase-test-server.json');
+// const key = {
+//   apiKey: 'AIzaSyBzVhw7ppsPkNKEahvABSl8ojMHqEd5lAg',
+//   credential: firebaseAdmin.credential.cert(serviceAccount),
+//   authDomain: 'istanbul-test.firebaseapp.com',
+//   databaseURL: 'https://istanbul-test.firebaseio.com/'
+// }
+
+// Initialize the app
+// const testFirebase = firebaseAdmin.initializeApp(key, 'istanbul-test-firebase');
+
+
 
 /** Logging Middleware */
 app.use(morgan('dev'));
@@ -58,7 +79,7 @@ app.use('/api', require('./api'));
 
 /** Default Error-handling Middleware */
 app.use(function (err, req, res, next) {
-  console.error(err.stack);
+  // console.error(err.stack);
   res.status(err.status || 500).send(err.message);
 });
 
@@ -67,10 +88,11 @@ const GameLogger = require('./GameLogger');
 // GameLogger();
 
 /** Starting Server */
-
-const PORT = process.env.PORT || 1337;
-server.listen(PORT, () => {
-  console.log('Server now listening on port', PORT);
-});
+if (module === require.main) {
+	const PORT = process.env.PORT || 1337;
+	server.listen(PORT, () => {
+		console.log('Server now listening on port', PORT);
+	});
+}
 
 module.exports = app;

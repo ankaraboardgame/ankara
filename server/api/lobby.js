@@ -2,25 +2,24 @@
 
 const admin = require('firebase-admin');
 const db = admin.database();
-const sessionRef = db.ref('session');
+const roomsRef = db.ref('rooms');
+const gamesRef = db.ref('games');
 
 const express = require('express');
 const router = express.Router();
+
+
+router.post('/lobby/create', (req, res, next) => {
+  const { name } = req.body;
+  roomsRef.push({name})
+    .then(() => res.sendStatus(204))
+    .catch(next);
+})
+
+router.post('/lobby/join', (req, res, next) => {
+  roomsRef.child(roomId)
+})
+
+router.post('/lobby/:roomId/delete', (req, res, next) => {})
+
 module.exports = router;
-
-// TODO: send response (res.send)
-router.put('/:userId', function (req, res, next) {
-  const userId = req.playerId;
-
-  //add user to the game
-  db.ref('/session').child('connectedPlayers').once("value", function(data) {
-    console.log('data', data);
-  });
-
-  console.log('adding user', userId, 'to the game'  );
-  const data = {};
-  data[userId] = true;
-  const ref = db.ref(`/session`).child('connectedPlayers');
-  ref.update(data);
-
-});

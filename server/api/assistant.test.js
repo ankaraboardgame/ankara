@@ -1,51 +1,39 @@
-// const { expect } = require('chai');
-// const firebaseAdmin = require('firebase-admin');
+var ref;
+var people = {
+  ref: function () {
+    if (!ref) ref = new Firebase('htttps://example.firebaseio.com/people');
+    return ref;
+  },
+  greet: function (person) {
+    console.log('hi ' + person.first);
+  },
+  listen: function () {
+    people.ref().on('child_added', function (snapshot) {
+      people.greet(snapshot.val());
+    });
+  }
+};
 
-// Fetch the service account key JSON file contents
-// const serviceAccount = require('../../tests/secret-firebase-test-server.json');
+var MockFirebase = require('mockfirebase');
+MockFirebase.override();
 
-// Initialize the app with a service account, granting admin privileges
-// firebaseAdmin.initializeApp({
-//   credential: firebaseAdmin.credential.cert(serviceAccount),
-//   databaseURL: 'https://istanbul-test.firebaseio.com/'
-// });
+people.listen();
 
-// const db = firebaseAdmin.database();
+var greeted = [];
 
-// const agent = request.agent();
-// const SERVER = 'http://localhost:1337';
+people.greet = function (person) {
+  greeted.push(person);
+};
 
-// describe('POST /', function(){
-//   it('responds with 200', function(done){
-//     axios.post(SERVER + '/api/game/test').then((res) => {
+ref.push({
+  first: 'Michael'
+});
 
-//     })
-//   })
-// })
+ref.push({
+  first: 'Ben'
+});
 
-// request(server)
-//   .get('/user')
-//   .expect('Content-Type', /json/)
-//   .expect('Content-Length', '15')
-//   .expect(200)
-//   .end(function(err, res) {
-//     if (err) throw err;
-//   });
-
-// describe('GET /', function() {
-//   it('respond with 200', function(done) {
-//     request(server)
-//       .get('/')
-//       .expect('Content-Type', /html/)
-//       .expect(200, done);
-//   });
-// });
-
-// describe('POST /api/game/:gameId', function() {
-//   it('creates a new game in the db', function(done) {
-//     request(server)
-//       .get('/')
-//       .expect('Content-Type', /html/)
-//       .expect(200, done);
-//   });
-// });
+ref.flush();
+console.assert(greeted.length === 2, '2 people greeted');
+console.assert(greeted[0].first === 'Michael', 'Michael greeted');
+console.assert(greeted[1].first === 'Ben', 'Ben greeted');

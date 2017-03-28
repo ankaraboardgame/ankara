@@ -23,7 +23,7 @@ export const Room = props => {
     width: 400,
     padding: 20,
     margin: 20,
-    backgroundColor: 'navajowhite',
+    backgroundColor: '#DABE96',
     textAlign: 'center',
     display: 'inline-block'
   };

@@ -10,24 +10,22 @@ const router = module.exports = require('express').Router();
  *
  * preloaded on req:
  * req.game = specific game instance
+ * req.gameRef = ref to specific game in firebase
  * req.player = the player hitting this route
+ * req.playerRef = ref to player in firebase
  */
 
 // 1. WAINWRIGHT (1) - pay wainwright and gain cart size
 router.post('/wainwright', (req, res, next) => {
   const WAINWRIGHT_PRICE = 7;
 
-  const payWainwrightPromise = gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/wheelbarrow/money`)
-    .transaction(function(currentMoney){
-      return currentMoney - WAINWRIGHT_PRICE;
-    })
+  const payWainwrightPromise = req.playerRef
+    .child('wheelbarrow/money')
+    .transaction(money =>  money - WAINWRIGHT_PRICE);
 
-  const expandWheelbarrowPromise = gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/wheelbarrow/size`)
-    .transaction(function(wheelbarrowSize){
-      return wheelbarrowSize + 1;
-    })
+  const expandWheelbarrowPromise = req.playerRef
+    .child('wheelbarrow/size')
+    .transaction(size => ++size);
 
   Promise.all([payWainwrightPromise, expandWheelbarrowPromise])
   .then(() => { res.sendStatus(204); })
@@ -35,26 +33,22 @@ router.post('/wainwright', (req, res, next) => {
 })
 
 router.post('/wainwright/earnRuby', (req, res, next) => {
-  gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/wheelbarrow/ruby`)
-    .transaction(function(currentRubies){
-      return currentRubies + 1;
-    });
+  req.playerRef
+    .child('wheelbarrow/ruby')
+    .transaction(rubies => ++rubies);
 })
 
  // 2. WAREHOUSES (3) - Depending on the goodType, player will get max amount
 router.post('/warehouse/:goodType', (req, res, next) => {
-  const playerId = req.player.id;
   const goodType = req.params.goodType;
   let WB_SIZE;
-  gamesRef.child(req.game.id)
-    .child(`merchants/${playerId}/wheelbarrow/size`)
+  req.playerRef.child('wheelbarrow/size')
     .once('value', snap => {
       WB_SIZE = snap.val()
     })
     .then(() => {
-      return gamesRef.child(req.game.id)
-        .child(`merchants/${playerId}/wheelbarrow/${goodType}`)
+      return req.playerRef
+        .child(`wheelbarrow/${goodType}`)
         .set(WB_SIZE)
     })
     .then(() => {
@@ -67,23 +61,19 @@ router.post('/warehouse/:goodType', (req, res, next) => {
 router.post('/gemstonedealer', (req, res, next) => {
   let GEMSTONE_PRICE;
 
-  gamesRef.child(req.game.id)
+  req.gameRef
     .child('gemstoneDealer')
     .transaction(currPrice => {
       GEMSTONE_PRICE = currPrice;
       return ++currPrice;
     })
     .then(() => {
-      const payDealerPromise = gamesRef.child(req.game.id)
-          .child(`merchants/${req.player.id}/wheelbarrow/money`)
-          .transaction(function(currentMoney){
-            return currentMoney - GEMSTONE_PRICE;
-          });
-      const acquireRuby = gamesRef.child(req.game.id)
-          .child(`merchants/${req.player.id}/wheelbarrow/ruby`)
-          .transaction(function(currentRubies){
-            return currentRubies + 1;
-          });
+      const payDealerPromise = req.playerRef
+          .child('wheelbarrow/money')
+          .transaction(money => money - GEMSTONE_PRICE);
+      const acquireRuby = req.playerRef
+          .child('wheelbarrow/ruby')
+          .transaction(rubies => ++rubies);
       return Promise.all([payDealerPromise, acquireRuby]);
     })
     .then(() => {
@@ -101,14 +91,14 @@ router.post('/market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloo
   const smallMarketRate = { 1: 2, 2: 5, 3: 9, 4: 14, 5: 20 };
   let marketDemand, sum = 0, transaction;
 
-  gamesRef.child(req.game.id)
+  req.gameRef
     .child(`${marketSize}/demandTiles/${currentMarketIdx}`)
     .once('value', snap => {
       marketDemand = snap.val()
     })
     .then(() => {
-      return gamesRef.child(req.game.id)
-        .child(`merchants/${req.player.id}/wheelbarrow`)
+      return req.playerRef
+        .child('wheelbarrow')
         .once('value', snap => {
           transaction = snap.val()
         })
@@ -122,9 +112,7 @@ router.post('/market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloo
             }
           }
           transaction.money = (marketSize === 'smallMarket') ? transaction.money + smallMarketRate[sum] : transaction.money + largeMarketRate[sum];
-          return gamesRef.child(req.game.id)
-            .child(`merchants/${req.player.id}/wheelbarrow`)
-            .set(transaction)
+          return req.playerRef.child('wheelbarrow').set(transaction)
         })
     })
     .then(() => {
@@ -135,7 +123,7 @@ router.post('/market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloo
 
 router.post('/market/:marketSize/:currentMarketIdx/updateTile', (req, res, next) => {
   let nextMarketIdx = ++req.params.currentMarketIdx % 5
-  gamesRef.child(req.game.id)
+  req.gameRef
     .child(`${req.params.marketSize}/currentMarketIdx`)
     .set(nextMarketIdx)
     .then(() => res.sendStatus(204))
@@ -168,8 +156,8 @@ router.post('/mosque/:mosqueSize/:selectedTile', (req, res, next) => {
     }
   }
 
-  gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/abilities`)
+  req.playerRef
+    .child('abilities')
     .once('value', snap => {
       abilities = snap.val()
     })
@@ -179,37 +167,32 @@ router.post('/mosque/:mosqueSize/:selectedTile', (req, res, next) => {
         abilities[tile].acquired = true
       }
 
-      const updateMosqueRate = gamesRef.child(req.game.id)
+      const updateMosqueRate = req.gameRef
       .child(`${mosque}/${tile}`)
       .transaction(currentTileRate => {
         return ++currentTileRate
       })
 
-      const updatePlayerWheelbarrow = gamesRef.child(req.game.id)
-      .child(`merchants/${req.player.id}/wheelbarrow/${tile}`)
-      .transaction(currentGood => {
-        return --currentGood
-      })
+      const updatePlayerWheelbarrow = req.playerRef
+      .child('wheelbarrow')
+      .child(tile)
+      .transaction(good => --good);
 
-      const updatePlayerAbilities = gamesRef.child(req.game.id)
-      .child(`merchants/${req.player.id}/abilities`)
+      const updatePlayerAbilities = req.playerRef
+      .child('abilities')
       .set(abilities)
       .then(() => {
         if(tile === 'fruit' || tile === 'heirloom'){
           if(abilities.fruit.acquired && abilities.heirloom.acquired){
-            gamesRef.child(req.game.id)
-            .child(`merchants/${req.player.id}/wheelbarrow/ruby`)
-            .transaction(currentRubies => {
-              return currentRubies + 1
-            })
+            req.playerRef
+            .child('wheelbarrow/ruby')
+            .transaction(rubies => ++rubies)
         }}
         if(tile === 'fabric' || tile === 'spice'){
           if(abilities.fabric.acquired && abilities.spice.acquired){
-            gamesRef.child(req.game.id)
-            .child(`merchants/${req.player.id}/wheelbarrow/ruby`)
-            .transaction(currentRubies => {
-              return currentRubies + 1
-            })
+            req.playerRef
+            .child('wheelbarrow/ruby')
+            .transaction(rubies => ++rubies)
         }}
       })
 
@@ -224,15 +207,15 @@ router.post('/blackMarket/:goodChosen/:diceRoll/', (req, res, next) => {
   const diceRoll = +req.params.diceRoll;
   const wbSize = req.player.wheelbarrow.size;
 
-  const updateGoodPromise = gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/wheelbarrow/${req.params.goodChosen}`)
+  const updateGoodPromise = req.playerRef
+    .child(`wheelbarrow/${req.params.goodChosen}`)
     .transaction(function(currentGoodCount){
       if (currentGoodCount >= wbSize) return wbSize;
       else return currentGoodCount + 1;
     })
 
-  const updateHeirloomPromise = gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/wheelbarrow/heirloom`)
+  const updateHeirloomPromise = req.playerRef
+    .child(`wheelbarrow/heirloom`)
     .transaction(currentHeirlooms => {
       let newHeirlooms = currentHeirlooms
       if (diceRoll === 7 || diceRoll === 8) newHeirlooms =  currentHeirlooms + 1;
@@ -250,11 +233,10 @@ router.post('/blackMarket/:goodChosen/:diceRoll/', (req, res, next) => {
 router.post('/teaHouse/:gamble/:diceRoll', (req, res, next) => {
   const diceRoll = +req.params.diceRoll;
   const gamble = +req.params.gamble
-  gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/wheelbarrow/money`)
+  req.playerRef
+    .child('wheelbarrow/money')
     .transaction(currentMoney => {
-      if (diceRoll >= gamble) return currentMoney + gamble;
-      else return currentMoney + 2;
+      return (diceRoll >= gamble) ? currentMoney + gamble : currentMoney + 2;
     })
     .then(() => { res.sendStatus(204); })
     .catch(next);
@@ -263,11 +245,11 @@ router.post('/teaHouse/:gamble/:diceRoll', (req, res, next) => {
 // 8. CARAVANSARY (1)
 router.post('/caravansary/:bonusCardType', (req, res, next) => {
   const type = req.params.bonusCardType;
-  gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/bonusCards`)
+  req.playerRef
+    .child('bonusCards')
     .push({ type })
     .then(() => {
-      return gamesRef.child(`${req.game.id}/caravansary/index`)
+      return req.gameRef.child('caravansary/index')
         .transaction(i => ++i)
         .catch(next)
     })
