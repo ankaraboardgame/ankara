@@ -58,7 +58,7 @@ class GemstoneDealer extends React.Component {
               onTouchTap={this.handleBuyGem}
               disabled={userMoney < price}
             />
-            <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={this.beforeEndTurn} />
+            <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={handleEndTurn} />
             <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
           </div>
       </div>
