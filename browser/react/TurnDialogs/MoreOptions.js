@@ -44,13 +44,21 @@ class MoreOptions extends React.Component {
   }
 
   render() {
-    const { userBonusCards, nextDialog } = this.props;
-
+    const { userBonusCards, nextDialog, smallMosqueData, greatMosqueData, merchants, playerId } = this.props;
+    const playerAbilities = merchants[playerId].abilities;
+    let abilityCount = 0;
+    let tileArray = [];
+    for(let ability in playerAbilities){
+      if(playerAbilities[ability].acquired){
+        abilityCount++;
+        tileArray.push(playerAbilities[ability].img);
+      }
+    }
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
           {
-            !userBonusCards.oneGood && !userBonusCards.fiveLira ?
+            !userBonusCards.oneGood && !userBonusCards.fiveLira && !abilityCount ?
             <div>
               <p>You do not have any bonus cards or mosque tiles.</p>
               <RaisedButton label="Go back"
@@ -60,23 +68,37 @@ class MoreOptions extends React.Component {
               />
             </div>
             :
-            <div>
-              <p>You have {`${userBonusCards.oneGood}`} Goods cards and {`${userBonusCards.fiveLira}`} Lira cards. <br />Select the card you want to play.</p>
-              <div id="bonus-row">
-                <div>
-                  {
-                    <img src="./images/bonus_cards/one-good.png" onTouchTap={() => this.handleBonusOneGoodClick(userBonusCards.oneGood)} />
-                  }
+            <div id="options">
+              <div>
+                <p>You have {`${userBonusCards.oneGood}`} Goods cards and {`${userBonusCards.fiveLira}`} Lira cards. <br />Select the card you want to play.</p>
+                <div id="bonus-row">
+                  <div>
+                    {
+                      <img src="./images/bonus_cards/one-good.png" onTouchTap={() => this.handleBonusOneGoodClick(userBonusCards.oneGood)} />
+                    }
+                  </div>
+                  <div>
+                    {
+                      <img src="./images/bonus_cards/five-lira.png" onTouchTap={() => this.handleBonusFiveLiraClick(userBonusCards.fiveLira) } />
+                    }
+                  </div>
                 </div>
-                <div>
+              </div>
+              <div>
+                <p>You have acquired {abilityCount} Mosque tiles.</p>
+                <div id="bonus-row">
                   {
-                    <img src="./images/bonus_cards/five-lira.png" onTouchTap={() => this.handleBonusFiveLiraClick(userBonusCards.fiveLira) } />
+                    tileArray !== [] && tileArray.map((imgStr, idx) => {
+                      return (
+                        <img key={idx} src={imgStr} />
+                      )
+                    })
                   }
                 </div>
               </div>
-            <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(nextDialog)} />
-          </div>
-        }
+              <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(nextDialog)} />
+            </div>
+          }
       </div>
     </div>
     );

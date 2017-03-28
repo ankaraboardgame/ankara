@@ -143,27 +143,28 @@ router.post('/market/:marketSize/:currentMarketIdx/updateTile', (req, res, next)
 })
 
 // 5. MOSQUES (2)
-router.post('/mosque/:mosqueSize/:selectedTile', (req, res, next) => {
+router.post('/mosque/:mosqueSize/:selectedTile/:goodRequired', (req, res, next) => {
   // small mosque: fabric & spice
   // great mosque: heirloom & fruit
   const mosque = req.params.mosqueSize;
-  const tile = req.params.selectedTile;
+  const tileType = req.params.selectedTile;
+  const tileNum = req.params.goodRequired;
   let abilities, ability;
 
   if (mosque === 'smallMosque') {
-    if (tile === 'fabric') {
+    if (tileType === 'fabric') {
       ability = 'dieTurnOrRoll'; // only for tea house or black market
     }
-    if (tile === 'spice'){
+    if (tileType === 'spice'){
       ability = '2LiraFor1Good'; // any warehouse
     }
   }
 
   if (mosque === 'greatMosque') {
-    if (tile === 'heirloom') {
+    if (tileType === 'heirloom') {
       ability = 'add1Assistant'; // can only be used once
     }
-    if (tile === 'fruit'){
+    if (tileType === 'fruit'){
       ability = '2LiraToReturn1Assistant'; // only once in a turn
     }
   }
@@ -175,18 +176,17 @@ router.post('/mosque/:mosqueSize/:selectedTile', (req, res, next) => {
     })
     .then(() => {
 
-      if (!abilities[ability]){
-        abilities[tile].acquired = true
-      }
+      abilities[tileType].acquired = true
+      abilities[tileType].img = `./images/Mosque/tiles/mosque_tile_${tileType}_${tileNum}.jpg`
 
       const updateMosqueRate = gamesRef.child(req.game.id)
-      .child(`${mosque}/${tile}`)
+      .child(`${mosque}/${tileType}`)
       .transaction(currentTileRate => {
         return ++currentTileRate
       })
 
       const updatePlayerWheelbarrow = gamesRef.child(req.game.id)
-      .child(`merchants/${req.player.id}/wheelbarrow/${tile}`)
+      .child(`merchants/${req.player.id}/wheelbarrow/${tileType}`)
       .transaction(currentGood => {
         return --currentGood
       })
@@ -195,7 +195,7 @@ router.post('/mosque/:mosqueSize/:selectedTile', (req, res, next) => {
       .child(`merchants/${req.player.id}/abilities`)
       .set(abilities)
       .then(() => {
-        if(tile === 'fruit' || tile === 'heirloom'){
+        if(tileType === 'fruit' || tileType === 'heirloom'){
           if(abilities.fruit.acquired && abilities.heirloom.acquired){
             gamesRef.child(req.game.id)
             .child(`merchants/${req.player.id}/wheelbarrow/ruby`)
@@ -203,7 +203,7 @@ router.post('/mosque/:mosqueSize/:selectedTile', (req, res, next) => {
               return currentRubies + 1
             })
         }}
-        if(tile === 'fabric' || tile === 'spice'){
+        if(tileType === 'fabric' || tileType === 'spice'){
           if(abilities.fabric.acquired && abilities.spice.acquired){
             gamesRef.child(req.game.id)
             .child(`merchants/${req.player.id}/wheelbarrow/ruby`)
