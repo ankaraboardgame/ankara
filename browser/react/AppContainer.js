@@ -10,6 +10,7 @@ import { StyleSheet, css } from 'aphrodite';
 import BoardContainer from './Board/BoardContainer';
 import FooterContainer from './Footer/FooterContainer';
 import ModalRootContainer from './Modal/ModalRootContainer';
+import NotificationContainer from './Notification/NotificationComponent';
 
 import DisplayWinner from './TurnDialogs/DisplayWinner';
 import LastTurn from './TurnDialogs/LastTurn';
@@ -22,7 +23,7 @@ injectTapEventPlugin();
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 /** ----------- Selectors ----------- */
-import { getGameId, getGameMerchants, getPlayerTurn, getLastRound } from '../redux/reducers/game-reducer';
+import { getGameId, getGameMerchants, getPlayerTurn, getLastRound, getGameLogData} from '../redux/reducers/game-reducer';
 import { getUserId } from '../redux/reducers/user-reducer';
 
 const animateStyles = StyleSheet.create({
@@ -64,11 +65,12 @@ class AppContainer extends React.Component {
               <BoardContainer />
               <FooterContainer />
               <ModalRootContainer />
-              { 
+              <NotificationContainer />
+              {
                 lastRound && merchants[playerTurn].number === 0 ?
                 <DisplayWinner
                   merchants={merchants}
-                /> : null 
+                /> : null
               }
             </div>
           </div> : this.renderLoadingScreen()
@@ -78,7 +80,7 @@ class AppContainer extends React.Component {
   }
 }
 
-const fbGameWrappedContainer = firebaseConnect(({ gameId }) => ([`games/${gameId}`]))(AppContainer);
+const fbGameWrappedContainer = firebaseConnect(({ gameId }) => ([`games/${gameId}`, `gameLog/${gameId}`]))(AppContainer);
 
 const mapStateToProps = state => ({
   gameId: getGameId(state),

@@ -15,10 +15,11 @@ class Caravansary extends React.Component {
   }
 
   handleGetCard (type){
-    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const { gameId, playerId, openModal, closeModal, handleActionEnd } = this.props;
     actionGetBonusCard(gameId, playerId, type)
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
+      .then(() => handleActionEnd())
+      // .then(() => closeModal())
+      // .then(() => handleEndTurn())
       .catch(console.error);
   }
 
@@ -32,7 +33,7 @@ class Caravansary extends React.Component {
   }
 
   renderAction() {
-    const { caravansaryData, handleEndTurn, handleMoreOptionsClick } = this.props;
+    const { caravansaryData, handleActionEnd, handleMoreOptionsClick } = this.props;
     const bonusCard = caravansaryData.bonusCards[caravansaryData.index];
     const style = { margin: 12 };
     return (
@@ -50,7 +51,7 @@ class Caravansary extends React.Component {
             primary={true}
             onTouchTap={() => this.handleGetCard(bonusCard.type)}
           />
-          <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+          <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
           <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
         </div>
       </div>

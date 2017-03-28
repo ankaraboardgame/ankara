@@ -44,20 +44,6 @@ class LobbyContainer extends React.Component {
     this.roomsRef.off();
   }
 
-  componentDidMount() {
-    fbAuth.onAuthStateChanged((user) => {
-      if (user) {
-        this.props.setUser(user); 
-      } else {
-        fbAuth.signInAnonymously().catch(function(error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          console.error('login failed', errorCode, errorMessage);
-        });
-      }
-    });
-  }
-
   // create room after 'create room' button is clicked
   handleCreateRoom(event){
     event.preventDefault();
