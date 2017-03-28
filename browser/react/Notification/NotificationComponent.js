@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import { connect } from 'react-redux';
 import { fbDB } from '../../firebase';
 import Snackbar from 'material-ui/Snackbar';
 import _ from 'lodash';
@@ -54,7 +55,7 @@ class NotificationComponent extends React.Component {
         <Snackbar
           open={this.state.open}
           message={this.state.message}
-          autoHideDuration={5000}
+          autoHideDuration={1500}
         />
       </div>
     );

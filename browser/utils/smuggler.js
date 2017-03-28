@@ -36,9 +36,7 @@ export function canTalkToSmuggler(userWheelbarrow) {
 // Smuggler encounter
 export function handleSmuggler() {
   const { currentPosition, closeModal, openModal, smuggler } = this.props;
-  console.log('handling smuggler', 'currentPosition', currentPosition, smuggler);
   if (currentPosition === smuggler.coordinates) {
-    console.log('smuggler encounter');
     closeModal();
     openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: SMUGGLER_ENCOUNTER });
   }
