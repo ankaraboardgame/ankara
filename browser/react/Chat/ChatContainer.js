@@ -1,9 +1,9 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 
 import { postGameChat } from '../../routes/chat.js';
@@ -36,8 +36,14 @@ class ChatContainer extends React.Component {
   handlePostMessage(event){
     event.preventDefault();
     postGameChat(this.props.gameId, this.props.userId, this.props.userName, this.state.message)
-    .then(() => this.setState({ message: '' }))
-    .catch(console.error);
+    this.setState({ message: '' });
+  }
+
+  componentDidUpdate(){
+    // scroll as new messages come along
+    var len = this.props.chats.length - 1;
+    const lastMessage = ReactDOM.findDOMNode(this['_chat' + len]);
+    if (lastMessage) lastMessage.scrollIntoView();
   }
 
   render() {
@@ -45,7 +51,7 @@ class ChatContainer extends React.Component {
 
     const paperStyle = {
       width: 300,
-      height: 400,
+      height: 500,
       padding: 10,
       margin: 0,
       backgroundColor: '#DABE96',
@@ -66,26 +72,28 @@ class ChatContainer extends React.Component {
 
               <div className="chat-log">
 
-                <List>
+                <ul className="chat-list">
                 {
                   chats
+                  .sort((a, b) => a.createdAt - b.createdAt)
                   .map((chat, i) => {
                     return (
-                      <ListItem key={i}>
+                      <li key={i} ref={(ref) => this['_chat' + i] = ref} className="chat-message">
                         <span style={{fontWeight: 'bold'}}>
                           {chat.name}
                         </span>: {chat.message}
-                      </ListItem>
+                      </li>
                     )
                   })
                 }
-                </List>
+                </ul>
 
               </div>
 
               <form onSubmit={this.handlePostMessage}>
                 <TextField
                   onChange={this.handleTextField}
+                  value={this.state.message}
                   hintText="Message..."
                   style={{ marginLeft: 15 }} />
                 <div style={{ textAlign: 'center' }}>
