@@ -122,7 +122,7 @@ class NotificationComponent extends React.Component {
           message={this.state.message}
           autoHideDuration={1500}
         />
-        <ToastContainer autoClose={1500} position="top-right"/>
+        <ToastContainer autoClose={2500} position="top-right"/>
       </div>
     );
   }
