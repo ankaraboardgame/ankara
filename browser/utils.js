@@ -33,7 +33,7 @@ export function mapCoordToLocation(coords) {
 }
 
 export function whichDialog(modalPayload) {
-  let wheelbarrow = undefined, bonusCards = undefined, nextDialog = undefined;
+  let wheelbarrow = undefined, bonusCards = undefined, nextDialog = undefined, abilities = undefined, numAbilities = 0;
   switch (modalPayload.dialog) {
     case 'drop_assistant':
       return (
@@ -168,7 +168,11 @@ export function whichDialog(modalPayload) {
 
     case 'more_options':
       bonusCards = this.props.merchants && this.props.merchants[this.props.playerId].bonusCards;
+      abilities = this.props.merchants && this.props.merchants[this.props.playerId].abilities;
       nextDialog = modalPayload.nextDialog;
+      for(let ability in abilities){
+        if(ability.acquired) numAbilities++
+      }
       return (
         <div id="turn-dialog-full">
           <div id="text-box">
@@ -196,7 +200,16 @@ export function whichDialog(modalPayload) {
                       <img src="./images/bonus_cards/five-lira.png" onTouchTap={() => this.handleBonusFiveLiraClick(bonusCards.fiveLira) } />
                     }
                   </div>
-              </div>
+                </div>
+                <p>You have { numAbilities } mosque tiles.</p>
+                <div id="bonus-row">
+                  <div>
+                    <img src="./images/mosque/mosque_tile_fruit.png" />
+                    <img src="./images/mosque/mosque_tile_fabric.png" />
+                    <img src="./images/mosque/mosque_tile_heirloom.png"/>
+                    <img src="./images/mosque/mosque_tile_spice.png" />
+                  </div>
+                </div>
               <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(nextDialog)} />
             </div>
           }
