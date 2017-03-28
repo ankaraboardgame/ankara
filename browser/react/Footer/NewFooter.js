@@ -8,31 +8,28 @@ import RulesSideBar from './RulesSideBar';
 import GameHistorySideBar from '../GameHistory/GameHistorySideBar';
 import BonusCardsMosqueTiles from './BonusCards&MosqueTiles';
 
-const Footer = (props) => {
-  const wb = props.wheelbarrow;
-  const gamesRef = props.gamesRef;
-  const playerId = props.playerId;
-  const playerNum = gamesRef.merchants[playerId].number;
+const Footer = ({ wheelbarrow, gameData, userId }) => {
+  const playerNum = gameData.merchants[userId].number;
   const colorMap = { 0: 'red', 1: 'blue', 2: 'green', 3: 'yellow' };
   return (
     <div id="footer-container">
       <div id="new-footer">
         <img src={`images/player/${colorMap[playerNum]}player.png`} className="player-icon" />
-        <p id="name">{gamesRef.playerMap[playerId]}</p>
+        <p id="name">{gameData.playerMap[userId]}</p>
         <RulesSideBar />
         <GameHistorySideBar />
         <img className="footer-icons" src="./images/cart/fabric.png" />
-        <div id="notifications"><p>{wb.fabric}</p></div>
+        <div id="notifications"><p>{wheelbarrow.fabric}</p></div>
         <img className="footer-icons" src="./images/cart/fruits.png" />
-        <div id="notifications"><p>{wb.fruit}</p></div>
+        <div id="notifications"><p>{wheelbarrow.fruit}</p></div>
         <img className="footer-icons" src="./images/cart/spices.png" />
-        <div id="notifications"><p>{wb.spice}</p></div>
+        <div id="notifications"><p>{wheelbarrow.spice}</p></div>
         <img className="footer-icons" src="./images/cart/heirlooms.png" />
-        <div id="notifications"><p>{wb.heirloom}</p></div>
+        <div id="notifications"><p>{wheelbarrow.heirloom}</p></div>
         <img className="footer-icons" src="./images/money/lira.png" />
-        <div id="notifications"><p>{wb.money}</p></div>
+        <div id="notifications"><p>{wheelbarrow.money}</p></div>
         <img className="footer-icons" src="./images/money/ruby.png" />
-        <div id="notifications"><p>{wb.ruby}</p></div>
+        <div id="notifications"><p>{wheelbarrow.ruby}</p></div>
       </div>
     </div>
   )
