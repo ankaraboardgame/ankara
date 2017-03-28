@@ -10,6 +10,7 @@ import { StyleSheet, css } from 'aphrodite';
 import BoardContainer from './Board/BoardContainer';
 import FooterContainer from './Footer/FooterContainer';
 import ModalRootContainer from './Modal/ModalRootContainer';
+import ChatContainer from './Chat/ChatContainer.js';
 
 import DisplayWinner from './TurnDialogs/DisplayWinner';
 import LastTurn from './TurnDialogs/LastTurn';
@@ -22,7 +23,7 @@ injectTapEventPlugin();
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 /** ----------- Selectors ----------- */
-import { getGameId, getGameMerchants, getPlayerTurn, getLastRound, getPlayerMap } from '../redux/reducers/game-reducer';
+import { getGameId, getGameChats, getGameMerchants, getPlayerTurn, getLastRound, getPlayerMap } from '../redux/reducers/game-reducer';
 import { getUserId } from '../redux/reducers/user-reducer';
 
 const animateStyles = StyleSheet.create({
@@ -69,7 +70,7 @@ class AppContainer extends React.Component {
   }
 
   render() {
-    const { playerMap, userId, merchants, playerTurn, lastRound } = this.props;
+    const { gameId, gameChats, playerMap, userId, merchants, playerTurn, lastRound } = this.props;
     return (
       <MuiThemeProvider>
         {
@@ -90,6 +91,12 @@ class AppContainer extends React.Component {
                 /> : null 
               }
             </div>
+            <ChatContainer
+              userId={userId}
+              gameId={gameId}
+              chats={gameChats}
+              userName={playerMap[userId]}
+            />
           </div> : this.renderLoadingScreen()
         }
       </MuiThemeProvider>
@@ -102,6 +109,7 @@ const fbGameWrappedContainer = firebaseConnect(({ gameId }) => ([`games/${gameId
 const mapStateToProps = state => ({
   playerMap: getPlayerMap(state),
   gameId: getGameId(state),
+  gameChats: getGameChats(state),
   userId: getUserId(state),
   merchants: getGameMerchants(state),
   playerTurn: getPlayerTurn(state),

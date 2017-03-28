@@ -22,6 +22,7 @@ import { fetchNewGame } from '../../redux/action-creators/game';
 import { createRoom, addToRoom, removeFromRoom, deleteRoom } from '../../routes/lobby.js';
 
 import { Room } from './Room.js';
+import ChatContainer from '../Chat/ChatContainer.js';
 
 /************ LobbyContainer ****************/
 

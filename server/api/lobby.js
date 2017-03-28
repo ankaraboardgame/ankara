@@ -5,7 +5,7 @@ const db = admin.database();
 const roomsRef = db.ref('rooms');
 
 const express = require('express');
-const router = express.Router();
+const router = module.exports = require('express').Router();
 
 
 /************** Lobby Routes **************/
@@ -43,5 +43,3 @@ router.post('/:roomId/delete', (req, res, next) => {
     .then(() => res.sendStatus(204))
     .catch(next);
 });
-
-module.exports = router;

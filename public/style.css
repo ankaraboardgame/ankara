@@ -320,6 +320,29 @@ table {
   flex-direction: column;
 }
 
+/* -------- CHAT ------- */
+
+.chat-container {
+  position: fixed;
+  top: 50px;
+  right: 30px;
+}
+
+.chat-icon {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  height: 5vw;
+  width: 5vw;
+  border-radius: 50px;
+  box-shadow: 8px 8px 15px black;
+}
+
+.chat-log {
+  height: 300;
+  overflow-y: auto;
+}
+
 /* -------- MOVING PIECES ------- */
 .player-icon {
   width: 50px;
