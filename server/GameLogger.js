@@ -21,10 +21,11 @@ const GameLogger = function() {
     gameLogRef.child(gameId).once('value', function(snapshot) {
 
       //Log players who joined the game
-      Object.keys(playerMap).forEach(mapKey => {
+      Object.keys(playerMap).forEach(key => {
 
         log(gameId, {
-          text: `${playerMap[mapKey]} joined the game`,
+          user: key,
+          text: `$ joined the game`,
           timestamp: getCurrUnixTime()
         });
       });
@@ -35,7 +36,8 @@ const GameLogger = function() {
     gamesRef.child(gameId).child('playerTurn').on('value', snapshot => {
       const activePlayerId = snapshot.val();
       log(gameId, {
-        text: `${playerMap[activePlayerId]}\'s turn`,
+        user: activePlayerId,
+        text: `$\'s turn`,
         timestamp: getCurrUnixTime()
       });
     })
@@ -44,7 +46,7 @@ const GameLogger = function() {
     gamesRef.child(gameId).child('gemstoneDealer').on('value', snapshot => {
       const newGemStonePrice = snapshot.val();
       log(gameId, {
-        text: `Gem stone is currently being sold at ${newGemStonePrice} liras`,
+        text: `Gem stone is now being sold at ${newGemStonePrice} liras`,
         timestamp: getCurrUnixTime()
       });
     })
@@ -71,18 +73,19 @@ const GameLogger = function() {
       const displayName = playerMap[playerId];
 
       // Merchant position change
-      let initialPosition = undefined;
-      gamesRef.child(gameId).child('merchants').child(playerId).child('position').child('coordinates').on('value', snapshot => {
-        const newPosition = snapshot.val();
-        if(!initialPosition) {
-          initialPosition = newPosition;
-        } else {
-          log(gameId, {
-            text: `${displayName} moved to new position ${newPosition}`,
-            timestamp: getCurrUnixTime()
-          });
-        }
-      })
+      // let initialPosition = undefined;
+      // gamesRef.child(gameId).child('merchants').child(playerId).child('position').child('coordinates').on('value', snapshot => {
+      //   const newPosition = snapshot.val();
+      //   if(!initialPosition) {
+      //     initialPosition = newPosition;
+      //   } else {
+      //     log(gameId, {
+      //       user: playerId,
+      //       text: `$ moved to new position ${newPosition}`,
+      //       timestamp: getCurrUnixTime()
+      //     });
+      //   }
+      // })
 
       // Wheelbarrow size increment
       let initialSize = undefined;
@@ -92,7 +95,8 @@ const GameLogger = function() {
           initialSize = newSize;
         } else {
           log(gameId, {
-            text: `${displayName}'s wheelbarrow size has increased to ${newSize}`,
+            user: playerId,
+            text: `$'s wheelbarrow size has increased to ${newSize}`,
             timestamp: getCurrUnixTime()
           });
         }
@@ -106,28 +110,14 @@ const GameLogger = function() {
           initialRuby = ruby;
         } else {
           log(gameId, {
-            text: `${displayName} earned a ruby. ${displayName} has ${ruby} ${ruby === 1 ? 'ruby' : 'rubies'} now`,
+            user: playerId,
+            text: `$ earned a ruby. ${ruby} ${ruby === 1 ? 'ruby' : 'rubies'} now`,
             timestamp: getCurrUnixTime()
           });
         }
       })
 
-      // money amount change
-      // gamesRef.child(gameId).child('merchants').child(playerId).child('wheelbarrow').child('money').on('value', snapshot => {
-      //   const newSize = snapshot.val();
-      //   log(gameId, {
-      //     text: `${displayName}'s wheelbarrow size has increased to ${newSize}`,
-      //     timestamp: getCurrUnixTime()
-      //   });
-      // });
-
     });
-
-    /*
-      money earned
-      dropped assistant/picked up assistant?
-      smuggler reassingment
-    */
 
   });
 
