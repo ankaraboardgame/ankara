@@ -55,12 +55,14 @@ class PlayerButtons extends React.Component {
     const { color, selectedPlayer, display } = this.state;
     const { playerIds, playerTurn, merchantsData, playerMap } = this.props;
     return (
-      <div id="player-info-row">
-        <div id="player-buttons-column">
-          { playerIds[0] && <img src={'images/player/redplayer.png'} className={"player-icons " + (playerIds[0] === playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('red') } /> }
-          { playerIds[1] && <img src={'images/player/blueplayer.png'} className={"player-icons " + (playerIds[1] === playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('blue')} /> }
-          { playerIds[2] && <img src={'images/player/greenplayer.png'} className={"player-icons " + (playerIds[2] === playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('green')} /> }
-          { playerIds[3] && <img src={'images/player/yellowplayer.png'} className={"player-icons " + (playerIds[3] === playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('yellow')} /> }
+      <div id="player-info-container">
+        <div id="player-info-row">
+            <div id="player-buttons-column">
+              { playerIds[0] && <img src={'images/player/redplayer.png'} className={"player-icons " + (playerIds[0] === playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('red') } /> }
+              { playerIds[1] && <img src={'images/player/blueplayer.png'} className={"player-icons " + (playerIds[1] === playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('blue')} /> }
+              { playerIds[2] && <img src={'images/player/greenplayer.png'} className={"player-icons " + (playerIds[2] === playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('green')} /> }
+              { playerIds[3] && <img src={'images/player/yellowplayer.png'} className={"player-icons " + (playerIds[3] === playerTurn ? 'player-icon-active' : null)} onTouchTap={() => this.handleButtonClick('yellow')} /> }
+            </div>
         </div>
         {
           display && selectedPlayer &&
@@ -96,6 +98,7 @@ class PlayerButtons extends React.Component {
             </table>
           </div>
         }
+      
       </div>
     )
   }
