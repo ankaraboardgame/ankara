@@ -22,7 +22,7 @@ injectTapEventPlugin();
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 /** ----------- Selectors ----------- */
-import { getGameId, getGameMerchants, getPlayerTurn, getLastRound } from '../redux/reducers/game-reducer';
+import { getGameId, getGameMerchants, getPlayerTurn, getLastRound, getGameLogData} from '../redux/reducers/game-reducer';
 import { getUserId } from '../redux/reducers/user-reducer';
 
 const animateStyles = StyleSheet.create({

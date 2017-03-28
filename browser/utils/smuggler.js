@@ -1,14 +1,9 @@
-import { mapCoordToLocation } from '../utils';
-import { encounterSmuggler } from '../routes/encounter';
+import { mapCoordToLocation } from './board';
+
+/** ------- Constants -------- */
+import { SMUGGLER_ENCOUNTER } from '../react/Modal/turn_types';
 
 /** Smuggler Logic */
-
-function smugglerOnLocation(currentCoords, smuggler) {
-  if (currentCoords === smuggler.coordinates) {
-    return true;
-  }
-  return false;
-}
 
 function isBroke(wheelbarrow) {
   if (wheelbarrow.fabric > 0 ||
@@ -31,9 +26,8 @@ function isFull(wheelbarrow) {
   return false;
 }
 
-export function canTalkToSmuggler(currentUserId, merchantsObj) {
-  const wheelbarrow = merchantsObj[currentUserId].wheelbarrow;
-  if (isBroke(wheelbarrow) || isFull(wheelbarrow)) {
+export function canTalkToSmuggler(userWheelbarrow) {
+  if (isBroke(userWheelbarrow) || isFull(userWheelbarrow)) {
     return false;
   }
   return true;
@@ -41,27 +35,14 @@ export function canTalkToSmuggler(currentUserId, merchantsObj) {
 
 // Smuggler encounter
 export function handleSmuggler() {
-  const currentPosition = this.props.currentPosition;
-  const smuggler = this.props.gameData.smuggler;
-  if (smugglerOnLocation(currentPosition, smuggler)) {
-    this.props.closeModal();
-    this.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler' });
-  } else {
+  const { currentPosition, closeModal, openModal, smuggler } = this.props;
+  console.log('handling smuggler', 'currentPosition', currentPosition, smuggler);
+  if (currentPosition === smuggler.coordinates) {
+    console.log('smuggler encounter');
+    closeModal();
+    openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: SMUGGLER_ENCOUNTER });
+  }
+  else {
     this.handleEndTurn();
   }
-}
-
-export function handleSmugglerGoodWantedClick(event) {
-  const good = event.target.id;
-  this.setState({ smuggler: { goodWanted: good, trade: this.state.smuggler.trade }});
-}
-
-export function handleSmugglerGoodToTrade(event) {
-  const trade = event.target.id;
-  this.setState({ smuggler: { goodWanted: this.state.smuggler.goodWanted, trade }});
-}
-
-export function tradeWithSmuggler() {
-  encounterSmuggler(this.props.gameId, this.props.playerId, this.state.smuggler.goodWanted, this.state.smuggler.trade)
-  .then(this.handleEndTurn);
 }

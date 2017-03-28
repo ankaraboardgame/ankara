@@ -1,6 +1,6 @@
 import { pickupAssistant, dropAssistant } from '../routes/move.js';
 import { mapCoordToLocation } from './board.js';
-import { DROP_ASSISTANT, PICK_UP_ASSISTANT } from '../react/Modal/turn_types'; 
+import { DROP_ASSISTANT, PICK_UP_ASSISTANT } from '../react/Modal/turn_types';
 
 const assistantOnLocation = (currentCoords, {out}) => {
   if (!out) return false;
@@ -11,7 +11,7 @@ const assistantOnLocation = (currentCoords, {out}) => {
 export const openAssistantDialog = (props) => {
   const { coords, merchantsData, userAssistants, openModal } = props;
   if (assistantOnLocation(coords, userAssistants)) {
-    props.openModal(
+    openModal(
       mapCoordToLocation(coords),
       {
         currentPosition: coords,

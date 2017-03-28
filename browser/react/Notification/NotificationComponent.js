@@ -7,7 +7,10 @@ import _ from 'lodash';
 
 // import 'react-toastify/dist/ReactToastify.min.css';
 
-export default class NotificationComponent extends React.Component {
+/** -------- Selectors ---------- */
+import { getGameId, getGameLog } from '../../redux/reducers/game-reducer';
+
+class NotificationComponent extends React.Component {
 
   constructor(props) {
     super(props);
@@ -20,7 +23,10 @@ export default class NotificationComponent extends React.Component {
   }
 
   componentWillMount() {
-    this.gameLogRef = fbDB.ref(`gameLog/${this.props.gameId}`);
+
+    const { gameId } = this.props;
+
+    this.gameLogRef = fbDB.ref(`gameLog/${gameId}`);
     this.gameLogEventHandler = snapshot => {
       console.log('notficiation child_added');
       this.setState({
@@ -54,3 +60,10 @@ export default class NotificationComponent extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  gameId: getGameId(state)
+});
+
+export default connect(mapStateToProps)(NotificationComponent);
+
