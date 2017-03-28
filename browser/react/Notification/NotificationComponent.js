@@ -3,8 +3,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fbDB } from '../../firebase';
-import Snackbar from 'material-ui/Snackbar';
-import _ from 'lodash';
 
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
@@ -44,8 +42,6 @@ class NotificationComponent extends React.Component {
       if (snapshot.val().timestamp + 2 < this.getCurrUnixTime() ) {
         return;
       }
-
-
       const playerId = snapshot.val().user;
       const type = snapshot.val().type;
       const location = snapshot.val().location;
@@ -82,22 +78,10 @@ class NotificationComponent extends React.Component {
           break;
       }
 
-
-
-      // this.setState({
-      //   open: true,
-      //   message: message
-      // });
       if ( message && message.trim() !== '') {
         toast(message, { type: toast.TYPE.INFO });
       }
 
-      // this.timer = setTimeout(() => {
-      //   this.setState({
-      //     open: false
-      //   });
-      //   clearTimeout(this.timer);
-      // }, 1500);
     };
     this.gameLogRef.on('child_added', this.gameLogEventHandler);
   }
@@ -107,21 +91,9 @@ class NotificationComponent extends React.Component {
   }
 
   render() {
-    const style={
-      top: '0',
-      bottom: 'auto',
-      left: (window.innerWidth - 288) / 2,
-      transform: 'translate3d(0, 0, 0)'
-    }
 
     return (
       <div>
-        <Snackbar
-          style={style}
-          open={this.state.open}
-          message={this.state.message}
-          autoHideDuration={1500}
-        />
         <ToastContainer autoClose={2500} position="top-right"/>
       </div>
     );
