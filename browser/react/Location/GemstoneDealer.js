@@ -13,6 +13,7 @@ import { whichDialog, handleEndTurn, beforeEndTurn } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
 import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+import { handleMoreOptionsClick, handleGoBackClick, handleBonusFiveLiraClick, handleBonusOneGoodClick, handleBonusGood } from '../../utils/MoreOptions';
 
 /****************** Component ********************/
 class GemstoneDealer extends React.Component {
@@ -40,6 +41,13 @@ class GemstoneDealer extends React.Component {
     this.talkToSmuggler = talkToSmuggler.bind(this);
     this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
     this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
+
+    /** access more options */
+    this.handleMoreOptionsClick = handleMoreOptionsClick.bind(this);
+    this.handleGoBackClick = handleGoBackClick.bind(this);
+    this.handleBonusFiveLiraClick = handleBonusFiveLiraClick.bind(this);
+    this.handleBonusOneGoodClick = handleBonusOneGoodClick.bind(this);
+    this.handleBonusGood = handleBonusGood.bind(this);
   }
 
   componentDidMount (){
@@ -85,7 +93,8 @@ class GemstoneDealer extends React.Component {
               onTouchTap={this.handleBuyGem}
               disabled={money < price}
             />
-            <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.beforeEndTurn} />
+          <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={this.beforeEndTurn} />
+            <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
           </div>
       </div>
     );

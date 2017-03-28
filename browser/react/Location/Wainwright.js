@@ -13,6 +13,7 @@ import { whichDialog } from '../../utils';
 import { handleMerchant } from '../../utils/otherMerchants.js';
 import { handleAssistant } from '../../utils/assistants.js';
 import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+import { handleMoreOptionsClick, handleGoBackClick, handleBonusFiveLiraClick, handleBonusOneGoodClick, handleBonusGood } from '../../utils/MoreOptions';
 
 /****************** Component ********************/
 class Wainwright extends React.Component {
@@ -39,6 +40,13 @@ class Wainwright extends React.Component {
     this.talkToSmuggler = talkToSmuggler.bind(this);
     this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
     this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
+
+    /** access more options */
+    this.handleMoreOptionsClick = handleMoreOptionsClick.bind(this);
+    this.handleGoBackClick = handleGoBackClick.bind(this);
+    this.handleBonusFiveLiraClick = handleBonusFiveLiraClick.bind(this);
+    this.handleBonusOneGoodClick = handleBonusOneGoodClick.bind(this);
+    this.handleBonusGood = handleBonusGood.bind(this);
   }
 
   // Ends Turn
@@ -90,6 +98,7 @@ class Wainwright extends React.Component {
                 <p>Sorry, you do not have enough money at this time. End your turn.</p>
               </div>
               <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+              <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
             </div>
             : wheelbarrow.size === 4 ?
             <div>
@@ -97,6 +106,7 @@ class Wainwright extends React.Component {
                 <p>You have a wheelbarrow size of 4. You can buy one more extension, and earn a ruby!</p>
               </div>
               <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtensionEarnRuby}  />
+              <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
             </div>
             : wheelbarrow.size === 5 ?
             <div>
@@ -104,6 +114,7 @@ class Wainwright extends React.Component {
                 <p>You already have the largest size of wheelbarrow.</p>
               </div>
               <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+              <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
             </div>
             :
             <div>
@@ -111,6 +122,7 @@ class Wainwright extends React.Component {
                 <p>You can buy a wheelbarrow extension here.<br /><br />Each extension cost 7 Lira. <br />You can buy a maximum of 3 extensions, <br />at which point you will receive 1 ruby. <br /></p>
               </div>
               <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtension}  />
+              <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
             </div>
           }
       </div>
