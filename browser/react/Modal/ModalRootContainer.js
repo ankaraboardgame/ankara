@@ -84,7 +84,7 @@ const Turn_Dialog_Components = {
 class ModalRootContainer extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.handleMoreOptionsClick = this.handleMoreOptionsClick.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
   }
@@ -102,12 +102,12 @@ class ModalRootContainer extends React.Component {
     closeModal();
     openModal(mapCoordToLocation(currentPosition), { currentPosition, nextDialog, dialog: MORE_OPTIONS });
   }
-  
+
   render() {
-    const { 
+    const {
       userId, userMoney, gameId, modalType, payload,
-      dialog, openModal, closeModal, gemstoneData, 
-      abilities, greatMosqueData, smallMosqueData, 
+      dialog, openModal, closeModal, gemstoneData,
+      abilities, greatMosqueData, smallMosqueData,
       userWheelbarrow, largeMarketData, smallMarketData,
       caravansaryData
     } = this.props;
@@ -142,11 +142,11 @@ class ModalRootContainer extends React.Component {
           </div>
         </Modal>
       );
-    }    
+    }
   }
 
   renderSpecificTurnDialog() {
-    const { userId, userMoney, userBonusCards, gameId, merchants, dialog, payload, currentPosition, openModal, closeModal, nextDialog } = this.props;
+    const { userId, userMoney, userBonusCards, greatMosqueData, smallMosqueData, gameId, merchants, dialog, payload, currentPosition, openModal, closeModal, nextDialog } = this.props;
     const SpecificTurnDialog = Turn_Dialog_Components[dialog];
     return (
       <SpecificTurnDialog
@@ -160,11 +160,13 @@ class ModalRootContainer extends React.Component {
         merchants={merchants}
         userMoney={userMoney}
         userBonusCards={userBonusCards}
+        greatMosqueData={greatMosqueData}
+        smallMosqueData={smallMosqueData}
         nextDialog={nextDialog}
       />
     );
   }
-  
+
 };
 
 /** -------- Container ---------- */
