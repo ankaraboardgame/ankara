@@ -27,15 +27,14 @@ class SmallMarket extends React.Component {
 
   handleTradeGood(){
     const playerOffer = this.state;
-    const { smallMarketData, gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const { smallMarketData, gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
     const currentMarketIdx = smallMarketData.currentMarketIdx;
 
     actionTradeGoods(gameId, playerId, 'smallMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
       .then(() => {
         actionChangeTile(gameId, playerId, 'smallMarket', currentMarketIdx)
       })
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
+      .then(() => handleActionEnd())
       .catch(console.error)
   }
 
@@ -77,7 +76,7 @@ class SmallMarket extends React.Component {
   }
 
   renderAction() {
-    const { handleEndTurn, handleMoreOptionsClick } = this.props;
+    const { handleActionEnd, handleMoreOptionsClick } = this.props;
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-full">
@@ -94,7 +93,7 @@ class SmallMarket extends React.Component {
           <RaisedButton label="Trade Goods" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeGood}  />
           <RaisedButton label="Reset" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
         </div>
-        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={handleEndTurn}  />
+        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
 
       </div>

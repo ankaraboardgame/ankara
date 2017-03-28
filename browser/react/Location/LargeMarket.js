@@ -26,15 +26,14 @@ class LargeMarket extends React.Component {
 
   handleTradeGood(){
     const playerOffer = this.state;
-    const { largeMarketData, gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const { largeMarketData, gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
     const currentMarketIdx = largeMarketData.currentMarketIdx;
 
     actionTradeGoods(gameId, playerId, 'largeMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
       .then(() => {
         actionChangeTile(gameId, playerId, 'largeMarket', currentMarketIdx)
       })
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
+      .then(() => handleActionEnd())
       .catch(console.error)
   }
 
@@ -76,7 +75,7 @@ class LargeMarket extends React.Component {
   }
 
   renderAction() {
-    const { handleEndTurn, handleMoreOptionsClick } = this.props;
+    const { handleActionEnd, handleMoreOptionsClick } = this.props;
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-full">
@@ -93,7 +92,7 @@ class LargeMarket extends React.Component {
           <RaisedButton label="Trade Goods" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeGood}  />
           <RaisedButton label="Reset" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
         </div>
-        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleActionEnd}  />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );

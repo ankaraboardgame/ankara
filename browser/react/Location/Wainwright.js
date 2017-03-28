@@ -17,21 +17,19 @@ class Wainwright extends React.Component {
   }
 
   handleBuyExtension(){
-    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
     actionBuyWbExt(gameId, playerId)
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
+      .then(() => handleActionEnd())
       .catch(console.error)
   }
 
   handleBuyExtensionEarnRuby(){
-    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
     actionBuyWbExt(gameId, playerId)
       .then(() => {
         earnRuby(gameId, playerId)
       })
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
+      .then(() => handleActionEnd())
       .catch(console.error)
   }
 
@@ -46,7 +44,7 @@ class Wainwright extends React.Component {
 
   renderAction() {
     const style = { margin: 12 };
-    const { playerId, userWheelbarrow, handleEndTurn, handleMoreOptionsClick } = this.props;
+    const { playerId, userWheelbarrow, handleActionEnd, handleMoreOptionsClick } = this.props;
 
     return (
       <div id="turn-dialog-half">
@@ -56,7 +54,7 @@ class Wainwright extends React.Component {
               <div id="text-box">
                 <p>Sorry, you do not have enough money at this time. End your turn.</p>
               </div>
-              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
               <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
 
             </div>
@@ -73,7 +71,7 @@ class Wainwright extends React.Component {
               <div id="text-box">
                 <p>You already have the largest size of wheelbarrow.</p>
               </div>
-              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
               <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
             </div>
             :

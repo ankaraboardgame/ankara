@@ -40,10 +40,9 @@ class TeaHouse extends React.Component {
   }
 
   handleTeaHouseEndTurn (gamble, rollSum){
-    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
     actionTeaHouse(gameId, playerId, gamble, rollSum)
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
+      .then(() => handleActionEnd())
       .catch(console.error);
   }
 
@@ -57,7 +56,7 @@ class TeaHouse extends React.Component {
   }
 
   renderAction() {
-    const { handleEndTurn, handleMoreOptionsClick } = this.props;
+    const { handleActionEnd, handleMoreOptionsClick } = this.props;
     const gambledNumber = this.state.gambledNumber;
     const ddMenuStyle = {
       backgroundColor: 'white',
@@ -91,7 +90,7 @@ class TeaHouse extends React.Component {
             <Dice done={this.handleDiceRoll} />
           }
         </div>
-        <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleEndTurn} disabled={this.state.rolled}  />
+        <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd} disabled={this.state.rolled}  />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );
