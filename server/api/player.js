@@ -4,6 +4,11 @@ const gamesRef = db.ref('games');
 
 const router = module.exports = require('express').Router();
 
+/** Game Logging */
+const util = require('../util');
+const log = util.log;
+const getCurrUnixTime = util.getCurrUnixTime;
+
 /**
  * Player routes
  * ...api/game/:gameId/player/...
@@ -26,6 +31,14 @@ router.post('/:playerId/end', (req, res, next) => {
     .set(req.game.playerIds[newIdx])
     .then(() => {
       res.sendStatus(204);
+      //game log
+      const newPlayerId = req.game.playerIds[newIdx];
+      log(req.game.id, {
+        type: 'TURN',
+        user: newPlayerId,
+        timestamp: getCurrUnixTime()
+      })
+
     })
     .catch(next);
 });
