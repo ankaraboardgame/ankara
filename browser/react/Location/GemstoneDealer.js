@@ -16,6 +16,7 @@ class GemstoneDealer extends React.Component {
     };
 
     this.handleBuyGem = this.handleBuyGem.bind(this);
+
   }
 
   componentDidMount (){
@@ -23,10 +24,9 @@ class GemstoneDealer extends React.Component {
   }
 
   handleBuyGem(){
-    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
     actionBuyRuby(gameId, playerId)
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
+      .then(() => handleActionEnd())
       .catch(console.error);
   }
 
@@ -42,7 +42,7 @@ class GemstoneDealer extends React.Component {
 
   renderAction() {
     const price = this.state.gemPrice;
-    const { userMoney, handleEndTurn, handleMoreOptionsClick } = this.props;
+    const { userMoney, handleActionEnd, handleMoreOptionsClick } = this.props;
     const style = { margin: 12 };
 
     return (
@@ -58,7 +58,7 @@ class GemstoneDealer extends React.Component {
               onTouchTap={this.handleBuyGem}
               disabled={userMoney < price}
             />
-          <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={handleEndTurn} />
+          <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={handleActionEnd} />
             <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
           </div>
       </div>

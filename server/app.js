@@ -64,7 +64,7 @@ app.use(function (err, req, res, next) {
 
 /** Game logger */
 const GameLogger = require('./GameLogger');
-// GameLogger();
+//GameLogger();
 
 /** Starting Server */
 

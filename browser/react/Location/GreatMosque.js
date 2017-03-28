@@ -10,14 +10,14 @@ import { ACTION } from '../Modal/turn_types';
 class GreatMosque extends React.Component {
   constructor(props) {
     super(props);
+
     this.handleBuyGreatMosqueTile = this.handleBuyGreatMosqueTile.bind(this);
   }
 
   handleBuyGreatMosqueTile(selectedTile, goodRequired){
-    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
     actionBuyMosqueTile(gameId, playerId, 'greatMosque', selectedTile, goodRequired)
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
+      .then(() => handleActionEnd())
       .catch(console.error)
   }
 
@@ -34,7 +34,7 @@ class GreatMosque extends React.Component {
   }
 
   renderAction() {
-    const { greatMosqueData, userWheelbarrow, abilities, playerId, handleEndTurn, handleMoreOptionsClick } = this.props;
+    const { greatMosqueData, userWheelbarrow, abilities, playerId, handleActionEnd, handleMoreOptionsClick } = this.props;
     const heirloomRequired = greatMosqueData.heirloom;
     const fruitRequired = greatMosqueData.fruit;
     const style = { margin: 12 };
@@ -78,7 +78,7 @@ class GreatMosque extends React.Component {
               }
             </div>
           </div>
-        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleEndTurn} />
+        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );

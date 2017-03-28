@@ -20,7 +20,6 @@ export default function (state = initialState, action) {
     default:
       return state;
   }
-
   return newState;
 }
 
@@ -92,4 +91,10 @@ export const getSmallMosqueData = state => {
 export const getLastRound = state => {
   const gameData = getGameData(state);
   return gameData && gameData.lastRound;
+};
+
+/** Game Log */
+export const getGameLogData = state => {
+  const gameId = getGameId(state);
+  return gameId && dataToJS(state.firebase, `gameLog/${gameId}`);
 };
