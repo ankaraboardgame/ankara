@@ -156,8 +156,10 @@ class ModalRootContainer extends React.Component {
   }
 
   renderSpecificTurnDialog() {
-    const { userId, userMoney, userBonusCards, gameId, merchants, dialog, payload, currentPosition, openModal, closeModal, nextDialog, userWheelbarrow } = this.props;
+
+    const { userId, userMoney, userBonusCards, greatMosqueData, smallMosqueData, gameId, merchants, dialog, payload, currentPosition, openModal, closeModal, nextDialog, userWheelbarrow } = this.props;
     const SpecificTurnDialog = Turn_Dialog_Components[dialog];
+
     return (
       <SpecificTurnDialog
         openModal={openModal}
@@ -170,6 +172,8 @@ class ModalRootContainer extends React.Component {
         merchants={merchants}
         userMoney={userMoney}
         userBonusCards={userBonusCards}
+        greatMosqueData={greatMosqueData}
+        smallMosqueData={smallMosqueData}
         nextDialog={nextDialog}
         userWheelbarrow={userWheelbarrow}
       />

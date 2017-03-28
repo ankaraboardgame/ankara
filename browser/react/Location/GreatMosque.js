@@ -11,31 +11,24 @@ class GreatMosque extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleBuyHeirloomTile = this.handleBuyHeirloomTile.bind(this);
-    this.handleBuyFruitTile = this.handleBuyFruitTile.bind(this);
-
+    this.handleBuyGreatMosqueTile = this.handleBuyGreatMosqueTile.bind(this);
   }
 
-  handleBuyHeirloomTile(){
+  handleBuyGreatMosqueTile(selectedTile, goodRequired){
     const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
-    actionBuyMosqueTile(gameId, playerId, 'greatMosque', 'heirloom')
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
-      .catch(console.error)
-  }
-
-  handleBuyFruitTile(){
-    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
-    actionBuyMosqueTile(gameId, playerId, 'greatMosque', 'fruit')
+    actionBuyMosqueTile(gameId, playerId, 'greatMosque', selectedTile, goodRequired)
       .then(() => closeModal())
       .then(() => handleEndTurn())
       .catch(console.error)
   }
 
   render() {
+    const { greatMosqueData } = this.props;
+    const tile1 = greatMosqueData.heirloom;
+    const tile2 = greatMosqueData.fruit;
     return (
       <div>
-        <img src={`images/locations/great_mosque.jpg`} id="img-location" />
+        <img src={`images/mosque/great/greatMosque_${tile1}_${tile2}.jpg`} id="img-location" />
         { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
       </div>
     );
@@ -57,7 +50,7 @@ class GreatMosque extends React.Component {
               {
                 userWheelbarrow.heirloom >= heirloomRequired && !abilities.heirloom.acquired ?
                 <div>
-                  <RaisedButton label="Buy Heirloom Mosque Tile" style={style} primary={true} onTouchTap={this.handleBuyHeirloomTile}  />
+                  <RaisedButton label="Buy Heirloom Mosque Tile" style={style} primary={true} onTouchTap={() => this.handleBuyGreatMosqueTile('heirloom', heirloomRequired)}  />
                 </div>
                 : !abilities.heirloom.acquired ?
                 <div>
@@ -73,7 +66,7 @@ class GreatMosque extends React.Component {
               {
                 userWheelbarrow.fruit >= fruitRequired && !abilities.fruit.acquired ?
                 <div>
-                  <RaisedButton label="Buy Fruit Mosque Tile" style={style} primary={true} onTouchTap={this.handleBuyFruitTile} />
+                  <RaisedButton label="Buy Fruit Mosque Tile" style={style} primary={true} onTouchTap={() => this.handleBuyGreatMosqueTile('fruit', fruitRequired)} />
                 </div>
                 : !abilities.fruit.acquired ?
                 <div>
@@ -86,7 +79,7 @@ class GreatMosque extends React.Component {
               }
             </div>
           </div>
-        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn} />
+        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleEndTurn} />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );

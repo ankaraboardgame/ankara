@@ -4558,7 +4558,7 @@ react-addons-test-utils@^15.4.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-addons-transition-group@^15.0.0, react-addons-transition-group@^15.3.1, react-addons-transition-group@^15.3.2:
+react-addons-transition-group@^15.0.0, react-addons-transition-group@^15.3.1:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react-addons-transition-group/-/react-addons-transition-group-15.4.2.tgz#4c42fa1c2ce024acab2924316c0f11268ded1af3"
   dependencies:
@@ -4683,7 +4683,7 @@ react-transitions@0.0.2:
     react-addons-transition-group "^15.3.1"
     react-dom "^15.3.1"
 
-react@^15.3.1, react@^15.3.2, react@^15.4.2:
+react@^15.3.1, react@^15.4.2:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
   dependencies:
