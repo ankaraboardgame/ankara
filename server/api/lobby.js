@@ -11,8 +11,8 @@ const router = express.Router();
 /************** Lobby Routes **************/
 
 router.post('/create', (req, res, next) => {
-  const { name } = req.body;
-  roomsRef.push({name})
+  const { name, creator } = req.body;
+  roomsRef.push({ name, creator })
     .then(() => res.sendStatus(204))
     .catch(next);
 });

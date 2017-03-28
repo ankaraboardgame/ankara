@@ -39,6 +39,8 @@ const animateStyles = StyleSheet.create({
 class AppContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.coins = new Audio('sounds/coins.wav');
+    this.coins = new Audio('sounds/chimes.mp3');
   }
 
   renderLoadingScreen() {
@@ -48,6 +50,18 @@ class AppContainer extends React.Component {
         <CircularProgress size={100} thickness={7} color="#ee2d00" style={{ border:"4px solid #de9d89", borderRadius: "200px" }}/>
       </div>
     );
+  }
+
+  /** For Audio */
+  componentWillReceiveProps(nextProps) {
+    if (this.props.merchants){
+      if (nextProps.merchants[nextProps.userId].wheelbarrow.money !== this.props.merchants[this.props.userId].wheelbarrow.money) {
+        this.coins.play();
+      }
+      if (nextProps.merchants[nextProps.userId].wheelbarrow.ruby !== this.props.merchants[this.props.userId].wheelbarrow.ruby) {
+        this.chimes.play();
+      }
+    }
   }
 
   render() {

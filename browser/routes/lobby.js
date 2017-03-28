@@ -4,8 +4,11 @@ import axios from 'axios';
 //   return axios.post(`/api/game/${gameId}`);
 // }
 
-export const createRoom = name => {
-  return axios.post(`/api/lobby/create`, { name });
+export const createRoom = (name, userId) => {
+  return axios.post(`/api/lobby/create`, {
+    name,
+    creator: userId
+  });
 }
 
 export const addToRoom = (roomId, userId, name) => {
@@ -13,7 +16,7 @@ export const addToRoom = (roomId, userId, name) => {
 }
 
 export const removeFromRoom = (roomId, userId) => {
-  return axios.post(`/api/lobby/leave`, { roomId, userId, name });
+  return axios.post(`/api/lobby/leave`, { roomId, userId });
 }
 
 export const deleteRoom = roomId => {

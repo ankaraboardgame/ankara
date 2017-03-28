@@ -7,7 +7,7 @@ import {
   dataToJS,
   pathToJS
 } from 'react-redux-firebase';
-import { fbDB, fbAuth, googleProvider } from '../../firebase';
+import { fbAuth } from '../../firebase';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
@@ -28,8 +28,7 @@ class LobbyContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    // local state
-    this.state = { joined: false };
+    this.state = { joined: null };
 
     this.removeUserFromRoom = this.removeUserFromRoom.bind(this);
     this.handleCreateRoom = this.handleCreateRoom.bind(this);
@@ -52,11 +51,11 @@ class LobbyContainer extends React.Component {
     });
   }
 
-  // create room after 'create room' button is clicked
   handleCreateRoom(event){
     event.preventDefault();
     const name = event.target[0].value;
-    createRoom(name);
+    const userId = this.props.userId;
+    createRoom(name, userId);
   }
 
   handleDeleteRoom(event, roomId){
@@ -64,34 +63,29 @@ class LobbyContainer extends React.Component {
     deleteRoom(roomId).catch(console.error);
   }
 
-  // add user to specific room after 'join room' button is clicked
   addCurrentUserToRoom(event, roomId, userId) {
-    event.preventDefault();
+    if (event) event.preventDefault();
     const name = event.target[0].value || 'Anonymous';
     addToRoom(roomId, userId, name)
     .then(() => this.setState({ joined: roomId }))
     .catch(console.error);
   }
 
-  // create room after 'create room' button is clicked
-  handleStartGame(event, roomId){
-    event.preventDefault();
-    const startGame = this.props.startGame;
-    const usersMap = this.props.roomData[roomId].users;
-    startGame(roomId, usersMap);
-  }
-
   removeUserFromRoom(evt, roomId, idToRemove) {
     evt.preventDefault();
     const leaveRoom = this.props.leaveRoom;
     const ownId = this.props.userId;
-    removeFromRoom()
+    removeFromRoom(roomId, idToRemove)
     .then(() => {
-        leaveRoom();
-        if (idToRemove === ownId) {
-          this.setState({joined: false})
-        }
+      if (idToRemove === ownId) {
+        this.setState({joined: null})
+      }
     });
+  }
+
+  handleStartGame(event, roomId, usersMap){
+    event.preventDefault();
+    this.props.startGame(roomId, usersMap); // dispatches to store
   }
 
   render() {
@@ -132,12 +126,11 @@ class LobbyContainer extends React.Component {
                 <Room
                   key={roomId}
                   roomId={roomId}
-                  roomName={roomData[roomId].name}
-                  handleLeaveRoom={this.removeUserFromRoom}
-                  handleJoinRoom={this.addCurrentUserToRoom}
-                  users={roomData[roomId].users}
+                  roomData={roomData[roomId]}
                   userId={this.props.userId}
                   joined={this.state.joined}
+                  handleLeaveRoom={this.removeUserFromRoom}
+                  handleJoinRoom={this.addCurrentUserToRoom}
                   handleStart={this.handleStartGame}
                   handleDeleteRoom={this.handleDeleteRoom}
                 />
