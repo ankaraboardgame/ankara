@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Ruslan+Display');
-@import url('https://fonts.googleapis.com/css?family=Ruslan+Display|UnifrakturCook:700');
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+body {
+  margin: 0;
+}
 
 html body {
   background-image: url('images/board-background.jpg');
@@ -28,7 +28,7 @@ p {
   background-size: 100% 100%;
   min-height: 100px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   align-content: center;
   justify-content: center;
@@ -47,6 +47,11 @@ p {
   align-content: center;
   justify-content: center;
   border-radius: 6px;
+}
+
+img.bonusCards {
+  width: 250px;
+  height: auto;
 }
 
 /* ------- GAME CONTAINER ---- */
@@ -179,6 +184,20 @@ table {
   margin-bottom: 20px;
 }
 
+#bonus-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#bonus-row img {
+  width: 190px;
+  margin: 10px;
+}
+
 #mosque-row {
   display: flex;
   justify-content: center;
@@ -271,6 +290,7 @@ table {
     box-sizing: border-box;
     cursor: default;
     border-radius: 4px;
+    transition: opacity 2s ease-in;
 }
 
 /* -------- LOBBY ------- */
@@ -386,6 +406,17 @@ table {
   -moz-box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
   box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
   border-radius: 6px;
+  transition: all .2s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+}
+
+#cell-container:hover {
+  transform: scale(1.01);
+  -webkit-transform: scale(1.01);
+  -moz-tratransformnsition: scale(1.01);
+  -o-transform: scale(1.01);
 }
 
 .img-location {
@@ -522,8 +553,18 @@ footer .badge {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
   height: 100vh;
+}
+
+#progress-text {
+  text-align: center;
+  color: #cccccc;
+  font-family: Garamond;
+  font-variant: small-caps;
+  margin-bottom: 30px;
+  font-size: 28px;
+  text-shadow: 3px 2px 3px rgba(0, 0, 0, 0.85);
 }
 
 #dash-footer {
@@ -636,4 +677,34 @@ table tr:nth-child(2n) {
   font-family: Garamond;
   font-variant: small-caps;
   text-align: left;
+}
+
+/* ------- Transitions ---------- */
+.modal-anim-leave {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.2s;
+}
+
+.modal-anim-leave.modal-anim-leave-active {
+    opacity: 0.00;
+    transform: scale(0.7);
+}
+
+.modal-anim-appear {
+  opacity: 0.01;
+}
+
+.modal-anim-appear.modal-anim-appear-active {
+  opacity: 1;
+  transition: opacity .2s ease-in;
+}
+
+.board-anim-appear {
+  opacity: 0.01;
+}
+
+.board-anim-appear.board-anim-appear-active {
+  opacity: 1;
+  transition: opacity 2s ease-in;
 }

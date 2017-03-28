@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { mapCoordToLocation } from '../../utils';
+import { mapCoordToLocation } from '../../utils/board';
 
-const Cell = props => {
+const Cell = (props) => {
   const tile = mapCoordToLocation(props.coords);
     if (tile === 'LARGE_MARKET') {
       return renderLargeMarketTiles(props);
@@ -16,7 +16,7 @@ const Cell = props => {
 }
 export default Cell;
 
-function renderOtherTiles(props) {
+function renderOtherTiles({ name, coords, handleOnClick }) {
   return (
     <div
       style={{
@@ -24,16 +24,15 @@ function renderOtherTiles(props) {
         display: 'flex',
         flexDirection: 'column'
       }}
-      onClick={props.handleOnClick}
+      onClick={handleOnClick}
     >
-      <img src={`images/locations/${props.name}.jpg`} className="img-location" />
-      <text className="cell-text">{props.coords}</text>
+      <img src={`images/locations/${name}.jpg`} className="img-location"/>
+      <text className="cell-text">{coords}</text>
     </div>
   );
 }
 
-function renderGemstoneDealerTile(props) {
-  const currentPrice = props.gamesRef.gemstoneDealer;
+function renderGemstoneDealerTile({ gemstoneDealerData, coords, handleOnClick }) {
   return (
     <div
       style={{
@@ -41,17 +40,17 @@ function renderGemstoneDealerTile(props) {
         display: 'flex',
         flexDirection: 'column'
       }}
-      onClick={props.handleOnClick}
+      onClick={handleOnClick}
     >
-      <img src={`images/locations/gemstone_dealer_${currentPrice}.png`} className="img-location" />
-      <text className="cell-text">{props.coords}</text>
+      <img src={`images/locations/gemstone_dealer_${gemstoneDealerData}.png`} className="img-location" />
+      <text className="cell-text">{coords}</text>
     </div>
   );
 }
 
-function renderLargeMarketTiles(props) {
-  const currentMarketIdx = props.gamesRef.largeMarket.currentMarketIdx;
-  const currentDemandTile = props.gamesRef.largeMarket.demandTiles[currentMarketIdx];
+function renderLargeMarketTiles({ handleOnClick, coords, largeMarketData }) {
+  const currentMarketIdx = largeMarketData.currentMarketIdx;
+  const currentDemandTile = largeMarketData.demandTiles[currentMarketIdx];
 
   return (
     <div
@@ -60,17 +59,17 @@ function renderLargeMarketTiles(props) {
           display: 'flex',
           flexDirection: 'column'
         }}
-        onClick={props.handleOnClick}
+        onClick={handleOnClick}
       >
-        <img src={`images/market/large/${currentDemandTile.img}`} className="img-location" />
-        <text className="cell-text">{props.coords}</text>
+        <img src={`images/market/large/${currentDemandTile.img}`} className="img-location"/>
+        <text className="cell-text">{coords}</text>
     </div>
   );
 }
 
-function renderSmallMarketTiles(props) {
-  const currentMarketIdx = props.gamesRef.smallMarket.currentMarketIdx;
-  const currentDemandTile = props.gamesRef.smallMarket.demandTiles[currentMarketIdx];
+function renderSmallMarketTiles({ handleOnClick, coords, smallMarketData }) {
+  const currentMarketIdx = smallMarketData.currentMarketIdx;
+  const currentDemandTile = smallMarketData.demandTiles[currentMarketIdx];
 
   return (
     <div
@@ -79,10 +78,10 @@ function renderSmallMarketTiles(props) {
         display: 'flex',
         flexDirection: 'column'
       }}
-      onClick={props.handleOnClick}
+      onClick={handleOnClick}
     >
       <img src={`images/market/small/${currentDemandTile.img}`} className="img-location"/>
-      <text className="cell-text">{props.coords}</text>
+      <text className="cell-text">{coords}</text>
     </div>
   );
 }

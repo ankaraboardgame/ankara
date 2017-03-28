@@ -6,7 +6,6 @@ export const connectToSession = (userId) => {
 };
 
 export const startGame = (userId) => {
-  console.log('startGame axios', userId);
   axios.post(`/api/${userId}/game`)
   .then(res => res.data)
   .then(data => {

@@ -1,23 +1,19 @@
 import React from 'react';
-import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { firebaseConnect } from 'react-redux-firebase'
 
 import CircularProgress from 'material-ui/CircularProgress';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { fadeInDown, fadeInDownBig, zoomIn, shake } from 'react-animations';
+import { StyleSheet, css } from 'aphrodite';
 
 import BoardContainer from './Board/BoardContainer';
 import FooterContainer from './Footer/FooterContainer';
-import NotificationComponent from './Notification/NotificationComponent';
-import {
-  firebaseConnect,
-  isLoaded,
-  isEmpty,
-  dataToJS
-} from 'react-redux-firebase'
 import ModalRootContainer from './Modal/ModalRootContainer';
+
 import DisplayWinner from './TurnDialogs/DisplayWinner';
 import LastTurn from './TurnDialogs/LastTurn';
-
-import PlayerMenu from './PlayerMenu/PlayerButtons';
+import PlayerButtons from './PlayerMenu/PlayerButtons';
 
 // PLUGIN required for Material-UI. Provides an onTouchTap() event handler.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -25,58 +21,72 @@ injectTapEventPlugin();
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+/** ----------- Selectors ----------- */
+import { getGameId, getGameMerchants, getPlayerTurn, getLastRound } from '../redux/reducers/game-reducer';
+import { getUserId } from '../redux/reducers/user-reducer';
+
+const animateStyles = StyleSheet.create({
+  fadeInDown: {
+    animationName: fadeInDown,
+    animationDuration: '1s'
+  },
+  shake: {
+    animationName: shake,
+    animationDuration: '1s'
+  }
+});
+
 class AppContainer extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  render() {
-    const gamesRef = this.props.gamesRef;
-    const gameLog = this.props.gameLog;
-    const currentUserId = this.props.user && this.props.user.uid;
+  renderLoadingScreen() {
+    return (
+      <div id="circular-progress">
+        <text id="progress-text">Loading your game board...</text>
+        <CircularProgress size={100} thickness={7} color="#ee2d00" style={{ border:"4px solid #de9d89", borderRadius: "200px" }}/>
+      </div>
+    );
+  }
 
+  render() {
+    const { userId, merchants, playerTurn, lastRound } = this.props;
     return (
       <MuiThemeProvider>
         {
-          gamesRef && this.props.user ?
+          merchants && userId ?
           <div id="game-container">
-            <PlayerMenu gamesRef={gamesRef} />
-            { gamesRef.lastRound ? <h3> LAST ROUND</h3> : null}
+            <PlayerButtons />
+            { lastRound ? <h3> LAST ROUND</h3> : null}
             <div id="app-container">
-              <img src={`images/Constantinople-Title-2.png`} id="game-title" />
+              <img className={css(animateStyles.fadeInDown)} src={`images/Constantinople-Title-2.png`} id="game-title" />
               <BoardContainer />
-              <FooterContainer
-                clientId={currentUserId}
-                gameId={this.props.gameId}
-                gamesRef={gamesRef} />
-              <ModalRootContainer gamesRef={gamesRef} />
-              <NotificationComponent gameLog={gameLog} gameId={this.props.gameId} />
+              <FooterContainer />
+              <ModalRootContainer />
+              {/*<NotificationComponent />*/}
               {
-                gamesRef.lastRound && gamesRef.merchants[gamesRef.playerTurn].number === 0 ?
+                lastRound && merchants[playerTurn].number === 0 ?
                 <DisplayWinner
-                  merchants={gamesRef.merchants}
+                  merchants={merchants}
                 /> : null
               }
             </div>
-          </div> :
-          <div id="circular-progress">
-            <CircularProgress size={60} thickness={7} />
-          </div>
+          </div> : this.renderLoadingScreen()
         }
       </MuiThemeProvider>
     );
   }
 }
 
-const fbGameWrappedContainer = firebaseConnect(({ gameId }) => {
-  return [`games/${gameId}`, `gameLog/${gameId}`];
-})(AppContainer);
+const fbGameWrappedContainer = firebaseConnect(({ gameId }) => ([`games/${gameId}`, `gameLog/${gameId}`]))(AppContainer);
 
-const mapStateToProps = (state) => ({
-  user: state.user.user,
-  gameId: state.game.id,
-  gamesRef: dataToJS(state.firebase, `games/${state.game.id}`),
-  gameLog: dataToJS(state.firebase, `gameLog/${state.game.id}`),
-})
+const mapStateToProps = state => ({
+  gameId: getGameId(state),
+  userId: getUserId(state),
+  merchants: getGameMerchants(state),
+  playerTurn: getPlayerTurn(state),
+  lastRound: getLastRound(state)
+});
 
 export default connect(mapStateToProps)(fbGameWrappedContainer)

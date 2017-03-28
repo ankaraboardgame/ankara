@@ -19,22 +19,34 @@ const router = module.exports = require('express').Router();
  * Get five lira
  */
 router.post('/fiveLira', (req, res, next) => {
-  gamesRef.child(req.game.id)
+  const promiseToUseCard = gamesRef.child(req.game.id)
     .child(`merchants/${req.player.id}/wheelbarrow/money`)
-    .transaction(currentMoney => currentMoney + 5)
+    .transaction(currentMoney => currentMoney + 5);
+
+  const promiseToDiscard = gamesRef.child(req.game.id)
+    .child(`merchants/${req.player.id}/bonusCards/fiveLira`)
+    .transaction(currentFiveLiraCard => --currentFiveLiraCard)
+
+  Promise.all([promiseToUseCard, promiseToDiscard])
     .then(() => res.sendStatus(204))
     .catch(next);
 });
 
 /**
  * Get one good
- * sample req.body: { good: 'fruit' }
+ * sample req.params: { selectedGood: 'fruit' }
  */
-router.post('/oneGood', (req, res, next) => {
-  const good = req.body.good;
-  gamesRef.child(req.game.id)
+router.post('/oneGood/:selectedGood', (req, res, next) => {
+  const good = req.params.selectedGood;
+  const promiseToUseCard = gamesRef.child(req.game.id)
     .child(`merchants/${req.player.id}/wheelbarrow/${good}`)
     .transaction(count => ++count)
+
+  const promiseToDiscard = gamesRef.child(req.game.id)
+    .child(`merchants/${req.player.id}/bonusCards/oneGood`)
+    .transaction(currentOneGoodCard => --currentOneGoodCard)
+
+  Promise.all([promiseToUseCard, promiseToDiscard])
     .then(() => res.sendStatus(204))
     .catch(next);
 });

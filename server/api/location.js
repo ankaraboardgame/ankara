@@ -264,12 +264,11 @@ router.post('/teaHouse/:gamble/:diceRoll', (req, res, next) => {
 router.post('/caravansary/:bonusCardType', (req, res, next) => {
   const type = req.params.bonusCardType;
   gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/bonusCards`)
-    .push({ type })
+    .child(`merchants/${req.player.id}/bonusCards/${type}`)
+    .transaction(typeNum => typeNum + 1)
     .then(() => {
       return gamesRef.child(`${req.game.id}/caravansary/index`)
         .transaction(i => ++i)
-        .catch(next)
     })
     .then(() => {
       res.sendStatus(204);
