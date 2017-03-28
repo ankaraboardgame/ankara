@@ -80,9 +80,10 @@
     "enzyme": "^2.8.0",
     "firebase-server": "^0.9.1",
     "mockfirebase": "^0.12.0",
-    "supertest": "^3.0.0",
-    "supertest-as-promised": "^4.0.2",
+    "proxyquire": "^1.7.11",
     "react-addons-test-utils": "^15.4.2",
-    "sinon": "^2.1.0"
+    "sinon": "^2.1.0",
+    "supertest": "^3.0.0",
+    "supertest-as-promised": "^4.0.2"
   }
 }

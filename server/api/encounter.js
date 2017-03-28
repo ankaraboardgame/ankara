@@ -18,7 +18,9 @@ const getCurrUnixTime = util.getCurrUnixTime;
  *
  * preloaded on req:
  * req.game = specific game instance
- * req.player = the player hitting this router
+ * req.gameRef = ref to specific game in firebase
+ * req.player = the player hitting this route
+ * req.playerRef = ref to player in firebase
  */
 
 /**
@@ -38,40 +40,26 @@ router.post('/smuggler', (req, res, next) => {
     return next( new Error('Invalid params to smuggler route.') );
 
   } else if (trade === 'lira') {
-    const payPromise = gamesRef.child(req.game.id)
-      .child(`merchants/${req.player.id}/wheelbarrow/money`)
-      .transaction(function(currentMoney){
-        return currentMoney - 2;
-      });
-    const getGoodPromise = gamesRef.child(req.game.id)
-      .child(`merchants/${req.player.id}/wheelbarrow/${goodWanted}`)
-      .transaction(function(currGoodCount){
-        return currGoodCount + 1;
-      });
+    const payPromise = req.playerRef.child('wheelbarrow/money')
+      .transaction(money => money - 2);
+    const getGoodPromise = req.playerRef.child(`wheelbarrow/${goodWanted}`)
+      .transaction(count => ++count);
     promiseForTrade = Promise.all([payPromise, getGoodPromise]);
 
   } else {
-    const giveGoodPromise = gamesRef.child(req.game.id)
-      .child(`merchants/${req.player.id}/wheelbarrow/${trade}`)
-      .transaction(function(currGoodCount){
-        return currGoodCount - 1;
-      });
-    const getGoodPromise = gamesRef.child(req.game.id)
-      .child(`merchants/${req.player.id}/wheelbarrow/${goodWanted}`)
-      .transaction(function(currGoodCount){
-        return currGoodCount + 1;
-      });
+    const giveGoodPromise = req.playerRef.child(`wheelbarrow/${trade}`)
+      .transaction(count => --count);
+    const getGoodPromise = req.playerRef.child(`wheelbarrow/${goodWanted}`)
+      .transaction(count => ++count);
     promiseForTrade = Promise.all([giveGoodPromise, getGoodPromise]);
   }
 
   promiseForTrade
   .then(() => {
     // reassign smuggler position
-    return gamesRef.child(req.game.id)
-    .child('smuggler').child('coordinates')
-    .transaction(() => {
-      return getRandomPosition(4, 3);
-    });
+    return req.gameRef
+      .child('smuggler').child('coordinates')
+      .transaction(() => getRandomPosition(4, 3));
   })
   .then((val) => {
     res.sendStatus(204);
@@ -100,18 +88,13 @@ router.post('/merchant', (req, res, next) => {
   const promisesToPayMerchants =
     otherMerchantIds
       .map(otherId => { // promises for paying other merchants
-        return gamesRef.child(req.game.id)
+        return req.gameRef
           .child(`merchants/${otherId}/wheelbarrow/money`)
-          .transaction(function(currentMoney){
-            return currentMoney + 2;
-          });
+          .transaction(money => money + 2);
       })
       .concat( // promise for decrementing your money
-        gamesRef.child(req.game.id)
-        .child(`merchants/${req.player.id}/wheelbarrow/money`)
-        .transaction(function(currentMoney){
-          return currentMoney - 2 * otherMerchantIds.length;
-        })
+        req.req.playerRef.child('wheelbarrow/money')
+        .transaction(money => money - 2 * otherMerchantIds.length)
       )
   Promise.all(promisesToPayMerchants)
     .then(() => {

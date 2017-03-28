@@ -1,14 +1,24 @@
 import axios from 'axios';
 
-export const connectToSession = (userId) => {
-  console.log('axios', userId);
-  axios.put(`/api/${userId}/lobby/${userId}`)
-};
+// export const startGame = gameId => {
+//   return axios.post(`/api/game/${gameId}`);
+// }
 
-export const startGame = (userId) => {
-  axios.post(`/api/${userId}/game`)
-  .then(res => res.data)
-  .then(data => {
-    console.log('response from startGame axios', data);
-  })
+export const createRoom = (name, userId) => {
+  return axios.post(`/api/lobby/create`, {
+    name,
+    creator: userId
+  });
+}
+
+export const addToRoom = (roomId, userId, name) => {
+  return axios.post(`/api/lobby/join`, { roomId, userId, name });
+}
+
+export const removeFromRoom = (roomId, userId) => {
+  return axios.post(`/api/lobby/leave`, { roomId, userId });
+}
+
+export const deleteRoom = roomId => {
+  return axios.post(`api/lobby/${roomId}/delete`);
 }

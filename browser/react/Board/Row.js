@@ -2,6 +2,10 @@ import React from 'react';
 
 import CellContainer from './CellContainer';
 
+/** -------- Component ---------- */
+/**
+ * Creates cells for each location in the game
+*/
 const Row = ({ row }) => {
   return (
     <div id="row-container">

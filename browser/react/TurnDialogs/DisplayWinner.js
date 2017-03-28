@@ -20,15 +20,15 @@ class DisplayWinner extends React.Component {
   }
 
   render() {
-    const { merchants } = this.props;
+    const { playerMap, merchants } = this.props;
     const winner = whoIsWinner(merchants);
     return (
       <Modal>
         <div id="winner-container">
           <div id="winner-text-box">
-            <text id="winner-text">Winner is {winner.id}</text>
+            <text id="winner-text">Winner is {winner && playerMap[winner.id]}</text>
           </div>
-          <GameSummary merchants={merchants} />
+          <GameSummary merchants={merchants} playerMap={playerMap} />
           <div id="end-game-btn">
             <RaisedButton label="End Game" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndGame}  />
           </div>
@@ -38,8 +38,9 @@ class DisplayWinner extends React.Component {
   }
 }
 
-const mapStateToProps = (state, { merchants }) => ({
-  merchants: merchants
+const mapStateToProps = (state, { merchants, playerMap }) => ({
+  playerMap,
+  merchants
 });
 
 const mapDispatchToProps = dispatch => ({

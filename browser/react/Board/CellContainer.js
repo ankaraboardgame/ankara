@@ -19,6 +19,12 @@ import Assistant from '../Pieces/Assistant';
 import Smuggler from '../Pieces/Smuggler';
 
 /** ---------- Container ------------ */
+/**
+ * CellContainer wraps each cell component and handles:
+ *  * where to draw player/assistant/smuggler buttons
+ *  * cell highlighting to indicate possible moves for player
+ *  * drag and drop functionality
+ */
 
 class CellContainer extends React.Component {
   constructor(props) {
@@ -53,7 +59,9 @@ class CellContainer extends React.Component {
       coords
     } = this.props;
 
-    // player pieces
+    /**
+     * Read data for all players and draw their buttons
+     */
     const playerPieces = merchantsData ? Object.keys(merchantsData)
       .map( merchantId => {
         if ( merchantsData[merchantId].position.coordinates === coords) {
@@ -73,7 +81,9 @@ class CellContainer extends React.Component {
       .filter(Boolean)
       : [];
 
-    // assistant pieces
+    /**
+     * Read data for all assistants and draw their buttons
+     */
     let assistantPieces = [];
     if (merchantsData){
       for (let merchantId in merchantsData){
@@ -95,15 +105,24 @@ class CellContainer extends React.Component {
             number
           }
         })
-        .map(({ asstCoords, number }) => (<Assistant key={`${number}-${asstCoords}`} playerNum={number} />))
+        .map(({ asstCoords, number }) => (
+          <Assistant
+            key={`${number}-${asstCoords}`}
+            playerNum={number}
+          />
+        ))
     }
 
-    // smuggler piece
+    /**
+     * Read data for smuggler and draw its button
+     */
     const smugglerPiece = smuggler && (coords === smuggler.coordinates) && (
       <Smuggler key="smuggler" />
     )
 
-    // There should only be one merchant that matches current user
+    /**
+     * If it's the player's turn, dim the cells she cannot move to
+     */
     let activeStatus;
     let cellActive = cellActiveStatus(
           coords,
@@ -114,6 +133,10 @@ class CellContainer extends React.Component {
       activeStatus = { opacity: '0.2' };
     }
 
+    /**
+     * Connect each Cell as a drop-target (React drag-and-drop)
+     * and superimpose dives for player, smuggler, and assistants
+     */
     return connectDropTarget(
       <div id="cell-container" style={activeStatus}>
         <Cell
@@ -127,13 +150,13 @@ class CellContainer extends React.Component {
           smallMosqueData={smallMosqueData}
         />
         <div className="player-container">
-          { [...playerPieces] }
+          { playerPieces }
         </div>
         <div className="smuggler-container">
           { smugglerPiece }
         </div>
         <div className="assistant-container">
-          { [...assistantPieces] }
+          { assistantPieces }
         </div>
         { isOver && <div className="player-hover-overlay" /> }
       </div>

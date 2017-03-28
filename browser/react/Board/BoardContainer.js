@@ -19,6 +19,11 @@ const animateStyles = StyleSheet.create({
   }
 });
 
+/** -------- Container ---------- */
+/**
+ * Creates Board layout using Row units
+*/
+
 class BoardContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -42,6 +47,8 @@ class BoardContainer extends React.Component {
     );
   }
 }
+
+/** ----- High Order Component ------- */
 
 const mapStateToProps = state => ({
   board: getBoard(state),
