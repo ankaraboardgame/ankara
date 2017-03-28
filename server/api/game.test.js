@@ -6,7 +6,7 @@
 // var app = require('../app');
 // var agent = request.agent(app);
 
-var { gamesRef } = require('../../tests/firebaseTestServer.js');
+// var { gamesRef } = require('../../tests/firebaseTestServer.js');
 
 
 /*********** Game Route Tests ***********************/
@@ -23,9 +23,9 @@ var { gamesRef } = require('../../tests/firebaseTestServer.js');
 //     }
 
   /** Clear the database before beginning each run */
-  beforeEach(function () {
-    return gamesRef.set({})
-  });
+  // beforeEach(function () {
+  //   return gamesRef.set({})
+  // });
 
   /** Empty the db after each spec */
   // afterEach(function () {
