@@ -56,7 +56,10 @@ function Merchant (id, i){
     count: 4,
     out: {}
   };
-  this.bonusCards = {};
+  this.bonusCards = {
+    oneGood: 0,
+    fiveLira: 0
+  };
   this.wheelbarrow = {
     fabric: 0,
     spice: 0,

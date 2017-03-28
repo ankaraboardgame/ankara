@@ -42,7 +42,7 @@ export function canTalkToSmuggler(currentUserId, merchantsObj) {
 // Smuggler encounter
 export function handleSmuggler() {
   const currentPosition = this.props.currentPosition;
-  const smuggler = this.props.gamesRef.smuggler;
+  const smuggler = this.props.gameData.smuggler;
   if (smugglerOnLocation(currentPosition, smuggler)) {
     this.props.closeModal();
     this.props.openModal(mapCoordToLocation(currentPosition), { currentPosition: currentPosition, dialog: 'smuggler' });
