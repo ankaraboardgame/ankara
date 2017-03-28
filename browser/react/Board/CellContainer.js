@@ -11,7 +11,7 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 
 /** ---------- Selectors ----------- */
 import { getUserId, getUserData, getUserPosition, getUserAssistants } from '../../redux/reducers/user-reducer';
-import { getGameId, getGameMerchants, getSmuggler, getPlayerTurn, getLargeMarketData, getSmallMarketData, getGemstoneDealerData } from '../../redux/reducers/game-reducer';
+import { getGameId, getGameMerchants, getSmuggler, getPlayerTurn, getLargeMarketData, getSmallMarketData, getGemstoneDealerData, getGreatMosqueData, getSmallMosqueData } from '../../redux/reducers/game-reducer';
 
 import Cell from './Cell';
 import Player from '../Pieces/Player';
@@ -47,6 +47,8 @@ class CellContainer extends React.Component {
       largeMarketData,
       smallMarketData,
       gemstoneDealerData,
+      greatMosqueData,
+      smallMosqueData,
       name,
       coords
     } = this.props;
@@ -121,6 +123,8 @@ class CellContainer extends React.Component {
           largeMarketData={largeMarketData}
           smallMarketData={smallMarketData}
           gemstoneDealerData={gemstoneDealerData}
+          greatMosqueData={greatMosqueData}
+          smallMosqueData={smallMosqueData}
         />
         <div className="player-container">
           { [...playerPieces] }
@@ -168,6 +172,8 @@ const mapStateToProps = (state, { name, coords, cellPossibleMoves }) => ({
   largeMarketData: getLargeMarketData(state),
   smallMarketData: getSmallMarketData(state),
   gemstoneDealerData: getGemstoneDealerData(state),
+  greatMosqueData: getGreatMosqueData(state),
+  smallMosqueData: getSmallMosqueData(state),
   name: name,
   coords: coords,
   possibleMoves: cellPossibleMoves,
