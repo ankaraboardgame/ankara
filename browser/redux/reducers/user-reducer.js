@@ -54,6 +54,14 @@ export const getUserWheelbarrow = state => {
   return getUserData(state).wheelbarrow;
 };
 
+export const getUserAbilities = state => {
+  return getUserData(state).abilities;
+};
+
+export const getUserMoney = state => {
+  return getUserWheelbarrow(state).money;
+};
+
 export const getUserPosition = state => {
   return getUserData(state).position;
 };

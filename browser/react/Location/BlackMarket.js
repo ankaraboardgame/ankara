@@ -1,52 +1,26 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import { dataToJS } from 'react-redux-firebase';
 
-import Modal from '../Modal/Modal';
 import Dice from '../Pieces/Dice';
 
-import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionBlackMarket } from '../../routes/location';
-import { endTurn } from '../../routes/move';
 
-import { whichDialog } from '../../utils';
-import { handleMerchant } from '../../utils/otherMerchants.js';
-import { handleAssistant } from '../../utils/assistants.js';
-import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+/** -------- Constants -------- */
+import { ACTION } from '../Modal/turn_types';
 
-/** -------- Selectors -------- */
-import { getGameId } from '../../redux/reducers/game-reducer';
-import { getUserId } from '../../redux/reducers/user-reducer'; 
-
-/****************** Component ********************/
-
+/** -------- Component -------- */
 class BlackMarket extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       selectedGood: null,
-      smuggler: {
-        goodWanted: null,
-        trade: null
-      }
+      rolled: false
     }
 
     this.handleSelectGood = this.handleSelectGood.bind(this);
     this.handleDiceRoll = this.handleDiceRoll.bind(this);
     this.handleGetBlackMarketGoodsEndTurn = this.handleGetBlackMarketGoodsEndTurn.bind(this);
-    this.handleEndTurn = this.handleEndTurn.bind(this);
-    this.handleAssistant = handleAssistant.bind(this);
-    this.handleMerchant = handleMerchant.bind(this);
-    this.whichDialog = whichDialog.bind(this);
-
-    /** smuggler functions */
-    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
-    this.handleSmuggler = handleSmuggler.bind(this);
-    this.talkToSmuggler = talkToSmuggler.bind(this);
-    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
-    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
   }
 
   handleSelectGood (evt, good){
@@ -54,6 +28,7 @@ class BlackMarket extends React.Component {
   }
 
   handleDiceRoll (rollSum){
+    this.setState({ rolled: true })
     const good = this.state.selectedGood;
     setTimeout(() => {
       this.handleGetBlackMarketGoodsEndTurn(good, rollSum)
@@ -61,29 +36,19 @@ class BlackMarket extends React.Component {
   }
 
   handleGetBlackMarketGoodsEndTurn (selectedGood, rollSum){
-    actionBlackMarket(this.props.gameId, this.props.playerId, selectedGood, rollSum)
-      .then(() => this.handleSmuggler())
-      .catch(console.error);
-  }
-
-  // Ends Turn
-  handleEndTurn() {
-    endTurn(this.props.gameId, this.props.playerId)
-      .then(() => this.props.closeModal())
+    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    actionBlackMarket(gameId, playerId, selectedGood, rollSum)
+      .then(() => closeModal())
+      .then(() => handleEndTurn())
       .catch(console.error);
   }
 
   render() {
-
-    const onClose = this.props.payload.zoom ? this.props.closeModal : null;
-
     return (
-      <Modal onClose={onClose}>
-        <div id="location-modal-container">
-          <img src={`images/locations/black_market.jpg`} id="img-location" />
-          { this.whichDialog(this.props.payload) }
-        </div>
-      </Modal>
+      <div>
+        <img src={`images/locations/black_market.jpg`} id="img-location" />
+        { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
+      </div>
     );
   }
 
@@ -119,24 +84,17 @@ class BlackMarket extends React.Component {
               selectedGood &&
               <Dice done={this.handleDiceRoll} />
             }
-            <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+            <RaisedButton
+              label="End my turn"
+              style={style}
+              primary={true}
+              onTouchTap={this.props.handleEndTurn}
+              disabled={this.state.rolled}
+            />
         </div>
       </div>
     );
   }
-}
+};
 
-const mapStateToProps = state => ({
-  gameId: getGameId(state),
-  playerId: getUserId(state),
-  payload: state.modal.payload,
-  currentPosition: state.modal.payload.currentPosition,
-  merchants: dataToJS(state.firebase, `games/${state.game.id}/merchants`)
-})
-
-const mapDispatchToProps = dispatch => ({
-  closeModal: () => dispatch(hideModal()),
-  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(BlackMarket);
+export default BlackMarket;

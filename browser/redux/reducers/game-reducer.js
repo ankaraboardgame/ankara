@@ -26,59 +26,70 @@ export default function (state = initialState, action) {
 
 /** -------- Selectors ----------- */
 export const getGameId = state => {
-  if (state.game) return state.game.id;
-  else return null;
+  return state.game && state.game.id;
 };
 
 export const getGameData = state => {
   const gameId = getGameId(state);
-  if (gameId) return dataToJS(state.firebase, `games/${gameId}`);
-  else return null;
+  return gameId && dataToJS(state.firebase, `games/${gameId}`);
 };
 
 export const getGameMerchants = state => {
-  if (getGameData(state)) return getGameData(state).merchants;
-  else return null;
+  const gameData = getGameData(state);
+  return gameData && gameData.merchants;
 };
 
 export const getSmuggler = state => {
-  if (getGameData(state)) return getGameData(state).smuggler;
-  else return null;
+  const gameData = getGameData(state);
+  return gameData && gameData.smuggler;
 };
 
 export const getPlayerIds = state => {
-  if (getGameData(state)) return getGameData(state).playerIds;
-  else return null;
+  const gameData = getGameData(state);
+  return gameData && gameData.playerIds;
 };
 
 export const getPlayerTurn = state => {
-  if (getGameData(state)) return getGameData(state).playerTurn;
-  else return null;
+  const gameData = getGameData(state);
+  return gameData && gameData.playerTurn;
 };
 
 export const getPlayerMap = state => {
-  if (getGameData(state)) return getGameData(state).playerMap;
-  else return null;
+  const gameData = getGameData(state);
+  return gameData && gameData.playerMap;
 };
 
 export const getLargeMarketData = state => {
-  if (getGameData(state)) return getGameData(state).largeMarket;
-  else return null;
+  const gameData = getGameData(state);
+  return gameData && gameData.largeMarket;
 };
 
 export const getSmallMarketData = state => {
-  const gameState = getGameData(state);
-  return gameState && gameState.smallMarket
-  // if (getGameData(state)) return getGameData(state).smallMarket;
-  // else return null;
+  const gameData = getGameData(state);
+  return gameData && gameData.smallMarket;
 };
 
 export const getGemstoneDealerData = state => {
-  if (getGameData(state)) return getGameData(state).gemstoneDealer;
-  else return null;
+  const gameData = getGameData(state);
+  return gameData && gameData.gemstoneDealer;
+};
+
+export const getCaravansaryData = state => {
+  const gameData = getGameData(state);
+  return gameData && gameData.caravansary;
+};
+
+export const getGreatMosqueData = state => {
+  const gameData = getGameData(state);
+  return gameData && gameData.greatMosque;
+};
+
+export const getSmallMosqueData = state => {
+  const gameData = getGameData(state);
+  return gameData && gameData.smallMosque;
 };
 
 export const getLastRound = state => {
-  if (getGameData(state)) return getGameData(state).lastRound;
-  else return null;
+  const gameData = getGameData(state);
+  return gameData && gameData.lastRound;
 };

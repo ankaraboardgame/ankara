@@ -1,56 +1,28 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import { dataToJS } from 'react-redux-firebase';
 
-import Modal from '../Modal/Modal';
 import Dice from '../Pieces/Dice';
 
-import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionTeaHouse } from '../../routes/location';
-import { endTurn } from '../../routes/move';
 
-import { whichDialog } from '../../utils';
-import { handleMerchant } from '../../utils/otherMerchants.js';
-import { handleAssistant } from '../../utils/assistants.js';
-import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
+/** -------- Constants -------- */
+import { ACTION } from '../Modal/turn_types';
 
-/****************** Component ********************/
+/** -------- Component -------- */
 class TeaHouse extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       gambledNumber: null,
-      smuggler: {
-        goodWanted: null,
-        trade: null
-      }
+      rolled: false
     };
 
     this.handleChooseNumber = this.handleChooseNumber.bind(this);
     this.handleDiceRoll = this.handleDiceRoll.bind(this);
     this.handleTeaHouseEndTurn = this.handleTeaHouseEndTurn.bind(this);
-    this.handleEndTurn = this.handleEndTurn.bind(this);
-    this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = handleAssistant.bind(this);
-    this.handleMerchant = handleMerchant.bind(this);
-
-    /** smuggler functions */
-    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
-    this.handleSmuggler = handleSmuggler.bind(this);
-    this.talkToSmuggler = talkToSmuggler.bind(this);
-    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
-    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
-  }
-
-  // Ends Turn
-  handleEndTurn() {
-    endTurn(this.props.gameId, this.props.playerId)
-      .then(() => this.props.closeModal())
-      .catch(console.error);
   }
 
   handleChooseNumber (evt, good){
@@ -59,6 +31,7 @@ class TeaHouse extends React.Component {
   }
 
   handleDiceRoll (rollSum){
+    this.setState({ rolled: true })
     const gamble = this.state.gambledNumber;
     setTimeout(() => {
       this.handleTeaHouseEndTurn(gamble, rollSum)
@@ -66,31 +39,24 @@ class TeaHouse extends React.Component {
   }
 
   handleTeaHouseEndTurn (gamble, rollSum){
-    actionTeaHouse(this.props.gameId, this.props.playerId, gamble, rollSum)
-      .then(this.handleSmuggler)
-      .catch(console.error);
-  }
-
-  handleEndTurn (){
-    endTurn(this.props.gameId, this.props.playerId)
-      .then(() => this.props.closeModal())
+    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    actionTeaHouse(gameId, playerId, gamble, rollSum)
+      .then(() => closeModal())
+      .then(() => handleEndTurn())
       .catch(console.error);
   }
 
   render() {
-    const onClose = this.props.payload.zoom ? this.props.closeModal : null;
-
     return (
-      <Modal onClose={onClose}>
-        <div id="location-modal-container">
-          <img src={`images/locations/tea_house.jpg`} id="img-location" />
-          { this.whichDialog(this.props.payload) }
-        </div>
-      </Modal>
+      <div>
+        <img src={`images/locations/tea_house.jpg`} id="img-location" />
+        { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
+      </div>
     );
   }
 
   renderAction() {
+    const { handleEndTurn } = this.props;
     const gambledNumber = this.state.gambledNumber;
     const ddMenuStyle = {
       backgroundColor: 'white',
@@ -123,23 +89,16 @@ class TeaHouse extends React.Component {
               <Dice done={this.handleDiceRoll} />
             }
           </div>
-          <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={this.handleEndTurn}  />
+          <RaisedButton
+            label="No thanks, I'll end my turn"
+            style={{ margin: 12 }}
+            primary={true}
+            onTouchTap={handleEndTurn}
+            disabled={this.state.rolled}
+          />
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  gameId: state.game.id,
-  playerId: state.user.user.uid,
-  payload: state.modal.payload,
-  currentPosition: state.modal.payload.currentPosition,
-  merchants: dataToJS(state.firebase, `games/${state.game.id}/merchants`)
-});
-
-const mapDispatchToProps = dispatch => ({
-  closeModal: () => dispatch(hideModal()),
-  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TeaHouse);
+export default TeaHouse;

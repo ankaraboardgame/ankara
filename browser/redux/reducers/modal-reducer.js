@@ -33,6 +33,12 @@ export const getModalType = state => (state.modal.modalType);
 
 export const getModalPayload = state => (state.modal.payload);
 
-export const getModalCurrentPosition = state => (state.modal.payload.currentPosition);
+export const getModalCurrentPosition = state => {
+  if (state.modal.payload && state.modal.payload.currentPosition) return state.modal.payload.currentPosition;
+  else return null;
+}
 
-export const getModalDialog = state => (state.modal.payload.dialog);
+export const getModalDialog = state => {
+  if (state.modal.payload && state.modal.payload.dialog) return state.modal.payload.dialog;
+  else return null;
+};

@@ -5,7 +5,7 @@ import { DropTarget } from 'react-dnd';
 import { dataToJS } from 'react-redux-firebase';
 
 import { cellActiveStatus, canMovePlayer, mapCoordToLocation } from '../../utils';
-import { openAssistantDialog } from '../../utils/assistants.js'
+import { openAssistantDialog } from '../../utils/assistants.js';
 import { movePlayer } from '../../routes/move';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
 

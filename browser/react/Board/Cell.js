@@ -8,6 +8,8 @@ const Cell = (props) => {
       return renderLargeMarketTiles(props);
     } else if (tile === 'SMALL_MARKET') {
       return renderSmallMarketTiles(props);
+    } else if (tile === 'GEMSTONE_DEALER') {
+      return renderGemstoneDealerTile(props);
     } else {
       return renderOtherTiles(props);
     }
@@ -28,7 +30,23 @@ function renderOtherTiles({ name, coords, handleOnClick }) {
       <text className="cell-text">{coords}</text>
     </div>
   );
-};
+}
+
+function renderGemstoneDealerTile({ gemstoneDealerData, coords, handleOnClick }) {
+  return (
+    <div
+      style={{
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+      onClick={handleOnClick}
+    >
+      <img src={`images/locations/gemstone_dealer_${gemstoneDealerData}.png`} className="img-location" />
+      <text className="cell-text">{coords}</text>
+    </div>
+  );
+}
 
 function renderLargeMarketTiles({ handleOnClick, coords, largeMarketData }) {
   const currentMarketIdx = largeMarketData.currentMarketIdx;
@@ -47,7 +65,7 @@ function renderLargeMarketTiles({ handleOnClick, coords, largeMarketData }) {
         <text className="cell-text">{coords}</text>
     </div>
   );
-};
+}
 
 function renderSmallMarketTiles({ handleOnClick, coords, smallMarketData }) {
   const currentMarketIdx = smallMarketData.currentMarketIdx;
@@ -66,4 +84,4 @@ function renderSmallMarketTiles({ handleOnClick, coords, smallMarketData }) {
       <text className="cell-text">{coords}</text>
     </div>
   );
-};
+}

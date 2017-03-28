@@ -24,7 +24,7 @@ let serviceAccount = {
 };
 
 if(!serviceAccount.private_key){
-  serviceAccount = require('../secret.firebase.env')
+  serviceAccount = require('../secret.firebase.env');
 }
 
 // Initialize the app with a service account, granting admin privileges
