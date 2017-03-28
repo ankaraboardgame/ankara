@@ -1,21 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { dataToJS } from 'react-redux-firebase';
-
-import Modal from '../Modal/Modal';
-
-import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import RaisedButton from 'material-ui/RaisedButton';
+
 import { actionTradeGoods, actionChangeTile } from '../../routes/location';
-import { endTurn } from '../../routes/move';
 
-import { whichDialog, handleEndTurn, beforeEndTurn } from '../../utils';
-import { handleMerchant } from '../../utils/otherMerchants.js';
-import { handleAssistant } from '../../utils/assistants.js';
-import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
-import { handleMoreOptionsClick, handleGoBackClick, handleBonusFiveLiraClick, handleBonusOneGoodClick, handleBonusGood } from '../../utils/MoreOptions';
+/** -------- Constants -------- */
+import { ACTION } from '../Modal/turn_types';
 
-/****************** Component ********************/
+/** -------- Component -------- */
 class LargeMarket extends React.Component {
   constructor(props) {
     super(props);
@@ -25,84 +16,40 @@ class LargeMarket extends React.Component {
       fabric: 0,
       heirloom: 0,
       spice: 0,
-      tradeOffer: false,
-      smuggler: {
-        goodWanted: null,
-        trade: null
-      }
+      tradeOffer: false
     };
 
     this.handleTradeGood = this.handleTradeGood.bind(this);
     this.handleGoodClick = this.handleGoodClick.bind(this);
-    this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = handleAssistant.bind(this);
-    this.handleMerchant = handleMerchant.bind(this);
-    this.handleEndTurn = handleEndTurn.bind(this);
-    this.beforeEndTurn = beforeEndTurn.bind(this);
     this.handleTradeOfferReset = this.handleTradeOfferReset.bind(this);
-
-    /** smuggler functions */
-    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
-    this.handleSmuggler = handleSmuggler.bind(this);
-    this.talkToSmuggler = talkToSmuggler.bind(this);
-    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
-    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
-
-    /** access more options */
-    this.handleMoreOptionsClick = handleMoreOptionsClick.bind(this);
-    this.handleGoBackClick = handleGoBackClick.bind(this);
-    this.handleBonusFiveLiraClick = handleBonusFiveLiraClick.bind(this);
-    this.handleBonusOneGoodClick = handleBonusOneGoodClick.bind(this);
-    this.handleBonusGood = handleBonusGood.bind(this);
-  }
-
-  // Ends Turn
-  handleEndTurn() {
-    endTurn(this.props.gameId, this.props.playerId)
-      .then(() => this.props.closeModal())
-      .catch(console.error);
   }
 
   handleTradeGood(){
     const playerOffer = this.state;
-    const currentMarketIdx = this.props.gamesRef.largeMarket.currentMarketIdx;
+    const { largeMarketData, gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const currentMarketIdx = largeMarketData.currentMarketIdx;
 
-    actionTradeGoods(this.props.gameId, this.props.playerId, 'largeMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
+    actionTradeGoods(gameId, playerId, 'largeMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
       .then(() => {
-        actionChangeTile(this.props.gameId, this.props.playerId, 'largeMarket', currentMarketIdx)
+        actionChangeTile(gameId, playerId, 'largeMarket', currentMarketIdx)
       })
-      .then(this.beforeEndTurn)
+      .then(() => closeModal())
+      .then(() => handleEndTurn())
       .catch(console.error)
   }
 
   handleGoodClick(event){
+    const { largeMarketData, userWheelbarrow } = this.props;
     const good = event.target.id;
-    const currentMarketIdx = this.props.gamesRef.largeMarket.currentMarketIdx;
-    const currentDemandTile = this.props.gamesRef.largeMarket.demandTiles[currentMarketIdx];
-    const currentWheelbarrow = this.props.gamesRef.merchants[this.props.playerId].wheelbarrow;
+    const currentMarketIdx = largeMarketData.currentMarketIdx;
+    const currentDemandTile = largeMarketData.demandTiles[currentMarketIdx];
     let quantity;
-    if(this.state[good] < currentDemandTile[good] && this.state[good] < currentWheelbarrow[good]){
+    if(this.state[good] < currentDemandTile[good] && this.state[good] < userWheelbarrow[good]){
       this.setState({
         [event.target.id]: ++this.state[event.target.id],
         tradeOffer: true
       })
     }
-  }
-
-
-  render() {
-    const currentMarketIdx = this.props.gamesRef.largeMarket.currentMarketIdx;
-    const currentDemandTile = this.props.gamesRef.largeMarket.demandTiles[currentMarketIdx];
-    const onClose = this.props.payload.zoom ? this.props.closeModal : null;
-
-    return (
-      <Modal onClose={onClose}>
-        <div id="location-modal-container">
-          <img src={`images/market/large/${currentDemandTile.img}`} id="img-location" />
-          { this.whichDialog(this.props.payload) }
-        </div>
-      </Modal>
-    );
   }
 
   handleTradeOfferReset(){
@@ -115,7 +62,21 @@ class LargeMarket extends React.Component {
     })
   }
 
+  render() {
+    const { largeMarketData } = this.props;
+    const currentMarketIdx = largeMarketData.currentMarketIdx;
+    const currentDemandTile = largeMarketData.demandTiles[currentMarketIdx];
+
+    return (
+      <div>
+        <img src={`images/market/large/${currentDemandTile.img}`} id="img-location" />
+        { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
+      </div>
+    );
+  }
+
   renderAction() {
+    const { handleEndTurn, handleMoreOptionsClick } = this.props;
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-full">
@@ -133,23 +94,10 @@ class LargeMarket extends React.Component {
           <RaisedButton label="Reset" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
         </div>
         <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
-        <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
+        <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  gameId: state.game.id,
-  playerId: state.user.user.uid,
-  payload: state.modal.payload,
-  currentPosition: state.modal.payload.currentPosition,
-  merchants: dataToJS(state.firebase, `games/${state.game.id}/merchants`)
-});
-
-const mapDispatchToProps = dispatch => ({
-  closeModal: () => dispatch(hideModal()),
-  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LargeMarket);
+export default LargeMarket;
