@@ -15,10 +15,9 @@ class FabricWarehouse extends React.Component {
   }
 
   handleMaxGoodEndTurn(){
-    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
     actionMaxGood(gameId, playerId, 'fabric')
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
+      .then(() => handleActionEnd())
       .catch(console.error);
   }
 

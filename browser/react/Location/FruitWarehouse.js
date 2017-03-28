@@ -12,13 +12,13 @@ class FruitWarehouse extends React.Component {
     super(props);
 
     this.handleMaxGoodEndTurn = this.handleMaxGoodEndTurn.bind(this);
+
   }
 
   handleMaxGoodEndTurn(){
-    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
     actionMaxGood(gameId, playerId, 'fruit')
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
+      .then(() => handleActionEnd())
       .catch(console.error);
   }
 

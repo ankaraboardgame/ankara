@@ -84,7 +84,7 @@ app.use(function (err, req, res, next) {
 });
 
 /** Game logger */
-const GameLogger = require('./GameLogger');
+// const GameLogger = require('./GameLogger');
 // GameLogger();
 
 /** Starting Server */

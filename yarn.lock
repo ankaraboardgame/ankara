@@ -4689,6 +4689,14 @@ react-tap-event-plugin@^2.0.1:
   dependencies:
     fbjs "^0.8.6"
 
+react-toastify@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-1.2.2.tgz#2a3e12f6c53433e20807fb4f4b7f0ccb4be9a8eb"
+  dependencies:
+    object.values "^1.0.3"
+    react "^15.3.2"
+    react-addons-transition-group "^15.3.2"
+
 react-transitions@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/react-transitions/-/react-transitions-0.0.2.tgz#4d75df07673d7b4a73da621cfd85030542287dca"

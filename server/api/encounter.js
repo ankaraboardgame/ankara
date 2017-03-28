@@ -7,6 +7,11 @@ const { getRandomPosition } = require('../../game/accessories.js');
 
 const router = module.exports = require('express').Router();
 
+/** Game Logging */
+const util = require('../util');
+const log = util.log;
+const getCurrUnixTime = util.getCurrUnixTime;
+
 /**
  * Payment routes
  * ...api/game/:gameId/player/:playerId/encounter/...
@@ -56,8 +61,14 @@ router.post('/smuggler', (req, res, next) => {
       .child('smuggler').child('coordinates')
       .transaction(() => getRandomPosition(4, 3));
   })
-  .then(() => {
+  .then((val) => {
     res.sendStatus(204);
+    //game log
+    log(req.game.id, {
+      type: 'SMUGGLER_MOVE',
+      location: `${val.snapshot.val()}`,
+      timestamp: getCurrUnixTime()
+    })
   })
   .catch(next);
 

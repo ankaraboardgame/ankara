@@ -47,12 +47,13 @@ import { endTurn } from '../../routes/move';
 
 /** -------- Helper Functions -------- */
 import { mapCoordToLocation } from '../../utils/board';
+import { handleSmuggler, smugglerOnLocation } from '../../utils/smuggler';
 
 /** -------- Selectors -------- */
 import { getUserId, getUserMoney, getUserAbilities, getUserWheelbarrow, getUserBonusCards } from '../../redux/reducers/user-reducer';
 import {
   getGameId, getGameData, getGameMerchants, getCaravansaryData, getGemstoneDealerData,
-  getGreatMosqueData, getSmallMosqueData, getLargeMarketData, getSmallMarketData
+  getGreatMosqueData, getSmallMosqueData, getLargeMarketData, getSmallMarketData, getSmuggler
 } from '../../redux/reducers/game-reducer';
 import { getModalType, getModalPayload, getModalDialog, getModalCurrentPosition, getNextModalDialog } from '../../redux/reducers/modal-reducer';
 
@@ -87,6 +88,13 @@ class ModalRootContainer extends React.Component {
 
     this.handleMoreOptionsClick = this.handleMoreOptionsClick.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
+    this.handleActionEnd = this.handleActionEnd.bind(this);
+    this.handleSmuggler = handleSmuggler.bind(this);
+  }
+
+  handleActionEnd() {
+    // Handle smuggler after action
+    this.handleSmuggler();
   }
 
   handleEndTurn() {
@@ -109,7 +117,7 @@ class ModalRootContainer extends React.Component {
       dialog, openModal, closeModal, gemstoneData,
       abilities, greatMosqueData, smallMosqueData,
       userWheelbarrow, largeMarketData, smallMarketData,
-      caravansaryData
+      caravansaryData, smuggler
     } = this.props;
 
     const SpecificLocation = Location_Components[modalType];
@@ -137,6 +145,8 @@ class ModalRootContainer extends React.Component {
               smallMarketData={smallMarketData}
               openModal={openModal}
               closeModal={closeModal}
+              handleActionEnd={this.handleActionEnd}
+              smuggler={smuggler}
             />
             { payload && Turn_Dialog_Components[dialog] ? this.renderSpecificTurnDialog() : null }
           </div>
@@ -146,8 +156,10 @@ class ModalRootContainer extends React.Component {
   }
 
   renderSpecificTurnDialog() {
-    const { userId, userMoney, userBonusCards, greatMosqueData, smallMosqueData, gameId, merchants, dialog, payload, currentPosition, openModal, closeModal, nextDialog } = this.props;
+
+    const { userId, userMoney, userBonusCards, greatMosqueData, smallMosqueData, gameId, merchants, dialog, payload, currentPosition, openModal, closeModal, nextDialog, userWheelbarrow } = this.props;
     const SpecificTurnDialog = Turn_Dialog_Components[dialog];
+
     return (
       <SpecificTurnDialog
         openModal={openModal}
@@ -163,6 +175,7 @@ class ModalRootContainer extends React.Component {
         greatMosqueData={greatMosqueData}
         smallMosqueData={smallMosqueData}
         nextDialog={nextDialog}
+        userWheelbarrow={userWheelbarrow}
       />
     );
   }
@@ -189,7 +202,8 @@ const mapStateToProps = state => ({
   smallMosqueData: getSmallMosqueData(state),
   currentPosition: getModalCurrentPosition(state),
   largeMarketData: getLargeMarketData(state),
-  smallMarketData: getSmallMarketData(state)
+  smallMarketData: getSmallMarketData(state),
+  smuggler: getSmuggler(state)
 });
 
 const mapDispatchToProps = dispatch => ({
