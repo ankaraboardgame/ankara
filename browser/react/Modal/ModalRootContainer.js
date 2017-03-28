@@ -23,6 +23,8 @@ import DropAssistant from '../TurnDialogs/DropAssistant';
 import PickUpAssistant from '../TurnDialogs/PickUpAssistant';
 import MerchantEncounter from '../TurnDialogs/MerchantEncounter';
 import SmugglerEncounter from '../TurnDialogs/SmugglerEncounter';
+import MoreOptions from '../TurnDialogs/MoreOptions';
+import SelectBonusGood from '../TurnDialogs/SelectBonusGood';
 
 /** -------- Modal Type Constants -------- */
 import {
@@ -32,7 +34,10 @@ import {
 } from './location_types';
 
 /** -------- Turn Dialog Constants ------- */
-import { DROP_ASSISTANT, PICK_UP_ASSISTANT, MERCHANT_ENCOUNTER, SMUGGLER_ENCOUNTER } from './turn_types';
+import {
+  DROP_ASSISTANT, PICK_UP_ASSISTANT, MERCHANT_ENCOUNTER, SMUGGLER_ENCOUNTER,
+  MORE_OPTIONS, SELECT_BONUS_GOOD
+} from './turn_types';
 
 /** -------- Action-creators -------- */
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
@@ -40,13 +45,16 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 /** -------- End Turn Route -------- */
 import { endTurn } from '../../routes/move';
 
+/** -------- Helper Functions -------- */
+import { mapCoordToLocation } from '../../utils/board';
+
 /** -------- Selectors -------- */
-import { getUserId, getUserMoney, getUserAbilities, getUserWheelbarrow } from '../../redux/reducers/user-reducer';
+import { getUserId, getUserMoney, getUserAbilities, getUserWheelbarrow, getUserBonusCards } from '../../redux/reducers/user-reducer';
 import {
   getGameId, getGameData, getGameMerchants, getCaravansaryData, getGemstoneDealerData,
   getGreatMosqueData, getSmallMosqueData, getLargeMarketData, getSmallMarketData
 } from '../../redux/reducers/game-reducer';
-import { getModalType, getModalPayload, getModalDialog, getModalCurrentPosition } from '../../redux/reducers/modal-reducer';
+import { getModalType, getModalPayload, getModalDialog, getModalCurrentPosition, getNextModalDialog } from '../../redux/reducers/modal-reducer';
 
 const Location_Components = {
   BLACK_MARKET: BlackMarket,
@@ -67,14 +75,17 @@ const Turn_Dialog_Components = {
   DROP_ASSISTANT: DropAssistant,
   PICK_UP_ASSISTANT: PickUpAssistant,
   MERCHANT_ENCOUNTER: MerchantEncounter,
-  SMUGGLER_ENCOUNTER: SmugglerEncounter
+  SMUGGLER_ENCOUNTER: SmugglerEncounter,
+  MORE_OPTIONS: MoreOptions,
+  SELECT_BONUS_GOOD: SelectBonusGood
 };
 
 /** -------- Rendering Component -------- */
 class ModalRootContainer extends React.Component {
   constructor(props) {
     super(props);
-
+    
+    this.handleMoreOptionsClick = this.handleMoreOptionsClick.bind(this);
     this.handleEndTurn = this.handleEndTurn.bind(this);
   }
 
@@ -83,6 +94,13 @@ class ModalRootContainer extends React.Component {
     closeModal();
     endTurn(gameId, userId)
       .catch(console.error);
+  }
+
+  handleMoreOptionsClick(prevDialog) {
+    const { currentPosition, openModal, closeModal } = this.props;
+    const nextDialog = prevDialog;
+    closeModal();
+    openModal(mapCoordToLocation(currentPosition), { currentPosition, nextDialog, dialog: MORE_OPTIONS });
   }
   
   render() {
@@ -106,6 +124,7 @@ class ModalRootContainer extends React.Component {
               playerId={userId}
               gameId={gameId}
               dialog={dialog}
+              handleMoreOptionsClick={this.handleMoreOptionsClick}
               handleEndTurn={this.handleEndTurn}
               gemstoneData={gemstoneData}
               userMoney={userMoney}
@@ -127,7 +146,7 @@ class ModalRootContainer extends React.Component {
   }
 
   renderSpecificTurnDialog() {
-    const { userId, userMoney, gameId, merchants, dialog, payload, currentPosition, openModal, closeModal } = this.props;
+    const { userId, userMoney, userBonusCards, gameId, merchants, dialog, payload, currentPosition, openModal, closeModal, nextDialog } = this.props;
     const SpecificTurnDialog = Turn_Dialog_Components[dialog];
     return (
       <SpecificTurnDialog
@@ -140,6 +159,8 @@ class ModalRootContainer extends React.Component {
         handleEndTurn={this.handleEndTurn}
         merchants={merchants}
         userMoney={userMoney}
+        userBonusCards={userBonusCards}
+        nextDialog={nextDialog}
       />
     );
   }
@@ -151,12 +172,14 @@ const mapStateToProps = state => ({
   userId: getUserId(state),
   userMoney: getUserMoney(state),
   userWheelbarrow: getUserWheelbarrow(state),
+  userBonusCards: getUserBonusCards(state),
   gameId: getGameId(state),
   gameData: getGameData(state),
   merchants: getGameMerchants(state),
   modalType: getModalType(state),
   payload: getModalPayload(state),
   dialog: getModalDialog(state),
+  nextDialog: getNextModalDialog(state),
   abilities: getUserAbilities(state),
   caravansaryData: getCaravansaryData(state),
   gemstoneData: getGemstoneDealerData(state),

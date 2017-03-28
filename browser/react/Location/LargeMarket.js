@@ -76,7 +76,7 @@ class LargeMarket extends React.Component {
   }
 
   renderAction() {
-    const { handleEndTurn } = this.props;
+    const { handleEndTurn, handleMoreOptionsClick } = this.props;
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-full">
@@ -93,7 +93,8 @@ class LargeMarket extends React.Component {
           <RaisedButton label="Trade Goods" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeGood}  />
           <RaisedButton label="Reset" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
         </div>
-        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={handleEndTurn}  />
+        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+        <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );
   }

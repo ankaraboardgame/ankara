@@ -45,7 +45,7 @@ class Wainwright extends React.Component {
 
   renderAction() {
     const style = { margin: 12 };
-    const { playerId, userWheelbarrow, handleEndTurn } = this.props;
+    const { playerId, userWheelbarrow, handleEndTurn, handleMoreOptionsClick } = this.props;
 
     return (
       <div id="turn-dialog-half">
@@ -55,7 +55,9 @@ class Wainwright extends React.Component {
               <div id="text-box">
                 <p>Sorry, you do not have enough money at this time. End your turn.</p>
               </div>
-              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleEndTurn}  />
+              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+              <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+
             </div>
             : userWheelbarrow.size === 4 ?
             <div>
@@ -63,13 +65,15 @@ class Wainwright extends React.Component {
                 <p>You have a wheelbarrow size of 4. You can buy one more extension, and earn a ruby!</p>
               </div>
               <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtensionEarnRuby}  />
+              <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
             </div>
             : userWheelbarrow.size === 5 ?
             <div>
               <div id="text-box">
                 <p>You already have the largest size of wheelbarrow.</p>
               </div>
-              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleEndTurn}  />
+              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+              <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
             </div>
             :
             <div>
@@ -77,6 +81,7 @@ class Wainwright extends React.Component {
                 <p>You can buy a wheelbarrow extension here.<br /><br />Each extension cost 7 Lira. <br />You can buy a maximum of 3 extensions, <br />at which point you will receive 1 ruby. <br /></p>
               </div>
               <RaisedButton label="Buy an extension, and end turn" style={style} primary={true} onTouchTap={this.handleBuyExtension}  />
+              <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
             </div>
           }
       </div>

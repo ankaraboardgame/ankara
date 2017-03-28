@@ -56,7 +56,7 @@ class TeaHouse extends React.Component {
   }
 
   renderAction() {
-    const { handleEndTurn } = this.props;
+    const { handleEndTurn, handleMoreOptionsClick } = this.props;
     const gambledNumber = this.state.gambledNumber;
     const ddMenuStyle = {
       backgroundColor: 'white',
@@ -64,38 +64,34 @@ class TeaHouse extends React.Component {
       width: 100,
       fontSize: 18
     }
+    const style = { margin: 12 }
 
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
           <p>If the dice roll meets or exceeds your gamble,<br />you get the sum you name.<br />Otherwise, you walk away with only two lira.</p>
         </div>
-          <div className='row'>
-            <DropDownMenu value={this.state.gambledNumber} style={ddMenuStyle} onChange={this.handleChooseNumber}>
-              <MenuItem value={2} primaryText="2" />
-              <MenuItem value={3} primaryText="3" />
-              <MenuItem value={4} primaryText="4" />
-              <MenuItem value={5} primaryText="5" />
-              <MenuItem value={6} primaryText="6" />
-              <MenuItem value={7} primaryText="7" />
-              <MenuItem value={8} primaryText="8" />
-              <MenuItem value={9} primaryText="9" />
-              <MenuItem value={10} primaryText="10" />
-              <MenuItem value={11} primaryText="11" />
-              <MenuItem value={12} primaryText="12" />
-            </DropDownMenu>
-            {
-              gambledNumber &&
-              <Dice done={this.handleDiceRoll} />
-            }
-          </div>
-          <RaisedButton
-            label="No thanks, I'll end my turn"
-            style={{ margin: 12 }}
-            primary={true}
-            onTouchTap={handleEndTurn}
-            disabled={this.state.rolled}
-          />
+        <div className='row'>
+          <DropDownMenu value={this.state.gambledNumber} style={ddMenuStyle} onChange={this.handleChooseNumber}>
+            <MenuItem value={2} primaryText="2" />
+            <MenuItem value={3} primaryText="3" />
+            <MenuItem value={4} primaryText="4" />
+            <MenuItem value={5} primaryText="5" />
+            <MenuItem value={6} primaryText="6" />
+            <MenuItem value={7} primaryText="7" />
+            <MenuItem value={8} primaryText="8" />
+            <MenuItem value={9} primaryText="9" />
+            <MenuItem value={10} primaryText="10" />
+            <MenuItem value={11} primaryText="11" />
+            <MenuItem value={12} primaryText="12" />
+          </DropDownMenu>
+          {
+            gambledNumber &&
+            <Dice done={this.handleDiceRoll} />
+          }
+        </div>
+        <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleEndTurn} disabled={this.state.rolled}  />
+        <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );
   }

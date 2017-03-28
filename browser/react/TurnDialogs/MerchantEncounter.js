@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { actionPayMerchants } from '../../routes/encounter';
 import { mapCoordToLocation } from '../../utils/board';
 
+/** ------- Constants -------- */
 import { ACTION } from '../Modal/turn_types';
 
 class MerchantEncounter extends React.Component {

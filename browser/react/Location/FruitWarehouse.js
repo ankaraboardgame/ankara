@@ -32,14 +32,16 @@ class FruitWarehouse extends React.Component {
   }
 
   renderAction() {
+    const { handleMoreOptionsClick } = this.props;
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-half">
-        <div className="turn-dialog-column">
-          <div id="text-box">
+        <div id="text-box">
+          <div className="turn-dialog-column">
             <p>Look at all the fruits! <br /><br />Come back later if you need more! <br /></p>
           </div>
           <RaisedButton label="Max fruit and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
+          <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
         </div>
       </div>
     );

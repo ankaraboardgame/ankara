@@ -56,6 +56,7 @@ class BlackMarket extends React.Component {
     const style = { margin: 12 };
     const selectedClassName = 'highlighted';
     const selectedGood = this.state.selectedGood;
+    const { handleMoreOptionsClick, handleEndTurn } = this.props;
 
     return (
       <div id="turn-dialog-full">
@@ -84,13 +85,8 @@ class BlackMarket extends React.Component {
               selectedGood &&
               <Dice done={this.handleDiceRoll} />
             }
-            <RaisedButton
-              label="End my turn"
-              style={style}
-              primary={true}
-              onTouchTap={this.props.handleEndTurn}
-              disabled={this.state.rolled}
-            />
+          <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleEndTurn} disabled={this.state.rolled} />
+          <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
         </div>
       </div>
     );

@@ -76,7 +76,7 @@ class SmallMarket extends React.Component {
   }
 
   renderAction() {
-    const { handleEndTurn } = this.props;
+    const { handleEndTurn, handleMoreOptionsClick } = this.props;
     const style = { margin: 12 };
     return (
       <div id="turn-dialog-full">
@@ -94,6 +94,8 @@ class SmallMarket extends React.Component {
           <RaisedButton label="Reset" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
         </div>
         <RaisedButton label="End turn" style={style} primary={true} onTouchTap={handleEndTurn}  />
+        <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+
       </div>
     );
   }

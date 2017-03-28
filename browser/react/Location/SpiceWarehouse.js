@@ -33,6 +33,7 @@ class SpiceWarehouse extends React.Component {
 
   renderAction() {
     const style = { margin: 12 };
+    const { handleMoreOptionsClick } = this.props;
     return (
       <div id="turn-dialog-half">
         <div id="text-box">
@@ -40,6 +41,7 @@ class SpiceWarehouse extends React.Component {
             <p>Look at all the spices! <br /><br />Come back later if you need more! <br /></p>
           </div>
           <RaisedButton label="Max spice and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
+          <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
           </div>
       </div>
     );

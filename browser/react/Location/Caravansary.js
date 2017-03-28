@@ -32,9 +32,9 @@ class Caravansary extends React.Component {
   }
 
   renderAction() {
-    const { caravansaryData, handleEndTurn } = this.props;
+    const { caravansaryData, handleEndTurn, handleMoreOptionsClick } = this.props;
     const bonusCard = caravansaryData.bonusCards[caravansaryData.index];
-
+    const style = { margin: 12 };
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
@@ -46,11 +46,12 @@ class Caravansary extends React.Component {
         <div>
           <RaisedButton
             label={'Get Bonus Card'}
-            style={{ margin: 12 }}
+            style={style}
             primary={true}
             onTouchTap={() => this.handleGetCard(bonusCard.type)}
           />
-          <RaisedButton label="End my turn" style={{ margin: 12 }} primary={true} onTouchTap={handleEndTurn}  />
+          <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={this.handleEndTurn}  />
+          <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
         </div>
       </div>
     );

@@ -41,7 +41,7 @@ class SmallMosque extends React.Component {
   }
 
   renderAction() {
-    const { smallMosqueData, userWheelbarrow, abilities, playerId, handleEndTurn } = this.props;
+    const { smallMosqueData, userWheelbarrow, abilities, playerId, handleEndTurn, handleMoreOptionsClick } = this.props;
     const fabricRequired = smallMosqueData.fabric;
     const spiceRequired = smallMosqueData.spice;
     const style = { margin: 12 };
@@ -85,7 +85,8 @@ class SmallMosque extends React.Component {
               }
             </div>
           </div>
-        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleEndTurn} />
+        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn} />
+        <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );
   }

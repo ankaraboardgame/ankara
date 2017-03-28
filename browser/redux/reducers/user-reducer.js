@@ -30,42 +30,52 @@ export default function (state = initialState, action) {
 /** -------- Selectors --------- */
 
 export const getUserId = state => {
-  if (state.user.user) return state.user.user.uid;
-  else return null;
+  return state.user.user && state.user.user.uid;
 };
 
 export const getUsername = state => {
   const userId = getUserId(state);
   const gameId = getGameId(state);
-  return dataToJS(state.firebase, `games/${gameId}/playerMap/${userId}`);
-};
-
-export const getUserNumber = state => {
-  return getUserData(state).number;
+  return userId && gameId && dataToJS(state.firebase, `games/${gameId}/playerMap/${userId}`);
 };
 
 export const getUserData = state => {
   const userId = getUserId(state);
   const gameId = getGameId(state);
-  return dataToJS(state.firebase, `games/${gameId}/merchants/${userId}`);
+  return userId && gameId && dataToJS(state.firebase, `games/${gameId}/merchants/${userId}`);
+};
+
+export const getUserNumber = state => {
+  const userData = getUserData(state);
+  return userData && userData.number;
 };
 
 export const getUserWheelbarrow = state => {
-  return getUserData(state).wheelbarrow;
+  const userData = getUserData(state);
+  return userData && userData.wheelbarrow;
 };
 
+export const getUserBonusCards = state => {
+  const userData = getUserData(state);
+  return userData && userData.bonusCards;
+}
+
 export const getUserAbilities = state => {
-  return getUserData(state).abilities;
+  const userData = getUserData(state);
+  return userData && userData.abilities;
 };
 
 export const getUserMoney = state => {
-  return getUserWheelbarrow(state).money;
+  const userWheelbarrow = getUserWheelbarrow(state);
+  return userWheelbarrow && userWheelbarrow.money;
 };
 
 export const getUserPosition = state => {
-  return getUserData(state).position;
+  const userData = getUserData(state);
+  return userData && userData.position;
 };
 
 export const getUserAssistants = state => {
-  return getUserData(state).assistants;
+  const userData = getUserData(state);
+  return userData && userData.assistants;
 };

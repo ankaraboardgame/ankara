@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mapCoordToLocation } from '../../utils';
+import { mapCoordToLocation } from '../../utils/board';
 
 const Cell = (props) => {
   const tile = mapCoordToLocation(props.coords);

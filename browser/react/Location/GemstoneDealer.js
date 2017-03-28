@@ -41,9 +41,9 @@ class GemstoneDealer extends React.Component {
   }
 
   renderAction() {
-    const style = { margin: 12 };
     const price = this.state.gemPrice;
-    const { userMoney, handleEndTurn } = this.props;
+    const { userMoney, handleEndTurn, handleMoreOptionsClick } = this.props;
+    const style = { margin: 12 };
 
     return (
       <div id="turn-dialog-half">
@@ -58,7 +58,8 @@ class GemstoneDealer extends React.Component {
               onTouchTap={this.handleBuyGem}
               disabled={userMoney < price}
             />
-            <RaisedButton label="No thanks, I'll end my turn" style={{ margin: 12 }} primary={true} onTouchTap={handleEndTurn} />
+            <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={this.beforeEndTurn} />
+            <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
           </div>
       </div>
     );

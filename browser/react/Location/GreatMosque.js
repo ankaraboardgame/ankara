@@ -41,7 +41,7 @@ class GreatMosque extends React.Component {
   }
 
   renderAction() {
-    const { greatMosqueData, userWheelbarrow, abilities, playerId, handleEndTurn } = this.props;
+    const { greatMosqueData, userWheelbarrow, abilities, playerId, handleEndTurn, handleMoreOptionsClick } = this.props;
     const heirloomRequired = greatMosqueData.heirloom;
     const fruitRequired = greatMosqueData.fruit;
     const style = { margin: 12 };
@@ -85,7 +85,8 @@ class GreatMosque extends React.Component {
               }
             </div>
           </div>
-        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleEndTurn} />
+        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn} />
+        <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );
   }

@@ -19,6 +19,7 @@ export const openAssistantDialog = (props) => {
       }
     );
   } else {
+
     openModal(
       mapCoordToLocation(coords),
       {
