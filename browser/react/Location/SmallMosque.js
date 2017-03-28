@@ -10,22 +10,12 @@ import { ACTION } from '../Modal/turn_types';
 class SmallMosque extends React.Component {
   constructor(props) {
     super(props);
-
-    this.handleBuyFabricTile = this.handleBuyFabricTile.bind(this);
-    this.handleBuySpiceTile = this.handleBuySpiceTile.bind(this);
+    this.handleBuySmallMosqueTile = this.handleBuySmallMosqueTile.bind(this);
   }
 
-  handleBuyFabricTile(){
+  handleBuySmallMosqueTile(selectedTile, goodRequired){
     const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
-    actionBuyMosqueTile(gameId, playerId, 'smallMosque', 'fabric')
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
-      .catch(console.error)
-  }
-
-  handleBuySpiceTile(){
-    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
-    actionBuyMosqueTile(gameId, playerId, 'smallMosque', 'spice')
+    actionBuyMosqueTile(gameId, playerId, 'smallMosque', selectedTile, goodRequired)
       .then(() => closeModal())
       .then(() => handleEndTurn())
       .catch(console.error)
@@ -59,7 +49,7 @@ class SmallMosque extends React.Component {
               {
                 userWheelbarrow.fabric >= fabricRequired && !abilities.fabric.acquired ?
                 <div>
-                  <RaisedButton label="Buy Fabric Mosque Tile" style={style} primary={true} onTouchTap={this.handleBuyFabricTile}  />
+                  <RaisedButton label="Buy Fabric Mosque Tile" style={style} primary={true} onTouchTap={() => this.handleBuySmallMosqueTile('fabric', fabricRequired)}  />
                 </div>
                 : !abilities.fabric.acquired ?
                 <div>
@@ -75,7 +65,7 @@ class SmallMosque extends React.Component {
               {
                 userWheelbarrow.spice >= spiceRequired && !abilities.spice.acquired ?
                 <div>
-                  <RaisedButton id="spice" label="Buy Spice Mosque Tile" style={style} primary={true} onTouchTap={this.handleBuySpiceTile}  />
+                  <RaisedButton id="spice" label="Buy Spice Mosque Tile" style={style} primary={true} onTouchTap={() => this.handleBuySmallMosqueTile('spice', spiceRequired)}  />
                 </div>
                 : !abilities.fruit.acquired ?
                 <div>
