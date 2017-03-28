@@ -2,6 +2,11 @@ import React from 'react';
 
 import { mapCoordToLocation } from '../../utils/board';
 
+/** -------- Container ---------- */
+/**
+ * Conditionally renders contents based on its location card.
+ * (Some location cards cycle through images dynamically, some are static.)
+*/
 const Cell = (props) => {
   const tile = mapCoordToLocation(props.coords);
     if (tile === 'LARGE_MARKET') {

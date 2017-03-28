@@ -18,7 +18,7 @@ import { settingUser } from '../../redux/action-creators/user';
 import { joinRoom, leaveRoom } from '../../redux/action-creators/room';
 import { fetchNewGame } from '../../redux/action-creators/game';
 
-import { startGame, createRoom, joinRoom, deleteRoom } from '../../routes/lobby.js';
+import { createRoom, addToRoom, removeFromRoom, deleteRoom } from '../../routes/lobby.js';
 
 import { Room } from './Room.js';
 
@@ -36,15 +36,6 @@ class LobbyContainer extends React.Component {
     this.addCurrentUserToRoom = this.addCurrentUserToRoom.bind(this);
     this.handleStartGame = this.handleStartGame.bind(this);
     this.handleDeleteRoom = this.handleDeleteRoom.bind(this);
-  }
-
-  // get a reference to firebase database > rooms
-  componentWillMount() {
-    this.roomsRef = fbDB.ref('rooms');
-  }
-
-  componentWillUnMount() {
-    this.roomsRef.off();
   }
 
   componentDidMount() {
@@ -70,38 +61,32 @@ class LobbyContainer extends React.Component {
 
   handleDeleteRoom(event, roomId){
     event.preventDefault();
-    deleteRoom(roomId);
+    deleteRoom(roomId).catch(console.error);
   }
 
   // add user to specific room after 'join room' button is clicked
   addCurrentUserToRoom(event, roomId, userId) {
     event.preventDefault();
     const name = event.target[0].value || 'Anonymous';
-
-    this.roomsRef.child(roomId).child('users').child(userId).set(name)
+    addToRoom(roomId, userId, name)
+    .then(() => this.setState({ joined: roomId }))
     .catch(console.error);
-
-    this.setState({ joined: roomId });
   }
 
   // create room after 'create room' button is clicked
   handleStartGame(event, roomId){
     event.preventDefault();
-    const roomsRef = this.roomsRef;
     const startGame = this.props.startGame;
-
-    roomsRef.child(roomId).child('users').once('value', function(snapshot){
-      startGame(roomId, snapshot.val());
-    });
+    const usersMap = this.props.roomData[roomId].users;
+    startGame(roomId, usersMap);
   }
 
   removeUserFromRoom(evt, roomId, idToRemove) {
     evt.preventDefault();
     const leaveRoom = this.props.leaveRoom;
     const ownId = this.props.userId;
-    console.log(ownId, idToRemove)
-    this.roomsRef.child(roomId).child('users').child(idToRemove).remove()
-    .then((result) => {
+    removeFromRoom()
+    .then(() => {
         leaveRoom();
         if (idToRemove === ownId) {
           this.setState({joined: false})
