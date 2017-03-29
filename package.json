@@ -10,7 +10,9 @@
     "start-dev": "webpack -w & nodemon --watch server -e js,html server/app.js",
     "build-dev": "webpack -w & nodemon --watch server -e js,html server/app.js",
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register browser/**/*.test.js browser/react/**/*.test.js game/**/*.test.js server/**/*.test.js",
-    "test-player": "cross-env NODE_ENV=test mocha server/api/player.test.js"
+    "test-player": "cross-env NODE_ENV=test mocha server/api/player.test.js",
+    "test-game": "cross-env NODE_ENV=test mocha server/api/game.test.js",
+    "test-encounter": "cross-env NODE_ENV=test mocha server/api/encounter.test.js"
   },
   "repository": {
     "type": "git",

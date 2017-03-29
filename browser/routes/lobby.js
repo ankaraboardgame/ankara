@@ -22,3 +22,7 @@ export const removeFromRoom = (roomId, userId) => {
 export const deleteRoom = roomId => {
   return axios.post(`api/lobby/${roomId}/delete`);
 }
+
+export const signalReady = roomId => {
+  return axios.post(`api/lobby/${roomId}/ready`);
+}

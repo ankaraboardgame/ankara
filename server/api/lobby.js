@@ -15,6 +15,7 @@ router.post('/create', (req, res, next) => {
   roomsRef.push({
     name,
     creator,
+    ready: 0,
     createdAt: admin.database.ServerValue.TIMESTAMP
   })
   .then(() => res.sendStatus(204))
@@ -40,6 +41,14 @@ router.post('/leave', (req, res, next) => {
 router.post('/:roomId/delete', (req, res, next) => {
   console.log('here');
   roomsRef.child(req.params.roomId).remove()
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
+
+router.post('/:roomId/ready', (req, res, next) => {
+  console.log('here');
+  roomsRef.child(req.params.roomId).child('ready')
+    .transaction(count => count++)
     .then(() => res.sendStatus(204))
     .catch(next);
 });

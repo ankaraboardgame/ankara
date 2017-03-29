@@ -41,13 +41,6 @@ describe('Player route:', function () {
     .catch((err) => { done(err); })
   });
 
-  /** Also, we empty the tables after each spec */
-  afterEach(function (done) {
-    gamesRef.set({})
-    .then(() => { done(); })
-    .catch((err) => { done(err); })
-  });
-
   describe('POST /:playerId/end', function () {
 
     it('expects player route to fail with blank playerId', function () {

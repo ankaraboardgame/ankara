@@ -15,7 +15,7 @@ export const Room = props => {
     roomData,
     userId,
     joined,
-    handleStart,
+    handleReady,
     handleDeleteRoom,
     handleLeaveRoom,
     handleJoinRoom
@@ -33,7 +33,7 @@ export const Room = props => {
   const deleteStyle = {
     cursor: 'pointer',
     width: 10,
-    display: (roomData.creator === userId) ? 'block' : 'none'
+    display: (roomData.creator === userId) ? 'inline' : 'none'
   }
 
   return (
@@ -85,9 +85,9 @@ export const Room = props => {
             <RaisedButton
               secondary={true}
               style={{margin: 15}}
-              onTouchTap={(evt) => handleStart(evt, roomId, roomData.users)}
+              onTouchTap={(evt) => handleReady(evt, roomId, roomData.users)}
               disabled={!(joined === roomId)}>
-              START
+              READY
             </RaisedButton>
           </CardActions>
         </CardText>

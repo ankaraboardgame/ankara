@@ -4,7 +4,6 @@ import {
   firebaseConnect,
   isLoaded,
   isEmpty,
-  dataToJS,
   pathToJS
 } from 'react-redux-firebase';
 import { fbAuth } from '../../firebase';
@@ -16,8 +15,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 
 import { settingUser } from '../../redux/action-creators/user';
-import { joinRoom, leaveRoom } from '../../redux/action-creators/room';
 import { fetchNewGame } from '../../redux/action-creators/game';
+import { getUserId } from '../../redux/reducers/user-reducer.js';
+import { getRoomData } from '../../redux/reducers/room-reducer.js';
 
 import { createRoom, addToRoom, removeFromRoom, deleteRoom } from '../../routes/lobby.js';
 
@@ -32,15 +32,17 @@ class LobbyContainer extends React.Component {
 
     this.state = {
       searchQuery: '',
+      createRoomField: '',
       joined: null
     };
 
-    this.removeUserFromRoom = this.removeUserFromRoom.bind(this);
-    this.handleCreateRoom = this.handleCreateRoom.bind(this);
-    this.addCurrentUserToRoom = this.addCurrentUserToRoom.bind(this);
-    this.handleStartGame = this.handleStartGame.bind(this);
-    this.handleDeleteRoom = this.handleDeleteRoom.bind(this);
+    this.handleCreateRoomTextFieldChange = this.handleCreateRoomTextFieldChange.bind(this);
     this.handleSearchBar = this.handleSearchBar.bind(this);
+    this.handleCreateRoom = this.handleCreateRoom.bind(this);
+    this.handleDeleteRoom = this.handleDeleteRoom.bind(this);
+    this.addCurrentUserToRoom = this.addCurrentUserToRoom.bind(this);
+    this.removeUserFromRoom = this.removeUserFromRoom.bind(this);
+    this.handleReadyToStart = this.handleReadyToStart.bind(this);
   }
 
   componentDidMount() {
@@ -57,8 +59,12 @@ class LobbyContainer extends React.Component {
     });
   }
 
+  handleCreateRoomTextFieldChange(event){
+    this.setState({ createRoomField: event.target.value })
+  }
+
   handleSearchBar(event){
-    this.setState({searchQuery: event.target.value.toLowerCase()})
+    this.setState({ searchQuery: event.target.value })
   }
 
   handleCreateRoom(event){
@@ -83,46 +89,47 @@ class LobbyContainer extends React.Component {
 
   removeUserFromRoom(evt, roomId, idToRemove) {
     evt.preventDefault();
-    const leaveRoom = this.props.leaveRoom;
     const ownId = this.props.userId;
     removeFromRoom(roomId, idToRemove)
     .then(() => {
       if (idToRemove === ownId) {
-        this.setState({joined: null})
+        this.setState({ joined: null })
       }
     });
   }
 
-  handleStartGame(event, roomId, usersMap){
+  handleReadyToStart(event, roomId, usersMap){
     event.preventDefault();
     this.props.startGame(roomId, usersMap); // dispatches to store
   }
 
   render() {
-    const roomData = this.props.roomData;
-    const paperStyle = {
-      height: 100,
+
+    const createRoomStyle = {
+      height: 90,
       width: 500,
       padding: 20,
       margin: 20,
-      backgroundColor: '#8C5942',
+      backgroundColor: '#222',
       textAlign: 'center',
       display: 'inline-block'
     };
     const searchStyle = {
       color: 'white',
-      fontTransform: 'uppercase',
+      textTransform: 'uppercase',
       fontStyle: 'italic',
-      fontSize: 24,
+      fontSize: 28,
       width: 500
     };
     const hintStyle = {
       color: '#555',
-      fontTransform: 'uppercase',
+      textTransform: 'uppercase',
       fontStyle: 'italic',
-      fontSize: 24
+      fontSize: 28,
+      height: 50
     };
 
+    const { userId, roomData } = this.props;
 
     return (
       <MuiThemeProvider>
@@ -131,11 +138,19 @@ class LobbyContainer extends React.Component {
           <img src={`images/Constantinople-Title-2.png`} id="game-title" />
 
           <div id="create-room-button">
-            <Paper style={paperStyle} zDepth={3}>
+            <Paper style={createRoomStyle} zDepth={3}>
 
               <form onSubmit={ this.handleCreateRoom }>
-                <TextField hintText="Create new room" style={{marginLeft: 20}} />
-                <RaisedButton type="submit">
+                <TextField
+                  hintText="Create new room"
+                  style={{marginLeft: 20}}
+                  hintStyle={{color: '#ccc'}}
+                  inputStyle={{color: 'white'}}
+                  onChange={this.handleCreateRoomTextFieldChange}
+                />
+                <RaisedButton
+                  type="submit"
+                  disabled={!this.state.createRoomField.length}>
                   CREATE
                 </RaisedButton>
               </form>
@@ -147,6 +162,7 @@ class LobbyContainer extends React.Component {
 
           <TextField
             onChange={this.handleSearchBar}
+            style={{ width: 500, height: 100 }}
             hintText="Search rooms"
             hintStyle={hintStyle}
             inputStyle={searchStyle}
@@ -155,20 +171,24 @@ class LobbyContainer extends React.Component {
           <div className="room-column">
           {
             roomData &&
-            Object.keys(roomData).reverse().map(roomId => {
+            Object.keys(roomData)
+            .reverse()
+            .map(roomId => {
               return (
-                roomData[roomId].name.toLowerCase().includes(this.state.searchQuery)) ?
+                // apply search filter
+                roomData[roomId].name.toLowerCase()
+                .includes(this.state.searchQuery.toLowerCase())) ?
                 (
                   <Room
                     key={roomId}
                     roomId={roomId}
                     roomData={roomData[roomId]}
-                    userId={this.props.userId}
+                    userId={userId}
                     joined={this.state.joined}
-                    handleLeaveRoom={this.removeUserFromRoom}
                     handleJoinRoom={this.addCurrentUserToRoom}
-                    handleStart={this.handleStartGame}
+                    handleLeaveRoom={this.removeUserFromRoom}
                     handleDeleteRoom={this.handleDeleteRoom}
+                    handleReady={this.handleReadyToStart}
                   />
                 ) : null
             })
@@ -179,15 +199,14 @@ class LobbyContainer extends React.Component {
       </MuiThemeProvider>
     )
   }
-
 }
 
+/************ Higher Order Component *************/
+
 const mapStateToProps = (state) => ({
-  userId: state.user.user && state.user.user.uid,
-  roomData: dataToJS(state.firebase, 'rooms'),
-  firebase: state.firebase,
-  auth: pathToJS(firebase, 'auth'),
-  joined: state.room.joined
+  userId: getUserId(state),
+  roomData: getRoomData(state),
+  auth: pathToJS(firebase, 'auth')
 })
 
 const mapDispatchToProps = (dispatch) => ({
