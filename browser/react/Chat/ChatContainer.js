@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -7,7 +8,11 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 
 import { postGameChat } from '../../routes/chat.js';
 
-/************ Container ****************/
+/** ----------- Selectors ----------- */
+import { getGameId, getGameChats } from '../../redux/reducers/game-reducer';
+import { getUserId, getUsername } from '../../redux/reducers/user-reducer';
+
+/** ----------- Container Component ----------- */
 
 class ChatContainer extends React.Component {
   constructor(props) {
@@ -37,8 +42,9 @@ class ChatContainer extends React.Component {
   }
 
   handlePostMessage(event){
+    const { gameId, userId, username } = this.props;
     event.preventDefault();
-    postGameChat(this.props.gameId, this.props.userId, this.props.userName, this.state.message)
+    postGameChat(gameId, userId, username, this.state.message)
     this.setState({ message: '' });
   }
 
@@ -59,7 +65,7 @@ class ChatContainer extends React.Component {
   }
 
   render() {
-    const { userId, chats, userName } = this.props;
+    const { userId, chats, username } = this.props;
 
     const chatStyle = {
       width: 350,
@@ -72,55 +78,63 @@ class ChatContainer extends React.Component {
     };
 
     return (
-        <div className="chat-container">
-          <Card style={ chatStyle } onExpandChange={this.handleExpandChange}>
-            <CardHeader
-              title={`Chat (${userName})`}
-              actAsExpander={true}
-              showExpandableButton={true}
-              onClick={this.handleToggle}
-            />
+      <div className="chat-container">
+        <Card style={ chatStyle } onExpandChange={this.handleExpandChange}>
+          <CardHeader
+            title={`Chat (${username})`}
+            actAsExpander={true}
+            showExpandableButton={true}
+            onClick={this.handleToggle}
+          />
 
-            <CardText expandable={true}>
+          <CardText expandable={true}>
 
-              <div className="chat-log">
-                <ul className="chat-list">
-                {
-                  chats
-                  .sort((a, b) => a.createdAt - b.createdAt)
-                  .map((chat, i) => {
-                    return (
-                      <li key={i} ref={(ref) => this['_chat' + i] = ref} className="chat-message">
-                        <span style={{fontWeight: 'bold'}}>
-                          {chat.name}
-                        </span>: {chat.message}
-                      </li>
-                    )
-                  })
-                }
-                </ul>
+            <div className="chat-log">
+              <ul className="chat-list">
+              {
+                chats
+                .sort((a, b) => a.createdAt - b.createdAt)
+                .map((chat, i) => {
+                  return (
+                    <li key={i} ref={(ref) => this['_chat' + i] = ref} className="chat-message">
+                      <span style={{fontWeight: 'bold'}}>
+                        {chat.name}
+                      </span>: {chat.message}
+                    </li>
+                  )
+                })
+              }
+              </ul>
+            </div>
+
+            <form onSubmit={this.handlePostMessage}>
+              <TextField
+                onChange={this.handleTextField}
+                value={this.state.message}
+                hintText="Message..."
+                style={{ marginLeft: 5, width: 300 }} />
+              <div style={{ textAlign: 'center' }}>
+                <RaisedButton disabled={!this.state.message.trim().length} type="submit">
+                  SEND
+                </RaisedButton>
               </div>
+            </form>
 
-              <form onSubmit={this.handlePostMessage}>
-                <TextField
-                  onChange={this.handleTextField}
-                  value={this.state.message}
-                  hintText="Message..."
-                  style={{ marginLeft: 5, width: 300 }} />
-                <div style={{ textAlign: 'center' }}>
-                  <RaisedButton disabled={!this.state.message.trim().length} type="submit">
-                    SEND
-                  </RaisedButton>
-                </div>
-              </form>
+          </CardText>
 
-            </CardText>
-
-          </Card>
-        </div>
+        </Card>
+      </div>
     )
   }
 
 }
 
-export default ChatContainer;
+/** ------- Higher Order Component ------- */
+const mapStateToProps = state => ({
+  username: getUsername(state),
+  chats: getGameChats(state),
+  gameId: getGameId(state),
+  userId: getUserId(state)
+});
+
+export default connect(mapStateToProps)(ChatContainer);

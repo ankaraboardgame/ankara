@@ -1,6 +1,9 @@
 import React from 'react';
 
+/** ------------ Helper functions --------- */
 import { mapCoordToLocation } from '../../utils/board';
+
+/** -------------- Constants -------------- */
 import { LARGE_MARKET, SMALL_MARKET, GEMSTONE_DEALER, SMALL_MOSQUE, GREAT_MOSQUE } from '../Modal/location_types';
 
 /** -------------- Component -------------- */

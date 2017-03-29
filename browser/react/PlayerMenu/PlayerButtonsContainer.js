@@ -19,7 +19,7 @@ const animateStyles = StyleSheet.create({
   }
 });
 
-class PlayerButtons extends React.Component {
+class PlayerButtonsContainer extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -127,4 +127,4 @@ const mapStateToProps = state => ({
   playerMap: getPlayerMap(state)
 });
 
-export default connect(mapStateToProps)(PlayerButtons);
+export default connect(mapStateToProps)(PlayerButtonsContainer);

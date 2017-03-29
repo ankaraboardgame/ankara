@@ -9,7 +9,7 @@ html body {
 }
 
 #game-title {
-  width: 25%;
+  width: 30%;
   padding: 10px 0px 10px 0px;
 }
 
@@ -268,9 +268,9 @@ img.bonusCards {
   flex-direction: column;
   justify-content: center;
   align-self: center;
-  width: 150px;
+  width: auto;
   height: auto;
-  color: white;
+  color: black;
   z-index: 2;
   position: absolute;
   left: 130px;
@@ -726,12 +726,11 @@ footer .badge {
 #footer-container {
   position: fixed;
   bottom: 0;
+  left: 25vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  left: 50%;
-  margin-left: -400px;
 }
 
 #new-footer {

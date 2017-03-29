@@ -13,14 +13,12 @@ export const settingGame = (id) => ({
 
 /** -------- Thunk dispatchers --------- */
 export const fetchNewGame = (roomId, usersMap) => {
-
   return dispatch => {
-
     axios.post(`/api/game/${roomId}`, {usersMap})
       .then(() => {
         dispatch(settingGame(roomId));
         hashHistory.push('/game');
       })
       .catch(console.error);
-  }
-}
+  };
+};

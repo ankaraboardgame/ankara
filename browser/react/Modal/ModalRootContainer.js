@@ -54,10 +54,12 @@ import { handleSmuggler, smugglerOnLocation } from '../../utils/smuggler';
 /** -------- Selectors -------- */
 import { getUserId, getUserMoney, getUserAbilities, getUserWheelbarrow, getUserBonusCards } from '../../redux/reducers/user-reducer';
 import {
-  getGameId, getGameData, getGameMerchants, getCaravansaryData, getGemstoneDealerData,
+  getGameId, getGameMerchants, getCaravansaryData, getGemstoneDealerData,
   getGreatMosqueData, getSmallMosqueData, getLargeMarketData, getSmallMarketData, getSmuggler
 } from '../../redux/reducers/game-reducer';
 import { getModalType, getModalPayload, getModalDialog, getModalCurrentPosition, getNextModalDialog } from '../../redux/reducers/modal-reducer';
+
+/** -------- Modal Maps ------- */
 
 const Location_Components = {
   BLACK_MARKET: BlackMarket,
@@ -97,7 +99,7 @@ class ModalRootContainer extends React.Component {
   }
 
   handleActionEnd() {
-    // Handle smuggler after action
+    // if there is no smuggler on location, ends turn immediately
     this.handleSmuggler();
   }
 
@@ -116,10 +118,11 @@ class ModalRootContainer extends React.Component {
   }
 
   render() {
+
     const {
       userId, userMoney, gameId, modalType, payload,
       dialog, openModal, closeModal, gemstoneData,
-      abilities, greatMosqueData, smallMosqueData,
+      userAbilities, greatMosqueData, smallMosqueData,
       userWheelbarrow, largeMarketData, smallMarketData,
       caravansaryData, smuggler
     } = this.props;
@@ -133,26 +136,35 @@ class ModalRootContainer extends React.Component {
         <Modal onClose={onClose}>
           <div id="location-modal-container">
             <SpecificLocation
+              // identification numbers
               playerId={userId}
               gameId={gameId}
+              // modal data
               dialog={dialog}
-              handleMoreOptionsClick={this.handleMoreOptionsClick}
-              handleEndTurn={this.handleEndTurn}
-              gemstoneData={gemstoneData}
+              // modal dispatchers
+              openModal={openModal}
+              closeModal={closeModal}
+              // user-related game data
               userMoney={userMoney}
+              userAbilities={abilities}
               userWheelbarrow={userWheelbarrow}
-              abilities={abilities}
+              // game location data
+              gemstoneData={gemstoneData}
               caravansaryData={caravansaryData}
               greatMosqueData={greatMosqueData}
               smallMosqueData={smallMosqueData}
               largeMarketData={largeMarketData}
               smallMarketData={smallMarketData}
-              openModal={openModal}
-              closeModal={closeModal}
-              handleActionEnd={this.handleActionEnd}
               smuggler={smuggler}
+              // handler functions
+              handleMoreOptionsClick={this.handleMoreOptionsClick}
+              handleEndTurn={this.handleEndTurn}
+              handleActionEnd={this.handleActionEnd}     
             />
-            { payload && Turn_Dialog_Components[dialog] ? this.renderSpecificTurnDialog() : null }
+            {
+              payload && Turn_Dialog_Components[dialog] ?
+                this.renderSpecificTurnDialog() : null
+            }
           </div>
         </Modal>
       );
@@ -161,50 +173,61 @@ class ModalRootContainer extends React.Component {
 
   renderSpecificTurnDialog() {
 
-    const { userId, userMoney, userBonusCards, greatMosqueData, smallMosqueData, gameId, merchants, dialog, payload, currentPosition, openModal, closeModal, nextDialog, userWheelbarrow } = this.props;
+    const {
+      userId, userMoney, userBonusCards, greatMosqueData, smallMosqueData,
+      gameId, merchants, dialog, payload, currentPosition, openModal,
+      closeModal, nextDialog, userWheelbarrow
+    } = this.props;
     const SpecificTurnDialog = Turn_Dialog_Components[dialog];
 
     return (
       <SpecificTurnDialog
-        openModal={openModal}
-        closeModal={closeModal}
+        // identification numbers
         playerId={userId}
         gameId={gameId}
+        // modal data
         payload={payload}
+        nextDialog={nextDialog}
         currentPosition={currentPosition}
-        handleEndTurn={this.handleEndTurn}
-        merchants={merchants}
+        // modal dispatchers
+        openModal={openModal}
+        closeModal={closeModal}
+        // user-related game data
         userMoney={userMoney}
         userBonusCards={userBonusCards}
+        userWheelbarrow={userWheelbarrow}
+        // game location data
+        merchants={merchants}
         greatMosqueData={greatMosqueData}
         smallMosqueData={smallMosqueData}
-        nextDialog={nextDialog}
-        userWheelbarrow={userWheelbarrow}
+        // handler functions
+        handleEndTurn={this.handleEndTurn}
       />
     );
   }
-
 };
 
 /** -------- Container ---------- */
 const mapStateToProps = state => ({
+  // user store selectors
   userId: getUserId(state),
   userMoney: getUserMoney(state),
+  userAbilities: getUserAbilities(state),
   userWheelbarrow: getUserWheelbarrow(state),
   userBonusCards: getUserBonusCards(state),
-  gameId: getGameId(state),
-  gameData: getGameData(state),
-  merchants: getGameMerchants(state),
+  // modal store selectors
   modalType: getModalType(state),
   payload: getModalPayload(state),
   dialog: getModalDialog(state),
+  currentPosition: getModalCurrentPosition(state),
   nextDialog: getNextModalDialog(state),
-  abilities: getUserAbilities(state),
-  caravansaryData: getCaravansaryData(state),
+  // game store selectors
+  gameId: getGameId(state),
+  merchants: getGameMerchants(state),
   gemstoneData: getGemstoneDealerData(state),
+  caravansaryData: getCaravansaryData(state),
   greatMosqueData: getGreatMosqueData(state),
   smallMosqueData: getSmallMosqueData(state),
-  currentPosition: getModalCurrentPosition(state),
   largeMarketData: getLargeMarketData(state),
   smallMarketData: getSmallMarketData(state),
   smuggler: getSmuggler(state)

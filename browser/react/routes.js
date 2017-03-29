@@ -1,31 +1,23 @@
 import React from 'react';
-import { Router, Route, IndexRoute, IndexRedirect, hashHistory } from 'react-router';
-import { connect } from 'react-redux';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
-/** Importing components and containers */
-import AppContainer from './AppContainer';
+/** -------- Importing components and containers -------- */
+import GameContainer from './GameContainer';
 import LobbyContainer from './Lobby/LobbyContainer';
-import TitlePage from './TitlePage';
-import RootContainer from './RootContainer';
+import TitlePageContainer from './TitlePage/TitlePageContainer';
+import AppContainer from './AppContainer';
 
-/** Importing action-creators */
-import { loadBoard } from '../redux/action-creators/board';
-
-/** Routes */
+/** --------- Routes ------- */
 const Root = ({ loadGameBoard }) => {
   return (
       <Router history={hashHistory}>
-        <Route path="/" component={RootContainer}>
-          <IndexRoute component={TitlePage}/>
+        <Route path="/" component={AppContainer}>
+          <IndexRoute component={TitlePageContainer}/>
           <Route path="/lobby" component={LobbyContainer}/>
-          <Route path="/game" component={AppContainer} onEnter={loadGameBoard}/>
+          <Route path="/game" component={GameContainer}/>
         </Route>
       </Router>
   );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  loadGameBoard: () => dispatch(loadBoard())
-});
-
-export default connect(null, mapDispatchToProps)(Root);
+export default Root;
