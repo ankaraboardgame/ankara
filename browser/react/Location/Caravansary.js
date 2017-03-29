@@ -16,10 +16,9 @@ class Caravansary extends React.Component {
 
   handleGetCard (type){
     const { gameId, playerId, openModal, closeModal, handleActionEnd } = this.props;
+    // Make axios call for Caravansary action
     actionGetBonusCard(gameId, playerId, type)
       .then(() => handleActionEnd())
-      // .then(() => closeModal())
-      // .then(() => handleEndTurn())
       .catch(console.error);
   }
 

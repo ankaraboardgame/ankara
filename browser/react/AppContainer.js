@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { firebaseConnect } from 'react-redux-firebase'
 
 import CircularProgress from 'material-ui/CircularProgress';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { fadeInDown, fadeInDownBig, zoomIn, shake } from 'react-animations';
 import { StyleSheet, css } from 'aphrodite';
 
@@ -11,7 +10,6 @@ import BoardContainer from './Board/BoardContainer';
 import FooterContainer from './Footer/FooterContainer';
 import ModalRootContainer from './Modal/ModalRootContainer';
 import ChatContainer from './Chat/ChatContainer.js';
-import NotificationContainer from './Notification/NotificationComponent';
 
 import DisplayWinner from './TurnDialogs/DisplayWinner';
 import LastTurn from './TurnDialogs/LastTurn';
@@ -66,17 +64,16 @@ class AppContainer extends React.Component {
             <PlayerButtons />
             { lastRound ? <h3> LAST ROUND</h3> : null}
             <div id="app-container">
-              <img className={css(animateStyles.fadeInDown)} src={`images/Constantinople-Title-2.png`} id="game-title" />
+              <img className={css(animateStyles.fadeInDown)} src={`images/Ankara-Title.png`} id="game-title" />
               <BoardContainer />
               <FooterContainer />
               <ModalRootContainer />
-              <NotificationContainer />
               {
                 lastRound && merchants[playerTurn].number === 0 ?
                 <DisplayWinner
                   merchants={merchants}
                   playerMap={playerMap}
-                /> : null 
+                /> : null
               }
             </div>
             <ChatContainer

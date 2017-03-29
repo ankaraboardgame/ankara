@@ -150,7 +150,7 @@ class LobbyContainer extends React.Component {
       <MuiThemeProvider>
         <div id="lobby-container">
 
-          <img src={`images/Constantinople-Title-2.png`} id="game-title" />
+          <img src={`images/Ankara-Title.png`} id="game-title" />
 
           <div id="create-room-button">
             <Paper style={createRoomStyle} zDepth={3}>

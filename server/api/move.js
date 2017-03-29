@@ -27,9 +27,9 @@ router.post('/', (req, res, next) => {
   .then(() => {
     res.sendStatus(204);
     //game log
-    log(gameId, {
+    log(req.game.id, {
       type: 'PLAYER_MOVE',
-      user: playerId,
+      user: req.player.id,
       location: req.body.newPosition,
       timestamp: getCurrUnixTime()
     })
