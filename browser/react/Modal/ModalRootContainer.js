@@ -25,6 +25,8 @@ import MerchantEncounter from '../TurnDialogs/MerchantEncounter';
 import SmugglerEncounter from '../TurnDialogs/SmugglerEncounter';
 import MoreOptions from '../TurnDialogs/MoreOptions';
 import SelectBonusGood from '../TurnDialogs/SelectBonusGood';
+import MosqueTiles from '../TurnDialogs/MosqueTiles';
+import BonusCards from '../TurnDialogs/BonusCards';
 
 /** -------- Modal Type Constants -------- */
 import {
@@ -36,7 +38,7 @@ import {
 /** -------- Turn Dialog Constants ------- */
 import {
   DROP_ASSISTANT, PICK_UP_ASSISTANT, MERCHANT_ENCOUNTER, SMUGGLER_ENCOUNTER,
-  MORE_OPTIONS, SELECT_BONUS_GOOD
+  MORE_OPTIONS, SELECT_BONUS_GOOD, PLAY_BONUS, PLAY_MOSQUES_TILES
 } from './turn_types';
 
 /** -------- Action-creators -------- */
@@ -78,7 +80,9 @@ const Turn_Dialog_Components = {
   MERCHANT_ENCOUNTER: MerchantEncounter,
   SMUGGLER_ENCOUNTER: SmugglerEncounter,
   MORE_OPTIONS: MoreOptions,
-  SELECT_BONUS_GOOD: SelectBonusGood
+  SELECT_BONUS_GOOD: SelectBonusGood,
+  PLAY_BONUS: BonusCards,
+  PLAY_MOSQUES_TILES: MosqueTiles
 };
 
 /** -------- Rendering Component -------- */

@@ -14,7 +14,7 @@ class MerchantEncounter extends React.Component {
 
     this.handleMerchant = this.handleMerchant.bind(this);
   }
-  
+
 
   handleMerchant() {
     const { gameId, playerId, currentPosition, payload, openModal, closeModal } = this.props;
@@ -37,19 +37,21 @@ class MerchantEncounter extends React.Component {
     const { handleEndTurn, payload } = this.props;
     return (
       <div id="turn-dialog-half">
-        <RaisedButton
-          label={`Pay other merchants ${payload.merchantCount * 2} lira`}
-          style={{ margin: 12 }}
-          primary={true}
-          onTouchTap={this.handleMerchant}
-          disabled={payload.money < 2}
-        />
-        <RaisedButton
-          label="End turn now"
-          style={{ margin: 12 }}
-          secondary={true}
-          onTouchTap={handleEndTurn}
-        />
+        <div id="market-row">
+          <RaisedButton
+            label={`Pay other merchants ${payload.merchantCount * 2} lira`}
+            style={{ margin: 12 }}
+            primary={true}
+            onTouchTap={this.handleMerchant}
+            disabled={payload.money < 2}
+            />
+          <RaisedButton
+            label="End turn now"
+            style={{ margin: 12 }}
+            secondary={true}
+            onTouchTap={handleEndTurn}
+            />
+        </div>
       </div>
     );
   }
