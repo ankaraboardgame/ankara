@@ -14,34 +14,34 @@ const firebaseAdmin = require('firebase-admin');
  * granting admin privileges, and use alternate
  * database during test runs.
  */
-if (process.env.NODE_ENV === 'test') {
-	console.log('running test server...');
-	let serviceAccount = {
-		type: process.env.FBTEST_TYPE,
-		project_id: process.env.FBTEST_PROJECT_ID,
-		private_key_id: process.env.FBTEST_PRIVATE_KEY_ID,
-		private_key: process.env.FBTEST_PRIVATE_KEY,
-		client_email: process.env.FBTEST_CLIENT_EMAIL,
-		client_id: process.env.FBTEST_CLIENT_ID,
-		auth_uri: process.env.FBTEST_AUTH_URI,
-		token_uri: process.env.FBTEST_TOKEN_URI,
-		auth_provider_x509_cert_url: process.env.FBTEST_AUTH_PROVIDER_X509_CERT_URL,
-		client_x509_cert_url: process.env.FBTEST_CLIENT_X509_CERT_URL
-	}
+// if (process.env.NODE_ENV === 'test') {
+// 	console.log('running test server...');
+// 	let serviceAccount = {
+// 		type: process.env.FBTEST_TYPE,
+// 		project_id: process.env.FBTEST_PROJECT_ID,
+// 		private_key_id: process.env.FBTEST_PRIVATE_KEY_ID,
+// 		private_key: process.env.FBTEST_PRIVATE_KEY,
+// 		client_email: process.env.FBTEST_CLIENT_EMAIL,
+// 		client_id: process.env.FBTEST_CLIENT_ID,
+// 		auth_uri: process.env.FBTEST_AUTH_URI,
+// 		token_uri: process.env.FBTEST_TOKEN_URI,
+// 		auth_provider_x509_cert_url: process.env.FBTEST_AUTH_PROVIDER_X509_CERT_URL,
+// 		client_x509_cert_url: process.env.FBTEST_CLIENT_X509_CERT_URL
+// 	}
 
-	if(!serviceAccount.private_key) {
-		serviceAccount = require('../tests/secret-firebase-test-server.json');
-	}
-	const key = {
-		apiKey: 'AIzaSyBzVhw7ppsPkNKEahvABSl8ojMHqEd5lAg',
-		credential: firebaseAdmin.credential.cert(serviceAccount),
-		authDomain: 'istanbul-test.firebaseapp.com',
-		databaseURL: 'https://istanbul-test.firebaseio.com/'
-	}
-	firebaseAdmin.initializeApp(key);
-} else {
-	console.log('not running test server...');
-}
+// 	if(!serviceAccount.private_key) {
+// 		serviceAccount = require('../tests/secret-firebase-test-server.json');
+// 	}
+// 	const key = {
+// 		apiKey: 'AIzaSyBzVhw7ppsPkNKEahvABSl8ojMHqEd5lAg',
+// 		credential: firebaseAdmin.credential.cert(serviceAccount),
+// 		authDomain: 'istanbul-test.firebaseapp.com',
+// 		databaseURL: 'https://istanbul-test.firebaseio.com/'
+// 	}
+// 	firebaseAdmin.initializeApp(key);
+// } else {
+// 	console.log('not running test server...');
+// }
 
 // process.env - config vars set-up on heroku side
 let serviceAccount = {
