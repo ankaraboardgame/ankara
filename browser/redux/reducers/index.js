@@ -14,6 +14,5 @@ export default combineReducers({
   user: userReducer,
   firebase: firebaseStateReducer,
   modal: modalReducer,
-  room: roomReducer,
   game: gameReducer
 });

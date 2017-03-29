@@ -64,37 +64,6 @@ describe('Redux architecture', () => {
 
     });
 
-    describe('joinRoom', () => {
-
-      it('returns expected action description', () => {
-
-        const roomId = 2000;
-
-        const actionDescriptor = joinRoom(roomId);
-
-        expect(actionDescriptor).to.be.deep.equal({
-            type: 'SET_JOINED_TRUE',
-            id: roomId
-        });
-
-      });
-
-    });
-
-    describe('leaveRoom', () => {
-
-      it('returns expected action description', () => {
-
-        const actionDescriptor = leaveRoom();
-
-        expect(actionDescriptor).to.be.deep.equal({
-            type: 'SET_JOINED_FALSE'
-        });
-
-      });
-
-    });
-
   });
 
   describe('store/reducer', () => {
@@ -185,50 +154,6 @@ describe('Redux architecture', () => {
 
         expect(newState.modal.modalType).to.be.equal(null);
         expect(newState.modal.payload).to.be.equal(null);
-
-      });
-
-    });
-
-    describe('reducing on SET_JOINED_TRUE', () => {
-
-      it('affects the state by setting modalType and its payload', () => {
-
-        const roomId = 2000;
-
-        testingStore.dispatch({
-          type: 'SET_JOINED_TRUE',
-          id: roomId
-        });
-
-        const newState = testingStore.getState();
-        expect(newState.room.joined).to.be.equal(roomId);
-
-      });
-
-    });
-
-    describe('reducing on SET_JOINED_FALSE', () => {
-
-      beforeEach(() => {
-        const roomId = 2000;
-
-        testingStore.dispatch({
-          type: 'SET_JOINED_TRUE',
-          id: roomId
-        });
-
-      });
-
-      it('affects the state by setting modalType and its payload to null', () => {
-
-        testingStore.dispatch({
-          type: 'SET_JOINED_FALSE'
-        });
-
-        const newState = testingStore.getState();
-
-        expect(newState.room.joined).to.be.equal(false);
 
       });
 

@@ -16,9 +16,11 @@ class ChatContainer extends React.Component {
 
     this.state = {
       message: '',
-      shouldDisplay: false
+      shouldDisplay: false,
+      unread: false
     };
 
+    this.chat = new Audio('sounds/chat.wav');
     this.handleToggle = this.handleToggle.bind(this);
     this.handleTextField = this.handleTextField.bind(this);
     this.handlePostMessage = this.handlePostMessage.bind(this);
@@ -26,7 +28,14 @@ class ChatContainer extends React.Component {
 
   handleToggle(){
     const currState = this.state.shouldDisplay;
-    this.setState({shouldDisplay: !currState})
+    if (currState === false){
+      this.setState({
+        shouldDisplay: true,
+        unread: false
+      })
+    } else {
+      this.setState({shouldDisplay: false})
+    }
   }
 
   handleTextField(event){
@@ -39,8 +48,17 @@ class ChatContainer extends React.Component {
     this.setState({ message: '' });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.chats.length !== this.props.chats.length){
+      this.chat.play();
+      if (this.state.shouldDisplay === false){
+        this.setState({ unread: true });
+      }
+    }
+  }
+
   componentDidUpdate(){
-    // scroll as new messages come along
+    // if chatbox is open, scroll as new messages come along
     var len = this.props.chats.length - 1;
     const lastMessage = ReactDOM.findDOMNode(this['_chat' + len]);
     if (lastMessage) lastMessage.scrollIntoView();
@@ -60,7 +78,7 @@ class ChatContainer extends React.Component {
 
     return (
       <div>
-      <div className="chat-icon" onClick={this.handleToggle}>
+      <div className={`chat-icon ${this.state.unread && 'unread'}`} onClick={this.handleToggle}>
         <img className="chat-icon" src="images/chat.png" />
       </div>
       {
