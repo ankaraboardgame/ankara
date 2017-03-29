@@ -89,6 +89,10 @@ export const Room = props => {
               disabled={!(joined === roomId)}>
               READY
             </RaisedButton>
+            {
+              props.ready && props.roomId === props.joined &&
+              <p>Waiting for { Object.keys(roomData.users).length - Object.keys(roomData.ready).length } to be ready...</p>
+            }
           </CardActions>
         </CardText>
       </Card>

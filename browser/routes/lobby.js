@@ -23,6 +23,6 @@ export const deleteRoom = roomId => {
   return axios.post(`api/lobby/${roomId}/delete`);
 }
 
-export const signalReady = roomId => {
-  return axios.post(`api/lobby/${roomId}/ready`);
+export const signalReady = (roomId, userId) => {
+  return axios.post(`api/lobby/${roomId}/ready`, { userId });
 }

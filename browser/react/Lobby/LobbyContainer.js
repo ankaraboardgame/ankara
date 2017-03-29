@@ -19,7 +19,7 @@ import { fetchNewGame } from '../../redux/action-creators/game';
 import { getUserId } from '../../redux/reducers/user-reducer.js';
 import { getRoomData } from '../../redux/reducers/room-reducer.js';
 
-import { createRoom, addToRoom, removeFromRoom, deleteRoom } from '../../routes/lobby.js';
+import { createRoom, addToRoom, removeFromRoom, deleteRoom, signalReady } from '../../routes/lobby.js';
 
 import { Room } from './Room.js';
 import ChatContainer from '../Chat/ChatContainer.js';
@@ -33,7 +33,8 @@ class LobbyContainer extends React.Component {
     this.state = {
       searchQuery: '',
       createRoomField: '',
-      joined: null
+      joined: null,
+      ready: false
     };
 
     this.handleCreateRoomTextFieldChange = this.handleCreateRoomTextFieldChange.bind(this);
@@ -57,6 +58,18 @@ class LobbyContainer extends React.Component {
         });
       }
     });
+  }
+
+  componentDidUpdate(){
+    const roomData = this.props.roomData;
+    const myRoomId = this.state.joined;
+    if (roomData && myRoomId){
+      // if all users have clicked 'ready', dispatch a 'create game action'
+      if (Object.keys(roomData[myRoomId].ready || {}).length === Object.keys(roomData[myRoomId].users).length){
+        this.props.startGame(myRoomId, roomData[myRoomId].users);
+        // will forward all users to the game
+      }
+    }
   }
 
   handleCreateRoomTextFieldChange(event){
@@ -98,9 +111,11 @@ class LobbyContainer extends React.Component {
     });
   }
 
-  handleReadyToStart(event, roomId, usersMap){
+  handleReadyToStart(event, roomId){
     event.preventDefault();
-    this.props.startGame(roomId, usersMap); // dispatches to store
+    console.log('click')
+    signalReady(roomId, this.props.userId)
+      .then(() => this.setState({ ready: true }));
   }
 
   render() {
@@ -189,6 +204,7 @@ class LobbyContainer extends React.Component {
                     handleLeaveRoom={this.removeUserFromRoom}
                     handleDeleteRoom={this.handleDeleteRoom}
                     handleReady={this.handleReadyToStart}
+                    ready={this.state.ready}
                   />
                 ) : null
             })

@@ -324,13 +324,13 @@ table {
 
 .chat-container {
   position: fixed;
-  top: 90px;
+  bottom: 90px;
   right: 90px;
 }
 
 .chat-icon {
   position: fixed;
-  top: 30px;
+  bottom: 30px;
   right: 30px;
   height: 80px;
   width: 80px;
