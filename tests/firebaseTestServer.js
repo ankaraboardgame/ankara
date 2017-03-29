@@ -9,7 +9,7 @@
 
 
 const firebaseAdmin = require('firebase-admin');
-const serviceAccount = require('./secret-firebase-test-server.json');
+const serviceAccount = require('./secret-firebase-test-server.js');
 const key = {
   apiKey: 'AIzaSyBzVhw7ppsPkNKEahvABSl8ojMHqEd5lAg',
   credential: firebaseAdmin.credential.cert(serviceAccount),
