@@ -1,4 +1,4 @@
-const levels = {
+export const levels = {
   basic: [
     ['great_mosque', 'fabric_warehouse', 'small_mosque'],
     ['fruit_warehouse', 'spice_warehouse', 'black_market'],

@@ -1,5 +1,6 @@
 import { pickupAssistant, dropAssistant } from '../routes/move.js';
 import { mapCoordToLocation } from './board.js';
+import { DROP_ASSISTANT, PICK_UP_ASSISTANT } from '../react/Modal/turn_types';
 
 const assistantOnLocation = (currentCoords, {out}) => {
   if (!out) return false;
@@ -8,27 +9,29 @@ const assistantOnLocation = (currentCoords, {out}) => {
 }
 
 export const openAssistantDialog = (props) => {
-  if (assistantOnLocation(props.coords, props.merchants[props.user.uid].assistants)) {
-    props.openModal(
-      mapCoordToLocation(props.coords),
+  const { coords, merchantsData, userAssistants, openModal } = props;
+  if (assistantOnLocation(coords, userAssistants)) {
+    openModal(
+      mapCoordToLocation(coords),
       {
-        currentPosition: props.coords,
-        dialog: 'pick_up_assistant'
+        currentPosition: coords,
+        dialog: PICK_UP_ASSISTANT
       }
     );
   } else {
-    props.openModal(
-      mapCoordToLocation(props.coords),
+
+    openModal(
+      mapCoordToLocation(coords),
       {
-        currentPosition: props.coords,
-        dialog: 'drop_assistant',
-        assistantCount: props.selfData.assistants.count
+        currentPosition: coords,
+        dialog: DROP_ASSISTANT,
+        assistantCount: userAssistants.count
       }
     );
   }
 }
 
-const merchantsOnLocation = (playerId, currentPosition, merchantsObj) => {
+export const merchantsOnLocation = (playerId, currentPosition, merchantsObj) => {
   const merchantsArray = [];
   const merchantIds = Object.keys(merchantsObj);
   merchantIds.forEach((merchantId) => {
@@ -38,31 +41,3 @@ const merchantsOnLocation = (playerId, currentPosition, merchantsObj) => {
   });
   return merchantsArray;
 };
-
-export function handleAssistant (action) {
-  const { gameId, playerId, currentPosition, merchants, selfData } = this.props;
-  if (action === 'drop'){
-    dropAssistant(gameId, playerId, currentPosition);
-  } else if (action === 'pickup'){
-    pickupAssistant(gameId, playerId, currentPosition);
-  }
-
-  this.props.closeModal();
-
-  const otherMerchantsArray = merchantsOnLocation(playerId, currentPosition, merchants);
-  // if other merchants are on this location, open the merchants dialog
-  if (otherMerchantsArray.length) {
-    this.props.openModal(
-      mapCoordToLocation(currentPosition),
-      {
-        currentPosition: currentPosition,
-        otherMerchants: otherMerchantsArray,
-        merchantCount: otherMerchantsArray.length,
-        money: selfData.wheelbarrow.money,
-        dialog: 'merchant_encounter' // sends to handleMerchant()
-      }
-    );
-  } else { // else, open the action dialog
-    this.props.openModal(mapCoordToLocation(this.props.currentPosition), { currentPosition: this.props.currentPosition, dialog: 'action' });
-  }
-}

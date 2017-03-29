@@ -6,7 +6,8 @@
 // var app = require('../app');
 // var agent = request.agent(app);
 
-var { gamesRef } = require('../../tests/firebaseTestServer.js');
+
+// var { gamesRef } = require('../../tests/firebaseTestServer.js');
 
 /*********** Game Route Tests ***********************/
 

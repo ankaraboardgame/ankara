@@ -1,7 +1,6 @@
 import React from 'react';
 
-const Assistant = props => {
-  const { playerNum } = props;
+const Assistant = ({ playerNum }) => {
   return (
     <div>
       { 

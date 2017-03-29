@@ -4,17 +4,27 @@ import { connect } from 'react-redux';
 import { DropTarget } from 'react-dnd';
 import { dataToJS } from 'react-redux-firebase';
 
-import { cellActiveStatus, canMovePlayer, mapCoordToLocation } from '../../utils';
+import { cellActiveStatus, canMovePlayer, mapCoordToLocation } from '../../utils/board';
 import { openAssistantDialog } from '../../utils/assistants.js';
 import { movePlayer } from '../../routes/move';
 import { loadModal, hideModal } from '../../redux/action-creators/modals';
+
+/** ---------- Selectors ----------- */
+import { getUserId, getUserData, getUserPosition, getUserAssistants } from '../../redux/reducers/user-reducer';
+import { getGameId, getGameMerchants, getSmuggler, getPlayerTurn, getLargeMarketData, getSmallMarketData, getGemstoneDealerData, getGreatMosqueData, getSmallMosqueData } from '../../redux/reducers/game-reducer';
 
 import Cell from './Cell';
 import Player from '../Pieces/Player';
 import Assistant from '../Pieces/Assistant';
 import Smuggler from '../Pieces/Smuggler';
 
-/******************* Container ********************/
+/** ---------- Container ------------ */
+/**
+ * CellContainer wraps each cell component and handles:
+ *  * where to draw player/assistant/smuggler buttons
+ *  * cell highlighting to indicate possible moves for player
+ *  * drag and drop functionality
+ */
 
 class CellContainer extends React.Component {
   constructor(props) {
@@ -31,31 +41,37 @@ class CellContainer extends React.Component {
   }
 
   render() {
-    const currentUserId = this.props.user.uid;
-    const smuggler = this.props.game.smuggler;
-    const playerTurn = this.props.game.playerTurn;
-    const game = this.props.game;
     const {
-      gamesRef,
-      user,
-      name,
       connectDropTarget,
       isOver,
-      coords,
-      merchants,
-      selfData
+      gameId,
+      userId,
+      merchantsData,
+      userPosition,
+      smuggler,
+      playerTurn,
+      largeMarketData,
+      smallMarketData,
+      gemstoneDealerData,
+      greatMosqueData,
+      smallMosqueData,
+      name,
+      coords
     } = this.props;
 
-    const playerPieces = merchants ? Object.keys(merchants)
+    /**
+     * Read data for all players and draw their buttons
+     */
+    const playerPieces = merchantsData ? Object.keys(merchantsData)
       .map( merchantId => {
-        if ( merchants[merchantId].position.coordinates === coords) {
+        if ( merchantsData[merchantId].position.coordinates === coords) {
           return (
             <Player
               key={merchantId}
               activePlayer={playerTurn}
-              currentUser={user}
+              currentUser={userId}
               playerId={merchantId}
-              playerNum={merchants[merchantId].number}
+              playerNum={merchantsData[merchantId].number}
             />
           )
         } else {
@@ -65,61 +81,82 @@ class CellContainer extends React.Component {
       .filter(Boolean)
       : [];
 
+    /**
+     * Read data for all assistants and draw their buttons
+     */
     let assistantPieces = [];
-    if (merchants){
-      for (let key in merchants){
-        const out = merchants[key].assistants.out;
+    if (merchantsData){
+      for (let merchantId in merchantsData){
+        const out = merchantsData[merchantId].assistants.out;
         const outCoords = out && Object.keys(out)
                                        .map(k => out[k])
                                        .filter(asstCoords => asstCoords === coords);
         if (out && outCoords.length) {
           assistantPieces = assistantPieces.concat({
-            out: merchants[key].assistants.out,
-            number: merchants[key].number
+            out: merchantsData[merchantId].assistants.out,
+            number: merchantsData[merchantId].number
           })
         }
       }
       assistantPieces = assistantPieces
-        .map(({out, number}) => {
+        .map(({ out, number }) => {
           return {
             asstCoords: Object.keys(out).map(key => out[key])[0],
             number
           }
         })
-        .map(({asstCoords, number}) => (<Assistant key={`${number}-${asstCoords}`} playerNum={number} />))
+        .map(({ asstCoords, number }) => (
+          <Assistant
+            key={`${number}-${asstCoords}`}
+            playerNum={number}
+          />
+        ))
     }
 
+    /**
+     * Read data for smuggler and draw its button
+     */
     const smugglerPiece = smuggler && (coords === smuggler.coordinates) && (
-      <Smuggler key={'smuggler'} />
+      <Smuggler key="smuggler" />
     )
 
-    // There should only be one merchant that matches current user
+    /**
+     * If it's the player's turn, dim the cells she cannot move to
+     */
     let activeStatus;
     let cellActive = cellActiveStatus(
           coords,
-          selfData.position.coordinates,
-          selfData.position.possibleMoves
+          userPosition.coordinates,
+          userPosition.possibleMoves
         )
-    if (merchants && !cellActive && game.playerTurn === currentUserId) {
+    if (merchantsData && !cellActive && playerTurn === userId) {
       activeStatus = { opacity: '0.2' };
     }
 
+    /**
+     * Connect each Cell as a drop-target (React drag-and-drop)
+     * and superimpose dives for player, smuggler, and assistants
+     */
     return connectDropTarget(
       <div id="cell-container" style={activeStatus}>
         <Cell
           coords={coords}
           name={name}
           handleOnClick={this.handleOnClick}
-          gamesRef={gamesRef}
+          largeMarketData={largeMarketData}
+          smallMarketData={smallMarketData}
+          gemstoneDealerData={gemstoneDealerData}
+          greatMosqueData={greatMosqueData}
+          smallMosqueData={smallMosqueData}
         />
         <div className="player-container">
-          { [...playerPieces] }
+          { playerPieces }
         </div>
         <div className="smuggler-container">
-          { [smugglerPiece] }
+          { smugglerPiece }
         </div>
         <div className="assistant-container">
-          { [...assistantPieces] }
+          { assistantPieces }
         </div>
         { isOver && <div className="player-hover-overlay" /> }
       </div>
@@ -127,34 +164,18 @@ class CellContainer extends React.Component {
   }
 }
 
-/**************** Higher Order Component *****************/
+/** ----------- Higher Order Components ----------- */
 
 const cellTarget = {
-  canDrop(props) {
-    return canMovePlayer(props.coords, props.selfData.position.possibleMoves);
+  canDrop({ coords, userPosition }) {
+    return canMovePlayer(coords, userPosition.possibleMoves);
   },
   drop(props) {
+    const { gameId, userId, coords, cellPossibleMoves } = props;
     openAssistantDialog(props);
-    movePlayer(props.gameId, props.user.uid, props.coords, props.cellPossibleMoves);
+    movePlayer(gameId, userId, coords, cellPossibleMoves);
   }
 };
-
-const mapStateToProps = (state, ownProps) => ({
-  user: state.user.user,
-  playerId: state.user.user.uid,
-  name: ownProps.name,
-  coords: ownProps.coords,
-  possibleMoves: ownProps.cellPossibleMoves,
-  game: ownProps.game,
-  merchants: ownProps.merchants,
-  selfData: ownProps.selfData,
-  gamesRef: dataToJS(state.firebase, `games/${state.game.id}`)
-});
-
-const mapDispatchToProps = dispatch => ({
-  closeModal: () => dispatch(hideModal()),
-  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
-});
 
 const collect = (connect, monitor) => {
   return {
@@ -162,6 +183,29 @@ const collect = (connect, monitor) => {
     isOver: monitor.isOver()
   };
 };
+
+const mapStateToProps = (state, { name, coords, cellPossibleMoves }) => ({
+  gameId: getGameId(state),
+  userId: getUserId(state),
+  merchantsData: getGameMerchants(state),
+  userPosition: getUserPosition(state),
+  userAssistants: getUserAssistants(state),
+  smuggler: getSmuggler(state),
+  playerTurn: getPlayerTurn(state),
+  largeMarketData: getLargeMarketData(state),
+  smallMarketData: getSmallMarketData(state),
+  gemstoneDealerData: getGemstoneDealerData(state),
+  greatMosqueData: getGreatMosqueData(state),
+  smallMosqueData: getSmallMosqueData(state),
+  name: name,
+  coords: coords,
+  possibleMoves: cellPossibleMoves,
+});
+
+const mapDispatchToProps = dispatch => ({
+  closeModal: () => dispatch(hideModal()),
+  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
+});
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

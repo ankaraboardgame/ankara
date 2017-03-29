@@ -7,18 +7,22 @@ import {
   dataToJS,
   pathToJS
 } from 'react-redux-firebase';
-import { fbDB, fbAuth, googleProvider } from '../../firebase';
+import { fbAuth } from '../../firebase';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
 
 import { settingUser } from '../../redux/action-creators/user';
 import { joinRoom, leaveRoom } from '../../redux/action-creators/room';
 import { fetchNewGame } from '../../redux/action-creators/game';
 
-import { Room } from './Room.js'
+import { createRoom, addToRoom, removeFromRoom, deleteRoom } from '../../routes/lobby.js';
+
+import { Room } from './Room.js';
+import ChatContainer from '../Chat/ChatContainer.js';
 
 /************ LobbyContainer ****************/
 
@@ -26,29 +30,23 @@ class LobbyContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    // local state
-    this.state = { joined: false };
+    this.state = {
+      searchQuery: '',
+      joined: null
+    };
 
     this.removeUserFromRoom = this.removeUserFromRoom.bind(this);
     this.handleCreateRoom = this.handleCreateRoom.bind(this);
     this.addCurrentUserToRoom = this.addCurrentUserToRoom.bind(this);
     this.handleStartGame = this.handleStartGame.bind(this);
     this.handleDeleteRoom = this.handleDeleteRoom.bind(this);
-  }
-
-  // get a reference to firebase database > rooms
-  componentWillMount() {
-    this.roomsRef = fbDB.ref('rooms');
-  }
-
-  componentWillUnMount() {
-    this.roomsRef.off();
+    this.handleSearchBar = this.handleSearchBar.bind(this);
   }
 
   componentDidMount() {
     fbAuth.onAuthStateChanged((user) => {
       if (user) {
-        this.props.setUser(user); 
+        this.props.setUser(user);
       } else {
         fbAuth.signInAnonymously().catch(function(error) {
           var errorCode = error.code;
@@ -59,65 +57,72 @@ class LobbyContainer extends React.Component {
     });
   }
 
-  // create room after 'create room' button is clicked
+  handleSearchBar(event){
+    this.setState({searchQuery: event.target.value.toLowerCase()})
+  }
+
   handleCreateRoom(event){
     event.preventDefault();
     const name = event.target[0].value;
-    this.roomsRef.push({name}).catch(console.error); // should dispatch action
+    const userId = this.props.userId;
+    createRoom(name, userId);
   }
 
   handleDeleteRoom(event, roomId){
     event.preventDefault();
-    this.roomsRef.child(roomId).remove();
+    deleteRoom(roomId).catch(console.error);
   }
 
-  // add user to specific room after 'join room' button is clicked
   addCurrentUserToRoom(event, roomId, userId) {
-    event.preventDefault();
+    if (event) event.preventDefault();
     const name = event.target[0].value || 'Anonymous';
-
-    this.roomsRef.child(roomId).child('users').child(userId).set(name)
+    addToRoom(roomId, userId, name)
+    .then(() => this.setState({ joined: roomId }))
     .catch(console.error);
-
-    this.setState({ joined: roomId });
-  }
-
-  // create room after 'create room' button is clicked
-  handleStartGame(event, roomId){
-    event.preventDefault();
-    const roomsRef = this.roomsRef;
-    const startGame = this.props.startGame;
-
-    roomsRef.child(roomId).child('users').once('value', function(snapshot){
-      startGame(roomId, snapshot.val());
-    });
   }
 
   removeUserFromRoom(evt, roomId, idToRemove) {
     evt.preventDefault();
     const leaveRoom = this.props.leaveRoom;
     const ownId = this.props.userId;
-    console.log(ownId, idToRemove)
-    this.roomsRef.child(roomId).child('users').child(idToRemove).remove()
-    .then((result) => {
-        leaveRoom();
-        if (idToRemove === ownId) {
-          this.setState({joined: false})
-        }
+    removeFromRoom(roomId, idToRemove)
+    .then(() => {
+      if (idToRemove === ownId) {
+        this.setState({joined: null})
+      }
     });
+  }
+
+  handleStartGame(event, roomId, usersMap){
+    event.preventDefault();
+    this.props.startGame(roomId, usersMap); // dispatches to store
   }
 
   render() {
     const roomData = this.props.roomData;
     const paperStyle = {
-      height: 130,
-      width: 800,
+      height: 100,
+      width: 500,
       padding: 20,
       margin: 20,
       backgroundColor: '#8C5942',
       textAlign: 'center',
       display: 'inline-block'
     };
+    const searchStyle = {
+      color: 'white',
+      fontTransform: 'uppercase',
+      fontStyle: 'italic',
+      fontSize: 24,
+      width: 500
+    };
+    const hintStyle = {
+      color: '#555',
+      fontTransform: 'uppercase',
+      fontStyle: 'italic',
+      fontSize: 24
+    };
+
 
     return (
       <MuiThemeProvider>
@@ -127,34 +132,45 @@ class LobbyContainer extends React.Component {
 
           <div id="create-room-button">
             <Paper style={paperStyle} zDepth={3}>
+
               <form onSubmit={ this.handleCreateRoom }>
                 <TextField hintText="Create new room" style={{marginLeft: 20}} />
-                <br />
                 <RaisedButton type="submit">
                   CREATE
                 </RaisedButton>
               </form>
+
             </Paper>
           </div>
 
-          <div className="row">
+          <Divider />
+
+          <TextField
+            onChange={this.handleSearchBar}
+            hintText="Search rooms"
+            hintStyle={hintStyle}
+            inputStyle={searchStyle}
+          />
+
+          <div className="room-column">
           {
             roomData &&
-            Object.keys(roomData).map(roomId => {
+            Object.keys(roomData).reverse().map(roomId => {
               return (
-                <Room
-                  key={roomId}
-                  roomId={roomId}
-                  roomName={roomData[roomId].name}
-                  handleLeaveRoom={this.removeUserFromRoom}
-                  handleJoinRoom={this.addCurrentUserToRoom}
-                  users={roomData[roomId].users}
-                  userId={this.props.userId}
-                  joined={this.state.joined}
-                  handleStart={this.handleStartGame}
-                  handleDeleteRoom={this.handleDeleteRoom}
-                />
-              )
+                roomData[roomId].name.toLowerCase().includes(this.state.searchQuery)) ?
+                (
+                  <Room
+                    key={roomId}
+                    roomId={roomId}
+                    roomData={roomData[roomId]}
+                    userId={this.props.userId}
+                    joined={this.state.joined}
+                    handleLeaveRoom={this.removeUserFromRoom}
+                    handleJoinRoom={this.addCurrentUserToRoom}
+                    handleStart={this.handleStartGame}
+                    handleDeleteRoom={this.handleDeleteRoom}
+                  />
+                ) : null
             })
           }
           </div>
@@ -176,8 +192,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setUser: user => dispatch(settingUser(user)),
-  joinRoom: () => dispatch(joinRoom()),
-  leaveRoom: () => dispatch(leaveRoom()),
   startGame: (roomId, usersObj) => dispatch(fetchNewGame(roomId, usersObj))
 })
 

@@ -6,45 +6,36 @@ var request = require('supertest-as-promised');
 var app = require('../app');
 var agent = request.agent(app);
 
-const firebaseAdmin = require('firebase-admin');
-const serviceAccount = require('../../tests/secret-firebase-test-server.json');
-const key = {
-  apiKey: 'AIzaSyBzVhw7ppsPkNKEahvABSl8ojMHqEd5lAg',
-  credential: firebaseAdmin.credential.cert(serviceAccount),
-  authDomain: 'istanbul-test.firebaseapp.com',
-  databaseURL: 'https://istanbul-test.firebaseio.com/'
-}
-
-// Initialize the app
-const testFirebase = firebaseAdmin.initializeApp(key, 'istanbul-test-firebase');
-
-const db = testFirebase.database();
-const gamesRef = db.ref('games');
+var { gamesRef } = require('../../tests/firebaseTestServer.js');
 
 const Game = require('../../game/logic.js');
 
+/***********  Test ***********************/
 
-/************** Route Tests ***********************/
+describe('Player route:', function () {
 
-describe('Location routes:', function () {
-
-  const usersMap = {
-      usersMap: {
-        1: 'Maria',
-        2: 'Sokmean',
-        3: 'Dan',
-        4: 'Jae'
-      }
+  const SEED = {
+    id: 'test',
+    usersMap: {
+      1: 'Maria',
+      2: 'Sokmean',
+      3: 'Dan',
+      4: 'Jae'
     }
+  }
 
   /** Clear the database before beginning each run */
-  beforeEach(function () {
-    return gamesRef.set(new Game('locationTest', usersMap));
+  beforeEach(function (done) {
+    gamesRef.set(new Game(SEED.id, SEED.usersMap))
+    .then(() => { done(); })
+    .catch((err) => { done(err); })
   });
 
   /** Empty the db after each spec */
-  afterEach(function () {
-    return gamesRef.set({})
+  afterEach(function (done) {
+    gamesRef.set({})
+    .then(() => { done(); })
+    .catch((err) => { done(err); })
   });
 
   describe('WAINWRIGHT', function () {

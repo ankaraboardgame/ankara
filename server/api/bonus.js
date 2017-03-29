@@ -21,11 +21,10 @@ const router = module.exports = require('express').Router();
  * Get five lira
  */
 router.post('/fiveLira', (req, res, next) => {
-
   const promiseToUseCard = req.playerRef.child('wheelbarrow/money')
     .transaction(currentMoney => currentMoney + 5);
 
-  const promiseToDiscard = req.playerRef.child('/bonusCards/fiveLira')
+  const promiseToDiscard = req.playerRef.child('bonusCards/fiveLira')
     .transaction(currentFiveLiraCard => --currentFiveLiraCard)
 
   Promise.all([promiseToUseCard, promiseToDiscard])

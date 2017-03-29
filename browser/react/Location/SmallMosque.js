@@ -1,95 +1,43 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { dataToJS } from 'react-redux-firebase';
-
-import Modal from '../Modal/Modal';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { loadModal, hideModal } from '../../redux/action-creators/modals';
 import { actionBuyMosqueTile } from '../../routes/location';
-import { endTurn } from '../../routes/move';
 
-import { whichDialog, handleEndTurn, beforeEndTurn } from '../../utils';
-import { handleMerchant } from '../../utils/otherMerchants.js';
-import { handleAssistant } from '../../utils/assistants.js';
-import { canTalkToSmuggler, handleSmuggler, talkToSmuggler, handleSmugglerGoodClick, handleSmugglerPayClick } from '../../utils/smuggler';
-import { handleMoreOptionsClick, handleGoBackClick, handleBonusFiveLiraClick, handleBonusOneGoodClick, handleBonusGood } from '../../utils/MoreOptions';
+/** -------- Constants -------- */
+import { ACTION } from '../Modal/turn_types';
 
-/****************** Component ********************/
+/** -------- Component -------- */
 class SmallMosque extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      smuggler: {
-        goodWanted: null,
-        trade: null
-      }
-    };
+    this.handleBuySmallMosqueTile = this.handleBuySmallMosqueTile.bind(this);
 
-    this.handleBuyFabricTile = this.handleBuyFabricTile.bind(this);
-    this.handleBuySpiceTile = this.handleBuySpiceTile.bind(this);
-    this.handleEndTurn = handleEndTurn.bind(this);
-    this.whichDialog = whichDialog.bind(this);
-    this.handleAssistant = handleAssistant.bind(this);
-    this.handleMerchant = handleMerchant.bind(this);
-    this.beforeEndTurn = beforeEndTurn.bind(this);
-
-    /** smuggler functions */
-    this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
-    this.handleSmuggler = handleSmuggler.bind(this);
-    this.talkToSmuggler = talkToSmuggler.bind(this);
-    this.handleSmugglerGoodClick = handleSmugglerGoodClick.bind(this);
-    this.handleSmugglerPayClick = handleSmugglerPayClick.bind(this);
-
-    /** access more options */
-    this.handleMoreOptionsClick = handleMoreOptionsClick.bind(this);
-    this.handleGoBackClick = handleGoBackClick.bind(this);
-    this.handleBonusFiveLiraClick = handleBonusFiveLiraClick.bind(this);
-    this.handleBonusOneGoodClick = handleBonusOneGoodClick.bind(this);
-    this.handleBonusGood = handleBonusGood.bind(this);
   }
 
-  handleBuyFabricTile(){
-    const playerId = this.props.playerId;
-    actionBuyMosqueTile(this.props.gameId, this.props.playerId, 'smallMosque', 'fabric')
-    .then(this.beforeEndTurn)
-    .catch(console.error)
-  }
-
-  handleBuySpiceTile(){
-    const playerId = this.props.playerId;
-    actionBuyMosqueTile(this.props.gameId, this.props.playerId, 'smallMosque', 'spice')
-    .then(this.beforeEndTurn)
-    .catch(console.error)
-  }
-
-  // Ends Turn
-  handleEndTurn() {
-    endTurn(this.props.gameId, this.props.playerId)
-      .then(() => this.props.closeModal())
-      .catch(console.error);
+  handleBuySmallMosqueTile(selectedTile, goodRequired){
+    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+    actionBuyMosqueTile(gameId, playerId, 'smallMosque', selectedTile, goodRequired)
+      .then(() => handleActionEnd())
+      .catch(console.error)
   }
 
   render() {
-    const onClose = this.props.payload.zoom ? this.props.closeModal : null;
-
+    const { smallMosqueData } = this.props;
+    const tile1 = smallMosqueData.fabric;
+    const tile2 = smallMosqueData.spice;
     return (
-      <Modal onClose={onClose}>
-        <div id="location-modal-container">
-          <img src={`images/locations/small_mosque.jpg`} id="img-location" />
-          { this.whichDialog(this.props.payload) }
-        </div>
-      </Modal>
+      <div>
+        <img src={`images/mosque/small/smallMosque_${tile1}_${tile2}.jpg`} id="img-location" />
+        { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
+      </div>
     );
   }
 
   renderAction() {
-    const fabricRequired = this.props.gamesRef.smallMosque.fabric;
-    const spiceRequired = this.props.gamesRef.smallMosque.spice;
-    const playerId = this.props.playerId;
-    const wheelbarrow = this.props.gamesRef.merchants[playerId].wheelbarrow;
-    const abilities = this.props.gamesRef.merchants[playerId].abilities;
+    const { smallMosqueData, userWheelbarrow, abilities, playerId, handleActionEnd, handleMoreOptionsClick } = this.props;
+    const fabricRequired = smallMosqueData.fabric;
+    const spiceRequired = smallMosqueData.spice;
     const style = { margin: 12 };
 
     return (
@@ -100,9 +48,9 @@ class SmallMosque extends React.Component {
           <div id="mosque-row">
             <div id="mosque-fabric">
               {
-                wheelbarrow.fabric >= fabricRequired && !abilities.fabric.acquired ?
+                userWheelbarrow.fabric >= fabricRequired && !abilities.fabric.acquired ?
                 <div>
-                  <RaisedButton label="Buy Fabric Mosque Tile" style={style} primary={true} onTouchTap={this.handleBuyFabricTile}  />
+                  <RaisedButton label="Buy Fabric Mosque Tile" style={style} primary={true} onTouchTap={() => this.handleBuySmallMosqueTile('fabric', fabricRequired)}  />
                 </div>
                 : !abilities.fabric.acquired ?
                 <div>
@@ -116,9 +64,9 @@ class SmallMosque extends React.Component {
             </div>
             <div id="mosque-spice">
               {
-                wheelbarrow.spice >= spiceRequired && !abilities.spice.acquired ?
+                userWheelbarrow.spice >= spiceRequired && !abilities.spice.acquired ?
                 <div>
-                  <RaisedButton id="spice" label="Buy Spice Mosque Tile" style={style} primary={true} onTouchTap={this.handleBuySpiceTile}  />
+                  <RaisedButton id="spice" label="Buy Spice Mosque Tile" style={style} primary={true} onTouchTap={() => this.handleBuySmallMosqueTile('spice', spiceRequired)}  />
                 </div>
                 : !abilities.fruit.acquired ?
                 <div>
@@ -131,24 +79,11 @@ class SmallMosque extends React.Component {
               }
             </div>
           </div>
-        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={this.handleEndTurn} />
-        <RaisedButton label="More Options" style={style} onTouchTap={() => this.handleMoreOptionsClick('action')} />
+        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
+        <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  gameId: state.game.id,
-  playerId: state.user.user.uid,
-  payload: state.modal.payload,
-  currentPosition: state.modal.payload.currentPosition,
-  merchants: dataToJS(state.firebase, `games/${state.game.id}/merchants`)
-});
-
-const mapDispatchToProps = dispatch => ({
-  closeModal: () => dispatch(hideModal()),
-  openModal: (modalType, payload) => dispatch(loadModal(modalType, payload))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SmallMosque);
+export default SmallMosque;

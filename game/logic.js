@@ -72,19 +72,23 @@ function Merchant (id, i){
   this.abilities = {
     heirloom: {
       acquired: false,
-      ability: 'add1Assistant'
+      ability: 'add1Assistant',
+      img: ''
     },
     fruit: {
       acquired: false,
-      ability: '2LiraToReturn1Assistant'
+      ability: '2LiraToReturn1Assistant',
+      img: ''
     },
     fabric: {
       acquired: false,
-      ability: 'dieTurnOrRoll'
+      ability: 'dieTurnOrRoll',
+      img: ''
     },
     spice: {
       acquired: false,
-      ability: '2LiraFor1Good'
+      ability: '2LiraFor1Good',
+      img: ''
     }
   };
 }

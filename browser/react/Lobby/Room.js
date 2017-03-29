@@ -3,24 +3,26 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import HighlightOff from 'material-ui/svg-icons/action/highlight-off';
 import Delete from 'material-ui/svg-icons/action/delete';
 
 export const Room = props => {
-
-  function showUser (userKey, i) {
-      return (
-        <ListItem key={ userKey } onClick={(evt) => props.handleLeaveRoom(evt, props.roomId, userKey)} rightIcon={<HighlightOff />}>
-          { props.users[userKey] }
-        </ListItem>
-      );
-    }
+  const {
+    roomId,
+    roomData,
+    userId,
+    joined,
+    handleStart,
+    handleDeleteRoom,
+    handleLeaveRoom,
+    handleJoinRoom
+  } = props;
 
   const paperStyle = {
-    height: 500,
-    width: 400,
+    width: 500,
     padding: 20,
     margin: 20,
     backgroundColor: '#DABE96',
@@ -28,33 +30,67 @@ export const Room = props => {
     display: 'inline-block'
   };
 
+  const deleteStyle = {
+    cursor: 'pointer',
+    width: 10,
+    display: (roomData.creator === userId) ? 'block' : 'none'
+  }
+
   return (
-      <Paper style={paperStyle} zDepth={2}>
-        <div style={{ cursor: 'pointer', width: 10 }} onClick={(evt) => {props.handleDeleteRoom(evt, props.roomId)}}>
+      <Card style={paperStyle} zDepth={2}>
+
+        <div
+          style={deleteStyle}
+          onClick={(evt) => {handleDeleteRoom(evt, roomId)}}>
           <Delete />
         </div>
-        <Subheader style={{textAlign: 'center'}}>{ props.roomName }</Subheader>
-        {
-          props.users &&
-          <List style={{textAlign: 'center'}}>{ Object.keys(props.users).map(showUser) }</List>
-        }
-        <form onSubmit={(evt) => {props.handleJoinRoom(evt, props.roomId, props.userId)}}>
-          <TextField
-            hintText="Enter nickname"
-            style={{marginLeft: 20}}
-            disabled={!!props.joined}
-          />
-          <RaisedButton type="submit" disabled={!!props.joined}>
-            JOIN
-          </RaisedButton>
-        </form>
-        <RaisedButton
-          secondary={true}
-          style={{margin: 15}}
-          onTouchTap={(evt) => props.handleStart(evt, props.roomId)}
-          disabled={!(props.joined === props.roomId)}>
-          START
-        </RaisedButton>
-      </Paper>
+
+        <CardHeader
+          title={roomData.name}
+          style={{fontWeight: 'bold', textAlign: 'center'}}
+          actAsExpander={true}
+          showExpandableButton={true}
+        />
+
+        <CardText expandable={true}>
+          {
+            roomData.users &&
+            <List style={{textAlign: 'center'}}>
+              {
+                Object.keys(roomData.users).map(uid => {
+                  return (
+                    <ListItem
+                      key={ uid }
+                      onClick={(evt) => handleLeaveRoom(evt, roomId, uid)}
+                      rightIcon={ <HighlightOff /> }>
+                      { roomData.users[uid] }
+                    </ListItem>
+                  );
+                })
+              }
+            </List>
+          }
+          <CardActions>
+            <form onSubmit={(evt) => {handleJoinRoom(evt, roomId, userId)}}>
+              <TextField
+                hintText="Enter nickname"
+                style={{marginLeft: 20}}
+                disabled={!!joined}
+              />
+              <RaisedButton type="submit" disabled={!!joined}>
+                JOIN
+              </RaisedButton>
+            </form>
+
+            <RaisedButton
+              secondary={true}
+              style={{margin: 15}}
+              onTouchTap={(evt) => handleStart(evt, roomId, roomData.users)}
+              disabled={!(joined === roomId)}>
+              START
+            </RaisedButton>
+          </CardActions>
+        </CardText>
+      </Card>
   )
 }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { doesPlayerHaveFiveRubies } from '../utils';
+import { doesPlayerHaveFiveRubies } from '../utils/board';
 import { fbDB } from '../firebase';
 
 export const movePlayer = (gameId, playerId, newPosition, possibleMoves) => {
