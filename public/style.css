@@ -334,9 +334,13 @@ table {
   right: 30px;
   height: 80px;
   width: 80px;
-  border-radius: 40px;
+  border-radius: 80px;
   box-shadow: 8px 8px 15px black;
   cursor: pointer;
+}
+
+.unread {
+  box-shadow: 0px 0px 15px yellow;
 }
 
 .chat-log {
