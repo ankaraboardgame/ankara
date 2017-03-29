@@ -43,6 +43,7 @@ class AppContainer extends React.Component {
     super(props);
     this.coins = new Audio('sounds/coins.wav');
     this.chimes = new Audio('sounds/chimes.mp3');
+    this.dump = new Audio('sounds/dump.mp3');
   }
 
   renderLoadingScreen() {
@@ -63,6 +64,13 @@ class AppContainer extends React.Component {
 
       if (nextWheelbarrow.money !== currentWheelbarrow.money) {
         this.coins.play();
+      }
+      if (
+        (nextWheelbarrow.spice !== currentWheelbarrow.spice) || 
+        (nextWheelbarrow.fruit !== currentWheelbarrow.fruit) || 
+        (nextWheelbarrow.fabric !== currentWheelbarrow.fabric)
+      ) {
+        this.dump.play();
       }
       if (nextWheelbarrow.ruby !== currentWheelbarrow.ruby) {
         this.chimes.play();

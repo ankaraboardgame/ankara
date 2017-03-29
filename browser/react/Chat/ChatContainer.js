@@ -20,6 +20,7 @@ class ChatContainer extends React.Component {
       unread: false
     };
 
+    this.chat = new Audio('sounds/chat.wav');
     this.handleToggle = this.handleToggle.bind(this);
     this.handleTextField = this.handleTextField.bind(this);
     this.handlePostMessage = this.handlePostMessage.bind(this);
@@ -49,10 +50,11 @@ class ChatContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.chats.length !== this.props.chats.length){
+      this.chat.play();
       if (this.state.shouldDisplay === false){
         this.setState({ unread: true });
       }
-    }    
+    }
   }
 
   componentDidUpdate(){
