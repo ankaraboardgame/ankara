@@ -1,4 +1,4 @@
-const levels = {
+export const levels = {
   basic: [
     ['great_mosque', 'fabric_warehouse', 'small_mosque'],
     ['fruit_warehouse', 'spice_warehouse', 'black_market'],
@@ -10,7 +10,13 @@ const levels = {
     ['fruit_warehouse', 'PoliceStation', 'Fountain', 'spice_warehouse'],
     ['black_market', 'caravansary', 'small_market', 'tea_house'],
     ['SultansPalace', 'large_market', 'wainwright', 'gemstone_dealer']
-    ]
+    ],
+  long: [
+    ['spice_warehouse', 'great_mosque', 'fabric_warehouse'],
+    ['black_market', 'caravansary', 'large_market'],
+    ['small_market', 'tea_house', 'wainwright'],
+    ['fruit_warehouse', 'small_mosque', 'gemstone_dealer']
+  ]
 }
 
 // let cells = document.querySelectorAll('.cell');

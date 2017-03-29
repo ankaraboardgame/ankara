@@ -6,22 +6,10 @@
 // var app = require('../app');
 // var agent = request.agent(app);
 
-// const firebaseAdmin = require('firebase-admin');
-// const serviceAccount = require('../../tests/secret-firebase-test-server.json');
-// const key = {
-//   apiKey: 'AIzaSyBzVhw7ppsPkNKEahvABSl8ojMHqEd5lAg',
-//   credential: firebaseAdmin.credential.cert(serviceAccount),
-//   authDomain: 'istanbul-test.firebaseapp.com',
-//   databaseURL: 'https://istanbul-test.firebaseio.com/'
-// }
+// var { gamesRef } = require('../../tests/firebaseTestServer.js');
 
-// // Initialize the app
-// firebaseAdmin.initializeApp(key, 'constantinople-test-firebase');
 
-// const db = firebaseAdmin.database();
-// const gamesRef = db.ref('games');
-
-// /*********** Routes Tests ***********************/
+/*********** Game Route Tests ***********************/
 
 // describe('Game route:', function () {
 
@@ -34,19 +22,15 @@
 //       }
 //     }
 
-//   /** First we clear the database before beginning each run */
-//   // before(function (done) {
-//   //   gamesRef.set({})
-//   //   .then(() => { done(); })
-//   //   .catch((err) => { done(err); })
-//   // });
+  /** Clear the database before beginning each run */
+  // beforeEach(function () {
+  //   return gamesRef.set({})
+  // });
 
-//   /** Also, we empty the tables after each spec */
-//   // afterEach(function (done) {
-//   //   gamesRef.set({})
-//   //   .then(() => { done(); })
-//   //   .catch((err) => { done(err); })
-//   // });
+  /** Empty the db after each spec */
+  // afterEach(function () {
+  //   return gamesRef.set({})
+  // });
 
 //   describe('POST /:gameId', function () {
 

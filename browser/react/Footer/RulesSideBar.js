@@ -23,10 +23,11 @@ export default class SideBar extends Component {
           secondary={ true }
           onTouchTap={this.handleToggle} />
         <Drawer
-          width={550}
+          containerStyle={{backgroundColor: 'transparent', display: 'flex', alignItems: 'center', boxShadow: 'none'}}
+          width={400}
           openSecondary={true}
           open={this.state.open}>
-          <img src="./images/player_help_card.png" />
+          <img src="./images/player_help_card.png" style={{width: '400px'}}/>
         </Drawer>
       </div>
     );

@@ -3,6 +3,12 @@ import React from 'react';
 import { mapCoordToLocation } from '../../utils/board';
 import { LARGE_MARKET, SMALL_MARKET, GEMSTONE_DEALER, SMALL_MOSQUE, GREAT_MOSQUE } from '../Modal/location_types';
 
+/** -------------- Component -------------- */
+
+/**
+ * Conditionally renders views based on its location card.
+ * (Some location cards cycle through images dynamically, some are static.)
+*/
 const Cell = (props) => {
   const tile = mapCoordToLocation(props.coords);
     switch (tile) {
@@ -28,6 +34,12 @@ const Cell = (props) => {
 
 export default Cell;
 
+
+/** ---------------- Views ---------------- */
+/**
+ * Default location tile
+ * @param {object} props
+ */
 function renderOtherTiles({ name, coords, handleOnClick }) {
   return (
     <div
@@ -44,6 +56,10 @@ function renderOtherTiles({ name, coords, handleOnClick }) {
   );
 }
 
+/**
+ * Gemstone dealer: image changes based on ruby price
+ * @param {object} props
+ */
 function renderGemstoneDealerTile({ gemstoneDealerData, coords, handleOnClick }) {
   return (
     <div
@@ -60,6 +76,10 @@ function renderGemstoneDealerTile({ gemstoneDealerData, coords, handleOnClick })
   );
 }
 
+/**
+ * Large market: image changes based on current exchange rate
+ * @param {object} props
+ */
 function renderLargeMarketTiles({ handleOnClick, coords, largeMarketData }) {
   const currentMarketIdx = largeMarketData.currentMarketIdx;
   const currentDemandTile = largeMarketData.demandTiles[currentMarketIdx];
@@ -79,6 +99,10 @@ function renderLargeMarketTiles({ handleOnClick, coords, largeMarketData }) {
   );
 }
 
+/**
+ * Small market: image changes based on current exchange rate
+ * @param {object} props
+ */
 function renderSmallMarketTiles({ handleOnClick, coords, smallMarketData }) {
   const currentMarketIdx = smallMarketData.currentMarketIdx;
   const currentDemandTile = smallMarketData.demandTiles[currentMarketIdx];

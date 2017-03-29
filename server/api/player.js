@@ -4,28 +4,43 @@ const gamesRef = db.ref('games');
 
 const router = module.exports = require('express').Router();
 
+/** Game Logging */
+const util = require('../util');
+const log = util.log;
+const getCurrUnixTime = util.getCurrUnixTime;
+
 /**
  * Player routes
  * ...api/game/:gameId/player/...
  *
  * pre-loaded:
  * req.game = holds current game info
+ * req.gameRef = holds ref to firebase game
  */
 
 // load one player
 router.param('playerId', (req, res, next, playerId) => {
   req.player = req.game.merchants[playerId];
+  req.playerRef = req.gameRef.child('merchants').child(playerId);
   next();
 });
 
 // end player turn
 router.post('/:playerId/end', (req, res, next) => {
   const newIdx = (req.game.playerIds.indexOf(req.game.playerTurn) + 1) % req.game.playerIds.length;
-  gamesRef.child(req.game.id)
+  req.gameRef
     .child('playerTurn')
     .set(req.game.playerIds[newIdx])
     .then(() => {
       res.sendStatus(204);
+      //game log
+      const newPlayerId = req.game.playerIds[newIdx];
+      log(req.game.id, {
+        type: 'TURN',
+        user: newPlayerId,
+        timestamp: getCurrUnixTime()
+      })
+
     })
     .catch(next);
 });
@@ -33,7 +48,7 @@ router.post('/:playerId/end', (req, res, next) => {
 // register player win
 router.post('/:playerId/win', (req, res, next) => {
   const playerId = req.params.playerId;
-  gamesRef.child(req.game.id)
+  req.gameRef
     .child('winner')
     .set({[playerId]: req.game.playerMap[playerId]})
     .then(() => {

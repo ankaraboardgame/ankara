@@ -36,10 +36,9 @@ class BlackMarket extends React.Component {
   }
 
   handleGetBlackMarketGoodsEndTurn (selectedGood, rollSum){
-    const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
+    const { gameId, playerId, openModal, closeModal, handleActionEnd } = this.props;
     actionBlackMarket(gameId, playerId, selectedGood, rollSum)
-      .then(() => closeModal())
-      .then(() => handleEndTurn())
+      .then(() => handleActionEnd())
       .catch(console.error);
   }
 
@@ -56,36 +55,36 @@ class BlackMarket extends React.Component {
     const style = { margin: 12 };
     const selectedClassName = 'highlighted';
     const selectedGood = this.state.selectedGood;
-    const { handleMoreOptionsClick, handleEndTurn } = this.props;
+    const { handleMoreOptionsClick, handleActionEnd } = this.props;
 
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
         <p>Pick up one fabric, spice, or fruit, then roll the dice to see if you get heirlooms!</p>
         </div>
-          <div>
-            <div id="market-row">
-              <img
-                className={selectedGood === 'fabric' && selectedClassName}
-                onClick={(evt) => this.handleSelectGood(evt, 'fabric')}
-                src="./images/cart/fabric.png"
-              />
-              <img
-                className={selectedGood === 'fruit' && selectedClassName}
-                onClick={(evt) => this.handleSelectGood(evt, 'fruit')}
-                src="./images/cart/fruits.png"
-              />
-              <img
-                className={selectedGood === 'spice' && selectedClassName}
-                onClick={(evt) => this.handleSelectGood(evt, 'spice')}
-                src="./images/cart/spices.png"
-              />
-            </div>
-            {
-              selectedGood &&
-              <Dice done={this.handleDiceRoll} />
-            }
-          <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleEndTurn} disabled={this.state.rolled} />
+        <div>
+          <div id="market-row">
+            <img
+              className={selectedGood === 'fabric' && selectedClassName}
+              onClick={(evt) => this.handleSelectGood(evt, 'fabric')}
+              src="./images/cart/fabric.png"
+            />
+            <img
+              className={selectedGood === 'fruit' && selectedClassName}
+              onClick={(evt) => this.handleSelectGood(evt, 'fruit')}
+              src="./images/cart/fruits.png"
+            />
+            <img
+              className={selectedGood === 'spice' && selectedClassName}
+              onClick={(evt) => this.handleSelectGood(evt, 'spice')}
+              src="./images/cart/spices.png"
+            />
+          </div>
+          {
+            selectedGood &&
+            <Dice done={this.handleDiceRoll} />
+          }
+          <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd} disabled={this.state.rolled} />
           <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
         </div>
       </div>

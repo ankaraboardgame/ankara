@@ -9,7 +9,7 @@ export function whoIsWinner(merchantsObj) {
     winner = rubyMerchants[0];
   }
   return winner;
-};
+}
 
 function fiveRubyMerchants(merchantsObj) {
   const merchArr = Object.keys(merchantsObj);

@@ -6,7 +6,7 @@ import { bonusFiveLira, tile2LiraToReturn1Assistant, tile2LiraFor1Good } from '.
 import { mapCoordToLocation, mapLocationToCoord } from '../../utils/board';
 
 /** ------- Constants -------- */
-import { SELECT_BONUS_GOOD } from '../Modal/turn_types';
+import { SELECT_BONUS_GOOD, ACTION } from '../Modal/turn_types';
 
 class MoreOptions extends React.Component {
   constructor(props) {
@@ -94,7 +94,7 @@ class MoreOptions extends React.Component {
   }
 
   render() {
-    const { userBonusCards, nextDialog, smallMosqueData, greatMosqueData, merchants, playerId } = this.props;
+    const { userBonusCards, nextDialog, smallMosqueData, greatMosqueData, merchants, playerId, currentPosition } = this.props;
     const playerAbilities = merchants[playerId].abilities;
     const addText = this.state.addText;
     const assistantReturn = this.state.assistantReturn;
@@ -105,6 +105,7 @@ class MoreOptions extends React.Component {
 
     let abilityCount = 0, tileArray = [], assistantsOutLocations = [], sufficientMoney = false;
     let fruitCondition = false, fabricCondition = false, heirloomCondition = false, spiceCondition = false;
+    let warehouseCondition = false;
 
     for(let ability in playerAbilities){
       if(playerAbilities[ability].acquired){
@@ -131,6 +132,11 @@ class MoreOptions extends React.Component {
     if(sufficientMoney && wheelbarrow.spice < wheelbarrow.size) spiceCondition = true;
     else fruitCondition = false;
 
+    const currentLocation = mapCoordToLocation(currentPosition);
+    if(currentLocation === 'FRUIT_WAREHOUSE' || currentLocation === 'FABRIC_WAREHOUSE' || currentLocation === 'SPICE_WAREHOUSE'){
+      warehouseCondition = true;
+    }
+
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
@@ -141,7 +147,7 @@ class MoreOptions extends React.Component {
               <RaisedButton label="Go back"
                 style={{ margin: 12 }}
                 primary={true}
-                onTouchTap={() => this.handleGoBackClick(nextDialog)}
+                onTouchTap={() => this.handleGoBackClick(ACTION)}
               />
             </div>
             :
@@ -191,7 +197,11 @@ class MoreOptions extends React.Component {
                     </div>
                   }
                   {
-                    selectTileGood &&
+                    !warehouseCondition && selectTileGood &&
+                    <p>You can only buy goods at one of the warehouse locations</p>
+                  }
+                  {
+                    warehouseCondition && selectTileGood &&
                     <div>
                       <p>Select 1 good to add to your wheelbarrow. Each good cost 2 Lira</p>
                       <RaisedButton label='Fabric' style={{margin: 12}} default={true} disabled={!fabricCondition} onTouchTap={() => this.handleAddGoodClick('fabric')} />
