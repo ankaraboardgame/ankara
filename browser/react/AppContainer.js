@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { firebaseConnect } from 'react-redux-firebase'
 
 import CircularProgress from 'material-ui/CircularProgress';
-import { fadeInDown, fadeInDownBig, zoomIn, shake } from 'react-animations';
+import { fadeInDown, shake } from 'react-animations';
 import { StyleSheet, css } from 'aphrodite';
 
 import BoardContainer from './Board/BoardContainer';

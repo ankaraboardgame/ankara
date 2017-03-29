@@ -84,13 +84,13 @@ html body {
   text-align: center;
 }
 
-.menu-anim-leave {
+.title-anim-leave {
     opacity: 1;
     transform: scale(1);
     transition: all 1s;
 }
 
-.menu-anim-leave.menu-anim-leave-active {
+.title-anim-leave.title-anim-leave-active {
     opacity: 0.00;
     transform: scale(0.7);
 }

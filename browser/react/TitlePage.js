@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Link } from 'react-router';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class TitlePage extends React.Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class TitlePage extends React.Component {
     this.state = {
       displayAbout: false,
       displayGameRules: false,
-      displayLinks: false
+      displayLinks: false,
     }
   }
 
@@ -27,7 +27,7 @@ class TitlePage extends React.Component {
         displayLinks: false
       })
     }
-  } 
+  }
 
   render() {
     return (
@@ -64,16 +64,16 @@ class TitlePage extends React.Component {
       >
         <div className="menu-items-container">
           <div className="menu-items" style={{paddingTop: '10px'}}>
-            <text onClick={() => {this.handleOnClick('about')}} className="menu-text">About the Creators</text>
+            <text onClick={() => {this.handleOnClick('about')}} className="menu-text">The Creators</text>
           </div>
           <div className="menu-items">
-            <text onClick={() => {this.handleOnClick('rules')}} className="menu-text">Game Rules</text>
+            <text onClick={() => {this.handleOnClick('rules')}} className="menu-text">Game Details</text>
           </div>
           <div className="menu-items">
             <Link to="/lobby" style={{textDecoration: 'none', color: 'black'}} className="menu-text">Enter Game</Link>
           </div>
           <div className="menu-items">
-            <text onClick={() => {this.handleOnClick('links')}} className="menu-text">Link to Project</text>
+            <text onClick={() => {this.handleOnClick('links')}} className="menu-text">The Project</text>
           </div>
         </div>
       </ReactCSSTransitionGroup>
@@ -94,10 +94,10 @@ class TitlePage extends React.Component {
       >
         <div className="menu-items-container">
           <div className="menu-items" style={{paddingTop: '10px'}}>
-            <text className="menu-text">About the Creators</text>
+            <text className="menu-text">The Creators</text>
           </div>
           <div className="menu-item-info">
-            <text>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</text>
+            <text style={{margin: '10px 30px 10px 30px'}}>Our team consisted of Maria Xia, Sokmean Nou, Jaekwang Seo, and Daniel Park. We are very smart, very very very smart, super duper smart, and super capable software engineers.</text>
           </div>
           <div style={backStyle} className="menu-items">
             <text onClick={() => {this.handleOnClick()}} className="menu-text">Go Back</text>
@@ -111,6 +111,13 @@ class TitlePage extends React.Component {
     const backStyle = {
       borderTop: '1px solid darkslategrey'
     };
+
+    const linkStyle = {
+      borderBottom: 'none',
+      borderTop: '1px solid darkslategrey',
+      padding: '10px 0px 0px 0px',
+      margin: '10px 0px 0px 0px'
+    };
     return (
       <ReactCSSTransitionGroup
         transitionName="menu-anim"
@@ -121,13 +128,13 @@ class TitlePage extends React.Component {
       >
         <div className="menu-items-container">
           <div className="menu-items" style={{paddingTop: '10px'}}>
-            <text className="menu-text">Game Rules</text>
+            <text className="menu-text">Game Details</text>
           </div>
           <div className="menu-item-info">
-            <text>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</text>
+            <text style={{margin: '10px 30px 10px 30px'}}>In the hustle and bustle of the bazaar district of Ankara, you are a merchant. You and your assistants must compete against other competitors for riches. Good organization is key: your wheelbarrow has to be filled with goods at the warehouses and traded for money to buy the rubies. Your goal as the merchant is to be the first to collect a five rubies!</text>
           </div>
-          <div className="menu-items">
-            <a style={{textDecoration: 'none', color: 'black'}}href="http://www.pegasus.de/fileadmin/_downloads/regeln/englisch/Istanbul_-_Anleitung_gb.pdf">PDF to game rules</a>
+          <div className="menu-items" style={linkStyle}>
+            <a style={{textDecoration: 'none', color: 'black'}}href="http://www.pegasus.de/fileadmin/_downloads/regeln/englisch/Istanbul_-_Anleitung_gb.pdf">PDF to Game Rules</a>
           </div>
           <div style={backStyle} className="menu-items">
             <text onClick={() => {this.handleOnClick()}} className="menu-text">Go Back</text>
@@ -151,7 +158,7 @@ class TitlePage extends React.Component {
       >
         <div className="menu-items-container">
           <div className="menu-items" style={{paddingTop: '10px'}}>
-            <text className="menu-text">Link to Project</text>
+            <text className="menu-text">The Project</text>
           </div>
           <div className="menu-item-info">
             <a href="https://github.com/ankaraboardgame/ankara" target="_blank" style={{display: 'flex', flexDirection: 'column', textDecoration: 'none', color: 'black'}}>
