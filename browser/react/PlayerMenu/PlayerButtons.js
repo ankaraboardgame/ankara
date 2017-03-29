@@ -6,17 +6,13 @@ import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
-import { bounceInLeft, fadeInLeft } from 'react-animations';
+import { fadeInLeft } from 'react-animations';
 import { StyleSheet, css } from 'aphrodite';
 
 import { Wheelbarrow, Fruits, Fabric, Spices, Heirlooms, Money, Ruby } from '../Footer/FooterComponents'
 import { getPlayerIds, getPlayerTurn, getGameMerchants, getPlayerMap } from '../../redux/reducers/game-reducer';
 
 const animateStyles = StyleSheet.create({
-  bounceInLeft: {
-    animationName: bounceInLeft,
-    animationDuration: '1s'
-  },
   fadeInLeft: {
     animationName: fadeInLeft,
     animationDuration: '.9s'

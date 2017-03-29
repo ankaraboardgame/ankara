@@ -9,7 +9,7 @@ html body {
 
 #game-title {
   width: 60%;
-  padding: 20px 0px 20px 0px;
+  padding: 10px 0px 10px 0px;
 }
 
 #text-box {
@@ -506,25 +506,15 @@ footer .badge {
 
 /* -------- New Footer -------- */
 
-#footer-fixed {
-  position: fixed;
-  background-color: black;
-  width: 300px;
-  height: 50px;
-  background: #063;
-  bottom: 0px;
-  right: 25%;
-  left: 50%;
-  margin-left: -150px;
-}
-
 #footer-container {
+  position: fixed;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  position: relative;
-  bottom: 0px;
+  left: 50%;
+  margin-left: -400px;
 }
 
 #new-footer {
@@ -536,9 +526,7 @@ footer .badge {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   width: auto;
-  position: relative;
-  bottom: 0px;
-  padding: 20px 50px 20px 50px;
+  padding: 10px 30px 10px 30px;
 }
 
 #new-footer p {
