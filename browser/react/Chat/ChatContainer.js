@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import Subheader from 'material-ui/Subheader';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
 
 import { postGameChat } from '../../routes/chat.js';
 
@@ -16,25 +15,20 @@ class ChatContainer extends React.Component {
 
     this.state = {
       message: '',
-      shouldDisplay: false,
+      expanded: false,
       unread: false
     };
 
     this.chat = new Audio('sounds/chat.wav');
-    this.handleToggle = this.handleToggle.bind(this);
+    this.handleExpandChange = this.handleExpandChange.bind(this);
     this.handleTextField = this.handleTextField.bind(this);
     this.handlePostMessage = this.handlePostMessage.bind(this);
   }
 
-  handleToggle(){
-    const currState = this.state.shouldDisplay;
-    if (currState === false){
-      this.setState({
-        shouldDisplay: true,
-        unread: false
-      })
-    } else {
-      this.setState({shouldDisplay: false})
+  handleExpandChange (expanded) {
+    this.setState({expanded: expanded});
+    if (expanded) {
+      this.setState({ unread: false })
     }
   }
 
@@ -51,7 +45,7 @@ class ChatContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.chats.length !== this.props.chats.length){
       this.chat.play();
-      if (this.state.shouldDisplay === false){
+      if (!this.state.expanded){
         this.setState({ unread: true });
       }
     }
@@ -67,29 +61,29 @@ class ChatContainer extends React.Component {
   render() {
     const { userId, chats, userName } = this.props;
 
-    const paperStyle = {
-      width: 300,
-      height: 500,
-      padding: 10,
+    const chatStyle = {
+      width: 350,
+      padding: 0,
       margin: 0,
-      backgroundColor: '#DABE96',
-      display: 'inline-block'
+      backgroundColor: this.state.unread ? 'salmon' : 'wheat',
+      display: 'inline-block',
+      borderTopLeftRadius: 15,
+      borderTopRightRadius: 15
     };
 
     return (
-      <div>
-      <div className={`chat-icon ${this.state.unread && 'unread'}`} onClick={this.handleToggle}>
-        <img className="chat-icon" src="images/chat.png" />
-      </div>
-      {
-        this.state.shouldDisplay &&
-        (
-          <div className="chat-container">
-            <Paper style={ paperStyle }>
-              <Subheader>Posting as: {userName}</Subheader>
+        <div className="chat-container">
+          <Card style={ chatStyle } onExpandChange={this.handleExpandChange}>
+            <CardHeader
+              title={`Chat (${userName})`}
+              actAsExpander={true}
+              showExpandableButton={true}
+              onClick={this.handleToggle}
+            />
+
+            <CardText expandable={true}>
 
               <div className="chat-log">
-
                 <ul className="chat-list">
                 {
                   chats
@@ -105,7 +99,6 @@ class ChatContainer extends React.Component {
                   })
                 }
                 </ul>
-
               </div>
 
               <form onSubmit={this.handlePostMessage}>
@@ -113,18 +106,18 @@ class ChatContainer extends React.Component {
                   onChange={this.handleTextField}
                   value={this.state.message}
                   hintText="Message..."
-                  style={{ marginLeft: 15 }} />
+                  style={{ marginLeft: 5, width: 300 }} />
                 <div style={{ textAlign: 'center' }}>
                   <RaisedButton disabled={!this.state.message.trim().length} type="submit">
                     SEND
                   </RaisedButton>
                 </div>
               </form>
-            </Paper>
-          </div>
-        )
-      }
-      </div>
+
+            </CardText>
+
+          </Card>
+        </div>
     )
   }
 

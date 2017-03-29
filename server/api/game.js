@@ -1,9 +1,8 @@
 const admin = require('firebase-admin');
 const db = admin.database();
 const gamesRef = db.ref('games');
-const gameCountRef = db.ref('gameCount');
-const sessionRef = db.ref('session');
 const usersRef = db.ref('users');
+const roomsRef = db.ref('rooms');
 
 const Game = require('../../game/logic.js');
 const router = module.exports = require('express').Router();
@@ -25,8 +24,14 @@ router.post('/:roomId', (req, res, next) => {
   gamesRef.child(roomId).set(new Game(roomId, usersMap))
   .then(() => {
     Object.keys(usersMap).forEach((userId) => {
-      usersRef.child(userId).set(roomId);
+      usersRef.child(userId).set({
+        game: roomId,
+        name: usersMap[userId]
+      });
     });
+  })
+  .then(() => {
+    roomsRef.child(roomId).remove();
   })
   .then(() => {
     res.sendStatus(204);
