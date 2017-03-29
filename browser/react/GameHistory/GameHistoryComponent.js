@@ -13,6 +13,7 @@ import _ from 'lodash';
 /** -------- Selectors ---------- */
 import { getGameId, getPlayerMap } from '../../redux/reducers/game-reducer';
 import { getUserId } from '../../redux/reducers/user-reducer';
+import { getBoard } from '../../redux/reducers/board-reducer';
 
 import { levels } from '../../game';
 
@@ -42,7 +43,7 @@ class GameHistoryComponent extends Component {
   componentDidMount() {
     this.scrollToBottom();
 
-    const { gameId, userId, playerMap } = this.props;
+    const { gameId, userId, playerMap, board } = this.props;
 
     this.gameLogRef = fbDB.ref(`gameLog/${gameId}`);
     this.gameLogEventHandler = snapshot => {
@@ -54,7 +55,7 @@ class GameHistoryComponent extends Component {
       const type = snapshot.val().type;
       const location = snapshot.val().location;
       const coords = location && location.split(',').map(str => Number(str));
-      const locationName = LOCATION_NAME[coords && levels.long[coords[0]][coords[1]]];
+      const locationName = LOCATION_NAME[coords && board.level[coords[0]][coords[1]]];
       let message;
       switch(type) {
         case LOGTYPE.TURN:
@@ -131,7 +132,8 @@ class GameHistoryComponent extends Component {
 const mapStateToProps = (state) => ({
   gameId: getGameId(state),
   userId: getUserId(state),
-  playerMap: getPlayerMap(state)
+  playerMap: getPlayerMap(state),
+  board: getBoard(state),
 });
 
 export default connect(mapStateToProps)(GameHistoryComponent);

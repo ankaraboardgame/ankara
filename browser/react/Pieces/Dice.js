@@ -64,6 +64,7 @@ export default class Dice extends React.Component {
           </RaisedButton>
           { this.props.canReroll && this.state.rerolling && <RaisedButton
             onClick={this.done}
+            disabled={this.state.rolled}
           >
           Done
           </RaisedButton> }
