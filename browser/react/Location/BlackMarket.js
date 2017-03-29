@@ -28,6 +28,7 @@ class BlackMarket extends React.Component {
   }
 
   handleDiceRoll (rollSum){
+    // Animate dice roll by setting rolled to true
     this.setState({ rolled: true })
     const good = this.state.selectedGood;
     setTimeout(() => {
@@ -37,6 +38,7 @@ class BlackMarket extends React.Component {
 
   handleGetBlackMarketGoodsEndTurn (selectedGood, rollSum){
     const { gameId, playerId, openModal, closeModal, handleActionEnd } = this.props;
+    // Make axios call for black market action
     actionBlackMarket(gameId, playerId, selectedGood, rollSum)
       .then(() => handleActionEnd())
       .catch(console.error);
@@ -57,10 +59,11 @@ class BlackMarket extends React.Component {
     const selectedGood = this.state.selectedGood;
     const { handleMoreOptionsClick, handleActionEnd } = this.props;
 
+    // Render Black market action dialog
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
-          <p>Pick up one fabric, spice, or fruit, then roll the dice to see if you get heirlooms!</p>
+        <p>Pick up one fabric, spice, or fruit, then roll the dice to see if you get heirlooms!</p>
         </div>
         <div>
           <div id="market-row">
@@ -84,6 +87,7 @@ class BlackMarket extends React.Component {
             selectedGood &&
             <Dice done={this.handleDiceRoll} />
           }
+
           <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd} disabled={this.state.rolled} />
           <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
         </div>

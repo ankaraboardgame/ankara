@@ -67,28 +67,43 @@ router.post('/add1Assistant', (req, res, next) => {
 });
 
 /**
- * Get one good
- * sample req.body: { assistant: "0,1" }
+ * Select 1 'out' assistant and return to available stack
  */
-// router.post('/2LiraToReturn1Assistant', (req, res, next) => {
-//   const good = req.body.good;
-//   req.gameRef
-//     .child(`merchants/${req.player.id}/wheelbarrow/${good}`)
-//     .transaction(count => ++count)
-//     .then(() => res.sendStatus(204))
-//     .catch(next);
-// });
+router.post('/2LiraToReturn1Assistant/:assistantCoords', (req, res, next) => {
+  const assistantCoords = req.params.assistantCoords;
+  let assistants, assistantsOut, newAssistantsOutObj = {};
 
-/**
- * Get five lira
- */
-// router.post('/dieTurnOrRoll', (req, res, next) => {
-//   req.gameRef
-//     .child(`merchants/${req.player.id}/wheelbarrow/money`)
-//     .transaction(currentMoney => currentMoney + 5)
-//     .then(() => res.sendStatus(204))
-//     .catch(next);
-// });
+  const updateAssistantPromise = gamesRef.child(req.game.id)
+    .child(`merchants/${req.player.id}/assistants`)
+    .once('value', snap => {
+      assistants = snap.val();
+    })
+    .then(() => {
+      assistantsOut = assistants.out;
+      for(let assistant in assistantsOut){
+        if(assistantsOut[assistant] !== assistantCoords){
+          newAssistantsOutObj[assistant] = assistantsOut[assistant]
+        }
+      }
+      assistants.out = newAssistantsOutObj;
+      assistants.count = ++assistants.count;
+
+      gamesRef.child(req.game.id)
+        .child(`merchants/${req.player.id}/assistants`)
+        .set(assistants);
+    })
+
+  const payForAssistantPromise = gamesRef.child(req.game.id)
+    .child(`merchants/${req.player.id}/wheelbarrow/money`)
+    .transaction(currentMoney => {
+      return currentMoney - 2
+    })
+
+    Promise.all([updateAssistantPromise, payForAssistantPromise])
+    .then(() => { res.sendStatus(204); })
+    .catch(next);
+
+})
 
 /**
  * Get one good

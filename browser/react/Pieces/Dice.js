@@ -30,17 +30,19 @@ export default class Dice extends React.Component {
         >
           Roll
         </RaisedButton>
-        <ReactDice
-          disableIndividual={true}
-          numDice={2}
-          rollTime={1}
-          rollDone={this.rollDoneCallback}
-          ref={dice => this.reactDice = dice}
-          faceColor="white"
-          dotColor="black"
-          outline={true}
-          outlineColor="black"
-        />
+        <div id="market-row">
+          <ReactDice
+            disableIndividual={true}
+            numDice={2}
+            rollTime={1}
+            rollDone={this.rollDoneCallback}
+            ref={dice => this.reactDice = dice}
+            faceColor="white"
+            dotColor="black"
+            outline={true}
+            outlineColor="black"
+            />
+        </div>
       </div>
     );
   }

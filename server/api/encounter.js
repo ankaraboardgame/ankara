@@ -93,7 +93,7 @@ router.post('/merchant', (req, res, next) => {
           .transaction(money => money + 2);
       })
       .concat( // promise for decrementing your money
-        req.req.playerRef.child('wheelbarrow/money')
+        req.playerRef.child('wheelbarrow/money')
         .transaction(money => money - 2 * otherMerchantIds.length)
       )
   Promise.all(promisesToPayMerchants)
