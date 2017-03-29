@@ -23,8 +23,31 @@ p {
   font-variant: small-caps;
 }
 
+.example-enter {
+  opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
 /* ------- SPLASH PAGE ----- */
 #splash-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   background-image: url('images/splash-background.jpg');
   background-size: 100% 100%;
@@ -153,6 +176,11 @@ img.bonusCards {
 
 /* ------- GAME CONTAINER ---- */
 #game-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -451,6 +479,11 @@ img.bonusCards {
 /* -------- LOBBY ------- */
 
 #lobby-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -534,6 +567,8 @@ ul.chat-list {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   height: 100%;
   width: 100%;
   z-index: 1;
