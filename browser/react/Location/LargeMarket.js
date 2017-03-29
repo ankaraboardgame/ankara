@@ -25,16 +25,20 @@ class LargeMarket extends React.Component {
   }
 
   handleTradeGood(){
-    const playerOffer = this.state;
-    const { largeMarketData, gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-    const currentMarketIdx = largeMarketData.currentMarketIdx;
+    if (!this.buttonClicked) {
+      this.buttonClicked = true;
+      const playerOffer = this.state;
+      const { largeMarketData, gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+      const currentMarketIdx = largeMarketData.currentMarketIdx;
 
-    actionTradeGoods(gameId, playerId, 'largeMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
-      .then(() => {
-        actionChangeTile(gameId, playerId, 'largeMarket', currentMarketIdx)
-      })
-      .then(() => handleActionEnd())
-      .catch(console.error)
+      actionTradeGoods(gameId, playerId, 'largeMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
+        .then(() => {
+          actionChangeTile(gameId, playerId, 'largeMarket', currentMarketIdx)
+        })
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error)
+    }
   }
 
   handleGoodClick(event){

@@ -15,11 +15,15 @@ class Caravansary extends React.Component {
   }
 
   handleGetCard (type){
-    const { gameId, playerId, openModal, closeModal, handleActionEnd } = this.props;
-    // Make axios call for Caravansary action
-    actionGetBonusCard(gameId, playerId, type)
-      .then(() => handleActionEnd())
-      .catch(console.error);
+    if (!this.buttonClicked) {
+      this.buttonClicked = true;
+      const { gameId, playerId, openModal, closeModal, handleActionEnd } = this.props;
+      // Make axios call for Caravansary action
+      actionGetBonusCard(gameId, playerId, type)
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error);
+    }
   }
 
   render() {

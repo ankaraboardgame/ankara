@@ -10,7 +10,6 @@ const router = module.exports = require('express').Router();
 /** Game Logging */
 const util = require('../util');
 const log = util.log;
-const getCurrUnixTime = util.getCurrUnixTime;
 
 /**
  * Game routes for initializing game
@@ -21,30 +20,25 @@ const getCurrUnixTime = util.getCurrUnixTime;
 router.post('/:roomId', (req, res, next) => {
   const roomId = req.params.roomId;
   const usersMap = req.body.usersMap;
+  const userId = req.body.userId;
+  console.log(roomId, usersMap, userId);
   gamesRef.child(roomId).set(new Game(roomId, usersMap))
   .then(() => {
-    Object.keys(usersMap).forEach((userId) => {
-      usersRef.child(userId).set({
-        game: roomId,
-        name: usersMap[userId]
-      });
-    });
-  })
-  .then(() => {
     roomsRef.child(roomId).remove();
+    usersRef.child(userId).set({
+      game: roomId,
+      name: usersMap[userId]
+    });
+    res.sendStatus(204);
   })
   .then(() => {
-    res.sendStatus(204);
     //game log
-    Object.keys(usersMap).map(userId => {
-      log(roomId, {
-        type: 'GAME_JOIN',
-        user: userId,
-        text: `${usersMap[userId]} joined the game`,
-        timestamp: getCurrUnixTime()
-      });
+    log(roomId, {
+      type: 'GAME_JOIN',
+      user: userId,
+      text: `${usersMap[userId]} joined the game`,
+      timestamp: admin.database.ServerValue.TIMESTAMP
     });
-
   })
   .catch(next);
 });

@@ -7,7 +7,6 @@ const router = module.exports = require('express').Router();
 /** Game Logging */
 const util = require('../util');
 const log = util.log;
-const getCurrUnixTime = util.getCurrUnixTime;
 
 /**
  * Player routes
@@ -39,7 +38,7 @@ router.post('/:playerId/end', (req, res, next) => {
       log(id, {
         type: 'TURN',
         user: newPlayerId,
-        timestamp: getCurrUnixTime()
+        timestamp: admin.database.ServerValue.TIMESTAMP
       })
     })
     .catch(next);

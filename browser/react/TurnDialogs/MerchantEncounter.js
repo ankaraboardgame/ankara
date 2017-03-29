@@ -12,11 +12,14 @@ class MerchantEncounter extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = { actionTaken: false };
+
     this.handleMerchant = this.handleMerchant.bind(this);
   }
 
 
   handleMerchant() {
+    this.setState({ actionTaken: true });
     const { gameId, playerId, currentPosition, payload, openModal, closeModal } = this.props;
     const { otherMerchants } = payload;
 
@@ -43,7 +46,7 @@ class MerchantEncounter extends React.Component {
             style={{ margin: 12 }}
             primary={true}
             onTouchTap={this.handleMerchant}
-            disabled={payload.money < 2}
+            disabled={payload.money < 2 || this.state.actionTaken}
             />
           <RaisedButton
             label="End turn now"

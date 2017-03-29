@@ -15,11 +15,16 @@ class FabricWarehouse extends React.Component {
   }
 
   handleMaxGoodEndTurn(){
-    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-    // Make axios call for Fabric warehouse action
-    actionMaxGood(gameId, playerId, 'fabric')
-      .then(() => handleActionEnd())
-      .catch(console.error);
+
+    if (!this.buttonClicked) {
+      const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+      // Make axios call for Fabric warehouse action
+      this.buttonClicked = true;
+      actionMaxGood(gameId, playerId, 'fabric')
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error);
+    }
   }
 
   render() {

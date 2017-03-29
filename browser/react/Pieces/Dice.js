@@ -5,24 +5,35 @@ import RaisedButton from 'material-ui/RaisedButton';
 export default class Dice extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       rolled: false,
       prompt: 'Roll',
       rerolling: false,
       rolledSum: 0
     }
+
+    this.rollButtonClicked = false;
+    this.doneButtonClicked = false;
+
     this.rollAll = this.rollAll.bind(this);
     this.rollDoneCallback = this.rollDoneCallback.bind(this);
     this.done = this.done.bind(this);
   }
 
   rollAll() {
-    this.setState({rolled: true});
-    this.reactDice.rollAll();
+    if ( !this.rollButtonClicked ) {
+      this.rollButtonClicked = true;
+      this.setState({rolled: true});
+      this.reactDice.rollAll();
+    }
   }
 
   done() {
-    this.props.done(this.state.rolledSum);
+    if ( !this.doneButtonClicked ) {
+      this.doneButtonClicked = true;
+      this.props.done(this.state.rolledSum);
+    }
   }
 
   rollDoneCallback(num) {
@@ -66,6 +77,7 @@ export default class Dice extends React.Component {
           { this.props.canReroll && this.state.rerolling && <RaisedButton
             style={style}
             onClick={this.done}
+            disabled={this.state.rolled}
             label="Done"
           /> }
         </div>
