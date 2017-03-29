@@ -534,9 +534,12 @@ footer .badge {
 }
 
 #name {
+  font-family: 'Garamond';
+  font-size: 28px;
   color: white;
   margin-left: 15px;
   margin-right: 50px;
+  font-variant: small-caps;
 }
 
 
