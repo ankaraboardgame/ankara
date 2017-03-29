@@ -37,7 +37,7 @@ class GameHistoryComponent extends Component {
   }
 
   getCurrUnixTime() {
-    return Math.floor((new Date().getTime()) / 1000);
+    return Math.floor((new Date().getTime()));
   }
 
   componentDidMount() {

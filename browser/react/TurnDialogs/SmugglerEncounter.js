@@ -10,7 +10,8 @@ class SmugglerEncounter extends React.Component {
 
     this.state = {
       goodWanted: null,
-      trade: null
+      trade: null,
+      actionTaken: false
     }
 
     this.canTalkToSmuggler = canTalkToSmuggler.bind(this);
@@ -32,6 +33,7 @@ class SmugglerEncounter extends React.Component {
   }
 
   tradeWithSmuggler() {
+    this.setState({ actionTaken: true });
     const { gameId, playerId, handleEndTurn } = this.props;
     encounterSmuggler( gameId, playerId, this.state.goodWanted, this.state.trade)
     .then(handleEndTurn);
@@ -108,13 +110,14 @@ class SmugglerEncounter extends React.Component {
             style={{ margin: 12 }}
             primary={true}
             onTouchTap={this.tradeWithSmuggler}
-            disabled={!this.canTalkToSmuggler(userWheelbarrow)}
+            disabled={!this.canTalkToSmuggler(userWheelbarrow) || this.state.actionTaken}
           />
           <RaisedButton
             label="End turn now"
             style={{ margin: 12 }}
             primary={true}
             onTouchTap={handleEndTurn}
+            disabled={this.state.actionTaken}
           />
         </div>
       </div>
