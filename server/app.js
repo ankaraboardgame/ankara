@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === 'test') {
 	}
 
 	if(!serviceAccount.private_key) {
-		serviceAccount = require('../tests/secret-firebase-test-server.js');
+		serviceAccount = require('../tests/secret-firebase-test-server');
 	}
 	const key = {
 		apiKey: 'AIzaSyBzVhw7ppsPkNKEahvABSl8ojMHqEd5lAg',
