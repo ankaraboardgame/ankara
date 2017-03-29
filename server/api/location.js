@@ -176,8 +176,8 @@ router.post('/mosque/:mosqueSize/:selectedTile/:goodRequired', (req, res, next) 
     })
     .then(() => {
 
-      abilities[tileType].acquired = true
-      abilities[tileType].img = `./images/Mosque/tiles/mosque_tile_${tileType}_${tileNum}.jpg`
+      abilities[tileType].acquired = true;
+      abilities[tileType].img = `./images/Mosque/tiles/mosque_tile_${tileType}_${tileNum}.jpg`;
 
       const updateMosqueRate = gamesRef.child(req.game.id)
       .child(`${mosque}/${tileType}`)

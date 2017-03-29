@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  font-family: Garamond;
 }
 
 html body {
@@ -153,6 +154,11 @@ table {
   max-width: 500px;
 }
 
+#location-modal {
+  border: 0px;
+  background-color: none;
+}
+
 #exchange-card {
   position: absolute;
   margin-left: 140px;
@@ -173,6 +179,7 @@ table {
   border-radius: 6px;
   max-width: 500px;
   cursor: pointer;
+  margin-bottom: 0px;
 }
 
 #market-row {
@@ -194,7 +201,7 @@ table {
 }
 
 #bonus-row img {
-  height: 95px;
+  height: 80px;
   margin: 10px;
 }
 
@@ -240,6 +247,32 @@ table {
   width: 220px;
   border-radius: 6px;
   border: 1px solid black;
+}
+
+#assistants {
+  background-color: white;
+  padding: 5px 10px 5px 10px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px 2px grey;
+  font-size: 16px;
+  font-family: Garamond;
+  margin: 6px;
+}
+
+#assistants:focus {
+  outline:0
+}
+
+#assistants:active {
+  background-color: white;
+  padding: 5px 10px 5px 10px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: inset 0 0 10px #000000;
+  font-size: 16px;
+  font-family: Garamond;
+  margin: 6px;
 }
 
 /* --------- MODAL DEFAULTS ------- */

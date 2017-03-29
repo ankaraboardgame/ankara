@@ -137,7 +137,7 @@ class ModalRootContainer extends React.Component {
               smallMarketData={smallMarketData}
               openModal={openModal}
               closeModal={closeModal}
-            />
+              />
             { payload && Turn_Dialog_Components[dialog] ? this.renderSpecificTurnDialog() : null }
           </div>
         </Modal>

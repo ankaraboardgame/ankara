@@ -61,7 +61,7 @@ class BlackMarket extends React.Component {
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
-          <p>Pick up one fabric, spice, or fruit, then roll the dice to see if you get heirlooms!</p>
+        <p>Pick up one fabric, spice, or fruit, then roll the dice to see if you get heirlooms!</p>
         </div>
           <div>
             <div id="market-row">

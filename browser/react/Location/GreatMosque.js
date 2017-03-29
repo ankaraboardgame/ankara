@@ -2,6 +2,7 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import { actionBuyMosqueTile } from '../../routes/location';
+import { tileAdd1Assistant } from '../../routes/bonus';
 
 /** -------- Constants -------- */
 import { ACTION } from '../Modal/turn_types';
@@ -16,6 +17,11 @@ class GreatMosque extends React.Component {
   handleBuyGreatMosqueTile(selectedTile, goodRequired){
     const { gameId, playerId, handleEndTurn, openModal, closeModal } = this.props;
     actionBuyMosqueTile(gameId, playerId, 'greatMosque', selectedTile, goodRequired)
+      .then(() => {
+        if(selectedTile === 'heirloom'){
+          tileAdd1Assistant(gameId, playerId)
+        }
+      })
       .then(() => closeModal())
       .then(() => handleEndTurn())
       .catch(console.error)

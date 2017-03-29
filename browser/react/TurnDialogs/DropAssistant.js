@@ -11,7 +11,7 @@ import { MERCHANT_ENCOUNTER, ACTION } from '../Modal/turn_types';
 class DropAssistant extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.handleAssistant = this.handleAssistant.bind(this);
   }
 
@@ -42,19 +42,21 @@ class DropAssistant extends React.Component {
     const { handleEndTurn, payload } = this.props;
     return (
       <div id="turn-dialog-half">
-        <RaisedButton
-          label="Drop an assistant"
-          style={{ margin: 12 }}
-          primary={true}
-          onTouchTap={this.handleAssistant}
-          disabled={!payload.assistantCount}
-        />
-        <RaisedButton
-          label="End turn now"
-          style={{ margin: 12 }}
-          secondary={true}
-          onTouchTap={handleEndTurn}
-        />
+        <div id="market-row">
+          <RaisedButton
+            label="Drop an assistant"
+            style={{ margin: 12 }}
+            primary={true}
+            onTouchTap={this.handleAssistant}
+            disabled={!payload.assistantCount}
+            />
+          <RaisedButton
+            label="End turn now"
+            style={{ margin: 12 }}
+            secondary={true}
+            onTouchTap={handleEndTurn}
+            />
+        </div>
       </div>
     );
   }

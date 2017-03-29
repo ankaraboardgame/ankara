@@ -42,18 +42,20 @@ class PickUpAssistant extends React.Component {
 
     return (
       <div id="turn-dialog-half">
-        <RaisedButton
-          label="Pick up your assistant"
-          style={{ margin: 12 }}
-          primary={true}
-          onTouchTap={this.handleAssistant}
-        />
-        <RaisedButton
-          label="End turn now"
-          style={{ margin: 12 }}
-          secondary={true}
-          onTouchTap={handleEndTurn}
-        />
+        <div id="market-row">
+          <RaisedButton
+            label="Pick up your assistant"
+            style={{ margin: 12 }}
+            primary={true}
+            onTouchTap={this.handleAssistant}
+            />
+          <RaisedButton
+            label="End turn now"
+            style={{ margin: 12 }}
+            secondary={true}
+            onTouchTap={handleEndTurn}
+            />
+        </div>
       </div>
     );
   }
