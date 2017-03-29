@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {
   firebaseConnect,
-  isLoaded,
-  isEmpty,
   pathToJS
 } from 'react-redux-firebase';
 import { fbAuth } from '../../firebase';
@@ -23,7 +21,6 @@ import { getRoomData } from '../../redux/reducers/room-reducer.js';
 import { createRoom, addToRoom, removeFromRoom, deleteRoom, signalReady } from '../../routes/lobby.js';
 
 import { Room } from './Room.js';
-import ChatContainer from '../Chat/ChatContainer.js';
 
 /************ LobbyContainer ****************/
 
@@ -61,14 +58,18 @@ class LobbyContainer extends React.Component {
     });
   }
 
+  /**
+   * If you have clicked ready, and all other users in the room are ready,
+   * then dispatch a 'start game action' which forwards you to the game.
+  */
   componentDidUpdate(){
     const roomData = this.props.roomData;
     const myRoomId = this.state.joined;
-    if (roomData && myRoomId){
-      // if all users have clicked 'ready', dispatch a 'create game action'
+    const myUserId = this.props.userId;
+    if (this.state.ready && roomData && myRoomId){
       if (Object.keys(roomData[myRoomId].ready || {}).length === Object.keys(roomData[myRoomId].users).length){
-        this.props.startGame(myRoomId, roomData[myRoomId].users);
-        // will forward all users to the game
+        this.setState({ ready: false });
+        this.props.startGame(myRoomId, roomData[myRoomId].users, myUserId);
       }
     }
   }
@@ -169,7 +170,6 @@ class LobbyContainer extends React.Component {
           </Link>
         }
 
-
           <div id="create-room-button">
             <Paper style={createRoomStyle} zDepth={3}>
               <form onSubmit={ this.handleCreateRoom }>
@@ -242,7 +242,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setUser: user => dispatch(settingUser(user)),
-  startGame: (roomId, usersObj) => dispatch(fetchNewGame(roomId, usersObj))
+  startGame: (roomId, usersObj, userId) => dispatch(fetchNewGame(roomId, usersObj, userId))
 })
 
 const fbWrappedLobbyContainer = firebaseConnect(['rooms'])(LobbyContainer)
