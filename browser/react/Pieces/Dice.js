@@ -5,9 +5,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 export default class Dice extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {rolled: false}
+    this.state = {
+      rolled: false,
+      prompt: 'Roll',
+      rerolling: false,
+      rolledSum: 0
+    }
     this.rollAll = this.rollAll.bind(this);
     this.rollDoneCallback = this.rollDoneCallback.bind(this);
+    this.done = this.done.bind(this);
   }
 
   rollAll() {
@@ -15,10 +21,35 @@ export default class Dice extends React.Component {
     this.reactDice.rollAll();
   }
 
+  done() {
+    this.props.done(this.state.rolledSum);
+  }
+
   rollDoneCallback(num) {
-    if (this.state.rolled) {
+
+    // No re-roll
+    if (this.state.rolled && !this.props.reroll) {
       this.props.done(num);
+    } else { // Can re-roll
+
+      // If player is allowed to re-roll
+      if (this.state.rolled && this.props.reroll && !this.state.rerolling) {
+        // Set rolled state to false and store rolled value to rolledSum in case
+        // player decide not to re-roll by click on 'Done' button.
+        this.setState({
+          rolled: false,
+          prompt: 'Re-roll',
+          rolledSum: num,
+          rerolling: true
+        });
+      }
+
+      // Call this.props.done() after re-roll.
+      if (this.state.rolled && this.state.rerolling) {
+        this.props.done(num);
+      }
     }
+
   }
 
   render() {
@@ -28,8 +59,13 @@ export default class Dice extends React.Component {
           onClick={this.rollAll}
           disabled={this.state.rolled}
         >
-          Roll
+        { this.state.prompt }
         </RaisedButton>
+        { this.props.reroll && this.state.rerolling &&<RaisedButton
+          onClick={this.done}
+        >
+        Done
+        </RaisedButton> }
         <div id="market-row">
           <ReactDice
             disableIndividual={true}

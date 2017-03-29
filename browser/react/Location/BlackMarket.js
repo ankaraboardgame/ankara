@@ -37,6 +37,7 @@ class BlackMarket extends React.Component {
   }
 
   handleGetBlackMarketGoodsEndTurn (selectedGood, rollSum){
+    console.log('handleGetBlackMarketGoodEndTurn')
     const { gameId, playerId, openModal, closeModal, handleActionEnd } = this.props;
     // Make axios call for black market action
     actionBlackMarket(gameId, playerId, selectedGood, rollSum)
@@ -57,7 +58,8 @@ class BlackMarket extends React.Component {
     const style = { margin: 12 };
     const selectedClassName = 'highlighted';
     const selectedGood = this.state.selectedGood;
-    const { handleMoreOptionsClick, handleActionEnd } = this.props;
+    const { handleMoreOptionsClick, handleActionEnd, abilities } = this.props;
+    const rerollAbility = abilities && abilities.fabric.acquired;
 
     // Render Black market action dialog
     return (
@@ -85,7 +87,7 @@ class BlackMarket extends React.Component {
           </div>
           {
             selectedGood &&
-            <Dice done={this.handleDiceRoll} />
+            <Dice done={this.handleDiceRoll} reroll={rerollAbility} />
           }
 
           <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd} disabled={this.state.rolled} />
