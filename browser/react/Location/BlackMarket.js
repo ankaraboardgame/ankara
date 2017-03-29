@@ -33,7 +33,7 @@ class BlackMarket extends React.Component {
     const good = this.state.selectedGood;
     setTimeout(() => {
       this.handleGetBlackMarketGoodsEndTurn(good, rollSum)
-    }, 2000)
+    }, 1200)
   }
 
   handleGetBlackMarketGoodsEndTurn (selectedGood, rollSum){
