@@ -71,7 +71,7 @@ class TeaHouse extends React.Component {
         <div id="text-box">
           <p>If the dice roll meets or exceeds your gamble,<br />you get the sum you name.<br />Otherwise, you walk away with only two lira.</p>
         </div>
-        <div className='row'>
+        <div>
           <DropDownMenu value={this.state.gambledNumber} style={ddMenuStyle} onChange={this.handleChooseNumber}>
             <MenuItem value={2} primaryText="2" />
             <MenuItem value={3} primaryText="3" />
