@@ -50,7 +50,7 @@ class GemstoneDealer extends React.Component {
         <div id="text-box">
           <p>All the gems that money can buy. Current price: {price} lira.</p>
         </div>
-          <div>
+          <div id="market-row">
             <RaisedButton
               label={`BUY GEM FOR ${price} LIRA`}
               style={{ margin: 12 }}
@@ -58,9 +58,9 @@ class GemstoneDealer extends React.Component {
               onTouchTap={this.handleBuyGem}
               disabled={userMoney < price}
             />
-          <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={handleActionEnd} />
-            <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+            <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={handleActionEnd} />
           </div>
+          <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );
   }
