@@ -6,7 +6,7 @@ import { mapCoordToLocation } from '../../utils/board';
 import { bonusOneGood } from '../../routes/bonus';
 
 /** ------- Constants -------- */
-import { MORE_OPTIONS } from '../Modal/turn_types';
+import { PLAY_BONUS } from '../Modal/turn_types';
 
 class SelectBonusGood extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class SelectBonusGood extends React.Component {
     bonusOneGood(gameId, playerId, selectedGood)
     .then(() => {
       closeModal();
-      openModal(mapCoordToLocation(currentPosition), { currentPosition, dialog: MORE_OPTIONS });
+      openModal(mapCoordToLocation(currentPosition), { currentPosition, dialog: PLAY_BONUS });
     })
     .catch(console.error)
   }
@@ -44,7 +44,7 @@ class SelectBonusGood extends React.Component {
           <img src="./images/cart/spices.png" onTouchTap={() => this.handleBonusGood('spice')} />
           <img src="./images/cart/heirlooms.png" onTouchTap={() => this.handleBonusGood('heirloom')} />
         </div>
-        <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(MORE_OPTIONS)} />
+        <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(PLAY_BONUS)} />
       </div>
     )
   }

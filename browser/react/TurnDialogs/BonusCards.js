@@ -7,7 +7,7 @@ import { checkMoney } from '../../utils/options';
 import { mapCoordToLocation, mapLocationToCoord } from '../../utils/board';
 
 /** ------- Constants -------- */
-import { ACTION, MORE_OPTIONS, SELECT_BONUS_GOOD, PLAY_BONUS } from '../Modal/turn_types';
+import { MORE_OPTIONS, SELECT_BONUS_GOOD } from '../Modal/turn_types';
 
 class BonusCards extends Component {
   constructor(props) {
@@ -82,7 +82,7 @@ class BonusCards extends Component {
             </div>
           }
       </div>
-        <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(PLAY_BONUS)} />
+        <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(MORE_OPTIONS)} />
     </div>
     )
   }
