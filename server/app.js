@@ -9,24 +9,6 @@ const app = express();
 const server = http.createServer(app);
 const firebaseAdmin = require('firebase-admin');
 
-// process.env - config vars set-up on heroku side
-let serviceAccount = {
-	type: process.env.FIREBASE_TYPE,
-	project_id: process.env.FIREBASE_PROJECT_ID,
-	private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
-	private_key: process.env.FIREBASE_PRIVATE_KEY,
-	client_email: process.env.FIREBASE_CLIENT_EMAIL,
-	client_id: process.env.FIREBASE_CLIENT_ID,
-	auth_uri: process.env.FIREBASE_AUTH_URI,
-	token_uri: process.env.FIREBASE_TOKEN_URI,
-	auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
-	client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL
-};
-
-if(!serviceAccount.private_key) {
-  serviceAccount = require('../secret.firebase.env');
-}
-
 /**
  * Initialize the app with a service account
  * granting admin privileges, and use alternate
@@ -34,7 +16,22 @@ if(!serviceAccount.private_key) {
  */
 if (process.env.NODE_ENV === 'test') {
 	console.log('running test server...');
-	serviceAccount = require('../tests/secret-firebase-test-server.json');
+	let serviceAccount = {
+		type: process.env.FBTEST_TYPE,
+		project_id: process.env.FBTEST_PROJECT_ID,
+		private_key_id: process.env.FBTEST_PRIVATE_KEY_ID,
+		private_key: process.env.FBTEST_PRIVATE_KEY,
+		client_email: process.env.FBTEST_CLIENT_EMAIL,
+		client_id: process.env.FBTEST_CLIENT_ID,
+		auth_uri: process.env.FBTEST_AUTH_URI,
+		token_uri: process.env.FBTEST_TOKEN_URI,
+		auth_provider_x509_cert_url: process.env.FBTEST_AUTH_PROVIDER_X509_CERT_URL,
+		client_x509_cert_url: process.env.FBTEST_CLIENT_X509_CERT_URL
+	}
+
+	if(!serviceAccount.private_key) {
+		serviceAccount = require('../tests/secret-firebase-test-server.js');
+	}
 	const key = {
 		apiKey: 'AIzaSyBzVhw7ppsPkNKEahvABSl8ojMHqEd5lAg',
 		credential: firebaseAdmin.credential.cert(serviceAccount),
@@ -43,7 +40,24 @@ if (process.env.NODE_ENV === 'test') {
 	}
 	firebaseAdmin.initializeApp(key);
 } else {
-	console.log('not running test server...');
+	// process.env - config vars set-up on heroku side
+	let serviceAccount = {
+		type: process.env.FIREBASE_TYPE,
+		project_id: process.env.FIREBASE_PROJECT_ID,
+		private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+		private_key: process.env.FIREBASE_PRIVATE_KEY,
+		client_email: process.env.FIREBASE_CLIENT_EMAIL,
+		client_id: process.env.FIREBASE_CLIENT_ID,
+		auth_uri: process.env.FIREBASE_AUTH_URI,
+		token_uri: process.env.FIREBASE_TOKEN_URI,
+		auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+		client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL
+	};
+
+	if(!serviceAccount.private_key) {
+		serviceAccount = require('../secret.firebase.env');
+	}
+
 	firebaseAdmin.initializeApp({
 		credential: firebaseAdmin.credential.cert(serviceAccount),
 		databaseURL: 'https://istanbul-aa7c8.firebaseio.com/'

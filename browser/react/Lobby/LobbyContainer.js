@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import {
   firebaseConnect,
   isLoaded,
@@ -12,10 +13,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import Divider from 'material-ui/Divider';
 
 import { settingUser } from '../../redux/action-creators/user';
 import { fetchNewGame } from '../../redux/action-creators/game';
+import { getGameId } from '../../redux/reducers/game-reducer.js';
 import { getUserId } from '../../redux/reducers/user-reducer.js';
 import { getRoomData } from '../../redux/reducers/room-reducer.js';
 
@@ -113,7 +114,6 @@ class LobbyContainer extends React.Component {
 
   handleReadyToStart(event, roomId){
     event.preventDefault();
-    console.log('click')
     signalReady(roomId, this.props.userId)
       .then(() => this.setState({ ready: true }));
   }
@@ -125,11 +125,17 @@ class LobbyContainer extends React.Component {
       width: 500,
       padding: 20,
       margin: 20,
-      backgroundColor: '#222',
+      backgroundColor: '#3D2F1B',
       textAlign: 'center',
       display: 'inline-block'
     };
     const searchStyle = {
+      width: 600,
+      padding: 20,
+      backgroundColor: '#222',
+      opacity: 0.2
+    };
+    const searchInputStyle = {
       color: 'white',
       textTransform: 'uppercase',
       fontStyle: 'italic',
@@ -144,22 +150,33 @@ class LobbyContainer extends React.Component {
       height: 50
     };
 
-    const { userId, roomData } = this.props;
+    const { userId, roomData, gameId } = this.props;
 
     return (
       <MuiThemeProvider>
         <div id="lobby-container">
 
-          <img src={`images/Constantinople-Title-2.png`} id="game-title" />
+          <Link to="/">
+            <img src={`images/Ankara-Title.png`} style={{width: '100%'}}/>
+          </Link>
+
+        {
+          this.props.gameId &&
+          <Link to="/game">
+            <div id="lobby-warning">
+              <p>You are currently in a game. Click to go to the game room.</p>
+            </div>
+          </Link>
+        }
+
 
           <div id="create-room-button">
             <Paper style={createRoomStyle} zDepth={3}>
-
               <form onSubmit={ this.handleCreateRoom }>
                 <TextField
-                  hintText="Create new room"
+                  hintText="New room name..."
                   style={{marginLeft: 20}}
-                  hintStyle={{color: '#ccc'}}
+                  hintStyle={{color: '#888'}}
                   inputStyle={{color: 'white'}}
                   onChange={this.handleCreateRoomTextFieldChange}
                 />
@@ -169,21 +186,18 @@ class LobbyContainer extends React.Component {
                   CREATE
                 </RaisedButton>
               </form>
-
             </Paper>
           </div>
-
-          <Divider />
 
           <TextField
             onChange={this.handleSearchBar}
             style={{ width: 500, height: 100 }}
             hintText="Search rooms"
             hintStyle={hintStyle}
-            inputStyle={searchStyle}
+            inputStyle={searchInputStyle}
           />
 
-          <div className="room-column">
+          <div className="row">
           {
             roomData &&
             Object.keys(roomData)
@@ -222,7 +236,8 @@ class LobbyContainer extends React.Component {
 const mapStateToProps = (state) => ({
   userId: getUserId(state),
   roomData: getRoomData(state),
-  auth: pathToJS(firebase, 'auth')
+  auth: pathToJS(firebase, 'auth'),
+  gameId: getGameId(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({

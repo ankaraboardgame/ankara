@@ -53,21 +53,22 @@ export default class Dice extends React.Component {
   }
 
   render() {
+    const style={ margin: 12 }
     return (
       <div>
         <div id="market-row">
           <RaisedButton
             onClick={this.rollAll}
+            style={style}
             disabled={this.state.rolled}
-          >
-          { this.state.prompt }
-          </RaisedButton>
+            label={this.state.prompt}
+          />
           { this.props.canReroll && this.state.rerolling && <RaisedButton
+            style={style}
             onClick={this.done}
             disabled={this.state.rolled}
-          >
-          Done
-          </RaisedButton> }
+            label="Done"
+          /> }
         </div>
         <div id="market-row">
           <ReactDice

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { firebaseConnect } from 'react-redux-firebase'
 
 import CircularProgress from 'material-ui/CircularProgress';
-import { fadeInDown, fadeInDownBig, zoomIn, shake } from 'react-animations';
+import { fadeInDown, shake } from 'react-animations';
 import { StyleSheet, css } from 'aphrodite';
 
 import BoardContainer from './Board/BoardContainer';
@@ -25,6 +25,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { getGameId, getGameChats, getGameMerchants, getPlayerTurn, getLastRound, getPlayerMap, getGameLogData } from '../redux/reducers/game-reducer';
 import { getUserId } from '../redux/reducers/user-reducer';
 
+/** ----------- Styles ----------- */
+
 const animateStyles = StyleSheet.create({
   fadeInDown: {
     animationName: fadeInDown,
@@ -36,12 +38,11 @@ const animateStyles = StyleSheet.create({
   }
 });
 
+/** -------- Container ---------- */
+
 class AppContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.coins = new Audio('sounds/coins.wav');
-    this.chimes = new Audio('sounds/chimes.mp3');
-    this.dump = new Audio('sounds/dump.mp3');
   }
 
   renderLoadingScreen() {
@@ -51,29 +52,6 @@ class AppContainer extends React.Component {
         <CircularProgress size={100} thickness={7} color="#ee2d00" style={{ border:"4px solid #de9d89", borderRadius: "200px" }}/>
       </div>
     );
-  }
-
-  /** For Audio */
-  componentWillReceiveProps(nextProps) {
-    if (this.props.merchants){
-
-      const currentWheelbarrow = this.props.merchants[this.props.userId].wheelbarrow;
-      const nextWheelbarrow = nextProps.merchants[nextProps.userId].wheelbarrow;
-
-      if (nextWheelbarrow.money !== currentWheelbarrow.money) {
-        this.coins.play();
-      }
-      if (
-        (nextWheelbarrow.spice !== currentWheelbarrow.spice) || 
-        (nextWheelbarrow.fruit !== currentWheelbarrow.fruit) || 
-        (nextWheelbarrow.fabric !== currentWheelbarrow.fabric)
-      ) {
-        this.dump.play();
-      }
-      if (nextWheelbarrow.ruby !== currentWheelbarrow.ruby) {
-        this.chimes.play();
-      }
-    }
   }
 
   render() {
@@ -86,7 +64,7 @@ class AppContainer extends React.Component {
             <PlayerButtons />
             { lastRound ? <h3> LAST ROUND</h3> : null}
             <div id="app-container">
-              <img className={css(animateStyles.fadeInDown)} src={`images/Constantinople-Title-2.png`} id="game-title" />
+              <img className={css(animateStyles.fadeInDown)} src={`images/Ankara-Title.png`} id="game-title" />
               <BoardContainer />
               <FooterContainer />
               <ModalRootContainer />

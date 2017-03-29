@@ -4,6 +4,7 @@ const gamesRef = db.ref('games');
 const Promise = require('bluebird');
 
 const router = module.exports = require('express').Router();
+
 /**
  * Location routes
  * ...api/game/:gameId/player/:playerId/location/...
@@ -15,7 +16,11 @@ const router = module.exports = require('express').Router();
  * req.playerRef = ref to player in firebase
  */
 
-// 1. WAINWRIGHT (1) - pay wainwright and gain cart size
+
+/**
+* 1a. WAINWRIGHT - Buy Extension
+* Pay 7 Lira and gain +1 in cart size, max cart size is 5 (default start size: 2)
+*/
 router.post('/wainwright', (req, res, next) => {
   const WAINWRIGHT_PRICE = 7;
 
@@ -32,13 +37,22 @@ router.post('/wainwright', (req, res, next) => {
   .catch(next);
 })
 
+/**
+* 1b. WAINWRIGHT - Earn a ruby
+* On the 5th extension purchase, player earns 1 ruby
+*/
 router.post('/wainwright/earnRuby', (req, res, next) => {
   req.playerRef
     .child('wheelbarrow/ruby')
     .transaction(rubies => ++rubies);
 })
 
- // 2. WAREHOUSES (3) - Depending on the goodType, player will get max amount
+ /**
+ * 2. WAREHOUSES (3) - Earn maximum of respective goods
+ * Cannot exceed the wheelbarrow size (which is increased after visit to the wainwright)
+ * 3 warehouses: Fruit, Fabric, and Spice
+ * @WB_SIZE: current size of wheelbarrow
+ */
 router.post('/warehouse/:goodType', (req, res, next) => {
   const goodType = req.params.goodType;
   let WB_SIZE;
@@ -57,7 +71,11 @@ router.post('/warehouse/:goodType', (req, res, next) => {
     .catch(next)
 })
 
-// 3. GEMSTONE DEALER (1) - pay gemstone dealer and gain ruby
+/**
+* 3. GEMSTONE DEALER - Option to buy a Ruby at current price
+* Price will increase with each purchase made by any player
+* @GEMSTONE_PRICE: current price of a ruby
+*/
 router.post('/gemstonedealer', (req, res, next) => {
   let GEMSTONE_PRICE;
 
@@ -82,14 +100,26 @@ router.post('/gemstonedealer', (req, res, next) => {
     .catch(next)
 });
 
-// 4. MARKETS (2) - Trade
+/**
+* 4a. MARKETS (2) - Trade up to 5 goods at the prevailing market rate
+* @marketSize: 'smallMarket' or 'largeMarket' (dictates the market demand)
+* @currentMarketIdx: refer to the index of the current market demand.
+*   Each market have 5 different market demand, shuffled at the start of the game.
+*   currentMarketIdx moves to next index once a trade is made
+* @tradeOffer: offer made by the player
+* @largeMarketRate: dictates the amount of money that player gains, depending on the number of goods traded (key: number of goods, value: amount of money)
+* @smallMarketRate: idem
+* @marketDemand: the current set of possible goods to trade, obtained based on the currentMarketIdx.
+* @sum: refer to the sum of goods traded
+* @wheelbarrow: stores the player's current amount of each goods, money, ruby and wheelbarrow size.
+*/
 router.post('/market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloomNum/:spiceNum', (req, res, next) => {
   const marketSize = req.params.marketSize;
   const currentMarketIdx = req.params.currentMarketIdx;
   const tradeOffer = { fabric: req.params.fabricNum, fruit: req.params.fruitNum, heirloom: req.params.heirloomNum, spice: req.params.spiceNum };
   const largeMarketRate = { 1: 3, 2: 7, 3: 12, 4: 18, 5: 25 };
   const smallMarketRate = { 1: 2, 2: 5, 3: 9, 4: 14, 5: 20 };
-  let marketDemand, sum = 0, transaction;
+  let marketDemand, sum = 0, wheelbarrow;
 
   req.gameRef
     .child(`${marketSize}/demandTiles/${currentMarketIdx}`)
@@ -100,19 +130,19 @@ router.post('/market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloo
       return req.playerRef
         .child('wheelbarrow')
         .once('value', snap => {
-          transaction = snap.val()
+          wheelbarrow = snap.val()
         })
         .then(() => {
           for(let good in tradeOffer){
             if(marketDemand[good] > 0){
               if(tradeOffer[good] <= marketDemand[good]){
                 sum += +tradeOffer[good]
-                transaction[good] -= tradeOffer[good]
+                wheelbarrow[good] -= tradeOffer[good]
               }
             }
           }
-          transaction.money = (marketSize === 'smallMarket') ? transaction.money + smallMarketRate[sum] : transaction.money + largeMarketRate[sum];
-          return req.playerRef.child('wheelbarrow').set(transaction)
+          wheelbarrow.money = (marketSize === 'smallMarket') ? wheelbarrow.money + smallMarketRate[sum] : wheelbarrow.money + largeMarketRate[sum];
+          return req.playerRef.child('wheelbarrow').set(wheelbarrow)
         })
     })
     .then(() => {
@@ -121,6 +151,10 @@ router.post('/market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloo
     .catch(next)
 })
 
+/**
+* 4b. MARKETS (2) - Once a trade is made, update the market demand tile
+* @nextMarketIdx: determines the index of the next tile, based on currentMarketIdx
+*/
 router.post('/market/:marketSize/:currentMarketIdx/updateTile', (req, res, next) => {
   let nextMarketIdx = ++req.params.currentMarketIdx % 5
   req.gameRef
@@ -130,10 +164,20 @@ router.post('/market/:marketSize/:currentMarketIdx/updateTile', (req, res, next)
     .catch(next)
 })
 
-// 5. MOSQUES (2)
+/**
+* 5. MOSQUES (2) - Option to buy Mosque tiles, which gives the player a special ability
+* SMALL MOSQUE: 1. Fabric tile - gives the player the ability to re-roll their dice at the tea house or black market.
+* SMALL MOSQUE: 2. Spice tile - gives the player the ability to buy 1 good of any type for 2 lira, at one of the 3 warehouses.
+* LARGE MOSQUE: 1. Heirloom tile - gives the player the ability to add 1 extra assistant to the game. Can only be played once in a game.
+* LARGE MOSQUE: 2. Fruit tile - gives the player the ability to return 1 assistant for 2 lira. Can only be played once in a turn.
+* @mosque: 'smallMosque' or 'greatMosque'
+* @tileType: 'fabic', 'fruit', 'spice', or 'heirloom'
+* @tileNum: refer to the amount of required good in order to purchase the tile.
+*   With every purchase, the amount required increases by 1
+* @abilities: refer to the database obj that stores if which tiles and abilities the player has acquired.
+* @ability: 'dieTurnOrRoll', '2LiraFor1Good', 'add1Assistant', or '2LiraToReturn1Assistant'
+*/
 router.post('/mosque/:mosqueSize/:selectedTile/:goodRequired', (req, res, next) => {
-  // small mosque: fabric & spice
-  // great mosque: heirloom & fruit
   const mosque = req.params.mosqueSize;
   const tileType = req.params.selectedTile;
   const tileNum = req.params.goodRequired;
@@ -141,19 +185,19 @@ router.post('/mosque/:mosqueSize/:selectedTile/:goodRequired', (req, res, next) 
 
   if (mosque === 'smallMosque') {
     if (tileType === 'fabric') {
-      ability = 'dieTurnOrRoll'; // only for tea house or black market
+      ability = 'dieTurnOrRoll';
     }
     if (tileType === 'spice'){
-      ability = '2LiraFor1Good'; // any warehouse
+      ability = '2LiraFor1Good';
     }
   }
 
   if (mosque === 'greatMosque') {
     if (tileType === 'heirloom') {
-      ability = 'add1Assistant'; // can only be used once
+      ability = 'add1Assistant';
     }
     if (tileType === 'fruit'){
-      ability = '2LiraToReturn1Assistant'; // only once in a turn
+      ability = '2LiraToReturn1Assistant';
     }
   }
 
@@ -204,15 +248,19 @@ router.post('/mosque/:mosqueSize/:selectedTile/:goodRequired', (req, res, next) 
     .catch(next)
 })
 
-// 6. BLACK MARKET (1)
-router.post('/blackMarket/:goodChosen/:diceRoll/', (req, res, next) => {
+/**
+* 6. BLACK MARKET - Option to pick 1 good ('fruit', 'fabric' or 'spice' only) and roll dice for opportunity to earn heirlooms
+* @diceRoll: sum of both dice rolled
+* @WB_SIZE: current size of wheelbarrow
+*/
+router.post('/blackMarket/:selectedGood/:diceRoll/', (req, res, next) => {
   const diceRoll = +req.params.diceRoll;
-  const wbSize = req.player.wheelbarrow.size;
+  const WB_SIZE = req.player.wheelbarrow.size;
 
   const updateGoodPromise = req.playerRef
-    .child(`wheelbarrow/${req.params.goodChosen}`)
+    .child(`wheelbarrow/${req.params.selectedGood}`)
     .transaction(function(currentGoodCount){
-      if (currentGoodCount >= wbSize) return wbSize;
+      if (currentGoodCount >= WB_SIZE) return WB_SIZE;
       else return currentGoodCount + 1;
     })
 
@@ -223,7 +271,7 @@ router.post('/blackMarket/:goodChosen/:diceRoll/', (req, res, next) => {
       if (diceRoll === 7 || diceRoll === 8) newHeirlooms =  currentHeirlooms + 1;
       else if (diceRoll === 9 || diceRoll === 10) newHeirlooms = currentHeirlooms + 2;
       else if (diceRoll === 11 || diceRoll === 12) newHeirlooms = currentHeirlooms + 3;
-      return newHeirlooms > wbSize ? wbSize : newHeirlooms;
+      return newHeirlooms > WB_SIZE ? WB_SIZE : newHeirlooms;
     })
 
   Promise.all([updateGoodPromise, updateHeirloomPromise])
@@ -231,7 +279,14 @@ router.post('/blackMarket/:goodChosen/:diceRoll/', (req, res, next) => {
     .catch(next);
 })
 
-// 7. TEA HOUSE (1)
+/**
+* 7. TEA HOUSE - Option to earn money
+* Player pick a num between 3 to 12, and then roll dice.
+* If dice sum >= player's num, player earns that amount of money.
+* If dice sum < player's num, player earns 2 lira.
+* @diceRoll: sum of both dice rolled
+* @gamble: player's num
+*/
 router.post('/teaHouse/:gamble/:diceRoll', (req, res, next) => {
   const diceRoll = +req.params.diceRoll;
   const gamble = +req.params.gamble
@@ -244,7 +299,11 @@ router.post('/teaHouse/:gamble/:diceRoll', (req, res, next) => {
     .catch(next);
 })
 
-// 8. CARAVANSARY (1)
+/**
+* 8. CARAVANSARY - Gain a bonus card
+* Bonus cards available: +5 lira or +1 good
+* @type: 'fiveLira' or 'oneGood'
+*/
 router.post('/caravansary/:bonusCardType', (req, res, next) => {
   const type = req.params.bonusCardType;
   req.playerRef
