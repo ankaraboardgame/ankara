@@ -25,6 +25,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { getGameId, getGameChats, getGameMerchants, getPlayerTurn, getLastRound, getPlayerMap, getGameLogData } from '../redux/reducers/game-reducer';
 import { getUserId } from '../redux/reducers/user-reducer';
 
+/** ----------- Styles ----------- */
+
 const animateStyles = StyleSheet.create({
   fadeInDown: {
     animationName: fadeInDown,
@@ -36,12 +38,11 @@ const animateStyles = StyleSheet.create({
   }
 });
 
+/** -------- Container ---------- */
+
 class AppContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.coins = new Audio('sounds/coins.wav');
-    this.chimes = new Audio('sounds/chimes.mp3');
-    this.dump = new Audio('sounds/dump.mp3');
   }
 
   renderLoadingScreen() {
@@ -51,29 +52,6 @@ class AppContainer extends React.Component {
         <CircularProgress size={100} thickness={7} color="#ee2d00" style={{ border:"4px solid #de9d89", borderRadius: "200px" }}/>
       </div>
     );
-  }
-
-  /** For Audio */
-  componentWillReceiveProps(nextProps) {
-    if (this.props.merchants){
-
-      const currentWheelbarrow = this.props.merchants[this.props.userId].wheelbarrow;
-      const nextWheelbarrow = nextProps.merchants[nextProps.userId].wheelbarrow;
-
-      if (nextWheelbarrow.money !== currentWheelbarrow.money) {
-        this.coins.play();
-      }
-      if (
-        (nextWheelbarrow.spice !== currentWheelbarrow.spice) || 
-        (nextWheelbarrow.fruit !== currentWheelbarrow.fruit) || 
-        (nextWheelbarrow.fabric !== currentWheelbarrow.fabric)
-      ) {
-        this.dump.play();
-      }
-      if (nextWheelbarrow.ruby !== currentWheelbarrow.ruby) {
-        this.chimes.play();
-      }
-    }
   }
 
   render() {

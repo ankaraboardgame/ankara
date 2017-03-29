@@ -7,10 +7,14 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { zoomIn } from 'react-animations';
 import { StyleSheet, css } from 'aphrodite';
 
+import Row from './Row';
+
 /** -------- Selectors ---------- */
 import { getBoard } from '../../redux/reducers/board-reducer';
+import { getGameMerchants } from '../../redux/reducers/game-reducer';
+import { getUserId } from '../../redux/reducers/user-reducer';
 
-import Row from './Row';
+/** ----------- Styles ----------- */
 
 const animateStyles = StyleSheet.create({
   zoomIn: {
@@ -27,6 +31,32 @@ const animateStyles = StyleSheet.create({
 class BoardContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.coins = new Audio('sounds/coins.wav');
+    this.chimes = new Audio('sounds/chimes.mp3');
+    this.dump = new Audio('sounds/dump.mp3');
+  }
+
+  /** For Audio */
+  componentWillReceiveProps(nextProps) {
+    if (this.props.merchants){
+
+      const currentWheelbarrow = this.props.merchants[this.props.userId].wheelbarrow;
+      const nextWheelbarrow = nextProps.merchants[nextProps.userId].wheelbarrow;
+
+      if (nextWheelbarrow.money !== currentWheelbarrow.money) {
+        this.coins.play();
+      }
+      if (
+        (nextWheelbarrow.spice !== currentWheelbarrow.spice) || 
+        (nextWheelbarrow.fruit !== currentWheelbarrow.fruit) || 
+        (nextWheelbarrow.fabric !== currentWheelbarrow.fabric)
+      ) {
+        this.dump.play();
+      }
+      if (nextWheelbarrow.ruby !== currentWheelbarrow.ruby) {
+        this.chimes.play();
+      }
+    }
   }
 
   render() {
@@ -52,6 +82,8 @@ class BoardContainer extends React.Component {
 
 const mapStateToProps = state => ({
   board: getBoard(state),
+  merchants: getGameMerchants(state),
+  userId: getUserId(state)
 });
 
 export default compose(
