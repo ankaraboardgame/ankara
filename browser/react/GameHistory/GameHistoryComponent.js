@@ -54,7 +54,7 @@ class GameHistoryComponent extends Component {
       const type = snapshot.val().type;
       const location = snapshot.val().location;
       const coords = location && location.split(',').map(str => Number(str));
-      const locationName = LOCATION_NAME[coords && levels.basic[coords[0]][coords[1]]];
+      const locationName = LOCATION_NAME[coords && levels.long[coords[0]][coords[1]]];
       let message;
       switch(type) {
         case LOGTYPE.TURN:

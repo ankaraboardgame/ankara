@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { firebaseConnect } from 'react-redux-firebase'
 
 import CircularProgress from 'material-ui/CircularProgress';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { fadeInDown, fadeInDownBig, zoomIn, shake } from 'react-animations';
 import { StyleSheet, css } from 'aphrodite';
 

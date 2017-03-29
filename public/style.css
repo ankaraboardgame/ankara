@@ -9,7 +9,7 @@ html body {
 
 #game-title {
   width: 60%;
-  padding: 20px 0px 20px 0px;
+  padding: 10px 0px 10px 0px;
 }
 
 #text-box {
@@ -68,8 +68,8 @@ img.bonusCards {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 500px;
-  padding: 25px 25px 0px 25px;
+  height: 425px;
+  padding: 15px 25px 15px 25px;
   align-self: center;
 }
 
@@ -80,11 +80,15 @@ img.bonusCards {
 .player-icons {
   width: 45px;
   height: 45px;
+  border: 2px solid #677b80;
+  -webkit-box-shadow: 3px 3px 2px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 3px 3px 2px 0px rgba(0,0,0,0.75);
+  box-shadow: 3px 3px 2px 0px rgba(0,0,0,0.75);
 }
 
 .player-icon-active {
   border-radius: 45px;
-  border: 2px solid #cccccc;
+  border: 4px solid white;
 }
 
 .player-data-icons {
@@ -92,50 +96,72 @@ img.bonusCards {
   height: 40px;
 }
 
-#player-info-row {
+#player-info-container {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  height: 600px;
-  align-self: center;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  background: rgba(0, 0, 0, 0.85);
   position: absolute;
+  z-index: 2;
+  top: 50%;
+  margin-top: -250px;
+}
+
+.player-name-text {
+  margin: 0px 20px 0px 20px;
+  padding: 10px 0px 5px 0px;
+  border-bottom: 1px solid darkslategray;
+  color: black;
+  font-weight: bold;
+  font-size: 25px;
+  font-family: Garamond;
+  font-variant: small-caps;
+  text-align: center;
+}
+
+#player-info-row {
+  border: 1px solid #cccccc;
+  -webkit-box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
+  -moz-box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
+  box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
+  background-image: url('images/player-button-box.jpg');
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 500px;
+  align-self: center;
+  border-radius: 20px;
   z-index: 2;
 }
 
 #player-detailed-info {
+  background-image: url('images/player-info-box.png');
+  background-size: 100% 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: left;
   align-self: center;
-  height: 600px;
-  margin: 0px 30px 0px 30px;
+  width: 150px;
+  height: auto;
   color: white;
+  z-index: 2;
+  position: absolute;
+  left: 130px;
+  padding-bottom: 20px;
 }
 
-
-#player-detailed-info p {
-  font-family: 'Roboto', sans-serif;
-}
-
-#player-info-row th, td {
-  padding: 10px;
-  text-align: left;
-}
-
-table {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-}
-
-.tr-player tbody tr:nth-child(odd){
-  background: rgba(0, 0, 0, 0.8);
-  padding-left: 30px;
-  padding-right: 30px;
+.player-detailed-row {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid darkgray;
+  margin: 0px 20px 0px 20px;
+  padding: 5px 5px 5px 0px;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Garamond;
+  font-variant: small-caps;
 }
 
 /* -------- LOCATION MODALS --- */
@@ -358,7 +384,9 @@ ul.chat-list {
   width: 50px;
   height: 50px;
   border-radius: 50px;
-  box-shadow: 0px 0px 10px lemonchiffon;
+  -webkit-box-shadow: 3px 3px 2px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 3px 3px 2px 0px rgba(0,0,0,0.75);
+  box-shadow: 3px 3px 2px 0px rgba(0,0,0,0.75);
 }
 
 .player-container {
@@ -420,7 +448,7 @@ ul.chat-list {
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 85%;
+  width: 80%;
   height: auto;
   margin-bottom: 50px;
 }
@@ -517,12 +545,14 @@ footer .badge {
 /* -------- New Footer -------- */
 
 #footer-container {
+  position: fixed;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  position: relative;
-  bottom: 0px;
+  left: 50%;
+  margin-left: -400px;
 }
 
 #new-footer {
@@ -534,9 +564,7 @@ footer .badge {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   width: auto;
-  position: relative;
-  bottom: 0px;
-  padding: 20px 50px 20px 50px;
+  padding: 10px 30px 10px 30px;
 }
 
 #new-footer p {
@@ -544,9 +572,12 @@ footer .badge {
 }
 
 #name {
+  font-family: 'Garamond';
+  font-size: 28px;
   color: white;
   margin-left: 15px;
   margin-right: 50px;
+  font-variant: small-caps;
 }
 
 
@@ -664,11 +695,13 @@ footer .badge {
 }
 
 table {
-  background-color: #d0cabe;
   table-layout: auto!important;
+  margin-left: 30px;
   margin-bottom: 5px;
   width: 100%;
   border-collapse: collapse;
+  font-family: Garamond;
+  color: black;
 }
 
 table tr td {

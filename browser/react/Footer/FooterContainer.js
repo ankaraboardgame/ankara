@@ -18,7 +18,7 @@ const Footer = ({ playerNum, username, userWheelbarrow }) => {
     <div id="footer-container">
       <div id="new-footer">
         <img src={`images/player/${colorMap[playerNum]}player.png`} className="player-icon" />
-        <p id="name">{username}</p>
+        <text id="name">{username}</text>
         <RulesSideBar />
         <GameHistorySideBar />
         <img className="footer-icons" src="./images/cart/fabric.png" />

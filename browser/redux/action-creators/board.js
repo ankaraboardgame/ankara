@@ -16,7 +16,7 @@ const settingBoard = board => ({
 export const loadBoard = () => {
   // for custom board, axios to backend to ask for board configuration
   // then take the data and pass in to Game constructor
-  const newGame = new Game('basic');
+  const newGame = new Game('long');
   return dispatch => {
     dispatch(settingBoard(newGame));
   }

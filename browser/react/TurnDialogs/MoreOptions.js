@@ -6,7 +6,7 @@ import { bonusFiveLira } from '../../routes/bonus';
 import { mapCoordToLocation } from '../../utils/board';
 
 /** ------- Constants -------- */
-import { SELECT_BONUS_GOOD } from '../Modal/turn_types';
+import { SELECT_BONUS_GOOD, ACTION } from '../Modal/turn_types';
 
 class MoreOptions extends React.Component {
   constructor(props) {
@@ -54,6 +54,7 @@ class MoreOptions extends React.Component {
         tileArray.push(playerAbilities[ability].img);
       }
     }
+
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
@@ -64,7 +65,7 @@ class MoreOptions extends React.Component {
               <RaisedButton label="Go back"
                 style={{ margin: 12 }}
                 primary={true}
-                onTouchTap={() => this.handleGoBackClick(nextDialog)}
+                onTouchTap={() => this.handleGoBackClick(ACTION)}
               />
             </div>
             :
