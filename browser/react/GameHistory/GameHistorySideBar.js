@@ -11,6 +11,8 @@ import {
   dataToJS
 } from 'react-redux-firebase'
 
+import { ToastContainer } from 'react-toastify';
+
 import { getGameId, getPlayerMap } from '../../redux/reducers/game-reducer';
 import { getUserId } from '../../redux/reducers/user-reducer';
 
@@ -42,14 +44,15 @@ class GameHistorySideBar extends Component {
           onRequestChange={(open) => this.setState({open})}>
           <GameHistoryComponent historyRef={historyRef} userId={userId} playerMap={playerMap} />
         </Drawer>
+        <ToastContainer autoClose={2500} position="top-right"/>
       </div>
     );
   }
 }
 
-const fbHistoryContainer = firebaseConnect(({ gameId }) => {
-  return [`gameLog/${gameId}`];
-})(GameHistorySideBar);
+// const fbHistoryContainer = firebaseConnect(({ gameId }) => {
+//   return [`gameLog/${gameId}`];
+// })(GameHistorySideBar);
 
 const mapStateToProps = (state) => ({
   userId: getUserId(state),
@@ -57,4 +60,4 @@ const mapStateToProps = (state) => ({
   historyRef: dataToJS(state.firebase, `gameLog/${state.game.id}`)
 })
 
-export default connect(mapStateToProps)(fbHistoryContainer)
+export default connect(mapStateToProps)(GameHistorySideBar)

@@ -16,6 +16,7 @@ class FabricWarehouse extends React.Component {
 
   handleMaxGoodEndTurn(){
     const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+    // Make axios call for Fabric warehouse action
     actionMaxGood(gameId, playerId, 'fabric')
       .then(() => handleActionEnd())
       .catch(console.error);
