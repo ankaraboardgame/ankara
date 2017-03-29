@@ -79,7 +79,7 @@ class AppContainer extends React.Component {
             <PlayerButtons />
             { lastRound ? <h3> LAST ROUND</h3> : null}
             <div id="app-container">
-              <img className={css(animateStyles.fadeInDown)} src={`images/Constantinople-Title-2.png`} id="game-title" />
+              <img className={css(animateStyles.fadeInDown)} src={`images/Ankara-Title.png`} id="game-title" />
               <BoardContainer />
               <FooterContainer />
               <ModalRootContainer />
