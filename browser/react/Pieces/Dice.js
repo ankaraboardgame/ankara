@@ -28,12 +28,12 @@ export default class Dice extends React.Component {
   rollDoneCallback(num) {
 
     // No re-roll
-    if (this.state.rolled && !this.props.reroll) {
+    if (this.state.rolled && !this.props.canReroll) {
       this.props.done(num);
     } else { // Can re-roll
 
       // If player is allowed to re-roll
-      if (this.state.rolled && this.props.reroll && !this.state.rerolling) {
+      if (this.state.rolled && this.props.canReroll && !this.state.rerolling) {
         // Set rolled state to false and store rolled value to rolledSum in case
         // player decide not to re-roll by click on 'Done' button.
         this.setState({
@@ -55,17 +55,19 @@ export default class Dice extends React.Component {
   render() {
     return (
       <div>
-        <RaisedButton
-          onClick={this.rollAll}
-          disabled={this.state.rolled}
-        >
-        { this.state.prompt }
-        </RaisedButton>
-        { this.props.reroll && this.state.rerolling &&<RaisedButton
-          onClick={this.done}
-        >
-        Done
-        </RaisedButton> }
+        <div id="market-row">
+          <RaisedButton
+            onClick={this.rollAll}
+            disabled={this.state.rolled}
+          >
+          { this.state.prompt }
+          </RaisedButton>
+          { this.props.canReroll && this.state.rerolling && <RaisedButton
+            onClick={this.done}
+          >
+          Done
+          </RaisedButton> }
+        </div>
         <div id="market-row">
           <ReactDice
             disableIndividual={true}

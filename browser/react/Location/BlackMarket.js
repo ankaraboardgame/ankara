@@ -87,7 +87,7 @@ class BlackMarket extends React.Component {
           </div>
           {
             selectedGood &&
-            <Dice done={this.handleDiceRoll} reroll={rerollAbility} />
+            <Dice done={this.handleDiceRoll} canReroll={rerollAbility} />
           }
 
           <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd} disabled={this.state.rolled} />
