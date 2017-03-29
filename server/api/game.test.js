@@ -8,7 +8,6 @@
 
 // var { gamesRef } = require('../../tests/firebaseTestServer.js');
 
-
 /*********** Game Route Tests ***********************/
 
 // describe('Game route:', function () {
