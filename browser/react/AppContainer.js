@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { firebaseConnect } from 'react-redux-firebase'
 
 import CircularProgress from 'material-ui/CircularProgress';
-import { fadeInDown, fadeInDownBig, zoomIn, shake } from 'react-animations';
+import { fadeInDown, shake } from 'react-animations';
 import { StyleSheet, css } from 'aphrodite';
 
 import BoardContainer from './Board/BoardContainer';
@@ -86,7 +86,7 @@ class AppContainer extends React.Component {
             <PlayerButtons />
             { lastRound ? <h3> LAST ROUND</h3> : null}
             <div id="app-container">
-              <img className={css(animateStyles.fadeInDown)} src={`images/Constantinople-Title-2.png`} id="game-title" />
+              <img className={css(animateStyles.fadeInDown)} src={`images/Ankara-Title.png`} id="game-title" />
               <BoardContainer />
               <FooterContainer />
               <ModalRootContainer />
