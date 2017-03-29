@@ -9,8 +9,11 @@ const router = module.exports = require('express').Router();
  * ...api/game/:gameId/player/:playerId/assistant...
  *
  * pre-loaded:
- * req.game = holds current game data
- * req.player = holds player data
+ * req.params = { playerId, gameId }
+ * req.game = specific game instance
+ * req.gameRef = ref to specific game in firebase
+ * req.player = the player hitting this route
+ * req.playerRef = ref to player in firebase
  */
 
 /**
@@ -19,11 +22,9 @@ const router = module.exports = require('express').Router();
  */
 router.post('/drop', (req, res, next) => {
   const coords = req.body.coordinates;
-  const assistantsRef = gamesRef
-    .child(`${req.game.id}/merchants/${req.player.id}/assistants`);
+  const assistantsRef = req.playerRef.child('assistants');
 
-  assistantsRef
-    .child('count')
+  assistantsRef.child('count')
     .transaction(currCount => --currCount)
     .then(() => {
       return assistantsRef.child('out').push(coords);
@@ -40,12 +41,10 @@ router.post('/drop', (req, res, next) => {
  */
 router.post('/pickup', (req, res, next) => {
   const coords = req.body.coordinates;
-  const assistantsRef = gamesRef
-    .child(`${req.game.id}/merchants/${req.player.id}/assistants`);
+  const assistantsRef = req.playerRef.child('assistants');
 
-  assistantsRef
-    .child('count')
-    .transaction(currCount => ++currCount)
+  assistantsRef.child('count')
+    .transaction(count => ++count)
     .then(() => {
       const assistantsOut = req.player.assistants.out;
       for (let key in assistantsOut){
@@ -53,7 +52,7 @@ router.post('/pickup', (req, res, next) => {
           delete assistantsOut[key];
         }
       }
-      assistantsRef.child('out').set(assistantsOut);
+      return assistantsRef.child('out').set(assistantsOut);
     })
     .then(() => {
       res.sendStatus(204);

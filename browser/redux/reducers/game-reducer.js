@@ -33,6 +33,17 @@ export const getGameData = state => {
   return gameId && dataToJS(state.firebase, `games/${gameId}`);
 };
 
+export const getGameChats = state => {
+  const gameData = getGameData(state);
+  const chats = [];
+  if (gameData) {
+    for (let chatId in gameData.chats){
+      chats.push(gameData.chats[chatId]);
+    }
+  }
+  return chats;
+};
+
 export const getGameMerchants = state => {
   const gameData = getGameData(state);
   return gameData && gameData.merchants;

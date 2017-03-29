@@ -10,6 +10,7 @@ import { StyleSheet, css } from 'aphrodite';
 import BoardContainer from './Board/BoardContainer';
 import FooterContainer from './Footer/FooterContainer';
 import ModalRootContainer from './Modal/ModalRootContainer';
+import ChatContainer from './Chat/ChatContainer.js';
 
 import DisplayWinner from './TurnDialogs/DisplayWinner';
 import LastTurn from './TurnDialogs/LastTurn';
@@ -22,7 +23,7 @@ injectTapEventPlugin();
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 /** ----------- Selectors ----------- */
-import { getGameId, getGameMerchants, getPlayerTurn, getLastRound, getGameLogData} from '../redux/reducers/game-reducer';
+import { getGameId, getGameChats, getGameMerchants, getPlayerTurn, getLastRound, getPlayerMap, getGameLogData } from '../redux/reducers/game-reducer';
 import { getUserId } from '../redux/reducers/user-reducer';
 
 const animateStyles = StyleSheet.create({
@@ -39,6 +40,8 @@ const animateStyles = StyleSheet.create({
 class AppContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.coins = new Audio('sounds/coins.wav');
+    this.chimes = new Audio('sounds/chimes.mp3');
   }
 
   renderLoadingScreen() {
@@ -50,8 +53,24 @@ class AppContainer extends React.Component {
     );
   }
 
+  /** For Audio */
+  componentWillReceiveProps(nextProps) {
+    if (this.props.merchants){
+
+      const currentWheelbarrow = this.props.merchants[this.props.userId].wheelbarrow;
+      const nextWheelbarrow = nextProps.merchants[nextProps.userId].wheelbarrow;
+
+      if (nextWheelbarrow.money !== currentWheelbarrow.money) {
+        this.coins.play();
+      }
+      if (nextWheelbarrow.ruby !== currentWheelbarrow.ruby) {
+        this.chimes.play();
+      }
+    }
+  }
+
   render() {
-    const { userId, merchants, playerTurn, lastRound } = this.props;
+    const { gameId, gameChats, playerMap, userId, merchants, playerTurn, lastRound } = this.props;
     return (
       <MuiThemeProvider>
         {
@@ -68,9 +87,16 @@ class AppContainer extends React.Component {
                 lastRound && merchants[playerTurn].number === 0 ?
                 <DisplayWinner
                   merchants={merchants}
+                  playerMap={playerMap}
                 /> : null
               }
             </div>
+            <ChatContainer
+              userId={userId}
+              gameId={gameId}
+              chats={gameChats}
+              userName={playerMap[userId]}
+            />
           </div> : this.renderLoadingScreen()
         }
       </MuiThemeProvider>
@@ -81,7 +107,9 @@ class AppContainer extends React.Component {
 const fbGameWrappedContainer = firebaseConnect(({ gameId }) => ([`games/${gameId}`, `gameLog/${gameId}`]))(AppContainer);
 
 const mapStateToProps = state => ({
+  playerMap: getPlayerMap(state),
   gameId: getGameId(state),
+  gameChats: getGameChats(state),
   userId: getUserId(state),
   merchants: getGameMerchants(state),
   playerTurn: getPlayerTurn(state),
