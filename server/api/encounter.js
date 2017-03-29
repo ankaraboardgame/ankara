@@ -10,7 +10,6 @@ const router = module.exports = require('express').Router();
 /** Game Logging */
 const util = require('../util');
 const log = util.log;
-const getCurrUnixTime = util.getCurrUnixTime;
 
 /**
  * Payment routes
@@ -67,7 +66,7 @@ router.post('/smuggler', (req, res, next) => {
     log(req.game.id, {
       type: 'SMUGGLER_MOVE',
       location: `${val.snapshot.val()}`,
-      timestamp: getCurrUnixTime()
+      timestamp: admin.database.ServerValue.TIMESTAMP
     })
   })
   .catch(next);

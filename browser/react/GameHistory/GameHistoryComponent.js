@@ -48,7 +48,7 @@ class GameHistoryComponent extends Component {
     this.gameLogRef = fbDB.ref(`gameLog/${gameId}`);
     this.gameLogEventHandler = snapshot => {
 
-      if (snapshot.val().timestamp + 2 < this.getCurrUnixTime() ) {
+      if (snapshot.val().timestamp + 2000 < this.getCurrUnixTime() ) {
         return;
       }
       const playerId = snapshot.val().user;
