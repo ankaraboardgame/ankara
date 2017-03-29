@@ -9,10 +9,10 @@ import RulesSideBar from './RulesSideBar';
 import GameHistorySideBar from '../GameHistory/GameHistorySideBar';
 
 /** -------- Selectors --------- */
-import { getUserNumber, getUserWheelbarrow, getUsername } from '../../redux/reducers/user-reducer';
+import { getUserNumber, getUserWheelbarrow, getUsername, getUserAssistants } from '../../redux/reducers/user-reducer';
 
 /** -------- Presentational Component --------- */
-const Footer = ({ playerNum, username, userWheelbarrow }) => {
+const Footer = ({ playerNum, username, userWheelbarrow, assistants }) => {
   const colorMap = { 0: 'red', 1: 'blue', 2: 'green', 3: 'yellow' };
   return (
     <div id="footer-container">
@@ -21,6 +21,8 @@ const Footer = ({ playerNum, username, userWheelbarrow }) => {
         <text id="name">{username}</text>
         <RulesSideBar />
         <GameHistorySideBar />
+        <img className="footer-icons" src="./images/assistants.png" />
+        <div id="notifications"><p>{assistants.count}</p></div>
         <img className="footer-icons" src="./images/cart/fabric.png" />
         <div id="notifications"><p>{userWheelbarrow.fabric}</p></div>
         <img className="footer-icons" src="./images/cart/fruits.png" />
@@ -42,7 +44,8 @@ const Footer = ({ playerNum, username, userWheelbarrow }) => {
 const mapStateToProps = state => ({
   playerNum: getUserNumber(state),
   userWheelbarrow: getUserWheelbarrow(state),
-  username: getUsername(state)
+  username: getUsername(state),
+  assistants: getUserAssistants(state)
 });
 
 export default connect(mapStateToProps)(Footer);
