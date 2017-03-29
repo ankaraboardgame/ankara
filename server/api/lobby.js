@@ -2,25 +2,44 @@
 
 const admin = require('firebase-admin');
 const db = admin.database();
-const sessionRef = db.ref('session');
+const roomsRef = db.ref('rooms');
 
 const express = require('express');
-const router = express.Router();
-module.exports = router;
+const router = module.exports = require('express').Router();
 
-// TODO: send response (res.send)
-router.put('/:userId', function (req, res, next) {
-  const userId = req.playerId;
 
-  //add user to the game
-  db.ref('/session').child('connectedPlayers').once("value", function(data) {
-    console.log('data', data);
-  });
+/************** Lobby Routes **************/
 
-  console.log('adding user', userId, 'to the game'  );
-  const data = {};
-  data[userId] = true;
-  const ref = db.ref(`/session`).child('connectedPlayers');
-  ref.update(data);
+router.post('/create', (req, res, next) => {
+  const { name, creator } = req.body;
+  roomsRef.push({
+    name,
+    creator,
+    createdAt: admin.database.ServerValue.TIMESTAMP
+  })
+  .then(() => res.sendStatus(204))
+  .catch(next);
+});
 
+router.post('/join', (req, res, next) => {
+  const { roomId, userId, name } = req.body;
+  roomsRef.child(roomId).child('users').child(userId)
+    .set(name)
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
+
+router.post('/leave', (req, res, next) => {
+  const { roomId, userId } = req.body;
+  roomsRef.child(roomId).child('users').child(userId)
+    .remove()
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
+
+router.post('/:roomId/delete', (req, res, next) => {
+  console.log('here');
+  roomsRef.child(req.params.roomId).remove()
+    .then(() => res.sendStatus(204))
+    .catch(next);
 });

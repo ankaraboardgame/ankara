@@ -1,6 +1,7 @@
 import React from 'react';
 
 const GameSummary = props => {
+  console.log(props.playerMap)
   return (
     <section id="game-summary">
       <div id="game-summary-header">
@@ -24,7 +25,7 @@ const GameSummary = props => {
                   let merchObj = props.merchants[merchant];
                   return (
                     <tr className="tr-game-summary" key={merchant}>
-                      <td className="td-name">{merchObj.id}</td>
+                      <td className="td-name">{props.playerMap[merchObj.id]}</td>
                       <td className="td-center">{merchObj.wheelbarrow.ruby}</td>
                       <td className="td-center">{merchObj.wheelbarrow.money}</td>
                       <td className="td-center">{merchObj.wheelbarrow.heirloom}</td>
