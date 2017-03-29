@@ -16,10 +16,16 @@ class FruitWarehouse extends React.Component {
   }
 
   handleMaxGoodEndTurn(){
-    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-    actionMaxGood(gameId, playerId, 'fruit')
-      .then(() => handleActionEnd())
-      .catch(console.error);
+
+    if (!this.buttonClicked) {
+      const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+      this.buttonClicked = true;
+      actionMaxGood(gameId, playerId, 'fruit')
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error);
+    }
+
   }
 
   render() {
