@@ -16,7 +16,7 @@ const firebaseAdmin = require('firebase-admin');
  */
 if (process.env.NODE_ENV === 'test') {
 	console.log('running test server...');
-	serviceAccount = {
+	let serviceAccount = {
 		type: process.env.FBTEST_TYPE,
 		project_id: process.env.FBTEST_PROJECT_ID,
 		private_key_id: process.env.FBTEST_PRIVATE_KEY_ID,
@@ -32,7 +32,6 @@ if (process.env.NODE_ENV === 'test') {
 	if(!serviceAccount.private_key) {
 		serviceAccount = require('../tests/secret-firebase-test-server.json');
 	}
-
 	const key = {
 		apiKey: 'AIzaSyBzVhw7ppsPkNKEahvABSl8ojMHqEd5lAg',
 		credential: firebaseAdmin.credential.cert(serviceAccount),
@@ -42,10 +41,6 @@ if (process.env.NODE_ENV === 'test') {
 	firebaseAdmin.initializeApp(key);
 } else {
 	console.log('not running test server...');
-	firebaseAdmin.initializeApp({
-		credential: firebaseAdmin.credential.cert(serviceAccount),
-		databaseURL: 'https://istanbul-aa7c8.firebaseio.com/'
-	});
 }
 
 // process.env - config vars set-up on heroku side
@@ -65,6 +60,11 @@ let serviceAccount = {
 if(!serviceAccount.private_key) {
   serviceAccount = require('../secret.firebase.env');
 }
+
+firebaseAdmin.initializeApp({
+	credential: firebaseAdmin.credential.cert(serviceAccount),
+	databaseURL: 'https://istanbul-aa7c8.firebaseio.com/'
+});
 
 /** Logging Middleware */
 app.use(morgan('dev'));
