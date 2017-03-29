@@ -36,7 +36,7 @@ class TeaHouse extends React.Component {
     const gamble = this.state.gambledNumber;
     setTimeout(() => {
       this.handleTeaHouseEndTurn(gamble, rollSum)
-    }, 2000)
+    }, 1200)
   }
 
   handleTeaHouseEndTurn (gamble, rollSum){
@@ -56,7 +56,8 @@ class TeaHouse extends React.Component {
   }
 
   renderAction() {
-    const { handleActionEnd, handleMoreOptionsClick } = this.props;
+    const { handleActionEnd, handleMoreOptionsClick, abilities } = this.props;
+    const rerollAbility = abilities && abilities.fabric.acquired;
     const gambledNumber = this.state.gambledNumber;
     const ddMenuStyle = {
       backgroundColor: 'white',
@@ -87,7 +88,7 @@ class TeaHouse extends React.Component {
           </DropDownMenu>
           {
             gambledNumber &&
-            <Dice done={this.handleDiceRoll} />
+            <Dice done={this.handleDiceRoll} canReroll={rerollAbility} />
           }
         </div>
         <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd} disabled={this.state.rolled}  />
