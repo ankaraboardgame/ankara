@@ -34,16 +34,14 @@ router.post('/fiveLira', (req, res, next) => {
 
 /**
  * Get one good
- * sample req.params: { selectedGood: 'fruit' }
  */
 router.post('/oneGood/:selectedGood', (req, res, next) => {
   const good = req.params.selectedGood;
   const promiseToUseCard = req.playerRef.child(`wheelbarrow/${good}`)
     .transaction(count => ++count)
 
-  const promiseToDiscard = gamesRef.child(req.game.id)
-    .child(`merchants/${req.player.id}/bonusCards/oneGood`)
-    .transaction(currentOneGoodCard => --currentOneGoodCard)
+  const promiseToDiscard = req.playerRef.child('/bonusCards/oneGood')
+    .transaction(count => --count)
 
   Promise.all([promiseToUseCard, promiseToDiscard])
     .then(() => res.sendStatus(204))

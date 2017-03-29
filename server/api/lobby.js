@@ -38,8 +38,15 @@ router.post('/leave', (req, res, next) => {
 });
 
 router.post('/:roomId/delete', (req, res, next) => {
-  console.log('here');
   roomsRef.child(req.params.roomId).remove()
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
+
+router.post('/:roomId/ready', (req, res, next) => {
+  roomsRef.child(req.params.roomId).child('ready')
+    .child(req.body.userId)
+    .set(true)
     .then(() => res.sendStatus(204))
     .catch(next);
 });
