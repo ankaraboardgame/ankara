@@ -19,10 +19,8 @@ export const loadCurrentUser = () => {
       if (user) {
         dispatch(settingUser(user));
         const userId = getState().user.user.uid;
-        fbDB.ref('users').child(userId).once('value', (snap) => {
-          return snap;
-        }).then(snapshot => {
-          const gameId = snapshot.val();
+        fbDB.ref('users').child(userId).child('game').once('value', function(snap) {
+          const gameId = snap.val();
           dispatch(settingGame(gameId));
         })
       } else {

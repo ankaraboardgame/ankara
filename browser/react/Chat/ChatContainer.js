@@ -66,7 +66,9 @@ class ChatContainer extends React.Component {
       padding: 0,
       margin: 0,
       backgroundColor: this.state.unread ? 'salmon' : 'wheat',
-      display: 'inline-block'
+      display: 'inline-block',
+      borderTopLeftRadius: 15,
+      borderTopRightRadius: 15
     };
 
     return (

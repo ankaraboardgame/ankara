@@ -21,10 +21,13 @@ export const Room = props => {
   } = props;
 
   const paperStyle = {
-    width: 500,
+    backgroundImage: 'url("images/splash-menu.png")',
+    backgroundSize: '100% 100%',
+    width: 400,
+    height: 500,
     padding: 20,
     margin: 20,
-    backgroundColor: '#DABE96',
+    backgroundColor: 'transparent',
     textAlign: 'center',
     display: 'inline-block'
   };
@@ -36,64 +39,60 @@ export const Room = props => {
   }
 
   return (
-      <Card style={paperStyle} zDepth={2}>
+    <Paper style={paperStyle} zDepth={0}>
 
-        <div
-          style={deleteStyle}
-          onClick={(evt) => {handleDeleteRoom(evt, roomId)}}>
-          <Delete />
-        </div>
+      <h4 style={{fontWeight: 'bold', textAlign: 'center'}}>
+        {roomData.name}
+      </h4>
 
-        <CardHeader
-          title={roomData.name}
-          style={{fontWeight: 'bold', textAlign: 'center'}}
-          actAsExpander={true}
-          showExpandableButton={true}
-        />
-
-        <CardText expandable={true}>
+      {
+        roomData.users &&
+        <List style={{textAlign: 'center'}}>
           {
-            roomData.users &&
-            <List style={{textAlign: 'center'}}>
-              {
-                Object.keys(roomData.users).map(uid => {
-                  return (
-                    <ListItem
-                      key={ uid }
-                      onClick={(evt) => handleLeaveRoom(evt, roomId, uid)}
-                      rightIcon={ <HighlightOff /> }>
-                      { roomData.users[uid] }
-                    </ListItem>
-                  );
-                })
-              }
-            </List>
+            Object.keys(roomData.users).map(uid => {
+              return (
+                <ListItem
+                  key={ uid }
+                  onClick={(evt) => handleLeaveRoom(evt, roomId, uid)}
+                  rightIcon={ <HighlightOff /> }>
+                  { roomData.users[uid] }
+                </ListItem>
+              );
+            })
           }
-          <CardActions>
-            <form onSubmit={(evt) => {handleJoinRoom(evt, roomId, userId)}}>
-              <TextField
-                hintText="Enter nickname"
-                style={{marginLeft: 20}}
-                disabled={!!joined}
-              />
-              <RaisedButton type="submit" disabled={!!joined}>
-                JOIN
-              </RaisedButton>
-            </form>
+        </List>
+      }
 
-            <RaisedButton
-              secondary={true}
-              style={{margin: 15}}
-              onTouchTap={(evt) => handleReady(evt, roomId, roomData.users)}
-              disabled={!(joined === roomId)}>
-              READY
-            </RaisedButton>
-            {
-              props.ready && props.roomId === props.joined &&
-              <p>Waiting for { Object.keys(roomData.users).length - Object.keys(roomData.ready).length } to be ready...</p>
-            }
-          </CardActions>
-        </CardText>
-      </Card>
+      <form onSubmit={(evt) => {handleJoinRoom(evt, roomId, userId)}}>
+        <TextField
+          hintText="Enter nickname"
+          style={{marginLeft: 20}}
+          disabled={!!joined}
+        />
+        <RaisedButton type="submit" disabled={!!joined}>
+          JOIN
+        </RaisedButton>
+      </form>
+
+      <RaisedButton
+        secondary={true}
+        style={{margin: 15}}
+        onTouchTap={(evt) => handleReady(evt, roomId, roomData.users)}
+        disabled={!(joined === roomId)}>
+        READY
+      </RaisedButton>
+      {
+        props.ready && props.roomId === props.joined &&
+        <p>Waiting for { Object.keys(roomData.users).length - Object.keys(roomData.ready).length } to be ready...</p>
+      }
+
+      <br />
+      <div
+        style={deleteStyle}
+        onClick={(evt) => {handleDeleteRoom(evt, roomId)}}>
+        <Delete />
+      </div>
+
+    </Paper>
   )
 }
