@@ -8,6 +8,8 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 
 import { postGameChat } from '../../routes/chat.js';
 
+import GameHistoryComponent from '../GameHistory/GameHistoryComponent';
+
 /************ Container ****************/
 
 class ChatContainer extends React.Component {
@@ -24,11 +26,6 @@ class ChatContainer extends React.Component {
     this.handleExpandChange = this.handleExpandChange.bind(this);
     this.handleTextField = this.handleTextField.bind(this);
     this.handlePostMessage = this.handlePostMessage.bind(this);
-    this.handleToggle = this.handleToggle.bind(this);
-  }
-
-  handleToggle (){
-    this.setState({ expanded: !this.state.expanded});
   }
 
   handleExpandChange (expanded) {
@@ -67,7 +64,7 @@ class ChatContainer extends React.Component {
   render() {
     const { userId, chats, userName } = this.props;
 
-    const chatStyle = {
+    const cardStyle = {
       width: 350,
       padding: 0,
       margin: 0,
@@ -79,17 +76,16 @@ class ChatContainer extends React.Component {
 
     return (
         <div className="chat-container">
-          <Card style={ chatStyle } expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+          <Card style={ cardStyle } expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
             <CardHeader
               title={`Chat (${userName})`}
               actAsExpander={true}
               showExpandableButton={true}
-              onClick={this.handleToggle}
             />
 
             <CardText expandable={true}>
               <Tabs>
-                <Tab label="Chat" onClick={this.handleToggle}>
+                <Tab label="Chat" style={{backgroundColor: '#555'}}>
 
                   <div className="chat-log">
                     <ul className="chat-list">
@@ -123,16 +119,13 @@ class ChatContainer extends React.Component {
                   </form>
 
                 </Tab>
-                <Tab label="Game log">
 
-                  <CardText expandable={true}>
-
-                    <div className="game-log">
-                      game log goes here
-                    </div>
-
-                  </CardText>
+                <Tab label="Game log" style={{backgroundColor: '#555'}}>
+                  <div className="chat-log">
+                    <GameHistoryComponent />
+                  </div>
                 </Tab>
+
               </Tabs>
             </CardText>
           </Card>
