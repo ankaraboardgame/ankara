@@ -51,6 +51,11 @@ class MosqueTiles extends Component {
         });
         break;
       case 'dieTurnOrRoll':
+        return this.setState({
+          addText: 'After you roll dice at the Tea House or Black Market, you can roll again if you wish.',
+          assistantReturn: false,
+          selectTileGood: false
+        })
         break;
       case '2LiraFor1Good':
         return this.setState({
