@@ -18,7 +18,14 @@ class TitlePageContainer extends React.Component {
       displayLinks: false,
     }
 
+    this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
+  }
+
+  handleMouseMove(event){
+    this.setState({
+      mouseX: event.pageX
+    })
   }
 
   handleOnClick(link) {
@@ -35,24 +42,44 @@ class TitlePageContainer extends React.Component {
   }
 
   render() {
+    const { mouseX, displayAbout, displayGameRules, displayLinks } = this.state;
+    const parallax = [
+      {
+        background: 'url("images/splash_bg_3a.png") no-repeat center center',
+        left: 0 + (900 - mouseX) / 100,
+        zIndex: -10
+      },
+      {
+        background: 'url("images/splash_bg_2a.png") no-repeat center center',
+        left: 0 + (900 - mouseX - 900) / 200,
+        zIndex: -3
+      }
+    ]
+
     return (
       <div id="splash-page">
-        <div id="splash-title">
-          <img src={`images/Ankara-Title.png`} style={{width: '100%'}}/>
+        <div className="parallax">
+          <div className="parallax-bg" style={parallax[0]} />
+          <div className="parallax-bg" style={parallax[1]} />
         </div>
-        <div id="splash-menu">
-          {
-            !this.state.displayAbout && !this.state.displayGameRules && !this.state.displayLinks && this.renderMenu()
-          }
-          {
-            this.state.displayAbout && <AboutUs handleOnClick={this.handleOnClick} />
-          }
-          {
-            this.state.displayGameRules && <GameDetails handleOnClick={this.handleOnClick} />
-          }
-          {
-            this.state.displayLinks && <ProjectLink handleOnClick={this.handleOnClick} />
-          }
+        <div id="background-fixed" onMouseMove={this.handleMouseMove}>
+          <div id="splash-title">
+            <img src={'images/Ankara-Title.png'} style={{width: '100%'}}/>
+          </div>
+          <div id="splash-menu">
+            {
+              !displayAbout && !displayGameRules && !displayLinks && this.renderMenu()
+            }
+            {
+              displayAbout && <AboutUs handleOnClick={this.handleOnClick} />
+            }
+            {
+              displayGameRules && <GameDetails handleOnClick={this.handleOnClick} />
+            }
+            {
+              displayLinks && <ProjectLink handleOnClick={this.handleOnClick} />
+            }
+          </div>
         </div>
       </div>
     );

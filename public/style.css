@@ -48,6 +48,7 @@ p {
 }
 
 /* ------- SPLASH PAGE ----- */
+
 #splash-page {
   position: absolute;
   top: 0;
@@ -55,15 +56,41 @@ p {
   right: 0;
   bottom: 0;
   width: 100%;
-  background: url('images/splash-background.jpg') no-repeat center center fixed;
-  background-size: cover;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
+}
+
+#background-fixed {
+  width: 100%;
+  background: url('images/splash_bg_1.png') no-repeat center center;
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  position: fixed;
+  z-index: 10;
+  flex-direction: column;
+  align-items: center;
+}
+
+.parallax {
+  overflow: hidden;
+  width: 100%;
+  height: 0;
+}
+
+.parallax-bg {
+  background-size: 120%;
+  z-index: -1;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 #splash-title {
+  z-index: 100;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -72,6 +99,7 @@ p {
 }
 
 #splash-menu {
+  z-index: 100;
   display: flex;
   min-height: 300px;
   min-width: 300px;
