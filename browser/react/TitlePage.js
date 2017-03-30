@@ -92,16 +92,16 @@ class TitlePage extends React.Component {
       >
         <div className="menu-items-container">
           <div className="menu-items" style={{paddingTop: '10px'}}>
-            <text onClick={() => {this.handleOnClick('about')}} className="menu-text">The Creators</text>
+            <text onClick={() => {this.handleOnClick('about')}} className="splash-text">The Creators</text>
           </div>
           <div className="menu-items">
-            <text onClick={() => {this.handleOnClick('rules')}} className="menu-text">Game Details</text>
+            <text onClick={() => {this.handleOnClick('rules')}} className="splash-text">Game Details</text>
           </div>
           <div className="menu-items">
-            <Link to="/lobby" style={{textDecoration: 'none', color: 'black'}} className="menu-text">Enter Game</Link>
+            <Link to="/lobby" style={{textDecoration: 'none', color: 'black'}} className="splash-text">Enter Game</Link>
           </div>
           <div className="menu-items">
-            <text onClick={() => {this.handleOnClick('links')}} className="menu-text">The Project</text>
+            <text onClick={() => {this.handleOnClick('links')}} className="splash-text">The Project</text>
           </div>
         </div>
       </ReactCSSTransitionGroup>
@@ -122,13 +122,13 @@ class TitlePage extends React.Component {
       >
         <div className="menu-items-container">
           <div className="menu-items" style={{paddingTop: '10px'}}>
-            <text className="menu-text">The Creators</text>
+            <text className="splash-text">The Creators</text>
           </div>
           <div className="menu-item-info">
             <text style={{margin: '10px 30px 10px 30px'}}>Our team consisted of Maria Xia, Sokmean Nou, Jaekwang Seo, and Daniel Park. We are very smart, very very very smart, super duper smart, and super capable software engineers.</text>
           </div>
           <div style={backStyle} className="menu-items">
-            <text onClick={() => {this.handleOnClick()}} className="menu-text">Go Back</text>
+            <text onClick={() => {this.handleOnClick()}} className="splash-text">Go Back</text>
           </div>
         </div>
       </ReactCSSTransitionGroup>
@@ -156,7 +156,7 @@ class TitlePage extends React.Component {
       >
         <div className="menu-items-container">
           <div className="menu-items" style={{paddingTop: '10px'}}>
-            <text className="menu-text">Game Details</text>
+            <text className="splash-text">Game Details</text>
           </div>
           <div className="menu-item-info">
             <text style={{margin: '10px 30px 10px 30px'}}>In the hustle and bustle of the bazaar district of Ankara, you are a merchant. You and your assistants must compete against other competitors for riches. Good organization is key: your wheelbarrow has to be filled with goods at the warehouses and traded for money to buy the rubies. Your goal as the merchant is to be the first to collect a five rubies!</text>
@@ -165,7 +165,7 @@ class TitlePage extends React.Component {
             <a style={{textDecoration: 'none', color: 'black'}}href="http://www.pegasus.de/fileadmin/_downloads/regeln/englisch/Istanbul_-_Anleitung_gb.pdf">PDF to Game Rules</a>
           </div>
           <div style={backStyle} className="menu-items">
-            <text onClick={() => {this.handleOnClick()}} className="menu-text">Go Back</text>
+            <text onClick={() => {this.handleOnClick()}} className="splash-text">Go Back</text>
           </div>
         </div>
       </ReactCSSTransitionGroup>
@@ -186,7 +186,7 @@ class TitlePage extends React.Component {
       >
         <div className="menu-items-container">
           <div className="menu-items" style={{paddingTop: '10px'}}>
-            <text className="menu-text">The Project</text>
+            <text className="splash-text">The Project</text>
           </div>
           <div className="menu-item-info">
             <a href="https://github.com/ankaraboardgame/ankara" target="_blank" style={{display: 'flex', flexDirection: 'column', textDecoration: 'none', color: 'black'}}>
@@ -197,13 +197,13 @@ class TitlePage extends React.Component {
             </a>
           </div>
           <div style={backStyle} className="menu-items">
-            <text onClick={() => {this.handleOnClick()}} className="menu-text">Go Back</text>
+            <text onClick={() => {this.handleOnClick()}} className="splash-text">Go Back</text>
           </div>
         </div>
       </ReactCSSTransitionGroup>
     );
   }
-  
+
 };
 
 export default TitlePage;

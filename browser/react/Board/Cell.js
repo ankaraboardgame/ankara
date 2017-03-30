@@ -51,7 +51,6 @@ function renderOtherTiles({ name, coords, handleOnClick }) {
       onClick={handleOnClick}
     >
       <img src={`images/locations/${name}.jpg`} className="img-location"/>
-      <text className="cell-text">{coords}</text>
     </div>
   );
 }
@@ -71,7 +70,6 @@ function renderGemstoneDealerTile({ gemstoneDealerData, coords, handleOnClick })
       onClick={handleOnClick}
     >
       <img src={`images/locations/gemstone_dealer_${gemstoneDealerData}.png`} className="img-location" />
-      <text className="cell-text">{coords}</text>
     </div>
   );
 }
@@ -94,7 +92,6 @@ function renderLargeMarketTiles({ handleOnClick, coords, largeMarketData }) {
         onClick={handleOnClick}
       >
         <img src={`images/market/large/${currentDemandTile.img}`} className="img-location"/>
-        <text className="cell-text">{coords}</text>
     </div>
   );
 }
@@ -117,7 +114,6 @@ function renderSmallMarketTiles({ handleOnClick, coords, smallMarketData }) {
       onClick={handleOnClick}
     >
       <img src={`images/market/small/${currentDemandTile.img}`} className="img-location"/>
-      <text className="cell-text">{coords}</text>
     </div>
   );
 }
@@ -135,7 +131,6 @@ function renderGreatMosqueTiles({ handleOnClick, coords, greatMosqueData }){
       onClick={handleOnClick}
     >
       <img src={`images/mosque/great/greatMosque_${tile1}_${tile2}.jpg`} className="img-location"/>
-      <text className="cell-text">{coords}</text>
     </div>
   );
 }
@@ -153,7 +148,6 @@ function renderSmallMosqueTiles({ handleOnClick, coords, smallMosqueData }){
       onClick={handleOnClick}
     >
       <img src={`images/mosque/small/smallMosque_${tile1}_${tile2}.jpg`} className="img-location"/>
-      <text className="cell-text">{coords}</text>
     </div>
   );
 }

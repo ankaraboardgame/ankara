@@ -33,10 +33,6 @@ class GameHistorySideBar extends Component {
     const { userId, playerMap, gameId, historyRef } = this.props;
     return (
       <div>
-        <RaisedButton
-          label="Game Log"
-          secondary={ true }
-          onTouchTap={this.handleToggle} />
         <Drawer
           width={350}
           openSecondary={true}
