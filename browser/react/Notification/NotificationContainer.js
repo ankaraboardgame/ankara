@@ -5,46 +5,41 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { fbDB } from '../../firebase';
 
+import { toast } from 'react-toastify';
+
 /** -------- Selectors ---------- */
-import { getGameId, getPlayerMap, getGameLogData } from '../../redux/reducers/game-reducer';
+import { getGameId, getPlayerMap } from '../../redux/reducers/game-reducer';
 import { getUserId } from '../../redux/reducers/user-reducer';
 import { getBoard } from '../../redux/reducers/board-reducer';
 
 /** LOG TYPES */
 import { LOGTYPE, LOCATION_NAME } from '../../utils/log'
 
-class GameHistoryComponent extends Component {
+class NotificationContainer extends Component {
 
-  constructor(props) {
+  constructor(props){
     super(props)
-    this.state = {
-      open: false,
-      logs: []
-    }
-    this.scrollToBottom = this.scrollToBottom.bind(this);
+
   }
 
-  scrollToBottom() {
-      const node = ReactDOM.findDOMNode(this.messagesEnd);
-      node.scrollIntoView({behavior: "smooth"});
+  getCurrUnixTime() {
+    return Math.floor((new Date().getTime()));
   }
 
-  formatLog(gameLog) {
+  componentDidMount() {
 
     const { gameId, userId, playerMap, board } = this.props;
-    const gameLogArray = Object.keys(gameLog)
-    .map(key => {
-      return gameLog[key];
-    }).sort((a, b) => {
-      return a.timestamp - b.timestamp;
-    });
 
-    const logMessages = gameLogArray.map(el => {
+    this.gameLogRef = fbDB.ref(`gameLog/${gameId}`);
+    this.gameLogEventHandler = snapshot => {
 
-      const playerId = el.user;
-      const type = el.type;
-      const location = el.location;
-
+      // If the log is older than 2 seconds ignore.
+      if (snapshot.val().timestamp + 2000 < this.getCurrUnixTime() ) {
+        return;
+      }
+      const playerId = snapshot.val().user;
+      const type = snapshot.val().type;
+      const location = snapshot.val().location;
       // Get coordinates from string
       const coords = location && location.split(',').map(str => Number(str));
       // Get Location name from coordinates
@@ -80,36 +75,22 @@ class GameHistoryComponent extends Component {
           break;
       }
 
-      return message;
+      if ( message && message.trim() !== '') {
+        toast(message, { type: toast.TYPE.INFO });
+      }
 
-    })
-
-    return logMessages;
-
+    };
+    this.gameLogRef.on('child_added', this.gameLogEventHandler);
 
   }
 
-  componentDidUpdate() {
-    this.scrollToBottom();
+  componentWillUnMount() {
+    this.gameLogRef.off('child_added', this.gameLogEventHandler);
   }
 
   render() {
-    const { gameLog } = this.props;
 
-    const logMessages = this.formatLog(gameLog);
-
-    return (
-      <div style={{margin: 0, padding: 0}}>
-        <ul className="gamelog-list">
-        {
-          logMessages && logMessages.map((log, index) => {
-            return (<li key={index}>{log}</li>);
-          })
-        }
-        </ul>
-        <div style={ {float: 'left', clear: 'both'} } ref={(el) => { this.messagesEnd = el; }} />
-      </div>
-    );
+    return null;
   }
 }
 
@@ -118,7 +99,6 @@ const mapStateToProps = (state) => ({
   userId: getUserId(state),
   playerMap: getPlayerMap(state),
   board: getBoard(state),
-  gameLog: getGameLogData(state)
 });
 
-export default connect(mapStateToProps)(GameHistoryComponent);
+export default connect(mapStateToProps)(NotificationContainer);

@@ -5,7 +5,6 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 import { Wheelbarrow, Fruits, Fabric, Spices, Heirlooms, Money, Ruby } from './FooterComponents'
 import RulesSideBar from './RulesSideBar';
-import GameHistorySideBar from '../GameHistory/GameHistorySideBar';
 import BonusCardsMosqueTiles from './BonusCards&MosqueTiles';
 
 const Footer = ({ wheelbarrow, gameData, userId }) => {
@@ -17,7 +16,6 @@ const Footer = ({ wheelbarrow, gameData, userId }) => {
         <img src={`images/player/${colorMap[playerNum]}player.png`} className="player-icon" />
         <p id="name">{gameData.playerMap[userId]}</p>
         <RulesSideBar />
-        <GameHistorySideBar />
         <img className="footer-icons" src="./images/cart/fabric.png" />
         <div id="notifications"><p>{wheelbarrow.fabric}</p></div>
         <img className="footer-icons" src="./images/cart/fruits.png" />

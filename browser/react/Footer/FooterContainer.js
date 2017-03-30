@@ -6,7 +6,8 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 import { Wheelbarrow, Fruits, Fabric, Spices, Heirlooms, Money, Ruby } from './FooterComponents'
 import RulesSideBar from './RulesSideBar';
-import GameHistorySideBar from '../GameHistory/GameHistorySideBar';
+import { ToastContainer } from 'react-toastify';
+import NotificationContainer from '../Notification/NotificationContainer';
 
 /** -------- Selectors --------- */
 import { getUserNumber, getUserWheelbarrow, getUsername, getUserAssistants } from '../../redux/reducers/user-reducer';
@@ -20,9 +21,12 @@ const Footer = ({ playerNum, username, userWheelbarrow, assistants }) => {
         <img src={`images/player/${colorMap[playerNum]}player.png`} className="player-icon" />
         <text id="name">{username}</text>
         <RulesSideBar />
-        <GameHistorySideBar />
+        <NotificationContainer />
+        <ToastContainer autoClose={2500} position="top-right"/>
         <img className="footer-icons" src="./images/assistants.png" />
         <div id="notifications"><p>{assistants.count}</p></div>
+        <img className="footer-icons" src="./images/cart/wheelbarrow.png" />
+        <div id="notifications"><p>{userWheelbarrow.size}</p></div>
         <img className="footer-icons" src="./images/cart/fabric.png" />
         <div id="notifications"><p>{userWheelbarrow.fabric}</p></div>
         <img className="footer-icons" src="./images/cart/fruits.png" />

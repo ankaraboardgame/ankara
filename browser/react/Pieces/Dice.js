@@ -26,6 +26,7 @@ export default class Dice extends React.Component {
       this.rollButtonClicked = true;
       this.setState({rolled: true});
       this.reactDice.rollAll();
+      this.rollButtonClicked = false;
     }
   }
 
