@@ -52,7 +52,7 @@ class GemstoneDealer extends React.Component {
     return (
       <div id="turn-dialog-half">
         <div id="text-box">
-          <p>All the gems that money can buy. Current price: {gemPrice} lira.</p>
+          <text>All the gems that money can buy. Current price: {gemPrice} lira.</text>
         </div>
           <div id="market-row">
             <RaisedButton

@@ -4,7 +4,7 @@ import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
-import { Wheelbarrow, Fruits, Fabric, Spices, Heirlooms, Money, Ruby } from './FooterComponents'
+/** -------- Imported components -------- */
 import RulesSideBar from './RulesSideBar';
 import GameHistorySideBar from '../GameHistory/GameHistorySideBar';
 
@@ -38,7 +38,7 @@ const Footer = ({ playerNum, username, userWheelbarrow, assistants }) => {
       </div>
     </div>
   )
-}
+};
 
 /** -------- Container Component ---------- */
 const mapStateToProps = state => ({

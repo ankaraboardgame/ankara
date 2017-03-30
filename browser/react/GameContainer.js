@@ -10,7 +10,7 @@ import ModalRootContainer from './Modal/ModalRootContainer';
 import ChatContainer from './Chat/ChatContainer.js';
 import PlayerButtonsContainer from './PlayerMenu/PlayerButtonsContainer';
 
-import DisplayWinner from './EndGame/DisplayWinner';
+import DisplayWinnerContainer from './EndGame/DisplayWinnerContainer';
 import LastTurn from './EndGame/LastTurn';
 
 /** -------- Material-UI Plugins -------- */
@@ -20,8 +20,8 @@ injectTapEventPlugin();
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 /** ----------- Selectors ----------- */
-import { getGameMerchants, getPlayerTurn, getLastRound, getGameLogData } from '../redux/reducers/game-reducer';
 import { getUserId } from '../redux/reducers/user-reducer';
+import { getGameMerchants } from '../redux/reducers/game-reducer';
 
 /** ------ Animation Styles -------- */
 const animateStyles = StyleSheet.create({
@@ -38,23 +38,21 @@ class GameContainer extends React.Component {
   }
 
   render() {
-    const { userId, merchants, playerTurn, lastRound } = this.props;
+    const { userId, merchants } = this.props;
+
     return (
       <MuiThemeProvider>
         {
-          merchants && userId ?
+          userId && merchants ?
           <div id="game-container">
             <PlayerButtonsContainer />
-            { lastRound ? <LastTurn /> : null }
+            <LastTurn />
             <div id="app-container">
               <img className={css(animateStyles.fadeInDown)} src={`images/Ankara-Title.png`} id="game-title" />
               <BoardContainer />
               <FooterContainer />
               <ModalRootContainer />
-              {
-                lastRound && merchants[playerTurn].number === 0 ?
-                <DisplayWinner /> : null
-              }
+              <DisplayWinnerContainer />
             </div>
             <ChatContainer />
           </div> : this.renderLoadingScreen()
@@ -76,9 +74,7 @@ class GameContainer extends React.Component {
 /** -------- Higher order component -------- */
 const mapStateToProps = state => ({
   userId: getUserId(state),
-  merchants: getGameMerchants(state),
-  playerTurn: getPlayerTurn(state),
-  lastRound: getLastRound(state)
+  merchants: getGameMerchants(state)
 });
 
 export default connect(mapStateToProps)(GameContainer);

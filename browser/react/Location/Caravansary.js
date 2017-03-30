@@ -43,7 +43,7 @@ class Caravansary extends React.Component {
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
-          <p>You just drew a bonus card!</p>
+          <text>You just drew a bonus card!</text>
         </div>
         <div>
           <img src={`images/bonus_cards/${bonusCard.img}`} />

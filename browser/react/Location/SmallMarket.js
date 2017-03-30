@@ -82,7 +82,7 @@ class SmallMarket extends React.Component {
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
-          <p>Select the goods you would like to trade for money!</p>
+          <text>Select the goods you would like to trade for money!</text>
         </div>
         <div id="market-row">
           <img id="fabric" src="./images/cart/fabric.png" onTouchTap={this.handleGoodClick} /><p>{this.state.fabric}</p>

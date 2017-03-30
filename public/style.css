@@ -14,7 +14,7 @@ html body {
 }
 
 #text-box {
-  margin: 20px 40px 10px 40px;
+  padding: 20px 40px 10px 40px;
 }
 
 text {
@@ -289,9 +289,9 @@ img.bonusCards {
 }
 
 #player-info-row {
-  -webkit-box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
-  -moz-box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
-  box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
   background-image: url('images/splash-menu.png');
   background-size: 100% 100%;
   display: flex;
@@ -684,7 +684,7 @@ ul.gamelog-list {
   position: relative;
   width: 80%;
   height: auto;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
 }
 
 #row-container {
@@ -787,6 +787,7 @@ footer .badge {
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  height: 40px;
 }
 
 #new-footer {
@@ -798,7 +799,7 @@ footer .badge {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   width: auto;
-  padding: 10px 30px 10px 30px;
+  padding: 10px 30px 30px 30px;
 }
 
 #new-footer p {
@@ -839,7 +840,7 @@ footer .badge {
 .footer-icons {
   border-radius: 20%;
   margin-left: 20px;
-  height: 40px;
+  height: 37px;
   float: left;
 }
 

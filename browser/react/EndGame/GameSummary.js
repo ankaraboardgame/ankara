@@ -9,6 +9,7 @@ const animateStyles = StyleSheet.create({
   }
 });
 
+/** -------- Component -------- */
 const GameSummary = ({merchants, playerMap}) => {
   return (
     <div className={css(animateStyles.fadeIn)} id="game-summary">

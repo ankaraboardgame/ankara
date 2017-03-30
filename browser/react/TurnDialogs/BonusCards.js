@@ -65,7 +65,7 @@ class BonusCards extends Component {
         <div id="text-box">
           <div id="options">
             <div>
-              <p>Select the card you want to play.<br /><br />You have {`${userBonusCards.oneGood}`} Goods cards and {`${userBonusCards.fiveLira}`} Lira cards.</p>
+              <text>Select the card you want to play.<br /><br />You have {`${userBonusCards.oneGood}`} Goods cards and {`${userBonusCards.fiveLira}`} Lira cards.</text>
               <div id="bonus-row">
                 <div>
                   <img src="./images/bonus_cards/one-good.png" onTouchTap={() => this.handleBonusOneGoodClick(userBonusCards.oneGood)} />

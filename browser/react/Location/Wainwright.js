@@ -56,7 +56,7 @@ class Wainwright extends React.Component {
           userWheelbarrow.money < 7 && !extBought ?
             <div>
               <div id="text-box">
-                <p>Sorry, you do not have enough money at this time. End your turn.</p>
+                <text>Sorry, you do not have enough money at this time. End your turn.</text>
               </div>
               <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(MORE_OPTIONS)} />
               <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
@@ -64,7 +64,7 @@ class Wainwright extends React.Component {
             : userWheelbarrow.size === 4 ?
             <div>
               <div id="text-box">
-                <p>You have a wheelbarrow size of 4. You can buy one more extension, and earn a ruby!</p>
+                <text>You have a wheelbarrow size of 4. You can buy one more extension, and earn a ruby!</text>
               </div>
               <div id="market-row">
                 <RaisedButton label="Buy an extension" style={style} primary={true} disabled={extBought} onTouchTap={this.handleBuyExtensionEarnRuby}  />
@@ -77,7 +77,7 @@ class Wainwright extends React.Component {
               <div id="text-box">
                 {
                   !extBought &&
-                  <p>You already have the largest size of wheelbarrow.</p>
+                  <text>You already have the largest size of wheelbarrow.</text>
                 }
               </div>
               <div id="market-row">
@@ -88,7 +88,7 @@ class Wainwright extends React.Component {
             :
             <div>
               <div id="text-box">
-                <p>Buy a wheelbarrow extension for 7 Lira.<br /> Get a ruby when your wheelbarrow size is 5.</p>
+                <text>Buy a wheelbarrow extension for 7 Lira.<br /> Get a ruby when your wheelbarrow size is 5.</text>
               </div>
               <div id="market-row">
                 <RaisedButton label="Buy an extension" style={style} primary={true} disabled={extBought} onTouchTap={this.handleBuyExtension}  />

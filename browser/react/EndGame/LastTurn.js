@@ -10,6 +10,9 @@ import Modal from '../Modal/Modal';
 /** ------ Action creators ------- */
 import { hideModal } from '../../redux/action-creators/modals';
 
+/** ------ Selectors --------- */
+import { getLastRound } from '../../redux/reducers/game-reducer';
+
 /** ------ Animation Styles -------- */
 const animateStyles = StyleSheet.create({
   bounceInLeft: {
@@ -19,12 +22,22 @@ const animateStyles = StyleSheet.create({
 });
 
 /** ------- Component -------- */
-const LastTurn = props => {
-  return (
-    <div className={css(animateStyles.bounceInLeft)} id="last-round-container">
-      <img src="images/last-round.png" style={{width: '250px'}} />
-    </div>
-  );
+const LastTurn = ({ lastRound }) => {
+  if (lastRound) {
+    return (
+      <div className={css(animateStyles.bounceInLeft)} id="last-round-container">
+        <img src="images/last-round.png" style={{width: '250px'}} />
+      </div>
+    );
+  } else { 
+    return null;
+  }
 };
 
-export default LastTurn;
+
+/** ------- Higher order component ------- */
+const mapStateToProps = state => ({
+  lastRound: getLastRound(state)
+});
+
+export default connect(mapStateToProps)(LastTurn);

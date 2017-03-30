@@ -35,7 +35,7 @@ class MoreOptions extends React.Component {
           {
             !userBonusCards.oneGood && !userBonusCards.fiveLira && !abilityCount ?
             <div>
-              <p>You do not have any bonus cards or mosque tiles.</p>
+              <text>You do not have any bonus cards or mosque tiles.</text>
               <RaisedButton label="Go back"
                 style={{ margin: 12 }}
                 primary={true}
