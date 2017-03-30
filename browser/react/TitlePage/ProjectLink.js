@@ -5,6 +5,7 @@ const ProjectLink = ({handleOnClick}) => {
   const backStyle = {
     borderTop: '1px solid darkslategrey'
   };
+
   return (
     <ReactCSSTransitionGroup
       transitionName="menu-anim"

@@ -16,24 +16,27 @@ class GreatMosque extends React.Component {
   }
 
   handleBuyGreatMosqueTile(selectedTile, goodRequired){
-    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-    actionBuyMosqueTile(gameId, playerId, 'greatMosque', selectedTile, goodRequired)
-      .then(() => {
-        if(selectedTile === 'heirloom'){
-          tileAdd1Assistant(gameId, playerId)
-        }
-      })
-      .then(() => handleActionEnd())
-      .catch(console.error)
+    if (!this.buttonClicked) {
+      this.buttonClicked = true;
+      const { gameId, playerId, handleActionEnd } = this.props;
+      actionBuyMosqueTile(gameId, playerId, 'greatMosque', selectedTile, goodRequired)
+        .then(() => {
+          if(selectedTile === 'heirloom'){
+            tileAdd1Assistant(gameId, playerId)
+          }
+        })
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error)
+    }
   }
 
   render() {
     const { greatMosqueData } = this.props;
-    const tile1 = greatMosqueData.heirloom;
-    const tile2 = greatMosqueData.fruit;
+
     return (
       <div>
-        <img src={`images/mosque/great/greatMosque_${tile1}_${tile2}.jpg`} id="img-location" />
+        <img src={`images/mosque/great/greatMosque_${greatMosqueData.heirloom}_${greatMosqueData.fruit}.jpg`} id="img-location" />
         { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
       </div>
     );
@@ -84,11 +87,11 @@ class GreatMosque extends React.Component {
               }
             </div>
           </div>
-        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
       </div>
     );
   }
-}
+};
 
 export default GreatMosque;

@@ -22,19 +22,16 @@ class TitlePageContainer extends React.Component {
   }
 
   handleOnClick(link) {
-    if (link === 'about') {
-      this.setState({displayAbout: true});
-    } else if (link === 'rules') {
-      this.setState({displayGameRules: true});
-    } else if (link === 'links') {
-      this.setState({displayLinks: true});
-    } else {
-      this.setState({
+    switch(link) {
+      case 'about': return this.setState({displayAbout: true});
+      case 'rules': return this.setState({displayGameRules: true});
+      case 'links': return this.setState({displayLinks: true});
+      default:      return this.setState({
         displayAbout: false,
         displayGameRules: false,
         displayLinks: false
-      })
-    }
+      });
+    };
   }
 
   render() {

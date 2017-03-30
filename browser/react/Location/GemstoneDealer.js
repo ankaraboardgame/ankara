@@ -16,7 +16,6 @@ class GemstoneDealer extends React.Component {
     };
 
     this.handleBuyGem = this.handleBuyGem.bind(this);
-
   }
 
   componentDidMount (){
@@ -24,46 +23,51 @@ class GemstoneDealer extends React.Component {
   }
 
   handleBuyGem(){
-    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-    actionBuyRuby(gameId, playerId)
-      .then(() => handleActionEnd())
-      .catch(console.error);
+    if (!this.buttonClicked) {
+      this.buttonClicked = true;
+      const { gameId, playerId, handleActionEnd } = this.props;
+      actionBuyRuby(gameId, playerId)
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error);
+    }
   }
 
   render() {
-    const price = this.state.gemPrice;
+    const { gemPrice } = this.state;
+
     return (
       <div>
-        <img src={`images/locations/gemstone_dealer_${price}.png`} id="img-location" />
+        <img src={`images/locations/gemstone_dealer_${gemPrice}.png`} id="img-location" />
         { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
       </div>
     );
   }
 
   renderAction() {
-    const price = this.state.gemPrice;
+    const { gemPrice } = this.state;
     const { userMoney, handleActionEnd, handleMoreOptionsClick } = this.props;
     const style = { margin: 12 };
 
     return (
       <div id="turn-dialog-half">
         <div id="text-box">
-          <p>All the gems that money can buy. Current price: {price} lira.</p>
+          <p>All the gems that money can buy. Current price: {gemPrice} lira.</p>
         </div>
           <div id="market-row">
             <RaisedButton
-              label={`BUY GEM FOR ${price} LIRA`}
+              label={`BUY GEM FOR ${gemPrice} LIRA`}
               style={{ margin: 12 }}
               primary={true}
               onTouchTap={this.handleBuyGem}
-              disabled={userMoney < price}
-            />
+              disabled={userMoney < gemPrice}
+            /> 
             <RaisedButton label="No thanks, I'll end my turn" style={style} primary={true} onTouchTap={handleActionEnd} />
           </div>
           <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
       </div>
     );
   }
-}
+};
 
 export default GemstoneDealer;

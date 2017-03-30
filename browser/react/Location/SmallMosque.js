@@ -12,23 +12,25 @@ class SmallMosque extends React.Component {
     super(props);
 
     this.handleBuySmallMosqueTile = this.handleBuySmallMosqueTile.bind(this);
-
   }
 
   handleBuySmallMosqueTile(selectedTile, goodRequired){
-    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-    actionBuyMosqueTile(gameId, playerId, 'smallMosque', selectedTile, goodRequired)
-      .then(() => handleActionEnd())
-      .catch(console.error)
+    if (!this.buttonClicked) {
+      this.buttonClicked = true;
+      const { gameId, playerId, handleActionEnd } = this.props;
+      actionBuyMosqueTile(gameId, playerId, 'smallMosque', selectedTile, goodRequired)
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error)
+    }
   }
 
   render() {
     const { smallMosqueData } = this.props;
-    const tile1 = smallMosqueData.fabric;
-    const tile2 = smallMosqueData.spice;
+
     return (
       <div>
-        <img src={`images/mosque/small/smallMosque_${tile1}_${tile2}.jpg`} id="img-location" />
+        <img src={`images/mosque/small/smallMosque_${smallMosqueData.fabric}_${smallMosqueData.spice}.jpg`} id="img-location" />
         { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
       </div>
     );
@@ -79,11 +81,11 @@ class SmallMosque extends React.Component {
               }
             </div>
           </div>
-        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
       </div>
     );
   }
-}
+};
 
 export default SmallMosque;

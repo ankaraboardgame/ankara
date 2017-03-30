@@ -5,7 +5,6 @@ const GameDetails = ({handleOnClick}) => {
   const backStyle = {
     borderTop: '1px solid darkslategrey'
   };
-
   const linkStyle = {
     borderBottom: 'none',
     borderTop: '1px solid darkslategrey',

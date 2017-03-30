@@ -11,7 +11,9 @@ import { loadModal, hideModal } from '../../redux/action-creators/modals';
 
 /** ---------- Selectors ----------- */
 import { getUserId, getUserData, getUserPosition, getUserAssistants } from '../../redux/reducers/user-reducer';
-import { getGameId, getGameMerchants, getSmuggler, getPlayerTurn, getLargeMarketData, getSmallMarketData, getGemstoneDealerData, getGreatMosqueData, getSmallMosqueData } from '../../redux/reducers/game-reducer';
+import {
+  getGameId, getGameMerchants, getSmuggler, getPlayerTurn, getGemstoneDealerData,
+  getGreatMosqueData, getSmallMosqueData, getLargeMarketTile, getSmallMarketTile } from '../../redux/reducers/game-reducer';
 
 import Cell from './Cell';
 import Player from '../Pieces/Player';
@@ -33,9 +35,10 @@ class CellContainer extends React.Component {
   }
 
   handleOnClick(e) {
+    const { coords, openModal } = this.props;
     e.preventDefault();
-    this.props.openModal(
-      mapCoordToLocation(this.props.coords),
+    openModal(
+      mapCoordToLocation(coords),
       { zoom: true }
     );
   }
@@ -44,19 +47,19 @@ class CellContainer extends React.Component {
     const {
       connectDropTarget,
       isOver,
+      name,
+      coords,
       gameId,
       userId,
-      merchantsData,
       userPosition,
-      smuggler,
       playerTurn,
-      largeMarketData,
-      smallMarketData,
+      smuggler,
+      merchantsData,
+      largeMarketTile,
+      smallMarketTile,
       gemstoneDealerData,
       greatMosqueData,
       smallMosqueData,
-      name,
-      coords
     } = this.props;
 
     /**
@@ -142,12 +145,12 @@ class CellContainer extends React.Component {
         <Cell
           coords={coords}
           name={name}
-          handleOnClick={this.handleOnClick}
-          largeMarketData={largeMarketData}
-          smallMarketData={smallMarketData}
+          largeMarketTile={largeMarketTile}
+          smallMarketTile={smallMarketTile}
           gemstoneDealerData={gemstoneDealerData}
           greatMosqueData={greatMosqueData}
           smallMosqueData={smallMosqueData}
+          handleOnClick={this.handleOnClick}
         />
         <div className="player-container">
           { playerPieces }
@@ -187,13 +190,13 @@ const collect = (connect, monitor) => {
 const mapStateToProps = (state, { name, coords, cellPossibleMoves }) => ({
   gameId: getGameId(state),
   userId: getUserId(state),
-  merchantsData: getGameMerchants(state),
-  userPosition: getUserPosition(state),
-  userAssistants: getUserAssistants(state),
   smuggler: getSmuggler(state),
   playerTurn: getPlayerTurn(state),
-  largeMarketData: getLargeMarketData(state),
-  smallMarketData: getSmallMarketData(state),
+  userPosition: getUserPosition(state),
+  userAssistants: getUserAssistants(state),
+  merchantsData: getGameMerchants(state),
+  largeMarketTile: getLargeMarketTile(state),
+  smallMarketTile: getSmallMarketTile(state),
   gemstoneDealerData: getGemstoneDealerData(state),
   greatMosqueData: getGreatMosqueData(state),
   smallMosqueData: getSmallMosqueData(state),

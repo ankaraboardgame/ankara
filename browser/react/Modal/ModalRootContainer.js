@@ -52,10 +52,11 @@ import { mapCoordToLocation } from '../../utils/board';
 import { handleSmuggler, smugglerOnLocation } from '../../utils/smuggler';
 
 /** -------- Selectors -------- */
-import { getUserId, getUserMoney, getUserAbilities, getUserWheelbarrow, getUserBonusCards } from '../../redux/reducers/user-reducer';
+import { getUserId, getUserMoney, getUserAbilities, getUserWheelbarrow, getUserBonusCards, getUserAssistants } from '../../redux/reducers/user-reducer';
 import {
   getGameId, getGameMerchants, getCaravansaryData, getGemstoneDealerData,
-  getGreatMosqueData, getSmallMosqueData, getLargeMarketData, getSmallMarketData, getSmuggler
+  getGreatMosqueData, getSmallMosqueData, getLargeMarketTile, getSmallMarketTile,
+  getLargeMarketData, getSmallMarketData, getSmuggler
 } from '../../redux/reducers/game-reducer';
 import { getModalType, getModalPayload, getModalDialog, getModalCurrentPosition, getNextModalDialog } from '../../redux/reducers/modal-reducer';
 
@@ -118,17 +119,16 @@ class ModalRootContainer extends React.Component {
   }
 
   render() {
-
     const {
       userId, userMoney, gameId, modalType, payload,
-      dialog, openModal, closeModal, gemstoneData,
-      userAbilities, greatMosqueData, smallMosqueData,
-      userWheelbarrow, largeMarketData, smallMarketData,
-      caravansaryData, smuggler
+      dialog, gemstoneData, userAbilities, greatMosqueData, 
+      smallMosqueData, userWheelbarrow, largeMarketData,
+      smallMarketData, largeMarketTile, smallMarketTile,
+      caravansaryData, closeModal, smuggler
     } = this.props;
-
     const SpecificLocation = Location_Components[modalType];
     const onClose = payload && payload.zoom ? closeModal : null;
+
     if (!modalType) {
       return null;
     } else {
@@ -141,12 +141,9 @@ class ModalRootContainer extends React.Component {
               gameId={gameId}
               // modal data
               dialog={dialog}
-              // modal dispatchers
-              openModal={openModal}
-              closeModal={closeModal}
               // user-related game data
               userMoney={userMoney}
-              userAbilities={abilities}
+              abilities={userAbilities}
               userWheelbarrow={userWheelbarrow}
               // game location data
               gemstoneData={gemstoneData}
@@ -155,6 +152,8 @@ class ModalRootContainer extends React.Component {
               smallMosqueData={smallMosqueData}
               largeMarketData={largeMarketData}
               smallMarketData={smallMarketData}
+              largeMarketTile={largeMarketTile}
+              smallMarketTile={smallMarketTile}
               smuggler={smuggler}
               // handler functions
               handleMoreOptionsClick={this.handleMoreOptionsClick}
@@ -172,11 +171,10 @@ class ModalRootContainer extends React.Component {
   }
 
   renderSpecificTurnDialog() {
-
     const {
-      userId, userMoney, userBonusCards, greatMosqueData, smallMosqueData,
-      gameId, merchants, dialog, payload, currentPosition, openModal,
-      closeModal, nextDialog, userWheelbarrow
+      userId, userMoney, userBonusCards, userAbilities, greatMosqueData,
+      smallMosqueData, gameId, merchants, dialog, payload, currentPosition,
+      openModal, closeModal, nextDialog, userWheelbarrow
     } = this.props;
     const SpecificTurnDialog = Turn_Dialog_Components[dialog];
 
@@ -194,6 +192,8 @@ class ModalRootContainer extends React.Component {
         closeModal={closeModal}
         // user-related game data
         userMoney={userMoney}
+        userAssistants={userAssistants}
+        userAbilities={userAbilities}
         userBonusCards={userBonusCards}
         userWheelbarrow={userWheelbarrow}
         // game location data
@@ -212,6 +212,7 @@ const mapStateToProps = state => ({
   // user store selectors
   userId: getUserId(state),
   userMoney: getUserMoney(state),
+  userAssistants: getUserAssistants(state),
   userAbilities: getUserAbilities(state),
   userWheelbarrow: getUserWheelbarrow(state),
   userBonusCards: getUserBonusCards(state),
@@ -230,6 +231,8 @@ const mapStateToProps = state => ({
   smallMosqueData: getSmallMosqueData(state),
   largeMarketData: getLargeMarketData(state),
   smallMarketData: getSmallMarketData(state),
+  largeMarketTile: getLargeMarketTile(state),
+  smallMarketTile: getSmallMarketTile(state),
   smuggler: getSmuggler(state)
 });
 

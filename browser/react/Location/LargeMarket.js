@@ -25,25 +25,27 @@ class LargeMarket extends React.Component {
   }
 
   handleTradeGood(){
-    const playerOffer = this.state;
-    const { largeMarketData, gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-    const currentMarketIdx = largeMarketData.currentMarketIdx;
+    if (!this.buttonClicked) {
+      this.buttonClicked = true;
+      const playerOffer = this.state;
+      const { largeMarketData, gameId, playerId, handleActionEnd } = this.props;
+      const currentMarketIdx = largeMarketData.currentMarketIdx;
 
-    actionTradeGoods(gameId, playerId, 'largeMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
-      .then(() => {
-        actionChangeTile(gameId, playerId, 'largeMarket', currentMarketIdx)
-      })
-      .then(() => handleActionEnd())
-      .catch(console.error)
+      actionTradeGoods(gameId, playerId, 'largeMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
+        .then(() => {
+          actionChangeTile(gameId, playerId, 'largeMarket', currentMarketIdx)
+        })
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error)
+    }
   }
 
   handleGoodClick(event){
-    const { largeMarketData, userWheelbarrow } = this.props;
+    const { largeMarketTile, userWheelbarrow } = this.props;
     const good = event.target.id;
-    const currentMarketIdx = largeMarketData.currentMarketIdx;
-    const currentDemandTile = largeMarketData.demandTiles[currentMarketIdx];
     let quantity;
-    if(this.state[good] < currentDemandTile[good] && this.state[good] < userWheelbarrow[good]){
+    if(this.state[good] < largeMarketTile[good] && this.state[good] < userWheelbarrow[good]){
       this.setState({
         [event.target.id]: ++this.state[event.target.id],
         tradeOffer: true
@@ -62,13 +64,11 @@ class LargeMarket extends React.Component {
   }
 
   render() {
-    const { largeMarketData } = this.props;
-    const currentMarketIdx = largeMarketData.currentMarketIdx;
-    const currentDemandTile = largeMarketData.demandTiles[currentMarketIdx];
+    const { largeMarketTile } = this.props;
 
     return (
       <div>
-        <img src={`images/market/large/${currentDemandTile.img}`} id="img-location" />
+        <img src={`images/market/large/${largeMarketTile.img}`} id="img-location" />
         { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
       </div>
     );
@@ -76,7 +76,9 @@ class LargeMarket extends React.Component {
 
   renderAction() {
     const { handleActionEnd, handleMoreOptionsClick } = this.props;
+    const { tradeOffer } = this.state;
     const style = { margin: 12 };
+
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
@@ -89,14 +91,14 @@ class LargeMarket extends React.Component {
           <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleGoodClick} /><p>{this.state.heirloom}</p>
         </div>
         <div id="market-row">
-          <RaisedButton label="Trade Goods" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeGood}  />
-          <RaisedButton label="Reset" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
+          <RaisedButton label="Trade Goods" style={style} disabled={!tradeOffer} primary={true} onTouchTap={this.handleTradeGood}  />
+          <RaisedButton label="Reset" style={style} disabled={!tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
         </div>
-        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
       </div>
     );
   }
-}
+};
 
 export default LargeMarket;
