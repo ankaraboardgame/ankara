@@ -27,7 +27,7 @@ class GameHistorySideBar extends Component {
 
   handleToggle(){
     this.setState({open: !this.state.open});
-  };
+  }
 
   render() {
     const { userId, playerMap, gameId, historyRef } = this.props;
@@ -49,10 +49,6 @@ class GameHistorySideBar extends Component {
     );
   }
 }
-
-// const fbHistoryContainer = firebaseConnect(({ gameId }) => {
-//   return [`gameLog/${gameId}`];
-// })(GameHistorySideBar);
 
 const mapStateToProps = (state) => ({
   userId: getUserId(state),
