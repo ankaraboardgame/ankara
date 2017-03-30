@@ -560,6 +560,16 @@ ul.chat-list {
   padding: 10px;
 }
 
+.gamelog-list {
+  height: 384px;
+  list-style-type: none;
+}
+
+ul.gamelog-list {
+  padding: 10px;
+}
+
+
 /* -------- MOVING PIECES ------- */
 .player-icon {
   width: 50px;
