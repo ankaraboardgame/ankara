@@ -7,15 +7,10 @@ import { fbDB } from '../../firebase';
 
 import { toast } from 'react-toastify';
 
-// import MenuItem from 'material-ui/MenuItem';
-import _ from 'lodash';
-
 /** -------- Selectors ---------- */
 import { getGameId, getPlayerMap } from '../../redux/reducers/game-reducer';
 import { getUserId } from '../../redux/reducers/user-reducer';
 import { getBoard } from '../../redux/reducers/board-reducer';
-
-import { levels } from '../../game';
 
 /** LOG TYPES */
 import { LOGTYPE, LOCATION_NAME } from '../../utils/log'
@@ -48,15 +43,18 @@ class GameHistoryComponent extends Component {
     this.gameLogRef = fbDB.ref(`gameLog/${gameId}`);
     this.gameLogEventHandler = snapshot => {
 
+      // If the log is older than 2 seconds ignore.
       if (snapshot.val().timestamp + 2000 < this.getCurrUnixTime() ) {
         return;
       }
       const playerId = snapshot.val().user;
       const type = snapshot.val().type;
       const location = snapshot.val().location;
-      const coords = location && location.split(',').map(str => Number(str));
-      const locationName = LOCATION_NAME[coords && board.level[coords[0]][coords[1]]];
-      let message;
+      // Get coordinates from string
+      const [ x, y ] = location && location.split(',').map(str => Number(str));
+      // Get Location name from coordinates
+      const locationName = LOCATION_NAME[board.level[x][y]];
+      let message = undefined;
       switch(type) {
         case LOGTYPE.TURN:
           if (playerId === userId) {
@@ -111,7 +109,7 @@ class GameHistoryComponent extends Component {
       "fontSize": "14px",
       "margin": "0"
     }
-    // const { userId, playerMap, historyRef } = this.props;
+
     return (
       <div>
         <table style={style} >

@@ -27,10 +27,7 @@ function isFull(wheelbarrow) {
 }
 
 export function canTalkToSmuggler(userWheelbarrow) {
-  if (isBroke(userWheelbarrow) || isFull(userWheelbarrow)) {
-    return false;
-  }
-  return true;
+  return !isBroke(userWheelbarrow) && !isFull(userWheelbarrow);
 }
 
 // Smuggler encounter
