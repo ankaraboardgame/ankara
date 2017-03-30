@@ -1,6 +1,7 @@
 import React from 'react';
 import { DragSource } from 'react-dnd';
 
+/** ------ Presentational Component ------- */
 const Player = ({ connectDragSource, isDragging, playerNum }) => {
 
   const images = [
@@ -21,6 +22,7 @@ const Player = ({ connectDragSource, isDragging, playerNum }) => {
   );
 }
 
+/** ------- React-DnD Higher Order Component ------- */
 const playerSource = {
   beginDrag(props) {
     return {};

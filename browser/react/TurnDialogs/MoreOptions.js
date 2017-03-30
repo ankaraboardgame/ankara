@@ -1,17 +1,21 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
+/** ------- Game logic routes ------ */
 import { bonusFiveLira, tile2LiraToReturn1Assistant, tile2LiraFor1Good } from '../../routes/bonus';
 
+/** ------- Helper functions ------- */
 import { mapCoordToLocation, mapLocationToCoord } from '../../utils/board';
 import { getPlayerMosqueTiles } from '../../utils/options';
 
 /** ------- Constants -------- */
 import { SELECT_BONUS_GOOD, ACTION, PLAY_BONUS, PLAY_MOSQUES_TILES } from '../Modal/turn_types';
 
+/** ------- Component -------- */
 class MoreOptions extends React.Component {
   constructor(props) {
     super(props);
+
     this.handleGoBackClick = this.handleGoBackClick.bind(this);
   }
 
@@ -22,9 +26,8 @@ class MoreOptions extends React.Component {
   }
 
   render() {
-    const { userBonusCards, nextDialog, merchants, playerId, currentPosition } = this.props;
-    const playerAbilities = merchants[playerId].abilities;
-    const abilityCount = getPlayerMosqueTiles(playerAbilities).length;
+    const { userBonusCards, nextDialog, merchants, playerId, currentPosition, userAbilities } = this.props;
+    const abilityCount = getPlayerMosqueTiles(userAbilities).length;
 
     return (
       <div id="turn-dialog-full">
@@ -48,8 +51,8 @@ class MoreOptions extends React.Component {
               <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(ACTION)} />
             </div>
           }
+        </div>
       </div>
-    </div>
     );
   }
 };

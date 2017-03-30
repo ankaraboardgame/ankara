@@ -104,24 +104,17 @@ class GameHistoryComponent extends Component {
   }
 
   render() {
-    const style = {
-      "backgroundColor": "#d0cabe",
-      "fontSize": "14px",
-      "margin": "0"
-    }
 
     return (
-      <div>
-        <table style={style} >
-          <tbody>
-            { this.state.logs && this.state.logs.map((log, index) => {
-              return (<tr key={index}><td>{log}</td></tr>);
-            })}
-          </tbody>
-        </table>
-        <div style={ {float:"left", clear: "both"} }
-          ref={(el) => { this.messagesEnd = el; }}>
-        </div>
+      <div style={{margin: 0, padding: 0}}>
+        <ul className="gamelog-list">
+        {
+          this.state.logs && this.state.logs.map((log, index) => {
+            return (<li key={index}>{log}</li>);
+          })
+        }
+        </ul>
+        <div style={ {float: 'left', clear: 'both'} } ref={(el) => { this.messagesEnd = el; }} />
       </div>
     );
   }

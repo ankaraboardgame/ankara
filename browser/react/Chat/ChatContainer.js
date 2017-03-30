@@ -1,14 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 import { postGameChat } from '../../routes/chat.js';
 
-/************ Container ****************/
+/** ----------- Selectors ----------- */
+import { getGameId, getGameChats } from '../../redux/reducers/game-reducer';
+import { getUserId, getUsername } from '../../redux/reducers/user-reducer';
 
+/** ----------- Container Component ----------- */
+import GameHistoryComponent from '../GameHistory/GameHistoryComponent';
+
+/************ Container ****************/
 class ChatContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -37,8 +45,9 @@ class ChatContainer extends React.Component {
   }
 
   handlePostMessage(event){
+    const { gameId, userId, username } = this.props;
     event.preventDefault();
-    postGameChat(this.props.gameId, this.props.userId, this.props.userName, this.state.message)
+    postGameChat(gameId, userId, username, this.state.message)
     this.setState({ message: '' });
   }
 
@@ -59,9 +68,9 @@ class ChatContainer extends React.Component {
   }
 
   render() {
-    const { userId, chats, userName } = this.props;
+    const { userId, chats, username } = this.props;
 
-    const chatStyle = {
+    const cardStyle = {
       width: 350,
       padding: 0,
       margin: 0,
@@ -72,55 +81,71 @@ class ChatContainer extends React.Component {
     };
 
     return (
-        <div className="chat-container">
-          <Card style={ chatStyle } onExpandChange={this.handleExpandChange}>
-            <CardHeader
-              title={`Chat (${userName})`}
-              actAsExpander={true}
-              showExpandableButton={true}
-              onClick={this.handleToggle}
-            />
+      <div className="chat-container">
+        <Card style={ cardStyle } expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+          <CardHeader
+            title={`Chat (${username})`}
+            actAsExpander={true}
+            showExpandableButton={true}
+          />
 
-            <CardText expandable={true}>
+          <CardText expandable={true}>
+            <Tabs>
+              <Tab label="Chat" style={{backgroundColor: '#555'}}>
 
-              <div className="chat-log">
-                <ul className="chat-list">
-                {
-                  chats
-                  .sort((a, b) => a.createdAt - b.createdAt)
-                  .map((chat, i) => {
-                    return (
-                      <li key={i} ref={(ref) => this['_chat' + i] = ref} className="chat-message">
-                        <span style={{fontWeight: 'bold'}}>
-                          {chat.name}
-                        </span>: {chat.message}
-                      </li>
-                    )
-                  })
-                }
-                </ul>
-              </div>
-
-              <form onSubmit={this.handlePostMessage}>
-                <TextField
-                  onChange={this.handleTextField}
-                  value={this.state.message}
-                  hintText="Message..."
-                  style={{ marginLeft: 5, width: 300 }} />
-                <div style={{ textAlign: 'center' }}>
-                  <RaisedButton disabled={!this.state.message.trim().length} type="submit">
-                    SEND
-                  </RaisedButton>
+                <div className="chat-log">
+                  <ul className="chat-list">
+                  {
+                    chats
+                    .sort((a, b) => a.createdAt - b.createdAt)
+                    .map((chat, i) => {
+                      return (
+                        <li key={i} ref={(ref) => this['_chat' + i] = ref} className="chat-message">
+                          <span style={{fontWeight: 'bold'}}>
+                            {chat.name}
+                          </span>: {chat.message}
+                        </li>
+                      )
+                    })
+                  }
+                  </ul>
                 </div>
-              </form>
 
-            </CardText>
+                <form onSubmit={this.handlePostMessage}>
+                  <TextField
+                    onChange={this.handleTextField}
+                    value={this.state.message}
+                    hintText="Message..."
+                    style={{ marginLeft: 5, width: 300 }} />
+                  <div style={{ textAlign: 'center' }}>
+                    <RaisedButton disabled={!this.state.message.trim().length} type="submit">
+                      SEND
+                    </RaisedButton>
+                  </div>
+                </form>
 
-          </Card>
-        </div>
+              </Tab>
+
+              <Tab label="Game log" style={{backgroundColor: '#555'}}>
+                <div className="chat-log">
+                  <GameHistoryComponent />
+                </div>
+              </Tab>
+
+            </Tabs>
+          </CardText>
+        </Card>
+      </div>
     )
   }
+};
 
-}
+/** ------- Higher Order Component ------- */
+const mapStateToProps = state => ({
+  username: getUsername(state),
+  chats: getGameChats(state),
+  gameId: getGameId(state),
+  userId: getUserId(state)
+});
 
-export default ChatContainer;
+export default connect(mapStateToProps)(ChatContainer);

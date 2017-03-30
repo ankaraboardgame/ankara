@@ -17,8 +17,7 @@ class FabricWarehouse extends React.Component {
   handleMaxGoodEndTurn(){
 
     if (!this.buttonClicked) {
-      const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-      // Make axios call for Fabric warehouse action
+      const { gameId, playerId, handleActionEnd } = this.props;
       this.buttonClicked = true;
       actionMaxGood(gameId, playerId, 'fabric')
         .then(() => handleActionEnd())
@@ -39,18 +38,19 @@ class FabricWarehouse extends React.Component {
   renderAction() {
     const { handleMoreOptionsClick } = this.props;
     const style = { margin: 12 };
+
     return (
       <div id="turn-dialog-half">
         <div id="text-box">
           <div className="turn-dialog-column">
             <p>Look at all the fabric! <br /><br />Come back later if you need more! <br /></p>
           </div>
-          <RaisedButton label="Max fabric and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
           <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+          <RaisedButton label="Max fabric and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
         </div>
       </div>
     );
   }
-}
+};
 
 export default FabricWarehouse;

@@ -125,7 +125,6 @@ class LobbyContainer extends React.Component {
       height: 90,
       width: 500,
       padding: 20,
-      margin: 20,
       backgroundColor: '#3D2F1B',
       textAlign: 'center',
       display: 'inline-block'
@@ -161,16 +160,15 @@ class LobbyContainer extends React.Component {
             <img src={`images/Ankara-Title.png`} style={{width: '100%'}}/>
           </Link>
 
-        {
-          this.props.gameId &&
-          <Link to="/game">
-            <div id="lobby-warning">
-              <p>You are currently in a game. Click to go to the game room.</p>
-            </div>
-          </Link>
-        }
-
           <div id="create-room-button">
+            {
+              this.props.gameId &&
+              <Link to="/game">
+                <div id="lobby-warning">
+                  <p>You are currently in a game. Click to go to the game room.</p>
+                </div>
+              </Link>
+            }
             <Paper style={createRoomStyle} zDepth={3}>
               <form onSubmit={ this.handleCreateRoom }>
                 <TextField

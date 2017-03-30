@@ -1,13 +1,17 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
+/** ------- Game logic routes ------ */
 import { pickupAssistant } from '../../routes/move.js';
+
+/** ------- Helper functions ------ */
 import { merchantsOnLocation } from '../../utils/assistants';
 import { mapCoordToLocation } from '../../utils/board';
 
 /** ------- Constants -------- */
 import { MERCHANT_ENCOUNTER, ACTION } from '../Modal/turn_types';
 
+/** ------- Component -------- */
 class PickUpAssistant extends React.Component {
   constructor(props) {
     super(props);

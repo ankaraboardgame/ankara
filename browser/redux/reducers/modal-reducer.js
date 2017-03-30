@@ -18,12 +18,11 @@ export default function (state = initialModalState, action) {
       newState.payload = action.payload;
       break;
 
-      case HIDE_MODAL:
+    case HIDE_MODAL:
       return initialModalState;
 
-      default:
+    default:
       return state;
-
   }
 
   return newState;

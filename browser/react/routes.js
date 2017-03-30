@@ -1,36 +1,23 @@
 import React from 'react';
-import { Router, Route, IndexRedirect, hashHistory } from 'react-router';
-import { connect } from 'react-redux';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
-/** Importing components and containers */
-import AppContainer from './AppContainer';
+/** -------- Importing components and containers -------- */
+import GameContainer from './GameContainer';
 import LobbyContainer from './Lobby/LobbyContainer';
-import TitlePage from './TitlePage';
+import TitlePageContainer from './TitlePage/TitlePageContainer';
+import AppContainer from './AppContainer';
 
-/** Importing action-creators */
-import { loadBoard } from '../redux/action-creators/board';
-
-/** Routes */
+/** --------- Routes ------- */
 const Root = ({ loadGameBoard }) => {
   return (
       <Router history={hashHistory}>
-        <ReactCSSTransitionGroup
-          transitionName="title-anim"
-          transitionEnter={false}
-          transitionLeave={true}
-          transitionLeaveTimeout={300}
-        >
-          <Route path="/" component={TitlePage}/>
-        </ReactCSSTransitionGroup>
-        <Route path="/lobby" component={LobbyContainer}/>
-        <Route path="/game" component={AppContainer} onEnter={loadGameBoard}/>
+        <Route path="/" component={AppContainer}>
+          <IndexRoute component={TitlePageContainer}/>
+          <Route path="/lobby" component={LobbyContainer}/>
+          <Route path="/game" component={GameContainer}/>
+        </Route>
       </Router>
   );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  loadGameBoard: () => dispatch(loadBoard())
-});
-
-export default connect(null, mapDispatchToProps)(Root);
+export default Root;

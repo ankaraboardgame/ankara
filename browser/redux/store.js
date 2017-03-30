@@ -7,6 +7,7 @@ import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import config from '../../firebase.config.js';
 
 import { loadCurrentUser } from './action-creators/user';
+import { loadBoard } from './action-creators/board';
 
 /***** REDUCERS *****/
 import rootReducer from './reducers';
@@ -32,3 +33,4 @@ const store = createStore(
 export default store;
 
 store.dispatch(loadCurrentUser());
+store.dispatch(loadBoard());

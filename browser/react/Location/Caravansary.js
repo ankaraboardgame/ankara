@@ -17,7 +17,7 @@ class Caravansary extends React.Component {
   handleGetCard (type){
     if (!this.buttonClicked) {
       this.buttonClicked = true;
-      const { gameId, playerId, openModal, closeModal, handleActionEnd } = this.props;
+      const { gameId, playerId, handleActionEnd } = this.props;
       // Make axios call for Caravansary action
       actionGetBonusCard(gameId, playerId, type)
         .then(() => handleActionEnd())
@@ -39,6 +39,7 @@ class Caravansary extends React.Component {
     const { caravansaryData, handleActionEnd, handleMoreOptionsClick } = this.props;
     const bonusCard = caravansaryData.bonusCards[caravansaryData.index];
     const style = { margin: 12 };
+
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
@@ -54,12 +55,12 @@ class Caravansary extends React.Component {
             primary={true}
             onTouchTap={() => this.handleGetCard(bonusCard.type)}
           />
-          <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
           <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+          <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
         </div>
       </div>
     );
   }
-}
+};
 
 export default Caravansary;
