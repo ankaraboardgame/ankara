@@ -19,7 +19,7 @@ export default class SideBar extends Component {
     return (
       <div>
         <RaisedButton
-          label="Player Rules"
+          label="Rules"
           default={ true }
           onTouchTap={this.handleToggle} />
         <Drawer

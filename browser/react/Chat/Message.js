@@ -7,19 +7,15 @@ import Subheader from 'material-ui/Subheader';
 /**
  * Creates cells for each location in the game
 */
-export const Message = props => {
+export const Message = ({ data }) => {
   return (
     <div className="chat">
       <ListItem></ListItem>
       <div className="chat-name">
-        {
-          props.data.name
-        }
+        { data.name }
       </div>
       <div className="chat-message">
-        {
-          props.data.message
-        }
+        { data.message }
       </div>
     </div>
   );

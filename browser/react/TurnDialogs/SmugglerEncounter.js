@@ -50,10 +50,11 @@ class SmugglerEncounter extends React.Component {
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
-          <p>You can get a resource of your choice<br />But! You must give him 2 lira or a random good</p>
+          <text>Here's the Smuggler</text>
+          <text>You can get a resource of your choice<br />But! You must give him 2 lira or a random good</text>
         </div>
         <div id="text-box">
-          <p>Select your resource</p>
+          <text>Select your resource</text>
         </div>
         <div id="market-row">
           { userWheelbarrow.fabric < userWheelbarrow.size &&

@@ -39,5 +39,4 @@ const Cell = ({ name, coords, smallMarketTile, largeMarketTile, smallMosqueData,
   );
 }
 
-
 export default Cell;
