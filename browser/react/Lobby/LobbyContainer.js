@@ -127,7 +127,8 @@ class LobbyContainer extends React.Component {
       padding: 20,
       backgroundColor: '#3D2F1B',
       textAlign: 'center',
-      display: 'inline-block'
+      display: 'inline-block',
+      borderRadius: '20px'
     };
     const searchStyle = {
       width: 600,
@@ -155,20 +156,21 @@ class LobbyContainer extends React.Component {
     return (
       <MuiThemeProvider>
         <div id="lobby-container">
-
+        {
+          this.props.gameId &&
+          <div id="lobby-warning">
+            <Link to="/game">
+              <div>
+                <p id={'lobby-warning-link'}>You are currently in a game. Click to go to the game room.</p>
+              </div>
+            </Link>
+          </div>
+        }
           <Link to="/">
             <img src={`images/Ankara-Title.png`} style={{width: '100%'}}/>
           </Link>
 
           <div id="create-room-button">
-            {
-              this.props.gameId &&
-              <Link to="/game">
-                <div id="lobby-warning">
-                  <p>You are currently in a game. <br /> Click to go to the game room.</p>
-                </div>
-              </Link>
-            }
             <Paper style={createRoomStyle} zDepth={3}>
               <form onSubmit={ this.handleCreateRoom }>
                 <TextField
