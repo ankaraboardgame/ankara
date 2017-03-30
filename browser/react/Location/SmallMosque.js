@@ -45,7 +45,7 @@ class SmallMosque extends React.Component {
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
-          <p>You can buy 1 tile if you have enough ressources<br /> and if you have not acquired it yet. <br /><br />Earn a ruby when you have acquired both tiles.</p>
+          <text>You can buy 1 tile if you have enough ressources<br /> and if you have not acquired it yet. <br /><br />Earn a ruby when you have acquired both tiles.</text>
         </div>
           <div id="mosque-row">
             <div id="mosque-fabric">

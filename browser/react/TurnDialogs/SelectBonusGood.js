@@ -39,7 +39,7 @@ class SelectBonusGood extends React.Component {
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
-          <p>You played a Goods bonus card. Select 1 good of your choice.</p>
+          <text>You played a Goods bonus card. Select 1 good of your choice.</text>
         </div>
         <div id="market-row">
           <img src="./images/cart/fabric.png" onTouchTap={() => this.handleBonusGood('fabric')} />

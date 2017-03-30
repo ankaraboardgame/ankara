@@ -102,7 +102,7 @@ class MosqueTiles extends Component {
           <div id="text-box">
             <div id="options">
               <div>
-                <p>You have acquired {tileArray.length} Mosque tiles.</p>
+                <text>You have acquired {tileArray.length} Mosque tiles.</text>
                 <div id="bonus-row">
                   {
                     tileArray !== [] && tileArray.map((tile, idx) => {
@@ -115,12 +115,12 @@ class MosqueTiles extends Component {
                 <div id="more-options-text">
                   {
                     addText &&
-                    <p>{addText}</p>
+                    <text>{addText}</text>
                   }
                   {
                     assistantReturn &&
                     <div>
-                      <p>Select 1 assistant that you want returned. Each return cost 2 Lira.</p>
+                      <text>Select 1 assistant that you want returned. Each return cost 2 Lira.</text>
                       <div>
                         {
                           assistantsOutLocationsArray.map(location => {
@@ -132,12 +132,12 @@ class MosqueTiles extends Component {
                   }
                   {
                     !warehouseCondition && selectTileGood &&
-                    <p>You can only buy goods at one of the warehouse locations</p>
+                    <text>You can only buy goods at one of the warehouse locations</text>
                   }
                   {
                     warehouseCondition && selectTileGood &&
                     <div>
-                      <p>Select 1 good to add to your wheelbarrow. Each good cost 2 Lira</p>
+                      <text>Select 1 good to add to your wheelbarrow. Each good cost 2 Lira</text>
                       <RaisedButton label='Fabric' style={{margin: 12}} default={true} disabled={!fabricCondition} onTouchTap={() => this.handleAddGoodClick('fabric')} />
                       <RaisedButton label='Fruit' style={{margin: 12}} default={true} disabled={!fruitCondition} onTouchTap={() => this.handleAddGoodClick('fruit')} />
                       <RaisedButton label='Heirloom' style={{margin: 12}} default={true} disabled={!heirloomCondition} onTouchTap={() => this.handleAddGoodClick('heirloom')} />
