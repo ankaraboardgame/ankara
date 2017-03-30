@@ -43,7 +43,6 @@ export default class Dice extends React.Component {
     if (this.state.rolled && !this.props.canReroll) {
       this.props.done(num);
     } else { // Can re-roll
-
       // If player is allowed to re-roll
       if (this.state.rolled && this.props.canReroll && !this.state.rerolling) {
         // Set rolled state to false and store rolled value to rolledSum in case

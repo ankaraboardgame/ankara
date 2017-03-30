@@ -9,7 +9,6 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import { fadeInLeft } from 'react-animations';
 import { StyleSheet, css } from 'aphrodite';
 
-import { Wheelbarrow, Fruits, Fabric, Spices, Heirlooms, Money, Ruby } from '../Footer/FooterComponents'
 import { getPlayerIds, getPlayerTurn, getGameMerchants, getPlayerMap } from '../../redux/reducers/game-reducer';
 
 const animateStyles = StyleSheet.create({
@@ -19,6 +18,7 @@ const animateStyles = StyleSheet.create({
   }
 });
 
+/** -------- Component ----------- */
 class PlayerButtonsContainer extends React.Component {
   constructor(props){
     super(props)
@@ -33,15 +33,15 @@ class PlayerButtonsContainer extends React.Component {
 
   handleButtonClick(color){
     const colorMap = { red: 0, blue: 1, green: 2, yellow: 3 }
-    const merchantsData = this.props.merchantsData;
-    const selectedPlayer = this.state.currentPlayer;
+    const { merchantsData } = this.props;
+    const { selectedPlayer, display} = this.state;
     let playerId = null;
 
     for (let merchant in merchantsData) {
       if (merchantsData[merchant].number === colorMap[color]) playerId = merchant
     }
     
-    if (selectedPlayer !== playerId && this.state.display === false ) {
+    if (selectedPlayer !== playerId && display === false ) {
       this.setState({
         color: color,
         selectedPlayer: playerId,

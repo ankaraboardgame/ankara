@@ -43,7 +43,7 @@ class FruitWarehouse extends React.Component {
       <div id="turn-dialog-half">
         <div id="text-box">
           <div className="turn-dialog-column">
-            <p>Look at all the fruits! <br /><br />Come back later if you need more! <br /></p>
+            <text>Look at all the fruits!<br />Come back later if you need more!</text>
           </div>
           <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
           <RaisedButton label="Max fruit and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />

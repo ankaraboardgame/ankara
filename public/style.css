@@ -14,7 +14,7 @@ html body {
 }
 
 #text-box {
-  margin: 20px 40px 10px 40px;
+  padding: 20px 40px 10px 40px;
 }
 
 text {
@@ -23,10 +23,8 @@ text {
   font-variant: small-caps;
 }
 
-p {
-  font-family: Garamond;
-  font-size: 20px;
-  font-variant: small-caps;
+a {
+  text-decoration: none;
 }
 
 .example-enter {
@@ -137,6 +135,7 @@ p {
   margin: 10px 0px 10px 0px;
   width: 200px;
   border-bottom: 1px solid darkslategray;
+  cursor: pointer;
 }
 
 .menu-text {
@@ -290,9 +289,9 @@ img.bonusCards {
 }
 
 #player-info-row {
-  -webkit-box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
-  -moz-box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
-  box-shadow: 3px 3px 8px 1px rgba(0,0,0,1);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
   background-image: url('images/splash-menu.png');
   background-size: 100% 100%;
   display: flex;
@@ -525,38 +524,33 @@ img.bonusCards {
 /* -------- LOBBY ------- */
 
 #lobby-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   width: 100%;
-  height: 100vh;
-  background-image: url('images/splash-background.jpg');
-  background-size: 100% 100%;
+  height: 100%;
+  background: url('images/splash_bg.jpg') no-repeat center center fixed;
+  background-size: cover;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 
 #lobby-warning {
-  background-color: rgba(255,0,0,0.2);
+  width: 100%;
+  background-color: darkred;
+  opacity: 0.8;
   padding: 20px 0px 20px 0px;
-  color: white;
-  font-size: 14pt;
+  margin-bottom: 50px;
   text-align: center;
-  border-radius: 20px;
   box-shadow: 10px 10px 10px #222;
-  margin: 30px 0px 30px 0px;
-  width: 500px;
 }
 
-a {
+#lobby-warning-link {
   text-decoration: none;
+  color: white;
+  font-size: 14pt;
 }
 
 #create-room-button {
-  text-align: center
+  text-align: center;
   width: 500px;
 }
 
@@ -690,7 +684,7 @@ ul.gamelog-list {
   position: relative;
   width: 80%;
   height: auto;
-  margin-bottom: 50px;
+  margin-bottom: 75px;
 }
 
 #row-container {
@@ -793,6 +787,7 @@ footer .badge {
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  height: 40px;
 }
 
 #new-footer {
@@ -804,7 +799,7 @@ footer .badge {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   width: auto;
-  padding: 10px 30px 10px 30px;
+  padding: 10px 30px 30px 30px;
 }
 
 #new-footer p {
@@ -845,7 +840,7 @@ footer .badge {
 .footer-icons {
   border-radius: 20%;
   margin-left: 20px;
-  height: 40px;
+  height: 37px;
   float: left;
 }
 
