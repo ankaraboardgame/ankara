@@ -16,10 +16,15 @@ class SpiceWarehouse extends React.Component {
   }
 
   handleMaxGoodEndTurn(){
-    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-    actionMaxGood(gameId, playerId, 'spice')
-      .then(() => handleActionEnd())
-      .catch(console.error);
+
+    if (!this.buttonClicked) {
+      this.buttonClicked = true;
+      const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+      actionMaxGood(gameId, playerId, 'spice')
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error);
+    }
   }
 
   render() {

@@ -4,7 +4,6 @@ const db = admin.database();
 /** Game Logging */
 const util = require('../util');
 const log = util.log;
-const getCurrUnixTime = util.getCurrUnixTime;
 
 const router = module.exports = require('express').Router();
 
@@ -31,7 +30,7 @@ router.post('/', (req, res, next) => {
       type: 'PLAYER_MOVE',
       user: req.player.id,
       location: req.body.newPosition,
-      timestamp: getCurrUnixTime()
+      timestamp: admin.database.ServerValue.TIMESTAMP
     })
   })
   .catch(next);

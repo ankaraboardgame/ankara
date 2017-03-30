@@ -16,15 +16,19 @@ class GreatMosque extends React.Component {
   }
 
   handleBuyGreatMosqueTile(selectedTile, goodRequired){
-    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-    actionBuyMosqueTile(gameId, playerId, 'greatMosque', selectedTile, goodRequired)
-      .then(() => {
-        if(selectedTile === 'heirloom'){
-          tileAdd1Assistant(gameId, playerId)
-        }
-      })
-      .then(() => handleActionEnd())
-      .catch(console.error)
+    if (!this.buttonClicked) {
+      this.buttonClicked = true;
+      const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+      actionBuyMosqueTile(gameId, playerId, 'greatMosque', selectedTile, goodRequired)
+        .then(() => {
+          if(selectedTile === 'heirloom'){
+            tileAdd1Assistant(gameId, playerId)
+          }
+        })
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error)
+    }
   }
 
   render() {

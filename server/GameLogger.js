@@ -6,7 +6,6 @@ const gameLogRef = db.ref('gameLog');
 
 const util = require('./util');
 const log = util.log;
-const getCurrUnixTime = util.getCurrUnixTime;
 
 const GameLogger = function() {
 
@@ -26,7 +25,7 @@ const GameLogger = function() {
         log(gameId, {
           user: key,
           text: `$ joined the game`,
-          timestamp: getCurrUnixTime()
+          timestamp: admin.database.ServerValue.TIMESTAMP
         });
       });
 
@@ -38,7 +37,7 @@ const GameLogger = function() {
       log(gameId, {
         user: activePlayerId,
         text: `$\'s turn`,
-        timestamp: getCurrUnixTime()
+        timestamp: admin.database.ServerValue.TIMESTAMP
       });
     })
 
@@ -47,7 +46,7 @@ const GameLogger = function() {
       const newGemStonePrice = snapshot.val();
       log(gameId, {
         text: `Gem stone is now being sold at ${newGemStonePrice} liras`,
-        timestamp: getCurrUnixTime()
+        timestamp: admin.database.ServerValue.TIMESTAMP
       });
     })
 
@@ -56,7 +55,7 @@ const GameLogger = function() {
     //   const newDemand = snapshot.val();
     //   log(gameId, {
     //     text: `Small market is trading ${ Object.keys(newDemand).map(good => `${newDemand[good]} ${good}(s)` ) } now`,
-    //     timestamp: getCurrUnixTime()
+    //     timestamp: admin.database.ServerValue.TIMESTAMP
     //   });
     // });
 
@@ -65,7 +64,7 @@ const GameLogger = function() {
     //   const newDemand = snapshot.val();
     //   log(gameId, {
     //     text: `Large market is trading ${ Object.keys(newDemand).map(good => `${newDemand[good]} ${good}(s) ` ) } now`,
-    //     timestamp: getCurrUnixTime()
+    //     timestamp: admin.database.ServerValue.TIMESTAMP
     //   });
     // });
 
@@ -82,7 +81,7 @@ const GameLogger = function() {
       //     log(gameId, {
       //       user: playerId,
       //       text: `$ moved to new position ${newPosition}`,
-      //       timestamp: getCurrUnixTime()
+      //       timestamp: admin.database.ServerValue.TIMESTAMP
       //     });
       //   }
       // })
@@ -97,7 +96,7 @@ const GameLogger = function() {
           log(gameId, {
             user: playerId,
             text: `$'s wheelbarrow size has increased to ${newSize}`,
-            timestamp: getCurrUnixTime()
+            timestamp: admin.database.ServerValue.TIMESTAMP
           });
         }
       })
@@ -112,7 +111,7 @@ const GameLogger = function() {
           log(gameId, {
             user: playerId,
             text: `$ earned a ruby. ${ruby} ${ruby === 1 ? 'ruby' : 'rubies'} now`,
-            timestamp: getCurrUnixTime()
+            timestamp: admin.database.ServerValue.TIMESTAMP
           });
         }
       })

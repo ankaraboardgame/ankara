@@ -24,10 +24,14 @@ class GemstoneDealer extends React.Component {
   }
 
   handleBuyGem(){
-    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-    actionBuyRuby(gameId, playerId)
-      .then(() => handleActionEnd())
-      .catch(console.error);
+    if (!this.buttonClicked) {
+      this.buttonClicked = true;
+      const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+      actionBuyRuby(gameId, playerId)
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error);
+    }
   }
 
   render() {

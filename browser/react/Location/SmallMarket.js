@@ -26,16 +26,20 @@ class SmallMarket extends React.Component {
   }
 
   handleTradeGood(){
-    const playerOffer = this.state;
-    const { smallMarketData, gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
-    const currentMarketIdx = smallMarketData.currentMarketIdx;
+    if (!this.buttonClicked) {
+      this.buttonClicked = true;
+      const playerOffer = this.state;
+      const { smallMarketData, gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+      const currentMarketIdx = smallMarketData.currentMarketIdx;
 
-    actionTradeGoods(gameId, playerId, 'smallMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
-      .then(() => {
-        actionChangeTile(gameId, playerId, 'smallMarket', currentMarketIdx)
-      })
-      .then(() => handleActionEnd())
-      .catch(console.error)
+      actionTradeGoods(gameId, playerId, 'smallMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
+        .then(() => {
+          actionChangeTile(gameId, playerId, 'smallMarket', currentMarketIdx)
+        })
+        .then(() => handleActionEnd())
+        .then(() => { this.buttonClicked = false })
+        .catch(console.error)
+    }
   }
 
   handleGoodClick(event){
