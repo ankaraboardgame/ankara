@@ -165,7 +165,7 @@ class LobbyContainer extends React.Component {
               this.props.gameId &&
               <Link to="/game">
                 <div id="lobby-warning">
-                  <p>You are currently in a game. Click to go to the game room.</p>
+                  <p>You are currently in a game. <br /> Click to go to the game room.</p>
                 </div>
               </Link>
             }

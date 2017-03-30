@@ -121,7 +121,7 @@ class ModalRootContainer extends React.Component {
   render() {
     const {
       userId, userMoney, gameId, modalType, payload,
-      dialog, gemstoneData, userAbilities, greatMosqueData, 
+      dialog, gemstoneData, userAbilities, greatMosqueData,
       smallMosqueData, userWheelbarrow, largeMarketData,
       smallMarketData, largeMarketTile, smallMarketTile,
       caravansaryData, closeModal, smuggler
@@ -158,7 +158,7 @@ class ModalRootContainer extends React.Component {
               // handler functions
               handleMoreOptionsClick={this.handleMoreOptionsClick}
               handleEndTurn={this.handleEndTurn}
-              handleActionEnd={this.handleActionEnd}     
+              handleActionEnd={this.handleActionEnd}
             />
             {
               payload && Turn_Dialog_Components[dialog] ?
