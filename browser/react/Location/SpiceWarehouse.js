@@ -12,14 +12,13 @@ class SpiceWarehouse extends React.Component {
     super(props);
 
     this.handleMaxGoodEndTurn = this.handleMaxGoodEndTurn.bind(this);
-
   }
 
   handleMaxGoodEndTurn(){
 
     if (!this.buttonClicked) {
+      const { gameId, playerId, handleActionEnd } = this.props;
       this.buttonClicked = true;
-      const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
       actionMaxGood(gameId, playerId, 'spice')
         .then(() => handleActionEnd())
         .then(() => { this.buttonClicked = false })
@@ -37,20 +36,21 @@ class SpiceWarehouse extends React.Component {
   }
 
   renderAction() {
-    const style = { margin: 12 };
     const { handleMoreOptionsClick } = this.props;
+    const style = { margin: 12 };
+
     return (
       <div id="turn-dialog-half">
         <div id="text-box">
           <div className="turn-dialog-column">
             <p>Look at all the spices! <br /><br />Come back later if you need more! <br /></p>
           </div>
-          <RaisedButton label="Max spice and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
           <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
-          </div>
+          <RaisedButton label="Max spice and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn} />
+        </div>
       </div>
     );
   }
-}
+};
 
 export default SpiceWarehouse;

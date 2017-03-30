@@ -1,5 +1,6 @@
 import React from 'react';
 
+/** ------ Presentational Component ------- */
 const Assistant = ({ playerNum }) => {
   return (
     <div>

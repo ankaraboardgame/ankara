@@ -1,12 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import { tada, flipY } from 'react-animations';
+import { StyleSheet, css } from 'aphrodite';
 
+/** ------- Imported Components ------- */
 import Modal from '../Modal/Modal';
 import GameSummary from './GameSummary';
 
+/** ------- Helper functions ------ */
 import { whoIsWinner } from '../../utils/winner';
-import { hideModal } from '../../redux/action-creators/modals';
+
+/** ------- Selectors ------ */
+import { getPlayerMap, getGameMerchants } from '../../redux/reducers/game-reducer';
+
+/** ------- Component -------- */
+
+const animateStyles = StyleSheet.create({
+  tada: {
+    animationName: tada,
+    animationDuration: '1s'
+  },
+  flipY: {
+    animationName: flipY,
+    animationDuration: '2s'
+  }
+});
 
 class DisplayWinner extends React.Component {
   constructor(props) {
@@ -15,8 +34,8 @@ class DisplayWinner extends React.Component {
     this.handleEndGame = this.handleEndGame.bind(this);
   }
 
-  handleEndGame (){
-    this.props.closeModal();
+  handleEndGame() {
+
   }
 
   render() {
@@ -25,7 +44,7 @@ class DisplayWinner extends React.Component {
     return (
       <Modal>
         <div id="winner-container">
-          <div id="winner-text-box">
+          <div className={css(animateStyles.tada)} id="winner-text-box">
             <text id="winner-text">Winner is {winner && playerMap[winner.id]}</text>
           </div>
           <GameSummary merchants={merchants} playerMap={playerMap} />
@@ -38,13 +57,10 @@ class DisplayWinner extends React.Component {
   }
 }
 
-const mapStateToProps = (state, { merchants, playerMap }) => ({
-  playerMap,
-  merchants
+/** -------- Higher Order Component -------- */
+const mapStateToProps = state => ({
+  playerMap: getPlayerMap(state),
+  merchants: getGameMerchants(state)
 });
 
-const mapDispatchToProps = dispatch => ({
-  closeModal: () => dispatch(hideModal()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(DisplayWinner);
+export default connect(mapStateToProps)(DisplayWinner);
