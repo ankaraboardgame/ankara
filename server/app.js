@@ -93,10 +93,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500).send(err.message);
 });
 
-/** Game logger */
-// const GameLogger = require('./GameLogger');
-// GameLogger();
-
 /** Starting Server */
 if (module === require.main) {
 	const PORT = process.env.PORT || 1337;
