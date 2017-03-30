@@ -10,23 +10,24 @@ import { ACTION, MORE_OPTIONS } from '../Modal/turn_types';
 class Wainwright extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       extBought: false
     }
+
     this.handleBuyExtension = this.handleBuyExtension.bind(this);
     this.handleBuyExtensionEarnRuby = this.handleBuyExtensionEarnRuby.bind(this);
-
   }
 
   handleBuyExtension(){
-    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+    const { gameId, playerId } = this.props;
     this.setState({ extBought: true })
     actionBuyWbExt(gameId, playerId)
       .catch(console.error)
   }
 
   handleBuyExtensionEarnRuby(){
-    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+    const { gameId, playerId } = this.props;
     this.setState({ extBought: true })
     actionBuyWbExt(gameId, playerId)
       .then(() => {
@@ -47,17 +48,18 @@ class Wainwright extends React.Component {
   renderAction() {
     const style = { margin: 12 };
     const { playerId, userWheelbarrow, handleActionEnd, handleMoreOptionsClick } = this.props;
-    const extBought = this.state.extBought;
+    const { extBought } = this.state;
+
     return (
       <div id="turn-dialog-half">
         {
-            userWheelbarrow.money < 7 && !extBought ?
+          userWheelbarrow.money < 7 && !extBought ?
             <div>
               <div id="text-box">
                 <p>Sorry, you do not have enough money at this time. End your turn.</p>
               </div>
-              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
               <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(MORE_OPTIONS)} />
+              <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
             </div>
             : userWheelbarrow.size === 4 ?
             <div>
@@ -79,8 +81,8 @@ class Wainwright extends React.Component {
                 }
               </div>
               <div id="market-row">
-                <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
                 <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(MORE_OPTIONS)} />
+                <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
               </div>
             </div>
             :
@@ -98,6 +100,6 @@ class Wainwright extends React.Component {
       </div>
     );
   }
-}
+};
 
 export default Wainwright;

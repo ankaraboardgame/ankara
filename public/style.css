@@ -9,7 +9,7 @@ html body {
 }
 
 #game-title {
-  width: 25%;
+  width: 30%;
   padding: 10px 0px 10px 0px;
 }
 
@@ -17,9 +17,44 @@ html body {
   margin: 20px 40px 10px 40px;
 }
 
+text {
+  font-family: Garamond;
+  font-size: 20px;
+  font-variant: small-caps;
+}
+
+p {
+  font-family: Garamond;
+  font-size: 20px;
+  font-variant: small-caps;
+}
+
+.example-enter {
+  opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
 /* ------- SPLASH PAGE ----- */
 
 #splash-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100vh;
   display: flex;
@@ -175,6 +210,11 @@ img.bonusCards {
 
 /* ------- GAME CONTAINER ---- */
 #game-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -199,6 +239,7 @@ img.bonusCards {
 .player-icons {
   width: 45px;
   height: 45px;
+  border-radius: 45px;
   border: 2px solid #677b80;
   -webkit-box-shadow: 3px 3px 2px 0px rgba(0,0,0,0.75);
   -moz-box-shadow: 3px 3px 2px 0px rgba(0,0,0,0.75);
@@ -262,9 +303,10 @@ img.bonusCards {
   flex-direction: column;
   justify-content: center;
   align-self: center;
-  width: 150px;
+  min-width: 150px;
+  width: auto;
   height: auto;
-  color: white;
+  color: black;
   z-index: 2;
   position: absolute;
   left: 130px;
@@ -473,6 +515,11 @@ img.bonusCards {
 /* -------- LOBBY ------- */
 
 #lobby-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100vh;
   background-image: url('images/splash-background.jpg');
@@ -577,6 +624,8 @@ ul.gamelog-list {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   height: 100%;
   width: 100%;
   z-index: 1;
@@ -723,12 +772,12 @@ footer .badge {
 #footer-container {
   position: fixed;
   bottom: 0;
+  left: 25vh;
+  width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  left: 50%;
-  margin-left: -400px;
 }
 
 #new-footer {
@@ -826,31 +875,32 @@ footer .badge {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #d0cabe;
-  border-radius: 6px;
+  background-image: url('images/game-summary.png');
+  background-size: 100% 100%;
+  width: 700px;
 }
 
 #winner-text-box {
-  margin: 20px 0px 20px 0px;
+  margin: 35px 0px 8px 0px;
   padding: 0em 1em 0em 1em;
 }
 
 #winner-text {
-  color: darkslategray;
+  color: black;
   font-size: 40px;
   font-family: Garamond;
   font-weight: bold;
 }
 
 #end-game-btn {
-  margin: 20px 0px 20px 0px;
+  margin: 5px 0px 30px 0px;
 }
 
 #game-summary {
-  background-color: rgba(215, 117, 79, .1);
+  margin: 10px 50px 10px 50px;
   padding: 1em 1em 1em 1em;
-  border-top: 1px solid rgba(255,255,255,.5);
-  border-bottom: 1px solid rgba(255,255,255,.5);
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
 }
 
 #game-summary-header {
@@ -861,7 +911,7 @@ footer .badge {
 }
 
 #game-header-text {
-  color: darkslategray;
+  color: black;
   font-family: Garamond;
   font-variant: small-caps;
   text-align: left;
@@ -870,60 +920,38 @@ footer .badge {
   text-shadow: 3px 1px 1px rgba(150, 150, 150, 0.29);
 }
 
-table {
-  table-layout: auto!important;
-  margin-left: 30px;
-  margin-bottom: 5px;
-  width: 100%;
-  border-collapse: collapse;
-  font-family: Garamond;
-  color: black;
+#game-statistics-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-table tr td {
-  border-top: 1px solid hsla(0,0%,100%,.06)!important;
+#game-stat-head-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-weight: bold;
+  font-size: 25px;
+  width: 550px;
+  padding-bottom: 5px;
+  margin: 5px 10px 2px 10px;
+  border-bottom: 1px solid black;
 }
 
-thead {
-  display: table-header-group;
-  vertical-align: middle;
-  border-bottom: 1px solid rgba(255,255,255,.5);
+.game-stat-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 550px;
+  padding-bottom: 5px;
+  margin: 5px 10px 5px 10px;
+  border-bottom: 1px solid darkslategray;
 }
 
-.tr-game-summary {
-  display: table-row;
-  background-color: #d0cabe;
-}
-
-table tr:nth-child(2n) {
-  background-color: rgba(0,0,0,.015);
-}
-
-.th-center {
-  color: darkslategrey;
-  padding: 10px 10px 10px 10px;
-  font-size: 20px;
-  font-family: Garamond;
-  font-variant: small-caps;
+.game-state-text {
   text-align: center;
-}
-
-.td-center {
-  color: darkslategrey;
-  padding: 10px 10px 10px 10px;
-  font-size: 17px;
-  font-family: Garamond;
-  font-variant: small-caps;
-  text-align: center;
-}
-
-.td-name {
-  color: darkslategrey;
-  padding: 10px 10px 10px 10px;
-  font-size: 17px;
-  font-family: Garamond;
-  font-variant: small-caps;
-  text-align: left;
+  width: 100px;
 }
 
 /* ------- Transitions ---------- */
@@ -954,4 +982,12 @@ table tr:nth-child(2n) {
 .board-anim-appear.board-anim-appear-active {
   opacity: 1;
   transition: opacity 2s ease-in;
+}
+
+/* ---------- End Game ------------ */
+#last-round-container {
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  z-index: 1000;
 }

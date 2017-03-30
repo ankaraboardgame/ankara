@@ -13,6 +13,7 @@ export default function (state = initialState, action) {
   const newState = Object.assign({}, state);
 
   switch (action.type) {
+
     case SETTING_GAME:
       newState.id = action.id;
       break;
@@ -20,8 +21,9 @@ export default function (state = initialState, action) {
     default:
       return state;
   }
+
   return newState;
-}
+};
 
 /** -------- Selectors ----------- */
 export const getGameId = state => {
@@ -102,6 +104,18 @@ export const getSmallMosqueData = state => {
 export const getLastRound = state => {
   const gameData = getGameData(state);
   return gameData && gameData.lastRound;
+};
+
+export const getLargeMarketTile = state => {
+  const largeMarketData = getLargeMarketData(state);
+  const currentLargeMarketIdx = largeMarketData.currentMarketIdx;
+  return largeMarketData && largeMarketData.demandTiles[currentLargeMarketIdx];
+};
+
+export const getSmallMarketTile = state => {
+  const smallMarketData = getSmallMarketData(state);
+  const currentSmallMarketIdx = smallMarketData.currentMarketIdx;
+  return  smallMarketData && smallMarketData.demandTiles[currentSmallMarketIdx];
 };
 
 /** Game Log */

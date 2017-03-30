@@ -22,14 +22,13 @@ class SmallMarket extends React.Component {
     this.handleTradeGood = this.handleTradeGood.bind(this);
     this.handleGoodClick = this.handleGoodClick.bind(this);
     this.handleTradeOfferReset = this.handleTradeOfferReset.bind(this);
-
   }
 
   handleTradeGood(){
     if (!this.buttonClicked) {
       this.buttonClicked = true;
       const playerOffer = this.state;
-      const { smallMarketData, gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+      const { smallMarketData, gameId, playerId, handleActionEnd } = this.props;
       const currentMarketIdx = smallMarketData.currentMarketIdx;
 
       actionTradeGoods(gameId, playerId, 'smallMarket', currentMarketIdx, playerOffer.fabric, playerOffer.fruit, playerOffer.heirloom, playerOffer.spice)
@@ -43,12 +42,10 @@ class SmallMarket extends React.Component {
   }
 
   handleGoodClick(event){
-    const { smallMarketData, userWheelbarrow } = this.props;
+    const { smallMarketTile, userWheelbarrow } = this.props;
     const good = event.target.id;
-    const currentMarketIdx = smallMarketData.currentMarketIdx;
-    const currentDemandTile = smallMarketData.demandTiles[currentMarketIdx];
     let quantity;
-    if(this.state[good] < currentDemandTile[good] && this.state[good] < userWheelbarrow[good]){
+    if(this.state[good] < smallMarketTile[good] && this.state[good] < userWheelbarrow[good]){
       this.setState({
         [event.target.id]: ++this.state[event.target.id],
         tradeOffer: true
@@ -67,13 +64,11 @@ class SmallMarket extends React.Component {
   }
 
   render() {
-    const { smallMarketData } = this.props;
-    const currentMarketIdx = smallMarketData.currentMarketIdx;
-    const currentDemandTile = smallMarketData.demandTiles[currentMarketIdx];
+    const { smallMarketTile } = this.props;
 
     return (
       <div>
-        <img src={`images/market/small/${currentDemandTile.img}`} id="img-location" />
+        <img src={`images/market/small/${smallMarketTile.img}`} id="img-location" />
         { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
       </div>
     );
@@ -81,7 +76,9 @@ class SmallMarket extends React.Component {
 
   renderAction() {
     const { handleActionEnd, handleMoreOptionsClick } = this.props;
+    const { tradeOffer } = this.state;
     const style = { margin: 12 };
+
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
@@ -94,15 +91,14 @@ class SmallMarket extends React.Component {
           <img id="heirloom" src="./images/cart/heirlooms.png" onTouchTap={this.handleGoodClick} /><p>{this.state.heirloom}</p>
         </div>
         <div id="market-row">
-          <RaisedButton label="Trade Goods" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeGood}  />
-          <RaisedButton label="Reset" style={style} disabled={!this.state.tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
+          <RaisedButton label="Trade Goods" style={style} disabled={!tradeOffer} primary={true} onTouchTap={this.handleTradeGood}  />
+          <RaisedButton label="Reset" style={style} disabled={!tradeOffer} primary={true} onTouchTap={this.handleTradeOfferReset}  />
         </div>
-        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
-
+        <RaisedButton label="End turn" style={style} primary={true} onTouchTap={handleActionEnd}  />
       </div>
     );
   }
-}
+};
 
 export default SmallMarket;

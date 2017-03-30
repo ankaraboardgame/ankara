@@ -1,5 +1,6 @@
 import React from 'react';
 
+/** ------ Presentational Component ------- */
 const Smuggler = props => {
   return (
     <div style={{ opacity: 1, color: 'black' }}>

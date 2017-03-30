@@ -1,13 +1,16 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
+/** ------- Helper functions ------ */
 import { mapCoordToLocation } from '../../utils/board';
 
+/** ------- Game logic routes ------ */
 import { bonusOneGood } from '../../routes/bonus';
 
 /** ------- Constants -------- */
 import { MORE_OPTIONS } from '../Modal/turn_types';
 
+/** ------- Component -------- */
 class SelectBonusGood extends React.Component {
   constructor(props) {
     super(props);

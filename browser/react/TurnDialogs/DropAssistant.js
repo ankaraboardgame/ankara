@@ -1,13 +1,17 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
+/** ------- Game logic routes ------ */
 import { dropAssistant } from '../../routes/move';
+
+/** ------- Helper functions ------- */
 import { merchantsOnLocation } from '../../utils/assistants';
 import { mapCoordToLocation } from '../../utils/board';
 
 /** ------- Constants -------- */
 import { MERCHANT_ENCOUNTER, ACTION } from '../Modal/turn_types';
 
+/** ------- Component -------- */
 class DropAssistant extends React.Component {
   constructor(props) {
     super(props);
