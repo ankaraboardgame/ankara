@@ -7,9 +7,6 @@ import { fbDB } from '../../firebase';
 
 import { toast } from 'react-toastify';
 
-// import MenuItem from 'material-ui/MenuItem';
-import _ from 'lodash';
-
 /** -------- Selectors ---------- */
 import { getGameId, getPlayerMap } from '../../redux/reducers/game-reducer';
 import { getUserId } from '../../redux/reducers/user-reducer';

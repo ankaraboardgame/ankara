@@ -11,6 +11,14 @@ class TitlePage extends React.Component {
       displayGameRules: false,
       displayLinks: false,
     }
+
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+  }
+
+  handleMouseMove(event){
+    this.setState({
+      mouseX: event.pageX
+    })
   }
 
   handleOnClick(link) {
@@ -30,24 +38,44 @@ class TitlePage extends React.Component {
   }
 
   render() {
+    const parallax = [
+      {
+        background: 'url("images/splash_bg_3a.png") no-repeat center center',
+        left: 0 + (900 - this.state.mouseX) / 100,
+        zIndex: -10
+      },
+      {
+        background: 'url("images/splash_bg_2a.png") no-repeat center center',
+        left: 0 + (900 - this.state.mouseX - 900) / 200,
+        zIndex: -3
+      }
+    ]
+
     return (
       <div id="splash-page">
-        <div id="splash-title">
-          <img src={`images/Ankara-Title.png`} style={{width: '100%'}}/>
+        <div className="parallax">
+          <div className="parallax-bg" style={parallax[0]} />
+          <div className="parallax-bg" style={parallax[1]} />
         </div>
-        <div id="splash-menu">
-          {
-            !this.state.displayAbout && !this.state.displayGameRules && !this.state.displayLinks && this.renderMenu()
-          }
-          {
-            this.state.displayAbout && this.renderAbout()
-          }
-          {
-            this.state.displayGameRules && this.renderGameRules()
-          }
-          {
-            this.state.displayLinks && this.renderLinks()
-          }
+        <div id="background-fixed" onMouseMove={this.handleMouseMove}>
+          <div id="splash-title">
+            <img src={'images/Ankara-Title.png'} style={{width: '100%'}}/>
+          </div>
+
+          <div id="splash-menu">
+            {
+              !this.state.displayAbout && !this.state.displayGameRules && !this.state.displayLinks && this.renderMenu()
+            }
+            {
+              this.state.displayAbout && this.renderAbout()
+            }
+            {
+              this.state.displayGameRules && this.renderGameRules()
+            }
+            {
+              this.state.displayLinks && this.renderLinks()
+            }
+          </div>
         </div>
       </div>
     );
