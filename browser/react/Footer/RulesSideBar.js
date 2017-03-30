@@ -20,7 +20,7 @@ export default class SideBar extends Component {
       <div>
         <RaisedButton
           label="Player Rules"
-          secondary={ true }
+          default={ true }
           onTouchTap={this.handleToggle} />
         <Drawer
           containerStyle={{backgroundColor: 'transparent', display: 'flex', alignItems: 'center', boxShadow: 'none'}}

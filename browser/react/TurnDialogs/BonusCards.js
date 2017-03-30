@@ -78,7 +78,7 @@ class BonusCards extends Component {
             </div>
           </div>
       </div>
-        <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(PLAY_BONUS)} />
+        <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(MORE_OPTIONS)} />
     </div>
     );
   }
