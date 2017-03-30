@@ -24,7 +24,7 @@ class SelectBonusGood extends React.Component {
     bonusOneGood(gameId, playerId, selectedGood)
     .then(() => {
       closeModal();
-      openModal(mapCoordToLocation(currentPosition), { currentPosition, dialog: MORE_OPTIONS });
+      openModal(mapCoordToLocation(currentPosition), { currentPosition, dialog: PLAY_BONUS });
     })
     .catch(console.error)
   }

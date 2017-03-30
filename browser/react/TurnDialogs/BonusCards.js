@@ -9,7 +9,7 @@ import { checkMoney } from '../../utils/options';
 import { mapCoordToLocation, mapLocationToCoord } from '../../utils/board';
 
 /** ------- Constants -------- */
-import { ACTION, MORE_OPTIONS, SELECT_BONUS_GOOD, PLAY_BONUS } from '../Modal/turn_types';
+import { MORE_OPTIONS, SELECT_BONUS_GOOD } from '../Modal/turn_types';
 
 /** ------- Component -------- */
 class BonusCards extends Component {

@@ -6,7 +6,7 @@ import { tile2LiraFor1Good, tile2LiraToReturn1Assistant } from '../../routes/bon
 
 /** ------- Helper functions ------ */
 import { mapCoordToLocation, mapLocationToCoord } from '../../utils/board';
-import { assistantsOutLocations, getPlayerMosqueTiles, checkMoneyAndGoods, checkWarehouseCondition } from '../../utils/options';
+import { assistantsOutLocations, getPlayerMosqueTiles, checkMoneyAndGoods, checkWarehouseCondition, checkMoney } from '../../utils/options';
 
 /** ------- Constants -------- */
 import { ACTION, MORE_OPTIONS } from '../Modal/turn_types';
@@ -90,6 +90,7 @@ class MosqueTiles extends Component {
       const { addText, assistantReturn, selectTileGood } = this.state;
       const assistantsOut = userAssistants.out;
       const assistantsOutLocationsArray = assistantsOutLocations(assistantsOut);
+      const sufficientMoney = checkMoney(userWheelbarrow.money);
       const tileArray = getPlayerMosqueTiles(userAbilities);
       const fruitCondition = checkMoneyAndGoods(userWheelbarrow, 'fruit');
       const fabricCondition = checkMoneyAndGoods(userWheelbarrow, 'fabric');
