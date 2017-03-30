@@ -16,6 +16,7 @@ class TitlePageContainer extends React.Component {
       displayAbout: false,
       displayGameRules: false,
       displayLinks: false,
+      mouseX: 900
     }
 
     this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -38,7 +39,7 @@ class TitlePageContainer extends React.Component {
         displayGameRules: false,
         displayLinks: false
       });
-    };
+    }
   }
 
   render() {
@@ -64,7 +65,7 @@ class TitlePageContainer extends React.Component {
         </div>
         <div id="background-fixed" onMouseMove={this.handleMouseMove}>
           <div id="splash-title">
-            <img src={'images/Ankara-Title.png'} style={{width: '100%'}}/>
+            <img src={'images/Ankara-Title.png'} style={{width: '100%'}} />
           </div>
           <div id="splash-menu">
             {

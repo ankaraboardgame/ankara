@@ -23,10 +23,8 @@ text {
   font-variant: small-caps;
 }
 
-p {
-  font-family: Garamond;
-  font-size: 20px;
-  font-variant: small-caps;
+a {
+  text-decoration: none;
 }
 
 .example-enter {
@@ -137,6 +135,7 @@ p {
   margin: 10px 0px 10px 0px;
   width: 200px;
   border-bottom: 1px solid darkslategray;
+  cursor: pointer;
 }
 
 .menu-text {
@@ -532,7 +531,7 @@ img.bonusCards {
   bottom: 0;
   width: 100%;
   height: 100vh;
-  background-image: url('images/splash-background.jpg');
+  background-image: url('images/splash_bg.jpg');
   background-size: 100% 100%;
   display: flex;
   align-items: center;
@@ -540,23 +539,23 @@ img.bonusCards {
 }
 
 #lobby-warning {
-  background-color: rgba(255,0,0,0.2);
+  width: 100%;
+  background-color: darkred;
+  opacity: 0.8;
   padding: 20px 0px 20px 0px;
-  color: white;
-  font-size: 14pt;
+  margin-bottom: 50px;
   text-align: center;
-  border-radius: 20px;
   box-shadow: 10px 10px 10px #222;
-  margin: 30px 0px 30px 0px;
-  width: 500px;
 }
 
-a {
+#lobby-warning-link {
   text-decoration: none;
+  color: white;
+  font-size: 14pt;
 }
 
 #create-room-button {
-  text-align: center
+  text-align: center;
   width: 500px;
 }
 
