@@ -40,13 +40,13 @@ class TitlePage extends React.Component {
   render() {
     const parallax = [
       {
-        background: 'url("images/splash_bg_4.png") no-repeat center center',
+        background: 'url("images/splash_bg_3a.png") no-repeat center center',
         left: 0 + (900 - this.state.mouseX) / 100,
         zIndex: -10
       },
       {
-        background: 'url("images/splash_bg_2.png") no-repeat center center',
-        left: 0 + (900 - this.state.mouseX - 900) / 300,
+        background: 'url("images/splash_bg_2a.png") no-repeat center center',
+        left: 0 + (900 - this.state.mouseX - 900) / 200,
         zIndex: -3
       }
     ]
