@@ -87,7 +87,7 @@ class ChatContainer extends React.Component {
       <div className="chat-container">
         <Card style={ chatStyle } expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
           <CardHeader
-            title={`Chat (${userName})`}
+            title={`Chat (${username})`}
             actAsExpander={true}
             showExpandableButton={true}
             onClick={this.handleToggle}

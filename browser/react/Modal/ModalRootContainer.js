@@ -174,7 +174,7 @@ class ModalRootContainer extends React.Component {
     const {
       userId, userMoney, userBonusCards, userAbilities, greatMosqueData,
       smallMosqueData, gameId, merchants, dialog, payload, currentPosition,
-      openModal, closeModal, nextDialog, userWheelbarrow
+      openModal, closeModal, nextDialog, userWheelbarrow, userAssistants
     } = this.props;
     const SpecificTurnDialog = Turn_Dialog_Components[dialog];
 
