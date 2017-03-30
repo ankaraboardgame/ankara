@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 import { postGameChat } from '../../routes/chat.js';
 
@@ -23,6 +24,11 @@ class ChatContainer extends React.Component {
     this.handleExpandChange = this.handleExpandChange.bind(this);
     this.handleTextField = this.handleTextField.bind(this);
     this.handlePostMessage = this.handlePostMessage.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
+  }
+
+  handleToggle (){
+    this.setState({ expanded: !this.state.expanded});
   }
 
   handleExpandChange (expanded) {
@@ -73,7 +79,7 @@ class ChatContainer extends React.Component {
 
     return (
         <div className="chat-container">
-          <Card style={ chatStyle } onExpandChange={this.handleExpandChange}>
+          <Card style={ chatStyle } expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
             <CardHeader
               title={`Chat (${userName})`}
               actAsExpander={true}
@@ -82,40 +88,53 @@ class ChatContainer extends React.Component {
             />
 
             <CardText expandable={true}>
+              <Tabs>
+                <Tab label="Chat" onClick={this.handleToggle}>
 
-              <div className="chat-log">
-                <ul className="chat-list">
-                {
-                  chats
-                  .sort((a, b) => a.createdAt - b.createdAt)
-                  .map((chat, i) => {
-                    return (
-                      <li key={i} ref={(ref) => this['_chat' + i] = ref} className="chat-message">
-                        <span style={{fontWeight: 'bold'}}>
-                          {chat.name}
-                        </span>: {chat.message}
-                      </li>
-                    )
-                  })
-                }
-                </ul>
-              </div>
+                  <div className="chat-log">
+                    <ul className="chat-list">
+                    {
+                      chats
+                      .sort((a, b) => a.createdAt - b.createdAt)
+                      .map((chat, i) => {
+                        return (
+                          <li key={i} ref={(ref) => this['_chat' + i] = ref} className="chat-message">
+                            <span style={{fontWeight: 'bold'}}>
+                              {chat.name}
+                            </span>: {chat.message}
+                          </li>
+                        )
+                      })
+                    }
+                    </ul>
+                  </div>
 
-              <form onSubmit={this.handlePostMessage}>
-                <TextField
-                  onChange={this.handleTextField}
-                  value={this.state.message}
-                  hintText="Message..."
-                  style={{ marginLeft: 5, width: 300 }} />
-                <div style={{ textAlign: 'center' }}>
-                  <RaisedButton disabled={!this.state.message.trim().length} type="submit">
-                    SEND
-                  </RaisedButton>
-                </div>
-              </form>
+                  <form onSubmit={this.handlePostMessage}>
+                    <TextField
+                      onChange={this.handleTextField}
+                      value={this.state.message}
+                      hintText="Message..."
+                      style={{ marginLeft: 5, width: 300 }} />
+                    <div style={{ textAlign: 'center' }}>
+                      <RaisedButton disabled={!this.state.message.trim().length} type="submit">
+                        SEND
+                      </RaisedButton>
+                    </div>
+                  </form>
 
+                </Tab>
+                <Tab label="Game log">
+
+                  <CardText expandable={true}>
+
+                    <div className="game-log">
+                      game log goes here
+                    </div>
+
+                  </CardText>
+                </Tab>
+              </Tabs>
             </CardText>
-
           </Card>
         </div>
     )
