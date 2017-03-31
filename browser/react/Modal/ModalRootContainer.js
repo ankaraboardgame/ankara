@@ -205,7 +205,7 @@ class ModalRootContainer extends React.Component {
       />
     );
   }
-};
+}
 
 /** -------- Container ---------- */
 const mapStateToProps = state => ({

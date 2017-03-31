@@ -52,7 +52,7 @@ class DropAssistant extends React.Component {
             style={{ margin: 12 }}
             primary={true}
             onTouchTap={this.handleAssistant}
-            disabled={!payload.assistantCount}
+            disabled={payload.assistantCount < 1}
             />
           <RaisedButton
             label="End turn now"
