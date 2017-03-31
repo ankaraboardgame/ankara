@@ -136,9 +136,9 @@ router.post('/market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloo
           wheelbarrow = snap.val()
         })
         .then(() => {
-          for(let good in tradeOffer){
-            if(marketDemand[good] > 0){
-              if(tradeOffer[good] <= marketDemand[good]){
+          for (let good in tradeOffer){
+            if (marketDemand[good] > 0){
+              if (tradeOffer[good] <= marketDemand[good]){
                 sum += +tradeOffer[good]
                 wheelbarrow[good] -= tradeOffer[good]
               }
