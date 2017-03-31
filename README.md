@@ -1,2 +1,3 @@
 ANKARA BOARD GAME
-<img src="/images/AnkaraBoardGame.png" />
+
+<img src="/public/images/AnkaraBoardGame.png" />
