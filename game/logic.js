@@ -15,6 +15,7 @@ function Game (gameId, usersObj){
   this.id = gameId;
   this.playerIds = Object.keys(usersObj);
   this.playerMap = usersObj;
+  this.left = 0;
   this.smallMosque = {
     fabric: 2,
     spice: 2
@@ -53,8 +54,7 @@ function Merchant (id, i){
   this.number = i;
   this.position = new Position();
   this.assistants = {
-    count: 4,
-    out: {}
+    count: 4
   };
   this.bonusCards = {
     oneGood: 0,
