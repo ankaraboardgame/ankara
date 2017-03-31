@@ -37,7 +37,7 @@ const AboutUs = ({handleOnClick}) => {
           <text style={textStyle}>Our team consists of Maria Xia, Sokmean Nou, Jaekwang Seo, and Daniel Park.</text>
           <text style={textStyle}>You can visit our Linkedin profiles below:</text>
           <div className="linked-in-profiles">
-            <a href="https://www.linkedin.com/in/maria-xia-2444b472/" target="_blank" className="linked-in-text">
+            <a href="https://www.linkedin.com/in/mariaxia/" target="_blank" className="linked-in-text">
               <img src="images/linkedin-logo.png" style={{width: '18px'}} />
               <text style={textStyle}>Maria Xia</text>
             </a>
@@ -49,7 +49,7 @@ const AboutUs = ({handleOnClick}) => {
             </a>
           </div>
           <div className="linked-in-profiles">
-            <a href="https://www.linkedin.com/in/jaekwang-seo-53351332/" target="_blank" className="linked-in-text">
+            <a href="https://www.linkedin.com/in/jaekwang-seo/" target="_blank" className="linked-in-text">
               <img src="images/linkedin-logo.png" style={{width: '18px'}} />
               <text style={textStyle}>Jaekwang Seo</text>
             </a>
