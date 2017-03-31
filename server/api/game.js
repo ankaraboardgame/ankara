@@ -56,7 +56,15 @@ router.param('gameId', (req, res, next, gameId) => {
 
 // end one specific game
 router.post('/:gameId/end', (req, res, next) => {
-  res.send(req.game);
+  const userId = req.body.userId;
+  usersRef.child(userId).child('game').remove()
+  .then(() => {
+    return req.gameRef.remove()
+  })
+  .then(() => {
+    res.sendStatus(204);
+  })
+  .catch(next);
 });
 
 // player-specific routes

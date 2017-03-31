@@ -43,7 +43,7 @@ const GameSummary = ({merchants, playerMap}) => {
           })
         }
       </div>
-    </div>       
+    </div>
   );
 };
 
