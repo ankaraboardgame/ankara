@@ -23,11 +23,11 @@ const router = module.exports = require('express').Router();
 router.post('/drop', (req, res, next) => {
   const coords = req.body.coordinates;
   const assistantsRef = req.playerRef.child('assistants');
-
   assistantsRef.child('count')
-    .transaction(currCount => {
-      if (currCount < 1) throw new Error('Attempted to drop assistant when none left.')
-      return --currCount;
+    .transaction(count => {
+      if (count === null) count = 4;
+      if (count < 1) throw new Error('Attempted to drop assistant when none left.')
+      return --count;
     })
     .then(() => {
       return assistantsRef.child('out').push(coords);
