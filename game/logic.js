@@ -3,7 +3,7 @@ const {
   bonusCards,
   largeMarketDemandTiles,
   smallMarketDemandTiles,
-  getRandomPosition,
+  getRandomPosition
 } = require('./accessories.js');
 
 /**
@@ -52,7 +52,7 @@ function Game (gameId, usersObj){
 function Merchant (id, i){
   this.id = id;
   this.number = i;
-  this.position = new Position();
+  this.position = new Position(getRandomPosition(4, 3));
   this.assistants = {
     count: 4
   };
@@ -93,9 +93,28 @@ function Merchant (id, i){
   };
 }
 
-function Position (coords = '0,0', possibleMoves = ['1,0', '2,0', '0,1', '1,1', '0,2']) {
-  this.coordinates = coords;
-  this.possibleMoves = possibleMoves;
+function Position (coordinates) {
+  this.coordinates = coordinates;
+
+  const [x, y] = coordinates.split(',');
+  this.x = +x;
+  this.y = +y;
+
+  // to figure out possible moves, make combos of up, down, left right
+  const steps = [[0, 1], [0, -1], [-1, 0], [1, 0]]
+  // add one-step moves
+  const possibleMoves = steps.map(step => [this.x + step[0], this.y + step[1]].join(','))
+  // add two-step moves
+  for (let i = 0; i < steps.length; i++){
+    for (var j = 0; j < steps.length; j++){
+      const deltaX = this.x + steps[i][0] + steps[j][0];
+      const deltaY = this.y + steps[i][1] + steps[j][1];
+      possibleMoves.push([deltaX, deltaY].join(','))
+    }
+  }
+
+  this.possibleMoves = possibleMoves
+            .filter((coords, i) => possibleMoves.indexOf(coords) === i && coords !== this.coordinates)
 }
 
 module.exports = Game;
