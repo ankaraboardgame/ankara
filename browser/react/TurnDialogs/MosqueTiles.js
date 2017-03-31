@@ -42,28 +42,24 @@ class MosqueTiles extends Component {
           assistantReturn: false,
           selectTileGood: false
         });
-        break;
       case '2LiraToReturn1Assistant':
         return this.setState({
           addText: null,
           assistantReturn: true,
           selectTileGood: false
         });
-        break;
       case 'dieTurnOrRoll':
         return this.setState({
           addText: 'After you roll dice at the Tea House or Black Market, you can roll again if you wish.',
           assistantReturn: false,
           selectTileGood: false
         })
-        break;
       case '2LiraFor1Good':
         return this.setState({
           addText: null,
           assistantReturn: false,
           selectTileGood: true
         })
-        break;
       default:
         return;
       }

@@ -26,7 +26,7 @@ export default function (state = initialModalState, action) {
   }
 
   return newState;
-};
+}
 
 export const getModalType = state => (state.modal.modalType);
 
