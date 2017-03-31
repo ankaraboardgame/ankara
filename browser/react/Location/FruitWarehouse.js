@@ -12,20 +12,18 @@ class FruitWarehouse extends React.Component {
     super(props);
 
     this.handleMaxGoodEndTurn = this.handleMaxGoodEndTurn.bind(this);
-
   }
 
   handleMaxGoodEndTurn(){
 
     if (!this.buttonClicked) {
-      const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+      const { gameId, playerId, handleActionEnd } = this.props;
       this.buttonClicked = true;
       actionMaxGood(gameId, playerId, 'fruit')
         .then(() => handleActionEnd())
         .then(() => { this.buttonClicked = false })
         .catch(console.error);
     }
-
   }
 
   render() {
@@ -40,18 +38,19 @@ class FruitWarehouse extends React.Component {
   renderAction() {
     const { handleMoreOptionsClick } = this.props;
     const style = { margin: 12 };
+
     return (
       <div id="turn-dialog-half">
         <div id="text-box">
           <div className="turn-dialog-column">
-            <p>Look at all the fruits! <br /><br />Come back later if you need more! <br /></p>
+            <text>Look at all the fruits!<br />Come back later if you need more!</text>
           </div>
-          <RaisedButton label="Max fruit and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
           <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+          <RaisedButton label="Max fruit and end turn" style={style} primary={true} onTouchTap={this.handleMaxGoodEndTurn}  />
         </div>
       </div>
     );
   }
-}
+};
 
 export default FruitWarehouse;

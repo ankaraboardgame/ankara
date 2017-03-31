@@ -4,12 +4,10 @@ import chai, { expect } from 'chai';
 /** Action-creators */
 import { settingGame } from './action-creators/game';
 import { loadModal, hideModal } from './action-creators/modals';
-import { joinRoom, leaveRoom } from './action-creators/room';
 
 /** Reducers */
 import gameReducer from './reducers/game-reducer';
 import modalReducer from './reducers/modal-reducer';
-import roomReducer from './reducers/room-reducer';
 
 describe('Redux architecture', () => {
 

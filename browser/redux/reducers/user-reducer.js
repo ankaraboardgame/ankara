@@ -21,7 +21,6 @@ export default function (state = initialState, action) {
 
     default:
       return state;
-
   }
 
   return newState;
@@ -58,7 +57,7 @@ export const getUserWheelbarrow = state => {
 export const getUserBonusCards = state => {
   const userData = getUserData(state);
   return userData && userData.bonusCards;
-}
+};
 
 export const getUserAbilities = state => {
   const userData = getUserData(state);

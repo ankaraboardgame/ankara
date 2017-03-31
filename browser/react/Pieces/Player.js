@@ -1,6 +1,7 @@
 import React from 'react';
 import { DragSource } from 'react-dnd';
 
+/** ------ Presentational Component ------- */
 const Player = ({ connectDragSource, isDragging, playerNum }) => {
 
   const images = [
@@ -13,14 +14,14 @@ const Player = ({ connectDragSource, isDragging, playerNum }) => {
   return connectDragSource(
     <div style={{
       opacity: isDragging ? 0.5 : 1,
-      cursor: 'move',
-      color: 'black'
+      cursor: 'move'
     }}>
       <img src={images[playerNum]} className="player-icon" />
     </div>
   );
 }
 
+/** ------- React-DnD Higher Order Component ------- */
 const playerSource = {
   beginDrag(props) {
     return {};

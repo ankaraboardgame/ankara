@@ -1,13 +1,16 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
+/** ------- Helper functions ------ */
 import { mapCoordToLocation } from '../../utils/board';
 
+/** ------- Game logic routes ------ */
 import { bonusOneGood } from '../../routes/bonus';
 
 /** ------- Constants -------- */
-import { MORE_OPTIONS } from '../Modal/turn_types';
+import { PLAY_BONUS } from '../Modal/turn_types';
 
+/** ------- Component -------- */
 class SelectBonusGood extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +24,7 @@ class SelectBonusGood extends React.Component {
     bonusOneGood(gameId, playerId, selectedGood)
     .then(() => {
       closeModal();
-      openModal(mapCoordToLocation(currentPosition), { currentPosition, dialog: MORE_OPTIONS });
+      openModal(mapCoordToLocation(currentPosition), { currentPosition, dialog: PLAY_BONUS });
     })
     .catch(console.error)
   }
@@ -36,7 +39,7 @@ class SelectBonusGood extends React.Component {
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
-          <p>You played a Goods bonus card. Select 1 good of your choice.</p>
+          <text>You played a Goods bonus card. Select 1 good of your choice.</text>
         </div>
         <div id="market-row">
           <img src="./images/cart/fabric.png" onTouchTap={() => this.handleBonusGood('fabric')} />
@@ -44,7 +47,7 @@ class SelectBonusGood extends React.Component {
           <img src="./images/cart/spices.png" onTouchTap={() => this.handleBonusGood('spice')} />
           <img src="./images/cart/heirlooms.png" onTouchTap={() => this.handleBonusGood('heirloom')} />
         </div>
-        <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(MORE_OPTIONS)} />
+        <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(PLAY_BONUS)} />
       </div>
     )
   }

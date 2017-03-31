@@ -30,15 +30,14 @@ class BlackMarket extends React.Component {
   handleDiceRoll (rollSum){
     // Animate dice roll by setting rolled to true
     this.setState({ rolled: true })
-    const good = this.state.selectedGood;
+    const { selectedGood } = this.state;
     setTimeout(() => {
-      this.handleGetBlackMarketGoodsEndTurn(good, rollSum)
+      this.handleGetBlackMarketGoodsEndTurn(selectedGood, rollSum)
     }, 1200)
   }
 
   handleGetBlackMarketGoodsEndTurn (selectedGood, rollSum){
-    console.log('handleGetBlackMarketGoodEndTurn')
-    const { gameId, playerId, openModal, closeModal, handleActionEnd } = this.props;
+    const { gameId, playerId, handleActionEnd } = this.props;
     // Make axios call for black market action
     actionBlackMarket(gameId, playerId, selectedGood, rollSum)
       .then(() => handleActionEnd())
@@ -57,15 +56,14 @@ class BlackMarket extends React.Component {
   renderAction() {
     const style = { margin: 12 };
     const selectedClassName = 'highlighted';
-    const selectedGood = this.state.selectedGood;
+    const { selectedGood, rolled } = this.state;
     const { handleMoreOptionsClick, handleActionEnd, abilities } = this.props;
     const rerollAbility = abilities && abilities.fabric.acquired;
 
-    // Render Black market action dialog
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
-        <p>Pick up one fabric, spice, or fruit, then roll the dice to see if you get heirlooms!</p>
+        <text>Pick up one fabric, spice, or fruit, then roll the dice to see if you get heirlooms!</text>
         </div>
         <div>
           <div id="market-row">
@@ -89,9 +87,8 @@ class BlackMarket extends React.Component {
             selectedGood &&
             <Dice done={this.handleDiceRoll} canReroll={rerollAbility} />
           }
-
-          <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd} disabled={this.state.rolled} />
           <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+          <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd} disabled={rolled} />
         </div>
       </div>
     );

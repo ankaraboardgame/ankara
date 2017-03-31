@@ -23,28 +23,31 @@ const router = module.exports = require('express').Router();
 */
 router.post('/wainwright', (req, res, next) => {
   const WAINWRIGHT_PRICE = 7;
-
-  const payWainwrightPromise = req.playerRef
+  const promisesToUpdate = [];
+  promisesToUpdate.push(
+    req.playerRef
     .child('wheelbarrow/money')
-    .transaction(money =>  money - WAINWRIGHT_PRICE);
-
-  const expandWheelbarrowPromise = req.playerRef
+    .transaction(money =>  money - WAINWRIGHT_PRICE)
+  )
+  let wbSize;
+  promisesToUpdate.push(
+    req.playerRef
     .child('wheelbarrow/size')
-    .transaction(size => ++size);
-
-  Promise.all([payWainwrightPromise, expandWheelbarrowPromise])
+    .transaction(size => {
+      wbSize = size;
+      return ++size;
+    })
+  )
+  Promise.all(promisesToUpdate)
+  .then(() => { // if player maxes out wainwrights, grant her a ruby
+    if (wbSize === 4){
+      return req.playerRef
+        .child('wheelbarrow/ruby')
+        .transaction(ruby =>  ++ruby)
+    }
+  })
   .then(() => { res.sendStatus(204); })
   .catch(next);
-})
-
-/**
-* 1b. WAINWRIGHT - Earn a ruby
-* On the 5th extension purchase, player earns 1 ruby
-*/
-router.post('/wainwright/earnRuby', (req, res, next) => {
-  req.playerRef
-    .child('wheelbarrow/ruby')
-    .transaction(rubies => ++rubies);
 })
 
  /**
@@ -209,7 +212,7 @@ router.post('/mosque/:mosqueSize/:selectedTile/:goodRequired', (req, res, next) 
     .then(() => {
 
       abilities[tileType].acquired = true;
-      abilities[tileType].img = `./images/Mosque/tiles/mosque_tile_${tileType}_${tileNum}.jpg`;
+      abilities[tileType].img = `./images/mosque/tiles/mosque_tile_${tileType}_${tileNum}.jpg`;
 
       const updateMosqueRate = req.gameRef
       .child(`${mosque}/${tileType}`)
@@ -311,7 +314,9 @@ router.post('/caravansary/:bonusCardType', (req, res, next) => {
     .transaction(typeNum => ++typeNum)
     .then(() => {
       return req.gameRef.child('caravansary/index')
-        .transaction(i => ++i)
+        .transaction(i => {
+          return (i + 1) % 8;
+        })
     })
     .then(() => {
       res.sendStatus(204);

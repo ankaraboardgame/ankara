@@ -18,7 +18,7 @@ class GreatMosque extends React.Component {
   handleBuyGreatMosqueTile(selectedTile, goodRequired){
     if (!this.buttonClicked) {
       this.buttonClicked = true;
-      const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+      const { gameId, playerId, handleActionEnd } = this.props;
       actionBuyMosqueTile(gameId, playerId, 'greatMosque', selectedTile, goodRequired)
         .then(() => {
           if(selectedTile === 'heirloom'){
@@ -33,11 +33,10 @@ class GreatMosque extends React.Component {
 
   render() {
     const { greatMosqueData } = this.props;
-    const tile1 = greatMosqueData.heirloom;
-    const tile2 = greatMosqueData.fruit;
+
     return (
       <div>
-        <img src={`images/mosque/great/greatMosque_${tile1}_${tile2}.jpg`} id="img-location" />
+        <img src={`images/mosque/great/greatMosque_${greatMosqueData.heirloom}_${greatMosqueData.fruit}.jpg`} id="img-location" />
         { this.props.dialog && this.props.dialog === ACTION ? this.renderAction() : null }
       </div>
     );
@@ -52,7 +51,7 @@ class GreatMosque extends React.Component {
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
-          <p>You can buy a tile if you have enough ressources<br /> and if you have not acquired it yet. <br /><br />Earn a ruby when you have acquired both tiles.</p>
+          <text>You can buy a tile if you have enough ressources<br /> and if you have not acquired it yet. <br /><br />Earn a ruby when you have acquired both tiles.</text>
         </div>
           <div id="mosque-row">
             <div id="mosque-heirloom">
@@ -88,11 +87,11 @@ class GreatMosque extends React.Component {
               }
             </div>
           </div>
-        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+        <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
       </div>
     );
   }
-}
+};
 
 export default GreatMosque;

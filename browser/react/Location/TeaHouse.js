@@ -23,7 +23,6 @@ class TeaHouse extends React.Component {
     this.handleChooseNumber = this.handleChooseNumber.bind(this);
     this.handleDiceRoll = this.handleDiceRoll.bind(this);
     this.handleTeaHouseEndTurn = this.handleTeaHouseEndTurn.bind(this);
-
   }
 
   handleChooseNumber (evt, good){
@@ -33,14 +32,14 @@ class TeaHouse extends React.Component {
 
   handleDiceRoll (rollSum){
     this.setState({ rolled: true })
-    const gamble = this.state.gambledNumber;
+    const { gambledNumber } = this.state;
     setTimeout(() => {
-      this.handleTeaHouseEndTurn(gamble, rollSum)
+      this.handleTeaHouseEndTurn(gambledNumber, rollSum)
     }, 1200)
   }
 
   handleTeaHouseEndTurn (gamble, rollSum){
-    const { gameId, playerId, handleActionEnd, openModal, closeModal } = this.props;
+    const { gameId, playerId, handleActionEnd } = this.props;
     actionTeaHouse(gameId, playerId, gamble, rollSum)
       .then(() => handleActionEnd())
       .catch(console.error);
@@ -58,7 +57,7 @@ class TeaHouse extends React.Component {
   renderAction() {
     const { handleActionEnd, handleMoreOptionsClick, abilities } = this.props;
     const rerollAbility = abilities && abilities.fabric.acquired;
-    const gambledNumber = this.state.gambledNumber;
+    const { gambledNumber, rolled } = this.state;
     const ddMenuStyle = {
       backgroundColor: 'white',
       marginLeft: 100,
@@ -70,10 +69,10 @@ class TeaHouse extends React.Component {
     return (
       <div id="turn-dialog-full">
         <div id="text-box">
-          <p>If the dice roll meets or exceeds your gamble,<br />you get the sum you name.<br />Otherwise, you walk away with only two lira.</p>
+          <text>If the dice roll meets or exceeds your gamble,<br />you get the sum you name.<br />Otherwise, you walk away with only two lira.</text>
         </div>
         <div>
-          <DropDownMenu value={this.state.gambledNumber} style={ddMenuStyle} onChange={this.handleChooseNumber}>
+          <DropDownMenu value={gambledNumber} style={ddMenuStyle} onChange={this.handleChooseNumber}>
             <MenuItem value={2} primaryText="2" />
             <MenuItem value={3} primaryText="3" />
             <MenuItem value={4} primaryText="4" />
@@ -91,11 +90,11 @@ class TeaHouse extends React.Component {
             <Dice done={this.handleDiceRoll} canReroll={rerollAbility} />
           }
         </div>
-        <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd} disabled={this.state.rolled}  />
         <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(ACTION)} />
+        <RaisedButton label="End my turn" style={style} primary={true} onTouchTap={handleActionEnd} disabled={rolled} />
       </div>
     );
   }
-}
+};
 
 export default TeaHouse;

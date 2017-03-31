@@ -19,8 +19,8 @@ export default class SideBar extends Component {
     return (
       <div>
         <RaisedButton
-          label="Player Rules"
-          secondary={ true }
+          label="Rules"
+          default={ true }
           onTouchTap={this.handleToggle} />
         <Drawer
           containerStyle={{backgroundColor: 'transparent', display: 'flex', alignItems: 'center', boxShadow: 'none'}}

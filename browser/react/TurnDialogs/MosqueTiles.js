@@ -1,26 +1,31 @@
 import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
+/** ------- Game logic routes ------ */
 import { tile2LiraFor1Good, tile2LiraToReturn1Assistant } from '../../routes/bonus';
 
+/** ------- Helper functions ------ */
 import { mapCoordToLocation, mapLocationToCoord } from '../../utils/board';
-import { assistantsOutLocations, getPlayerMosqueTiles, checkMoneyAndGoods, checkWarehouseCondition } from '../../utils/options';
+import { assistantsOutLocations, getPlayerMosqueTiles, checkMoneyAndGoods, checkWarehouseCondition, checkMoney } from '../../utils/options';
 
 /** ------- Constants -------- */
 import { ACTION, MORE_OPTIONS } from '../Modal/turn_types';
 
+/** ------- Component -------- */
 class MosqueTiles extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       addText: null,
       assistantReturn: null,
       selectTileGood: null
     }
-  this.handleGoBackClick = this.handleGoBackClick.bind(this);
-  this.handleAbilityClick = this.handleAbilityClick.bind(this);
-  this.handleAssistantReturnClick = this.handleAssistantReturnClick.bind(this);
-  this.handleAddGoodClick = this.handleAddGoodClick.bind(this);
+
+    this.handleGoBackClick = this.handleGoBackClick.bind(this);
+    this.handleAbilityClick = this.handleAbilityClick.bind(this);
+    this.handleAssistantReturnClick = this.handleAssistantReturnClick.bind(this);
+    this.handleAddGoodClick = this.handleAddGoodClick.bind(this);
   }
 
   handleGoBackClick(nextDialog) {
@@ -37,23 +42,24 @@ class MosqueTiles extends Component {
           assistantReturn: false,
           selectTileGood: false
         });
-        break;
       case '2LiraToReturn1Assistant':
         return this.setState({
           addText: null,
           assistantReturn: true,
           selectTileGood: false
         });
-        break;
       case 'dieTurnOrRoll':
-        break;
+        return this.setState({
+          addText: 'After you roll dice at the Tea House or Black Market, you can roll again if you wish.',
+          assistantReturn: false,
+          selectTileGood: false
+        })
       case '2LiraFor1Good':
         return this.setState({
           addText: null,
           assistantReturn: false,
           selectTileGood: true
         })
-        break;
       default:
         return;
       }
@@ -73,78 +79,76 @@ class MosqueTiles extends Component {
     }
 
     render() {
-      const { userBonusCards, nextDialog, smallMosqueData, greatMosqueData, merchants, playerId, currentPosition } = this.props;
-      const addText = this.state.addText;
-      const assistantReturn = this.state.assistantReturn;
-      const selectTileGood = this.state.selectTileGood;
-      const playerAbilities = merchants[playerId].abilities;
-      const assistantsOut = merchants[playerId].assistants.out;
-      const wheelbarrow = merchants[playerId].wheelbarrow;
+      const {
+        userBonusCards, nextDialog, smallMosqueData, greatMosqueData, merchants, playerId,
+        currentPosition, userAssistants, userAbilities, userWheelbarrow
+      } = this.props;
+      const { addText, assistantReturn, selectTileGood } = this.state;
+      const assistantsOut = userAssistants.out;
       const assistantsOutLocationsArray = assistantsOutLocations(assistantsOut);
-      const tileArray = getPlayerMosqueTiles(playerAbilities);
-      const fruitCondition = checkMoneyAndGoods(wheelbarrow, 'fruit');
-      const fabricCondition = checkMoneyAndGoods(wheelbarrow, 'fabric');
-      const heirloomCondition = checkMoneyAndGoods(wheelbarrow, 'heirloom');
-      const spiceCondition = checkMoneyAndGoods(wheelbarrow, 'spice');
+      const sufficientMoney = checkMoney(userWheelbarrow.money);
+      const tileArray = getPlayerMosqueTiles(userAbilities);
+      const fruitCondition = checkMoneyAndGoods(userWheelbarrow, 'fruit');
+      const fabricCondition = checkMoneyAndGoods(userWheelbarrow, 'fabric');
+      const heirloomCondition = checkMoneyAndGoods(userWheelbarrow, 'heirloom');
+      const spiceCondition = checkMoneyAndGoods(userWheelbarrow, 'spice');
       const warehouseCondition = checkWarehouseCondition(currentPosition);
 
       return (
         <div id="turn-dialog-full">
           <div id="text-box">
-            {
-              <div id="options">
-                <div>
-                  <p>You have acquired {tileArray.length} Mosque tiles.</p>
-                  <div id="bonus-row">
-                    {
-                      tileArray !== [] && tileArray.map((tile, idx) => {
-                        return (
-                          <img key={idx} src={tile.img} onTouchTap={() => this.handleAbilityClick(tile.ability) } />
-                        )
-                      })
-                    }
-                  </div>
-                  <div id="more-options-text">
-                    {
-                      addText &&
-                      <p>{addText}</p>
-                    }
-                    {
-                      assistantReturn &&
-                      <div>
-                        <p>Select 1 assistant that you want returned. Each return cost 2 Lira.</p>
-                        <div>
-                          {
-                            assistantsOutLocationsArray.map(location => {
-                              return <RaisedButton key={location} label={location} style={{margin: 12}} default={true} disabled={!sufficientMoney} onTouchTap={() => this.handleAssistantReturnClick(location)} />
-                            })
-                          }
-                        </div>
-                      </div>
-                    }
-                    {
-                      !warehouseCondition && selectTileGood &&
-                      <p>You can only buy goods at one of the warehouse locations</p>
-                    }
-                    {
-                      warehouseCondition && selectTileGood &&
-                      <div>
-                        <p>Select 1 good to add to your wheelbarrow. Each good cost 2 Lira</p>
-                        <RaisedButton label='Fabric' style={{margin: 12}} default={true} disabled={!fabricCondition} onTouchTap={() => this.handleAddGoodClick('fabric')} />
-                        <RaisedButton label='Fruit' style={{margin: 12}} default={true} disabled={!fruitCondition} onTouchTap={() => this.handleAddGoodClick('fruit')} />
-                        <RaisedButton label='Heirloom' style={{margin: 12}} default={true} disabled={!heirloomCondition} onTouchTap={() => this.handleAddGoodClick('heirloom')} />
-                        <RaisedButton label='Spice' style={{margin: 12}} default={true} disabled={!spiceCondition} onTouchTap={() => this.handleAddGoodClick('spice')} />
-                      </div>
-                    }
-                  </div>
+            <div id="options">
+              <div>
+                <text>You have acquired {tileArray.length} Mosque tiles.</text>
+                <div id="bonus-row">
+                  {
+                    tileArray !== [] && tileArray.map((tile, idx) => {
+                      return (
+                        <img key={idx} src={tile.img} onTouchTap={() => this.handleAbilityClick(tile.ability) } />
+                      )
+                    })
+                  }
                 </div>
-                <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(MORE_OPTIONS)} />
+                <div id="more-options-text">
+                  {
+                    addText &&
+                    <text>{addText}</text>
+                  }
+                  {
+                    assistantReturn &&
+                    <div>
+                      <text>Select 1 assistant that you want returned. Each return cost 2 Lira.</text>
+                      <div>
+                        {
+                          assistantsOutLocationsArray.map(location => {
+                            return <RaisedButton key={location} label={location} style={{margin: 12}} default={true} disabled={!sufficientMoney} onTouchTap={() => this.handleAssistantReturnClick(location)} />
+                          })
+                        }
+                      </div>
+                    </div>
+                  }
+                  {
+                    !warehouseCondition && selectTileGood &&
+                    <text>You can only buy goods at one of the warehouse locations</text>
+                  }
+                  {
+                    warehouseCondition && selectTileGood &&
+                    <div>
+                      <text>Select 1 good to add to your wheelbarrow. Each good cost 2 Lira</text>
+                      <RaisedButton label='Fabric' style={{margin: 12}} default={true} disabled={!fabricCondition} onTouchTap={() => this.handleAddGoodClick('fabric')} />
+                      <RaisedButton label='Fruit' style={{margin: 12}} default={true} disabled={!fruitCondition} onTouchTap={() => this.handleAddGoodClick('fruit')} />
+                      <RaisedButton label='Heirloom' style={{margin: 12}} default={true} disabled={!heirloomCondition} onTouchTap={() => this.handleAddGoodClick('heirloom')} />
+                      <RaisedButton label='Spice' style={{margin: 12}} default={true} disabled={!spiceCondition} onTouchTap={() => this.handleAddGoodClick('spice')} />
+                    </div>
+                  }
+                </div>
               </div>
-            }
+            <RaisedButton label="Go back" style={{ margin: 12 }} primary={true} onTouchTap={() => this.handleGoBackClick(MORE_OPTIONS)} />
+          </div>
         </div>
       </div>
-      );
-    }
+    );
+  }
 }
 
 export default MosqueTiles;

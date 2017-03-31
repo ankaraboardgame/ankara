@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-export default class Modal extends Component {
+class Modal extends Component {
+  constructor(props) {
+    super(props);
+  }
 
   onOverlayClick() {
     return this.props.onClose ? this.props.onClose() : null;
@@ -31,4 +34,6 @@ export default class Modal extends Component {
       </ReactCSSTransitionGroup>
     );
   }
-}
+};
+
+export default Modal;

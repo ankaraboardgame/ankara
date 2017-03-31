@@ -26,6 +26,10 @@ export const setWinner = (gameId, playerId) => {
   return axios.post(`/api/game/${gameId}/player/${playerId}/win`);
 };
 
+export const endGame = (gameId, userId) => {
+  return axios.post(`/api/game/${gameId}/end`, { userId });
+};
+
 export const pickupAssistant = (gameId, playerId, coordinates) => {
   return axios.post(
     `api/game/${gameId}/player/${playerId}/assistant/pickup`,
