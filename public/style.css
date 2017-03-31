@@ -138,6 +138,19 @@ a {
   cursor: pointer;
 }
 
+.linked-in-profiles {
+  display: flex;
+  justify-content: center;
+}
+
+.linked-in-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 20px 5px 20px;
+  color: black;
+}
+
 .menu-text {
   font-size: 20px;
   font-weight: bold;
@@ -526,11 +539,15 @@ img.bonusCards {
 #lobby-container {
   width: 100%;
   height: 100%;
-  background: url('images/splash_bg.jpg') no-repeat center center fixed;
-  background-size: cover;
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+#lobby-image {
+  position: fixed;
+  z-index: -100;
+  width: 100%
 }
 
 #lobby-warning {

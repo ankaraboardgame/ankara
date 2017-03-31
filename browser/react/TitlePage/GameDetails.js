@@ -25,7 +25,7 @@ const GameDetails = ({handleOnClick}) => {
           <text className="menu-text">Game Details</text>
         </div>
         <div className="menu-item-info">
-          <text style={{margin: '10px 30px 10px 30px'}}>In the hustle and bustle of the bazaar district of Ankara, you are a merchant. You and your assistants must compete against other competitors for riches. Good organization is key: your wheelbarrow has to be filled with goods at the warehouses and traded for money to buy the rubies. Your goal as the merchant is to be the first to collect a five rubies!</text>
+          <text style={{margin: '10px 30px 10px 30px', fontSize: '15px'}}>In the hustle and bustle of the bazaar district of Ankara, you are a merchant. Good organization is key: your wheelbarrow has to be filled with goods at the warehouses and traded for money to buy the rubies. Your goal as the merchant is to be the first to collect a five rubies!</text>
         </div>
         <div className="menu-items" style={linkStyle}>
           <a style={{textDecoration: 'none', color: 'black'}}href="http://www.pegasus.de/fileadmin/_downloads/regeln/englisch/Istanbul_-_Anleitung_gb.pdf">PDF to Game Rules</a>
