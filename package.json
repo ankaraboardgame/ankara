@@ -1,5 +1,5 @@
 {
-  "name": "constantinople",
+  "name": "ankara",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -7,7 +7,6 @@
     "postinstall": "npm run build",
     "build": "webpack",
     "start": "node server/app.js",
-    "start-dev": "webpack -w & nodemon --watch server -e js,html server/app.js",
     "build-dev": "webpack -w & nodemon --watch server -e js,html server/app.js",
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register browser/**/*.test.js browser/react/**/*.test.js game/**/*.test.js server/**/*.test.js",
     "test-player": "cross-env NODE_ENV=test mocha server/api/player.test.js",
@@ -16,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sokmeann/constantinople.git"
+    "url": "git+https://github.com/ankaraboardgame/ankara.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sokmeann/constantinople/issues"
+    "url": "https://github.com/ankaraboardgame/ankara/issues"
   },
-  "homepage": "https://github.com/sokmeann/constantinople#readme",
+  "homepage": "https://github.com/ankaraboardgame/ankara#readme",
   "dependencies": {
     "aphrodite": "^1.2.0",
     "axios": "^0.15.3",
