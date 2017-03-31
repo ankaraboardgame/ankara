@@ -547,6 +547,7 @@ img.bonusCards {
 #lobby-image {
   position: fixed;
   z-index: -100;
+  width: 100%
 }
 
 #lobby-warning {
