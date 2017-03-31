@@ -18,7 +18,7 @@ Because of the real-time aspect of this game, we needed a way for players to con
 
 We connected our players to Firebase's real-time / nosql database that propagates state changes to all clients. This works well for live state updates, however, we wanted to maintain control over the database direct write access. We decided to build a one-way data flow, from our application architecture, where our game logic flows through our node server. Our server then updates Firebase, which passes the new game state down to all clients / components.
 
-<img src="/public/images/Architecture.png" />
+<img src="/public/images/Architecture.png" width="550" />
 
 ### How to get started
 
