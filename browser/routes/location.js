@@ -1,11 +1,6 @@
 'use strict';
 
-import React from 'react';
 import axios from 'axios';
-
-export const earnRuby = (gameId, playerId) => {
-  return axios.post(`api/game/${gameId}/player/${playerId}/location/wainwright/earnRuby`)
-}
 
 // 1. Wainwright -- Front end to check if the wheelbarrow is already max size
 export const actionBuyWbExt = (gameId, playerId) => {
@@ -23,7 +18,6 @@ export const actionBuyRuby = (gameId, playerId) => {
 }
 
 // 4. Markets
-// /market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloomNum/:spiceNum
 export const actionTradeGoods = (gameId, playerId, marketSize, currentMarketIdx, fabricNum, fruitNum, heirloomNum, spiceNum) => {
   return axios.post(`api/game/${gameId}/player/${playerId}/location/market/${marketSize}/${currentMarketIdx}/${fabricNum}/${fruitNum}/${heirloomNum}/${spiceNum}`);
 }
