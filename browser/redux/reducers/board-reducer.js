@@ -24,6 +24,6 @@ export default function (state = initialState, action) {
   }
 
   return newState;
-};
+}
 
 export const getBoard = state => (state.board.board);

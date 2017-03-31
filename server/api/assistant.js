@@ -25,7 +25,10 @@ router.post('/drop', (req, res, next) => {
   const assistantsRef = req.playerRef.child('assistants');
 
   assistantsRef.child('count')
-    .transaction(currCount => --currCount)
+    .transaction(currCount => {
+      if (currCount < 1) throw new Error('Attempted to drop assistant when none left.')
+      return --currCount;
+    })
     .then(() => {
       return assistantsRef.child('out').push(coords);
     })

@@ -73,7 +73,7 @@ class GameHistoryComponent extends Component {
           }
           break;
         case LOGTYPE.SMUGGLER_MOVE:
-          message = `Smugger moved to ${locationName}`;
+          message = `Smuggler moved to ${locationName}`;
           break;
         default:
           message = '';

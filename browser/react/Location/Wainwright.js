@@ -1,7 +1,7 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { actionBuyWbExt, earnRuby } from '../../routes/location';
+import { actionBuyWbExt } from '../../routes/location';
 
 /** -------- Constants -------- */
 import { ACTION, MORE_OPTIONS } from '../Modal/turn_types';
@@ -16,23 +16,12 @@ class Wainwright extends React.Component {
     }
 
     this.handleBuyExtension = this.handleBuyExtension.bind(this);
-    this.handleBuyExtensionEarnRuby = this.handleBuyExtensionEarnRuby.bind(this);
   }
 
   handleBuyExtension(){
     const { gameId, playerId } = this.props;
     this.setState({ extBought: true })
     actionBuyWbExt(gameId, playerId)
-      .catch(console.error)
-  }
-
-  handleBuyExtensionEarnRuby(){
-    const { gameId, playerId } = this.props;
-    this.setState({ extBought: true })
-    actionBuyWbExt(gameId, playerId)
-      .then(() => {
-        earnRuby(gameId, playerId)
-      })
       .catch(console.error)
   }
 
@@ -67,7 +56,7 @@ class Wainwright extends React.Component {
                 <text>You have a wheelbarrow size of 4. You can buy one more extension, and earn a ruby!</text>
               </div>
               <div id="market-row">
-                <RaisedButton label="Buy an extension" style={style} primary={true} disabled={extBought} onTouchTap={this.handleBuyExtensionEarnRuby}  />
+                <RaisedButton label="Buy an extension" style={style} primary={true} disabled={extBought} onTouchTap={this.handleBuyExtension}  />
                 <RaisedButton label="End Turn" style={style} primary={true} onTouchTap={handleActionEnd} />
               </div>
               <RaisedButton label="More Options" style={style} onTouchTap={() => handleMoreOptionsClick(MORE_OPTIONS)} />
@@ -100,6 +89,6 @@ class Wainwright extends React.Component {
       </div>
     );
   }
-};
+}
 
 export default Wainwright;
