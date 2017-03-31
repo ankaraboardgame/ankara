@@ -24,7 +24,7 @@ export const Room = props => {
     backgroundImage: 'url("images/splash-menu.png")',
     backgroundSize: '100% 100%',
     width: 400,
-    height: 500,
+    height: 'auto',
     padding: 20,
     margin: 20,
     backgroundColor: 'transparent',

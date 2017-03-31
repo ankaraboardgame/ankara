@@ -120,9 +120,8 @@ class LobbyContainer extends React.Component {
   }
 
   render() {
-
     const createRoomStyle = {
-      height: 90,
+      height: 'auto',
       width: 500,
       padding: 20,
       backgroundColor: '#3D2F1B',
@@ -131,7 +130,7 @@ class LobbyContainer extends React.Component {
       borderRadius: '20px'
     };
     const searchStyle = {
-      width: 600,
+      width: '50%',
       padding: 20,
       backgroundColor: '#222',
       opacity: 0.2
@@ -140,15 +139,7 @@ class LobbyContainer extends React.Component {
       color: 'white',
       textTransform: 'uppercase',
       fontStyle: 'italic',
-      fontSize: 28,
-      width: 500
-    };
-    const hintStyle = {
-      color: '#555',
-      textTransform: 'uppercase',
-      fontStyle: 'italic',
-      fontSize: 28,
-      height: 50
+      fontSize: 20
     };
 
     const { userId, roomData, gameId } = this.props;
@@ -156,6 +147,7 @@ class LobbyContainer extends React.Component {
     return (
       <MuiThemeProvider>
         <div id="lobby-container">
+          <img src="images/splash_bg.jpg" id="lobby-image" />
         {
           this.props.gameId &&
           <div id="lobby-warning">
@@ -182,20 +174,23 @@ class LobbyContainer extends React.Component {
                 />
                 <RaisedButton
                   type="submit"
+                  style={{marginLeft:'20px'}}
                   disabled={!this.state.createRoomField.length}>
                   CREATE
                 </RaisedButton>
               </form>
+              <TextField
+
+                style={{marginRight: '89px'}}
+                hintText="Search rooms"
+                hintStyle={{color: '#888'}}
+                inputStyle={{color: 'white'}}
+                onChange={this.handleSearchBar}
+              />
             </Paper>
           </div>
 
-          <TextField
-            onChange={this.handleSearchBar}
-            style={{ width: 500, height: 100 }}
-            hintText="Search rooms"
-            hintStyle={hintStyle}
-            inputStyle={searchInputStyle}
-          />
+          
 
           <div className="row">
           {
