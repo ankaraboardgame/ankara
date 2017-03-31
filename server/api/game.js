@@ -54,8 +54,8 @@ router.param('gameId', (req, res, next, gameId) => {
   })
 });
 
-// get one specific game
-router.get('/:gameId', (req, res, next) => {
+// end one specific game
+router.post('/:gameId/end', (req, res, next) => {
   res.send(req.game);
 });
 

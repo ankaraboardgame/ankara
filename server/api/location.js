@@ -38,14 +38,14 @@ router.post('/wainwright', (req, res, next) => {
       return ++size;
     })
   )
-  if (wbSize === 4){
-    promisesToUpdate.push(
-      req.playerRef
-      .child('wheelbarrow/ruby')
-      .transaction(ruby =>  ++ruby)
-    )
-  }
   Promise.all(promisesToUpdate)
+  .then(() => { // if player maxes out wainwrights, grant her a ruby
+    if (wbSize === 4){
+      return req.playerRef
+        .child('wheelbarrow/ruby')
+        .transaction(ruby =>  ++ruby)
+    }
+  })
   .then(() => { res.sendStatus(204); })
   .catch(next);
 })
@@ -314,7 +314,9 @@ router.post('/caravansary/:bonusCardType', (req, res, next) => {
     .transaction(typeNum => ++typeNum)
     .then(() => {
       return req.gameRef.child('caravansary/index')
-        .transaction(i => ++i)
+        .transaction(i => {
+          return (i + 1) % 8;
+        })
     })
     .then(() => {
       res.sendStatus(204);

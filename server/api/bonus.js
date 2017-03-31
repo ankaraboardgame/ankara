@@ -57,7 +57,7 @@ router.post('/add1Assistant', (req, res, next) => {
   if (req.player.assistants.maxed){
     next(new Error('Cannot add assistant. Already maxed out.'))
   } else {
-    req.playerRef.child('assistants/count').transaction(count => count + 1)
+    req.playerRef.child('assistants/count').transaction(count => ++count)
       .then(() => req.playerRef.child('assistants/maxed').set(true))
       .then(() => res.sendStatus(204))
       .catch(next);
@@ -78,8 +78,8 @@ router.post('/2LiraToReturn1Assistant/:assistantCoords', (req, res, next) => {
     })
     .then(() => {
       assistantsOut = assistants.out;
-      for(let assistant in assistantsOut){
-        if(assistantsOut[assistant] !== assistantCoords){
+      for (let assistant in assistantsOut){
+        if (assistantsOut[assistant] !== assistantCoords){
           newAssistantsOutObj[assistant] = assistantsOut[assistant]
         }
       }
