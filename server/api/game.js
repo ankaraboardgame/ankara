@@ -73,7 +73,7 @@ router.post('/:gameId/end', (req, res, next) => {
   Promise.all([promiseToLeave, promiseToRecord])
   .then(() => {
     // if all players have left, delete this game
-    if (leftCount >= Object.keys(req.game.playerMap)){
+    if (leftCount >= Object.keys(req.game.playerMap).length){
       gamesRef.child(gameId).remove();
     }
   })
