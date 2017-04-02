@@ -114,7 +114,7 @@ class SmugglerEncounter extends React.Component {
             style={{ margin: 12 }}
             primary={true}
             onTouchTap={this.tradeWithSmuggler}
-            disabled={!this.canTalkToSmuggler(userWheelbarrow) || actionTaken}
+            disabled={!this.canTalkToSmuggler(userWheelbarrow) || !trade || !goodWanted || actionTaken}
           />
           <RaisedButton
             label="End turn now"
