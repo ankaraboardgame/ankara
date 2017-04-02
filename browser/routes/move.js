@@ -34,7 +34,6 @@ export const pickupAssistant = (gameId, playerId, coordinates) => {
 }
 
 export const dropAssistant = (gameId, playerId, coordinates) => {
-  console.log(gameId, playerId);
   return axios.post(
     `api/game/${gameId}/player/${playerId}/assistant/drop`,
     { coordinates }

@@ -4,7 +4,6 @@ const admin = require('firebase-admin');
 const db = admin.database();
 const roomsRef = db.ref('rooms');
 
-const express = require('express');
 const router = module.exports = require('express').Router();
 
 
