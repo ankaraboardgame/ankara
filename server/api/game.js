@@ -57,6 +57,15 @@ router.param('gameId', (req, res, next, gameId) => {
   })
 });
 
+// signal the last round for a game
+router.post('/:gameId/lastRound', (req, res, next) => {
+  req.gameRef.update({lastRound: true})
+  .then(() => {
+    res.sendStatus(204);
+  })
+  .catch(next);
+});
+
 // end one specific game
 router.post('/:gameId/end', (req, res, next) => {
   const userId = req.body.userId;
