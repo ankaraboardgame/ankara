@@ -10,7 +10,9 @@ Ankara is a multiplayer game based on the board game Istanbul. You play a mercha
 
 ### Architecture
 
-Ankara is built with React and Firebase. Players are connected to Firebase's real-time / NoSQL database, which propagates state changes to all players. Ankara is built with a one-way data flow, where all game logic flows from players into our server, which writes updates to Firebase, which passes teh new game state back down to clients/players.
+Ankara is built with React and Firebase. Players are connected to Firebase's real-time / NoSQL database, which propagates state changes to all players. All data flows one way: game state changes are posted to the server, which processes the input and writes updates to Firebase, which then passes the new game state back down to clients/players.
+
+We also make use of React-Redux-Firebase to keep our redux store connected to Firebase, and React-DND for drag-and-drop capabilities.
 
 <img src="/public/images/Architecture.png" width="550" />
 
