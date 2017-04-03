@@ -4,15 +4,13 @@
 
 <img src="/public/images/AnkaraBoardGame.png" />
 
-### Introduction
+### Introduction & Gameplay
 
-Ankara is a multiplayer game based on the board game Istanbul. You play a merchant moving around a grand bazaar, filling your wheelbarrow with goods, bartering, selling/buying, acquiring abilities, and most importantly, collecting rubies. The first person to collect 5 rubies wins!
+Ankara is a multiplayer game based on the board game Istanbul. You play a merchant moving around a grand bazaar, filling your wheelbarrow with goods, bartering, selling/buying, acquiring abilities, and most importantly, collecting rubies. The first person to collect 5 rubies wins.
 
 ### Architecture
 
-Ankara is built with React and Firebase. Players are connected to Firebase's real-time / NoSQL database, which propagates state changes to all players. All data flows one way: game state changes are posted to the server, which processes the input and writes updates to Firebase, which then passes the new game state back down to clients/players.
-
-We also make use of React-Redux-Firebase to keep our redux store connected to Firebase, and React-DND for drag-and-drop capabilities.
+Ankara is built with React, Express, and Firebase. Players are connected to Firebase's real-time / NoSQL database (via React-Redux-Firebase), which propagates state changes to all players. All data flows one way: game state changes are posted to the server, which processes the input and writes updates to Firebase, which then passes the new game state back down to clients/players.
 
 <img src="/public/images/Architecture.png" width="550" />
 
@@ -27,7 +25,7 @@ Install dependencies
 npm install
 ```
 
-Start build / Webpack
+Start development build / Webpack
 ```
 npm build-dev
 ```
