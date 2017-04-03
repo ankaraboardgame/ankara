@@ -11,7 +11,7 @@ import { getUserId } from '../../redux/reducers/user-reducer';
 import { getBoard } from '../../redux/reducers/board-reducer';
 
 /** LOG TYPES */
-import { LOGTYPE, LOCATION_NAME } from '../../utils/log'
+import { formatLogMessage, sortLogs } from '../../utils/log'
 
 class GameHistoryComponent extends Component {
 
@@ -29,64 +29,16 @@ class GameHistoryComponent extends Component {
       node.scrollIntoView({behavior: "smooth"});
   }
 
-  formatLog(gameLog) {
+  formatLogs(gameLog) {
 
-    const { gameId, userId, playerMap, board } = this.props;
-    const gameLogArray = Object.keys(gameLog)
-    .map(key => {
-      return gameLog[key];
-    }).sort((a, b) => {
-      return a.timestamp - b.timestamp;
-    });
+    const { userId, playerMap, board } = this.props;
+    const gameLogArray = sortLogs(gameLog);
+    return gameLogArray.map( el => formatLogMessage(el, playerMap, board, userId) );
 
-    const logMessages = gameLogArray.map(el => {
+  }
 
-      const playerId = el.user;
-      const type = el.type;
-      const location = el.location;
-
-      // Get coordinates from string
-      const coords = location && location.split(',').map(str => Number(str));
-      // Get Location name from coordinates
-      const locationName = LOCATION_NAME[coords && board.level[coords[0]][coords[1]]];
-      let message = undefined;
-      switch(type) {
-        case LOGTYPE.TURN:
-          if (playerId === userId) {
-            message = 'Your turn';
-          } else {
-            message = `${playerMap[playerId]}'s turn`
-          }
-          break;
-        case LOGTYPE.GAME_JOIN:
-          if (playerId === userId) {
-            message = 'You joined the game';
-          } else {
-            message = `${playerMap[playerId]} joined the game`
-          }
-          break;
-        case LOGTYPE.PLAYER_MOVE:
-          if (playerId === userId) {
-            message = `You moved to ${locationName}`;
-          } else {
-            message = `${playerMap[playerId]} moved to ${locationName}`;
-          }
-          break;
-        case LOGTYPE.SMUGGLER_MOVE:
-          message = `Smuggler moved to ${locationName}`;
-          break;
-        default:
-          message = '';
-          break;
-      }
-
-      return message;
-
-    })
-
-    return logMessages;
-
-
+  componentDidMount() {
+    this.scrollToBottom();
   }
 
   componentDidUpdate() {
@@ -96,7 +48,7 @@ class GameHistoryComponent extends Component {
   render() {
     const { gameLog } = this.props;
 
-    const logMessages = this.formatLog(gameLog);
+    const logMessages = this.formatLogs(gameLog);
 
     return (
       <div style={{margin: 0, padding: 0}}>
