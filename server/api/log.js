@@ -1,6 +1,4 @@
 const admin = require('firebase-admin');
-const db = admin.database();
-const logRef = db.ref('gameHistory');
 
 const util = require('../util');
 const log = util.log;

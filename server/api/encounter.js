@@ -1,6 +1,4 @@
 const admin = require('firebase-admin');
-const db = admin.database();
-const gamesRef = db.ref('games');
 const Promise = require('bluebird');
 
 const { getRandomPosition } = require('../../game/accessories.js');
@@ -96,8 +94,6 @@ router.post('/merchant', (req, res, next) => {
         .transaction(money => money - 2 * otherMerchantIds.length)
       )
   Promise.all(promisesToPayMerchants)
-    .then(() => {
-      res.sendStatus(204);
-    })
+    .then(() => res.sendStatus(204))
     .catch(next);
 });

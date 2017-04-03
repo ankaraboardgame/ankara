@@ -24,7 +24,6 @@ router.post('/:roomId', (req, res, next) => {
   const roomId = req.params.roomId;
   const usersMap = req.body.usersMap;
   const userId = req.body.userId;
-  console.log(roomId, usersMap, userId);
   gamesRef.child(roomId).set(new Game(roomId, usersMap))
   .then(() => {
     roomsRef.child(roomId).remove();
@@ -50,11 +49,16 @@ router.post('/:roomId', (req, res, next) => {
 router.param('gameId', (req, res, next, gameId) => {
   req.gameRef = gamesRef.child(gameId);
   gamesRef.child(gameId).once('value', function(snap){
-    return snap;
-  }).then(snapshot => {
-    req.game = snapshot.val();
+    req.game = snap.val();
     next();
-  })
+  });
+});
+
+// signal the last round for a game
+router.post('/:gameId/lastRound', (req, res, next) => {
+  req.gameRef.update({lastRound: true})
+  .then(() => res.sendStatus(204))
+  .catch(next);
 });
 
 // end one specific game
@@ -73,13 +77,11 @@ router.post('/:gameId/end', (req, res, next) => {
   Promise.all([promiseToLeave, promiseToRecord])
   .then(() => {
     // if all players have left, delete this game
-    if (leftCount >= Object.keys(req.game.playerMap)){
+    if (leftCount >= Object.keys(req.game.playerMap).length){
       gamesRef.child(gameId).remove();
     }
   })
-  .then(() => {
-    res.sendStatus(204);
-  })
+  .then(() => res.sendStatus(204))
   .catch(next);
 });
 

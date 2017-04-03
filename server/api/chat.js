@@ -5,7 +5,6 @@ const db = admin.database();
 const chatsRef = db.ref('chats');
 const gamesRef = db.ref('games');
 
-const express = require('express');
 const router = module.exports = require('express').Router();
 
 

@@ -4,25 +4,15 @@
 
 <img src="/public/images/AnkaraBoardGame.png" />
 
-### Introduction
+### Introduction & Gameplay
 
-Ankara is a multiplayer game based on the board game Istanbul, a complex, economy-based board game set on top of a modular board. Players take turns moving around a marketplace and collecting resources in their wheelbarrow. Part of the game's complexity comes from how each turn presents different options based on the player's stats and environment.
-
-### Gameplay
-
-Ankara is built with React and Firebase, players move around a modular board and collect resources and rubies to win the game, while seeing each other's moves and chat in real time. Your goal is to be the first person to collect five rubies.
+Ankara is a multiplayer game based on the board game Istanbul. You play a merchant moving around a grand bazaar, filling your wheelbarrow with goods, bartering, selling/buying, acquiring abilities, and most importantly, collecting rubies. The first person to collect 5 rubies wins.
 
 ### Architecture
 
-Because of the real-time aspect of this game, we needed a way for players to continuously know about each other's game states. Moreover, we wanted the game state to persist in the event that a player temporarily drops out of the game.
-
-We connected our players to Firebase's real-time / NoSQL database that propagates state changes to all clients. This works well for live state updates, however, we wanted to maintain control over the database direct write access. We decided to build a one-way data flow, from our application architecture, where our game logic flows through our node server. Our server then updates Firebase, which passes the new game state down to all clients / components.
+Ankara is built with React, Express, and Firebase. Players are connected to Firebase's real-time / NoSQL database (via React-Redux-Firebase), which propagates state changes to all players. All data flows one way: game state changes are posted to the server, which processes the input and writes updates to Firebase, which then passes the new game state back down to clients/players.
 
 <img src="/public/images/Architecture.png" width="550" />
-
-### Tips and Tricks
-
-[ coming soon ]
 
 ### APP Install
 
@@ -35,9 +25,13 @@ Install dependencies
 npm install
 ```
 
-Start build / Webpack
+Start development build / Webpack
 ```
 npm build-dev
 ```
 
 Server's on port 1337!
+
+### Thank yous
+
+We sourced our high-res game images from BoardGameGeek.

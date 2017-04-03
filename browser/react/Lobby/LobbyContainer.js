@@ -148,16 +148,16 @@ class LobbyContainer extends React.Component {
       <MuiThemeProvider>
         <div id="lobby-container">
           <img src="images/splash_bg.jpg" id="lobby-image" />
-        {
-          this.props.gameId &&
-          <div id="lobby-warning">
-            <Link to="/game">
-              <div>
-                <p id={'lobby-warning-link'}>You are currently in a game. Click to go to the game room.</p>
-              </div>
-            </Link>
-          </div>
-        }
+          {
+            this.props.gameId &&
+            <div id="lobby-warning">
+              <Link to="/game">
+                <div>
+                  <p id={'lobby-warning-link'}>You are currently in a game. Click to go to the game room.</p>
+                </div>
+              </Link>
+            </div>
+          }
           <Link to="/">
             <img src={`images/Ankara-Title.png`} style={{width: '100%'}}/>
           </Link>
@@ -189,8 +189,6 @@ class LobbyContainer extends React.Component {
               />
             </Paper>
           </div>
-
-          
 
           <div className="row">
           {

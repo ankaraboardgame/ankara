@@ -1,5 +1,4 @@
 const admin = require('firebase-admin');
-const db = admin.database();
 
 /** Game Logging */
 const util = require('../util');

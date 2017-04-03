@@ -1,7 +1,4 @@
-const admin = require('firebase-admin');
-const db = admin.database();
-const gamesRef = db.ref('games');
-
+const Promise = require('bluebird');
 const router = module.exports = require('express').Router();
 
 /**
@@ -71,7 +68,7 @@ router.post('/2LiraToReturn1Assistant/:assistantCoords', (req, res, next) => {
   const assistantCoords = req.params.assistantCoords;
   let assistants, assistantsOut, newAssistantsOutObj = {};
 
-  const updateAssistantPromise = gamesRef.child(req.game.id)
+  const updateAssistantPromise = req.gameRef
     .child(`merchants/${req.player.id}/assistants`)
     .once('value', snap => {
       assistants = snap.val();
@@ -86,12 +83,12 @@ router.post('/2LiraToReturn1Assistant/:assistantCoords', (req, res, next) => {
       assistants.out = newAssistantsOutObj;
       assistants.count = ++assistants.count;
 
-      gamesRef.child(req.game.id)
+      req.gameRef
         .child(`merchants/${req.player.id}/assistants`)
         .set(assistants);
     })
 
-  const payForAssistantPromise = gamesRef.child(req.game.id)
+  const payForAssistantPromise = req.gameRef
     .child(`merchants/${req.player.id}/wheelbarrow/money`)
     .transaction(currentMoney => {
       return currentMoney - 2

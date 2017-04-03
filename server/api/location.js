@@ -1,6 +1,3 @@
-const admin = require('firebase-admin');
-const db = admin.database();
-const gamesRef = db.ref('games');
 const Promise = require('bluebird');
 
 const router = module.exports = require('express').Router();
@@ -15,7 +12,6 @@ const router = module.exports = require('express').Router();
  * req.player = the player hitting this route
  * req.playerRef = ref to player in firebase
  */
-
 
 /**
 * 1a. WAINWRIGHT - Buy Extension
@@ -34,19 +30,19 @@ router.post('/wainwright', (req, res, next) => {
     req.playerRef
     .child('wheelbarrow/size')
     .transaction(size => {
-      wbSize = size;
-      return ++size;
+      wbSize = ++size;
+      return wbSize;
     })
   )
   Promise.all(promisesToUpdate)
   .then(() => { // if player maxes out wainwrights, grant her a ruby
-    if (wbSize === 4){
+    if (wbSize === 5){
       return req.playerRef
         .child('wheelbarrow/ruby')
-        .transaction(ruby =>  ++ruby)
+        .transaction(ruby => ++ruby)
     }
   })
-  .then(() => { res.sendStatus(204); })
+  .then(() => res.sendStatus(204))
   .catch(next);
 })
 
@@ -68,9 +64,7 @@ router.post('/warehouse/:goodType', (req, res, next) => {
         .child(`wheelbarrow/${goodType}`)
         .set(WB_SIZE)
     })
-    .then(() => {
-      res.sendStatus(204);
-    })
+    .then(() => res.sendStatus(204))
     .catch(next)
 })
 
@@ -97,9 +91,7 @@ router.post('/gemstonedealer', (req, res, next) => {
           .transaction(rubies => ++rubies);
       return Promise.all([payDealerPromise, acquireRuby]);
     })
-    .then(() => {
-      res.sendStatus(204);
-    })
+    .then(() => res.sendStatus(204))
     .catch(next)
 });
 
@@ -148,9 +140,7 @@ router.post('/market/:marketSize/:currentMarketIdx/:fabricNum/:fruitNum/:heirloo
           return req.playerRef.child('wheelbarrow').set(wheelbarrow)
         })
     })
-    .then(() => {
-      res.sendStatus(204)
-    })
+    .then(() => res.sendStatus(204))
     .catch(next)
 })
 
@@ -278,7 +268,7 @@ router.post('/blackMarket/:selectedGood/:diceRoll/', (req, res, next) => {
     })
 
   Promise.all([updateGoodPromise, updateHeirloomPromise])
-    .then(() => { res.sendStatus(204); })
+    .then(() => res.sendStatus(204))
     .catch(next);
 })
 
@@ -298,7 +288,7 @@ router.post('/teaHouse/:gamble/:diceRoll', (req, res, next) => {
     .transaction(currentMoney => {
       return (diceRoll >= gamble) ? currentMoney + gamble : currentMoney + 2;
     })
-    .then(() => { res.sendStatus(204); })
+    .then(() => res.sendStatus(204))
     .catch(next);
 })
 
@@ -314,12 +304,8 @@ router.post('/caravansary/:bonusCardType', (req, res, next) => {
     .transaction(typeNum => ++typeNum)
     .then(() => {
       return req.gameRef.child('caravansary/index')
-        .transaction(i => {
-          return (i + 1) % 8;
-        })
+        .transaction(i => (i + 1) % 8)
     })
-    .then(() => {
-      res.sendStatus(204);
-    })
+    .then(() => res.sendStatus(204))
     .catch(next);
 })

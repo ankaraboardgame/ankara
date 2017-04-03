@@ -1,5 +1,4 @@
 import React from 'react';
-import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import { tada, flipY } from 'react-animations';
@@ -11,7 +10,9 @@ import GameSummary from './GameSummary';
 
 /** ------- Helper functions ------ */
 import { whoIsWinner } from '../../utils/winner';
-import { endGame } from '../../routes/move.js';
+
+/** ------- Actions ------ */
+import { endGame } from '../../redux/action-creators/game.js';
 
 /** ------- Selectors ------ */
 import { getGameId, getPlayerMap, getGameMerchants, getLastRound, getPlayerTurn } from '../../redux/reducers/game-reducer';
@@ -39,8 +40,7 @@ class DisplayWinnerContainer extends React.Component {
   }
 
   handleEndGame() {
-    endGame(this.props.gameId, this.props.userId);
-    hashHistory.push('/');
+    this.props.endGame(this.props.gameId, this.props.userId);
   }
 
   render() {
@@ -77,4 +77,8 @@ const mapStateToProps = state => ({
   playerTurn: getPlayerTurn(state)
 });
 
-export default connect(mapStateToProps)(DisplayWinnerContainer);
+const mapDispatchToProps = dispatch => ({
+  endGame: (gameId, userId) => dispatch(endGame(gameId, userId))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(DisplayWinnerContainer);

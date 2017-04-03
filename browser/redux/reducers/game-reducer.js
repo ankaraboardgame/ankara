@@ -1,7 +1,7 @@
 import { dataToJS } from 'react-redux-firebase';
 
 /** --------- Action-creators -------- */
-import { SETTING_GAME, SETTING_WINNER } from '../action-creators/game';
+import { SETTING_GAME, SETTING_WINNER, REMOVING_GAME } from '../action-creators/game';
 
 /** --------- Initial state -------- */
 const initialState = {
@@ -16,6 +16,10 @@ export default function (state = initialState, action) {
 
     case SETTING_GAME:
       newState.id = action.id;
+      break;
+
+    case REMOVING_GAME:
+      newState.id = null;
       break;
 
     default:

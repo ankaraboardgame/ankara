@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { doesPlayerHaveFiveRubies } from '../utils/board';
 import { fbDB } from '../firebase';
 
 export const movePlayer = (gameId, playerId, newPosition, possibleMoves) => {
@@ -9,14 +8,11 @@ export const movePlayer = (gameId, playerId, newPosition, possibleMoves) => {
 export const endTurn = (gameId, playerId) => {
   return axios.post(`/api/game/${gameId}/player/${playerId}/end`)
     .then(() => {
-      fbDB.ref(`games/${gameId}/merchants`).child(playerId).once('value', (snap) => {
-        return snap;
-      }).then(snapshot => {
-        const player = snapshot.val();
-        const rubyCount = player.wheelbarrow.ruby;
-        const playerNum = player.number;
-        if (rubyCount === 5) {
-          return fbDB.ref(`games/${gameId}`).update({lastRound: true});
+      fbDB.ref(`games/${gameId}/merchants/${playerId}/wheelbarrow`).child('ruby')
+      .once('value', (snap) => {
+        const rubyCount = snap.val();
+        if (rubyCount >= 5) {
+          return axios.post(`/api/game/${gameId}/lastRound`);
         }
       })
     })
@@ -38,7 +34,6 @@ export const pickupAssistant = (gameId, playerId, coordinates) => {
 }
 
 export const dropAssistant = (gameId, playerId, coordinates) => {
-  console.log(gameId, playerId);
   return axios.post(
     `api/game/${gameId}/player/${playerId}/assistant/drop`,
     { coordinates }
