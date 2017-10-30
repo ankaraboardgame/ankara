@@ -35,3 +35,8 @@ Server's on port 1337!
 ### Thank yous
 
 We sourced our high-res game images from BoardGameGeek.
+
+### Play
+
+http://www.ankaraboardgame.com/
+
