@@ -198,7 +198,7 @@ class LobbyContainer extends React.Component {
             .map(roomId => {
               return (
                 // apply search filter
-                roomData[roomId].name.toLowerCase()
+                roomData[roomId].name && roomData[roomId].name.toLowerCase()
                 .includes(this.state.searchQuery.toLowerCase())) ?
                 (
                   <Room
