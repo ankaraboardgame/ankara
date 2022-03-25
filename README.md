@@ -38,6 +38,4 @@ We sourced our high-res game images from BoardGameGeek.
 
 ### Play
 
-http://www.ankaraboardgame.com/
-or
 http://ankaraboardgame.herokuapp.com/
